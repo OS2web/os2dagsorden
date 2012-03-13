@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Ballerup image presets feature.
+ */
+
+include_once('ballerup_image_presets.features.inc');

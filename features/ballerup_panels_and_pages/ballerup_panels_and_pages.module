@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Ballerup panels and pages feature.
+ */
+
+include_once('ballerup_panels_and_pages.features.inc');

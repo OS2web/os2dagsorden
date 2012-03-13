@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Ballerup content types feature.
+ */
+
+include_once('ballerup_content_types.features.inc');
