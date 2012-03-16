@@ -1,0 +1,6 @@
+name = PWS Integration module
+description = Supplies api calls and unified setup for easy integration with the PWS
+package = OS2Web
+core = 7.x
+configure = admin/config/os2web/pws
+tags[] = os2web

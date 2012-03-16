@@ -1,0 +1,26 @@
+<?php
+
+function os2web_pws_menu() {
+  $items['admin/config/os2web/pws'] = array(
+      'title' => 'PWS Setup',
+      'page callback' => 'drupal_get_form',
+      'page arguements' => array('os2web_config_form'),
+      'type' => MENU_NORMAL_ITEM,
+  );
+ $items['os2web/test/pws'] = array(
+      'title' => 'PWS Test',
+      'page callback' => 'drupal_get_form',
+      'page arguements' => array('os2web_config_form'),
+      'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+function os2web_config_form() {
+  $form['os2web_pws_url'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2web_pws_url'),
+  );
+  return system_settings_form($form);
+}

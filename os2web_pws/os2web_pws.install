@@ -1,0 +1,8 @@
+<?php
+
+function os2web_pws_install() {
+  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
+}
+
+function os2web_pws_uninstall() {
+}
