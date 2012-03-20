@@ -16,21 +16,6 @@ function ballerup_content_types_taxonomy_default_vocabularies() {
       'hierarchy' => '0',
       'module' => 'taxonomy',
       'weight' => '1',
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
-        ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
     ),
     'bydel' => array(
       'name' => 'Bydel',
@@ -39,21 +24,6 @@ function ballerup_content_types_taxonomy_default_vocabularies() {
       'hierarchy' => '0',
       'module' => 'taxonomy',
       'weight' => '-7',
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
-        ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
     ),
     'grupper_og_udvalg' => array(
       'name' => 'Grupper og udvalg',
@@ -62,21 +32,6 @@ function ballerup_content_types_taxonomy_default_vocabularies() {
       'hierarchy' => '1',
       'module' => 'taxonomy',
       'weight' => '-2',
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
-        ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
     ),
     'nyhedstype' => array(
       'name' => 'Nyhedstype',
@@ -85,21 +40,6 @@ function ballerup_content_types_taxonomy_default_vocabularies() {
       'hierarchy' => '1',
       'module' => 'taxonomy',
       'weight' => '0',
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
-        ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
     ),
     'politiske_partier' => array(
       'name' => 'Politiske partier',
@@ -108,21 +48,6 @@ function ballerup_content_types_taxonomy_default_vocabularies() {
       'hierarchy' => '0',
       'module' => 'taxonomy',
       'weight' => '3',
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
-        ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
     ),
     'r_d_og_n_vn' => array(
       'name' => 'Indholdssider',
@@ -131,21 +56,6 @@ function ballerup_content_types_taxonomy_default_vocabularies() {
       'hierarchy' => '1',
       'module' => 'taxonomy',
       'weight' => '-8',
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
-        ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
     ),
     'roller_i_kfu' => array(
       'name' => 'Roller i KFU',
@@ -154,21 +64,6 @@ function ballerup_content_types_taxonomy_default_vocabularies() {
       'hierarchy' => '1',
       'module' => 'taxonomy',
       'weight' => '5',
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
-        ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
     ),
     'roller_i_kommunalbestyrelsen' => array(
       'name' => 'Roller i Kommunalbestyrelsen',
@@ -177,21 +72,6 @@ function ballerup_content_types_taxonomy_default_vocabularies() {
       'hierarchy' => '1',
       'module' => 'taxonomy',
       'weight' => '4',
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
-        ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
     ),
     'roller_i_ku' => array(
       'name' => 'Roller i ØKU',
@@ -200,21 +80,6 @@ function ballerup_content_types_taxonomy_default_vocabularies() {
       'hierarchy' => '1',
       'module' => 'taxonomy',
       'weight' => '10',
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
-        ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
     ),
     'roller_i_sfu' => array(
       'name' => 'Roller i SFU',
@@ -223,21 +88,6 @@ function ballerup_content_types_taxonomy_default_vocabularies() {
       'hierarchy' => '1',
       'module' => 'taxonomy',
       'weight' => '6',
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
-        ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
     ),
     'roller_i_su' => array(
       'name' => 'Roller i SU',
@@ -246,21 +96,6 @@ function ballerup_content_types_taxonomy_default_vocabularies() {
       'hierarchy' => '1',
       'module' => 'taxonomy',
       'weight' => '7',
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
-        ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
     ),
     'roller_i_suu' => array(
       'name' => 'Roller i SUU',
@@ -269,21 +104,6 @@ function ballerup_content_types_taxonomy_default_vocabularies() {
       'hierarchy' => '1',
       'module' => 'taxonomy',
       'weight' => '8',
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
-        ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
     ),
     'roller_i_tmu' => array(
       'name' => 'Roller i TMU',
@@ -292,21 +112,6 @@ function ballerup_content_types_taxonomy_default_vocabularies() {
       'hierarchy' => '1',
       'module' => 'taxonomy',
       'weight' => '9',
-      'rdf_mapping' => array(
-        'rdftype' => array(
-          0 => 'skos:ConceptScheme',
-        ),
-        'name' => array(
-          'predicates' => array(
-            0 => 'dc:title',
-          ),
-        ),
-        'description' => array(
-          'predicates' => array(
-            0 => 'rdfs:comment',
-          ),
-        ),
-      ),
     ),
   );
 }
