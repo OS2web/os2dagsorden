@@ -4,23 +4,50 @@ function os2web_pws_menu() {
   $items['admin/config/os2web/pws'] = array(
       'title' => 'PWS Setup',
       'page callback' => 'drupal_get_form',
-      'page arguements' => array('os2web_config_form'),
+      'page arguments' => array('os2web_config_form'),
+      'access callback' => TRUE,
       'type' => MENU_NORMAL_ITEM,
   );
  $items['os2web/test/pws'] = array(
       'title' => 'PWS Test',
-      'page callback' => 'drupal_get_form',
-      'page arguements' => array('os2web_config_form'),
+      'page callback' => 'os2web_test_page',
+      'page arguments' => array('os2web_config_form'),
+      'access callback' => TRUE,
       'type' => MENU_NORMAL_ITEM,
   );
 
   return $items;
 }
 
-function os2web_config_form() {
+function os2web_config_form($form, &$form_state) {
   $form['os2web_pws_url'] = array(
       '#type' => 'textfield',
       '#default_value' => variable_get('os2web_pws_url'),
+      '#title' => t('PWS URL'),
+      '#description' => t('URL to the PWS webservice endpoint.'),
+  );
+  $form['os2web_pws_login'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2web_pws_user'),
+      '#title' => t('PWS user'),
+      '#description' => t('PWS HTTP authentification user.'),
+  );
+  $form['os2web_pws_password'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2web_pws_password'),
+      '#title' => t('PWS password'),
+      '#description' => t('PWS HTTP authentification password.'),
   );
   return system_settings_form($form);
+}
+
+function os2web_test_page() {
+  $url = trim(variable_get('os2web_pws_url'));
+  if ($url == '') {
+    drupal_set_message(t('Error, no endpoint url set.'));
+    return t('No action taken.');
+  }
+  $client = new SoapClient($url . '?WSDL', array( 'login'     => variable_get('os2web_pws_user'),
+                                                  'password'  => variable_get('os2web_pws_password')));
+  return '<pre>' . print_r($client, 1);
 }
