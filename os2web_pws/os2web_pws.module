@@ -8,10 +8,9 @@ function os2web_pws_menu() {
       'access callback' => TRUE,
       'type' => MENU_NORMAL_ITEM,
   );
- $items['os2web/test/pws'] = array(
+  $items['os2web/test/pws'] = array(
       'title' => 'PWS Test',
       'page callback' => 'os2web_test_page',
-      'page arguments' => array('os2web_config_form'),
       'access callback' => TRUE,
       'type' => MENU_NORMAL_ITEM,
   );
@@ -20,34 +19,81 @@ function os2web_pws_menu() {
 }
 
 function os2web_config_form($form, &$form_state) {
-  $form['os2web_pws_url'] = array(
+  $form['os2web_pws_config_group'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Endpoint configuration'),
+  );
+  $form['os2web_pws_config_group']['os2web_pws_url'] = array(
       '#type' => 'textfield',
       '#default_value' => variable_get('os2web_pws_url'),
-      '#title' => t('PWS URL'),
+      '#title' => t('PWS URL for V4'),
       '#description' => t('URL to the PWS webservice endpoint.'),
   );
-  $form['os2web_pws_login'] = array(
+  $form['os2web_pws_config_group']['os2web_pws_url_v6'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2web_pws_url_v6'),
+      '#title' => t('PWS URL for  V6'),
+      '#description' => t('URL to the PWSv6 webservice endpoint.'),
+  );
+  $form['os2web_pws_config_group']['os2web_pws_user'] = array(
       '#type' => 'textfield',
       '#default_value' => variable_get('os2web_pws_user'),
-      '#title' => t('PWS user'),
+      '#title' => t('PWS login user'),
       '#description' => t('PWS HTTP authentification user.'),
   );
-  $form['os2web_pws_password'] = array(
+  $form['os2web_pws_config_group']['os2web_pws_password'] = array(
       '#type' => 'textfield',
       '#default_value' => variable_get('os2web_pws_password'),
       '#title' => t('PWS password'),
       '#description' => t('PWS HTTP authentification password.'),
   );
+  $form['os2web_pws_proxy_group'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#collapsed' => !variable_get('os2web_pws_proxy'),
+      '#title' => t('Proxy configuration'),
+  );
+  $form['os2web_pws_proxy_group']['os2web_pws_proxy'] = array(
+      '#type' => 'checkbox',
+      '#default_value' => variable_get('os2web_pws_proxy'),
+      '#title' => t('Use proxy?'),
+  );
+  $form['os2web_pws_proxy_group']['os2web_pws_proxy_host'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2web_pws_proxy_host'),
+      '#title' => t('Proxy hostname or IP'),
+  );
+  $form['os2web_pws_proxy_group']['os2web_pws_proxy_port'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2web_pws_proxy_port'),
+      '#title' => t('Proxy port number.'),
+  );
+
   return system_settings_form($form);
 }
 
+/**
+ * Factory for class instances. This allows easy changing between api classes.
+ * TODO: Make this proper plugin-able.
+ *
+ * @return AcadrePWS object
+ */
+function _os2web_pws_get_instance() {
+  module_load_include('inc', 'os2web_pws', 'AcadrePWS.class');
+  return new AcadrePWS();
+  module_load_include('inc', 'os2web_pws', 'AcadrePWSMock.class');
+  return new AcadrePWSMock();
+}
+
 function os2web_test_page() {
-  $url = trim(variable_get('os2web_pws_url'));
-  if ($url == '') {
-    drupal_set_message(t('Error, no endpoint url set.'));
-    return t('No action taken.');
-  }
-  $client = new SoapClient($url . '?WSDL', array( 'login'     => variable_get('os2web_pws_user'),
-                                                  'password'  => variable_get('os2web_pws_password')));
-  return '<pre>' . print_r($client, 1);
+  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
+  $pws = _os2web_pws_get_instance();
+//  $cid = $pws->lookupCase('11/14293');
+//  $call = $pws->fetchCase($cid);
+//  $call = $pws->getCaseDocs(340222);
+  $call = $pws->fetchCase(340222);
+  $call = $pws->test_v4();
+//  $call = $pws->searchCases('12/2252');
+//  error_log(var_export($call,1));
+  return '<div><textarea rows=50>' . var_export($call, 1) . '</textarea></div>';
 }
