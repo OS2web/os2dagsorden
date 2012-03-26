@@ -1,5 +1,11 @@
 <?php
 
+function os2web_pws_admin_paths() {
+  return array(
+      'admin/config/os2web/pws' => TRUE,
+  );
+}
+
 function os2web_pws_menu() {
   $items['admin/config/os2web/pws'] = array(
       'title' => 'PWS Setup',
@@ -7,6 +13,7 @@ function os2web_pws_menu() {
       'page arguments' => array('os2web_config_form'),
       'access callback' => TRUE,
       'type' => MENU_NORMAL_ITEM,
+      'file' => 'os2web_pws.admin.inc',
   );
   $items['os2web/test/pws'] = array(
       'title' => 'PWS Test',
@@ -14,62 +21,23 @@ function os2web_pws_menu() {
       'access callback' => TRUE,
       'type' => MENU_NORMAL_ITEM,
   );
-
+  $items['os2web/pws/%'] = array(
+      'title callback' => 'os2web_pws_case_listing_title',
+      'title arguments' => array(2),
+      'page callback' => 'os2web_pws_case_listing',
+      'page arguments' => array(2),
+      'access arguments' => array('access content'),
+      'type' => MENU_NORMAL_ITEM,
+  );
+  $items['os2web/pws/%/%'] = array(
+      'title callback' => 'os2web_pws_case_listing_title',
+      'title arguments' => array(2, 3),
+      'page callback' => 'os2web_pws_case_listing',
+      'page arguments' => array(2, 3),
+      'access arguments' => array('access content'),
+      'type' => MENU_NORMAL_ITEM,
+  );
   return $items;
-}
-
-function os2web_config_form($form, &$form_state) {
-  $form['os2web_pws_config_group'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Endpoint configuration'),
-  );
-  $form['os2web_pws_config_group']['os2web_pws_url'] = array(
-      '#type' => 'textfield',
-      '#default_value' => variable_get('os2web_pws_url'),
-      '#title' => t('PWS URL for V4'),
-      '#description' => t('URL to the PWS webservice endpoint.'),
-  );
-  $form['os2web_pws_config_group']['os2web_pws_url_v6'] = array(
-      '#type' => 'textfield',
-      '#default_value' => variable_get('os2web_pws_url_v6'),
-      '#title' => t('PWS URL for  V6'),
-      '#description' => t('URL to the PWSv6 webservice endpoint.'),
-  );
-  $form['os2web_pws_config_group']['os2web_pws_user'] = array(
-      '#type' => 'textfield',
-      '#default_value' => variable_get('os2web_pws_user'),
-      '#title' => t('PWS login user'),
-      '#description' => t('PWS HTTP authentification user.'),
-  );
-  $form['os2web_pws_config_group']['os2web_pws_password'] = array(
-      '#type' => 'textfield',
-      '#default_value' => variable_get('os2web_pws_password'),
-      '#title' => t('PWS password'),
-      '#description' => t('PWS HTTP authentification password.'),
-  );
-  $form['os2web_pws_proxy_group'] = array(
-      '#type' => 'fieldset',
-      '#collapsible' => TRUE,
-      '#collapsed' => !variable_get('os2web_pws_proxy'),
-      '#title' => t('Proxy configuration'),
-  );
-  $form['os2web_pws_proxy_group']['os2web_pws_proxy'] = array(
-      '#type' => 'checkbox',
-      '#default_value' => variable_get('os2web_pws_proxy'),
-      '#title' => t('Use proxy?'),
-  );
-  $form['os2web_pws_proxy_group']['os2web_pws_proxy_host'] = array(
-      '#type' => 'textfield',
-      '#default_value' => variable_get('os2web_pws_proxy_host'),
-      '#title' => t('Proxy hostname or IP'),
-  );
-  $form['os2web_pws_proxy_group']['os2web_pws_proxy_port'] = array(
-      '#type' => 'textfield',
-      '#default_value' => variable_get('os2web_pws_proxy_port'),
-      '#title' => t('Proxy port number.'),
-  );
-
-  return system_settings_form($form);
 }
 
 /**
@@ -83,6 +51,60 @@ function _os2web_pws_get_instance() {
 //  return new AcadrePWS();
   module_load_include('inc', 'os2web_pws', 'AcadrePWSMock.class');
   return new AcadrePWSMock();
+}
+
+function os2web_pws_case_listing_title($id, $id2 = false) {
+  $pws = _os2web_pws_get_instance();
+  if (FALSE != $id2) {
+    $id = $pws->lookupCase($id . "/" . $id2);
+  }
+  $case = $pws->fetchCase($id);
+  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $case = ' . print_r($case, 1));
+  if (FALSE != $case) {
+    return t('Show case: @caseid - @titletext', array('@caseid' => $case->CaseFileNumberIdentifier, '@titletext' => $case->CaseFileTitleText));
+  } else {
+    return t('Case not found');
+  }
+}
+
+function os2web_pws_case_listing($id, $id2 = false) {
+  $pws = _os2web_pws_get_instance();
+  if (FALSE != $id2) {
+    $id = $pws->lookupCase($id . "/" . $id2);
+  }
+  $output = _os2web_get_rendered_case($id);
+  if (FALSE != $output) {
+    return $output;
+  } else {
+    drupal_not_found();
+  }
+}
+
+function _os2web_get_rendered_case($id) {
+  $pws = _os2web_pws_get_instance();
+  $case = $pws->fetchCase($id);
+  if (FALSE === $case) {
+    return FALSE;
+  }
+  $docs = $pws->getCaseDocs($id);
+  $header = array(t('Title'), t('Contents'), t('Date'), t('Actions'));
+  $rows = array();
+  $rows[] = array($case->CaseFileTitleText, $case->CustomFields->df1, format_date(strtotime($case->CreationDate), 'custom', 'd-m-Y'), 'ph');
+  $html = theme('table', array('header' => $header, 'rows' => $rows));
+  $header = array(t('Document Title'), t('Date'), t('Actions'));
+  $rows = array();
+  foreach ($docs as $doc) {
+    if ($doc->Record->PublicationIndicator == 3) {
+      $row = array();
+      $row[] = $doc->Document->DocumentTitleText;
+      $row[] = format_date(strtotime($doc->Record->DocumentDate), 'custom', 'd-m-Y');
+      $row[] = 'ph';
+      $rows[] = $row;
+    }
+  }
+  $html .= '<p>' . t('This case contains @docs documents', array('@docs' => count($rows))) . '</p>';
+  $html .= theme('table', array('header' => $header, 'rows' => $rows));
+  return $html;
 }
 
 function os2web_test_page() {
@@ -100,5 +122,94 @@ function os2web_test_page() {
     error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item = ' . print_r($item, 1));
   }
 //  return 'test';
-  return '<div><textarea rows=50>' . var_export($call,1) . '</textarea></div>';
+  return '<div><textarea rows=50>' . var_export($call, 1) . '</textarea></div>';
 }
+
+/* Field information hooks */
+
+function os2web_pws_field_info() {
+  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
+
+  return array(
+      'case_ident' => array(
+          'label' => t('ESDH Case'),
+          'description' => t('Case identifer.'),
+          'default_widget' => 'case_ident_widget',
+          'default_formatter' => 'case_ident_formatter',
+      ),
+  );
+}
+
+function os2web_pws_field_formatter_info() {
+  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
+
+  return array(
+      'case_ident_formatter' => array(
+          'label' => t('ESDH Case includer'),
+          'field types' => array('case_ident'),
+      )
+  );
+}
+
+function os2web_pws_field_widget_info() {
+
+  return array(
+      'case_ident_widget' => array(
+          'label' => t('Case Identifier'),
+          'field types' => array('case_ident'),
+      )
+  );
+}
+
+/**
+ * Field widget form hook
+ *
+ */
+function os2web_pws_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  $field_name = $field['field_name'];
+  $field_type = $field['type'];
+  $default = ($form_state['node']->{$field_name}[$langcode][$delta][$field_type])?:0;
+  switch ($instance['widget']['type']) {
+    case 'case_ident_widget':
+
+      $element['case_ident'] = array(
+          '#type' => 'textfield',
+          '#title' => $element['#title'],
+          '#description' => $element['#description'],
+          '#default_value' => $default,
+          '#required' => $element['#required'],
+          '#weight' => isset($element['#weight']) ? $element['#weight'] : 0,
+          '#delta' => $delta,
+      );
+      break;
+  }
+  return $element;
+}
+
+function os2web_pws_field_is_empty($item, $field) {
+  if (empty($item['case_ident'])) {
+    return true;
+  }
+}
+
+/**
+ * Field formatter hook
+ *
+ */
+function os2web_pws_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
+
+  $element = array();
+  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $display["type"] = ' . print_r($display['type'], 1));
+  switch ($display['type']) {
+    case 'case_ident_formatter':
+      foreach ($items as $delta => $item) {
+        if ($item['os2web_pws']) {
+          $element[$delta]['#markup'] = '<span>' . 'OMGWTFBBQ!!!' . '</span>';
+        }
+      }
+      break;
+  }
+  return $element;
+}
+
