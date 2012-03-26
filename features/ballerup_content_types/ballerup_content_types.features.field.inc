@@ -2051,6 +2051,7 @@ function ballerup_content_types_field_default_fields() {
           'settings' => array(
             'slideshow_caption' => 'alttitle',
             'slideshow_caption_link' => '',
+            'slideshow_carousel_circular' => 0,
             'slideshow_carousel_image_style' => 'thumbnail-gallery',
             'slideshow_carousel_scroll' => '1',
             'slideshow_carousel_speed' => '500',
@@ -2063,6 +2064,7 @@ function ballerup_content_types_field_default_fields() {
             'slideshow_colorbox_transition' => 'elastic',
             'slideshow_controls' => 0,
             'slideshow_controls_position' => 'after',
+            'slideshow_field_collection_image' => '',
             'slideshow_fx' => 'fade',
             'slideshow_image_style' => 'medium-460px',
             'slideshow_link' => '',
@@ -2111,6 +2113,17 @@ function ballerup_content_types_field_default_fields() {
         'active' => 1,
         'module' => 'image',
         'settings' => array(
+          'filefield_sources' => array(
+            'filefield_sources' => array(),
+            'source_attach' => array(
+              'absolute' => 0,
+              'attach_mode' => 'move',
+              'path' => 'file_attach',
+            ),
+            'source_reference' => array(
+              'autocomplete' => '0',
+            ),
+          ),
           'preview_image_style' => 'thumbnail',
           'progress_indicator' => 'throbber',
         ),
@@ -2271,6 +2284,17 @@ function ballerup_content_types_field_default_fields() {
         'active' => 1,
         'module' => 'image',
         'settings' => array(
+          'filefield_sources' => array(
+            'filefield_sources' => array(),
+            'source_attach' => array(
+              'absolute' => 0,
+              'attach_mode' => 'move',
+              'path' => 'file_attach',
+            ),
+            'source_reference' => array(
+              'autocomplete' => '0',
+            ),
+          ),
           'preview_image_style' => 'thumbnail',
           'progress_indicator' => 'throbber',
         ),
@@ -6675,6 +6699,7 @@ function ballerup_content_types_field_default_fields() {
           'settings' => array(
             'slideshow_caption' => '',
             'slideshow_caption_link' => '',
+            'slideshow_carousel_circular' => 0,
             'slideshow_carousel_image_style' => '',
             'slideshow_carousel_scroll' => '1',
             'slideshow_carousel_speed' => '500',
@@ -6687,6 +6712,7 @@ function ballerup_content_types_field_default_fields() {
             'slideshow_colorbox_transition' => 'elastic',
             'slideshow_controls' => 0,
             'slideshow_controls_position' => 'after',
+            'slideshow_field_collection_image' => '',
             'slideshow_fx' => 'fade',
             'slideshow_image_style' => '',
             'slideshow_link' => '',
@@ -9843,6 +9869,12 @@ function ballerup_content_types_field_default_fields() {
           'type' => 'file_default',
           'weight' => '2',
         ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_file',
@@ -9953,6 +9985,12 @@ function ballerup_content_types_field_default_fields() {
           'type' => 'node_reference_default',
           'weight' => '1',
         ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_related',
@@ -10026,6 +10064,12 @@ function ballerup_content_types_field_default_fields() {
           'type' => 'hidden',
           'weight' => '3',
         ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
       ),
       'entity_type' => 'node',
       'field_name' => 'field_site_structure',
@@ -10076,6 +10120,12 @@ function ballerup_content_types_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => '4',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
       ),
       'entity_type' => 'node',
@@ -10144,6 +10194,12 @@ function ballerup_content_types_field_default_fields() {
           'settings' => array(),
           'type' => 'text_default',
           'weight' => '0',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
       ),
       'entity_type' => 'node',
@@ -10507,6 +10563,17 @@ function ballerup_content_types_field_default_fields() {
         'active' => 1,
         'module' => 'file',
         'settings' => array(
+          'filefield_sources' => array(
+            'filefield_sources' => array(),
+            'source_attach' => array(
+              'absolute' => 0,
+              'attach_mode' => 'move',
+              'path' => 'file_attach',
+            ),
+            'source_reference' => array(
+              'autocomplete' => '0',
+            ),
+          ),
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',

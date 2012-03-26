@@ -36,6 +36,8 @@ function taxonomies_and_taxonomy_importers_feeds_importer_default() {
           'xpathparser:8' => 'translate( translate( @Discontinued,\'true\',1), \'false\', 0 )',
           'xpathparser:9' => 'Tag[@TagTypeSqlID=2]/Value',
           'xpathparser:10' => 'Tag[@TagTypeSqlID=2]/Key',
+          'xpathparser:11' => 'Tag[@TagTypeSqlID=4]/Key',
+          'xpathparser:12' => 'Tag[@TagTypeSqlID=3]/Key',
         ),
         'rawXML' => array(
           'xpathparser:1' => 0,
@@ -45,6 +47,8 @@ function taxonomies_and_taxonomy_importers_feeds_importer_default() {
           'xpathparser:8' => 0,
           'xpathparser:9' => 0,
           'xpathparser:10' => 0,
+          'xpathparser:11' => 0,
+          'xpathparser:12' => 0,
         ),
         'context' => '/Taxonomy/Taxon',
         'exp' => array(
@@ -58,6 +62,8 @@ function taxonomies_and_taxonomy_importers_feeds_importer_default() {
             'xpathparser:8' => 0,
             'xpathparser:9' => 0,
             'xpathparser:10' => 0,
+            'xpathparser:11' => 0,
+            'xpathparser:12' => 0,
           ),
         ),
         'allow_override' => 0,
@@ -103,9 +109,19 @@ function taxonomies_and_taxonomy_importers_feeds_importer_default() {
             'target' => 'field_legislation_reference:title',
             'unique' => FALSE,
           ),
+          7 => array(
+            'source' => 'xpathparser:11',
+            'target' => 'field_cue_word',
+            'unique' => FALSE,
+          ),
+          8 => array(
+            'source' => 'xpathparser:12',
+            'target' => 'field_search_word',
+            'unique' => FALSE,
+          ),
         ),
         'update_existing' => '2',
-        'input_format' => 'html',
+        'input_format' => 'full_html',
       ),
     ),
     'content_type' => '',
@@ -139,11 +155,15 @@ function taxonomies_and_taxonomy_importers_feeds_importer_default() {
           'xpathparser:1' => 'Name',
           'xpathparser:2' => 'Key',
           'xpathparser:3' => '@ParentKey',
+          'xpathparser:4' => 'Tag[@TagTypeSqlID=3]/Key',
+          'xpathparser:5' => 'translate( translate( @Discontinued,\'true\',1), \'false\', 0 )',
         ),
         'rawXML' => array(
           'xpathparser:1' => 0,
           'xpathparser:2' => 0,
           'xpathparser:3' => 0,
+          'xpathparser:4' => 0,
+          'xpathparser:5' => 0,
         ),
         'context' => '/Taxonomy/Taxon',
         'exp' => array(
@@ -153,9 +173,11 @@ function taxonomies_and_taxonomy_importers_feeds_importer_default() {
             'xpathparser:1' => 0,
             'xpathparser:2' => 0,
             'xpathparser:3' => 0,
+            'xpathparser:4' => 0,
+            'xpathparser:5' => 0,
           ),
         ),
-        'allow_override' => 1,
+        'allow_override' => 0,
       ),
     ),
     'processor' => array(
@@ -176,6 +198,16 @@ function taxonomies_and_taxonomy_importers_feeds_importer_default() {
           2 => array(
             'source' => 'xpathparser:3',
             'target' => 'parentguid',
+            'unique' => 0,
+          ),
+          3 => array(
+            'source' => 'xpathparser:4',
+            'target' => 'field_search_word',
+            'unique' => FALSE,
+          ),
+          4 => array(
+            'source' => 'xpathparser:5',
+            'target' => 'field_discontinued',
             'unique' => FALSE,
           ),
         ),
@@ -191,6 +223,97 @@ function taxonomies_and_taxonomy_importers_feeds_importer_default() {
     'process_in_background' => 0,
   );
   $export['taxonomy_organization'] = $feeds_importer;
+
+  $feeds_importer = new stdClass;
+  $feeds_importer->disabled = FALSE; /* Edit this to true to make a default feeds_importer disabled initially */
+  $feeds_importer->api_version = 1;
+  $feeds_importer->id = 'taxonomy_politics';
+  $feeds_importer->config = array(
+    'name' => 'Taksonomi: Politik',
+    'description' => 'Importerer Politik taksonomien',
+    'fetcher' => array(
+      'plugin_key' => 'FeedsHTTPFetcher',
+      'config' => array(
+        'auto_detect_feeds' => FALSE,
+        'use_pubsubhubbub' => FALSE,
+        'designated_hub' => '',
+      ),
+    ),
+    'parser' => array(
+      'plugin_key' => 'FeedsXPathParserXML',
+      'config' => array(
+        'sources' => array(
+          'xpathparser:1' => 'Name',
+          'xpathparser:2' => 'Key',
+          'xpathparser:3' => '@ParentKey',
+          'xpathparser:4' => 'Tag[@TagTypeSqlID=3]/Key',
+          'xpathparser:5' => 'translate( translate( @Discontinued,\'true\',1), \'false\', 0 )',
+        ),
+        'rawXML' => array(
+          'xpathparser:1' => 0,
+          'xpathparser:2' => 0,
+          'xpathparser:3' => 0,
+          'xpathparser:4' => 0,
+          'xpathparser:5' => 0,
+        ),
+        'context' => '/Taxonomy/Taxon',
+        'exp' => array(
+          'errors' => 0,
+          'debug' => array(
+            'context' => 0,
+            'xpathparser:1' => 0,
+            'xpathparser:2' => 0,
+            'xpathparser:3' => 0,
+            'xpathparser:4' => 0,
+            'xpathparser:5' => 0,
+          ),
+        ),
+        'allow_override' => 0,
+      ),
+    ),
+    'processor' => array(
+      'plugin_key' => 'FeedsTermProcessor',
+      'config' => array(
+        'vocabulary' => 'politik',
+        'mappings' => array(
+          0 => array(
+            'source' => 'xpathparser:1',
+            'target' => 'name',
+            'unique' => 0,
+          ),
+          1 => array(
+            'source' => 'xpathparser:2',
+            'target' => 'guid',
+            'unique' => 1,
+          ),
+          2 => array(
+            'source' => 'xpathparser:3',
+            'target' => 'parentguid',
+            'unique' => 0,
+          ),
+          3 => array(
+            'source' => 'xpathparser:4',
+            'target' => 'field_search_word',
+            'unique' => FALSE,
+          ),
+          4 => array(
+            'source' => 'xpathparser:5',
+            'target' => 'field_discontinued',
+            'unique' => FALSE,
+          ),
+        ),
+        'update_existing' => '2',
+        'input_format' => 'plain_text',
+      ),
+    ),
+    'content_type' => '',
+    'update' => 0,
+    'import_period' => '86400',
+    'expire_period' => 3600,
+    'import_on_create' => 1,
+    'process_in_background' => 0,
+  );
+  $export['taxonomy_politics'] = $feeds_importer;
 
   return $export;
 }
