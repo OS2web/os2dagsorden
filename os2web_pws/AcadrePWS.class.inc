@@ -28,7 +28,7 @@ class AcadrePWS extends CaseService {
     $options['trace'] = TRUE; // For debugging purposes. Remove on prod.
     $options['login'] = $user;
     $options['password'] = $password;
-    $options['soap_version'] = SOAP_1_2;
+    $options['soap_version'] = SOAP_1_1;
     if (variable_get('os2web_pws_proxy', false)) {
       $options['proxy_host'] = variable_get('os2web_pws_proxy_host');
       $options['proxy_port'] = variable_get('os2web_pws_proxy_port');
@@ -40,7 +40,8 @@ class AcadrePWS extends CaseService {
       if ($url == '') {
         drupal_set_message(t('Error, no endpoint url set for v4soap.'));
       } else {
-        $options['location'] = 'http://10.1.1.115/Acadre/Acadre.CM.PublicServices/AcadreServiceV4.asmx';
+        //FIXME: Use a wellformed WSDL for V4 services.
+        $options['location'] = $url;
         $options['uri'] = 'http://www.traen.com/2007/09/06/';
 //        $this->client = new SoapClient('/home/jm/workspace/sites/os2web'.base_path().drupal_get_path('module','os2web_pws').'/wsdl/AcadreServiceV4.wsdl', $options);
         $this->client = new SoapClient(null, $options);
@@ -59,7 +60,26 @@ class AcadrePWS extends CaseService {
   }
 
   function test_v4() {
-    return $this->client->__soapCall('GetAllDocuments', array('CaseFileIdentifier'=>'340222'));
+    $result = false;
+    $request = <<< XML
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <CaseFileIdentifier xmlns="http://www.traen.com/2007/09/06/schema">[CaseID]</CaseFileIdentifier>
+  </soap:Body>
+</soap:Envelope>
+XML;
+    try {
+//      $result = $this->client->__soapCall(null, array(new SoapParam(340222, 'CaseFileIdentifier')), array('soapaction' => $this->client->uri . 'GetAllDocuments'));
+      $result = $this->client->__doRequest(t($request, array('[CaseID]' => 340222)), $this->client->location, $this->client->uri . 'GetAllDocuments', SOAP_1_1);
+    } catch (SoapFault $sf) {
+//      error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $sf = ' . print_r($sf, 1));
+    }
+    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $this->client->getLastRequestHeaders() = ' . print_r($this->client->__getLastRequestHeaders(), 1));
+    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $this->client->getLastRequest() = ' . print_r($this->client->__getLastRequest(), 1));
+    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $this->client->getLastResponseHeaders() = ' . print_r($this->client->__getLastResponseHeaders(), 1));
+    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $this->client->getLastResponse() = ' . print_r($this->client->__getLastResponse(), 1));
+    return $result;
   }
 
   /**
@@ -85,11 +105,24 @@ class AcadrePWS extends CaseService {
   }
 
   public function getCaseDocs($id) {
+    $result = false;
     if ($this->client) {
-      return $this->client->getMainDocument($id);
-    } else {
-      return false;
+      $request = <<< XML
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <CaseFileIdentifier xmlns="http://www.traen.com/2007/09/06/schema">[CaseID]</CaseFileIdentifier>
+  </soap:Body>
+</soap:Envelope>
+XML;
+      try {
+        $result = $this->client->__doRequest(t($request, array('[CaseID]' => $id)), $this->client->location, $this->client->uri . 'GetAllDocuments', SOAP_1_1);
+        $result = simplexml_load_string($result)->xpath('/soap:Envelope/soap:Body[1]/*/*');
+      } catch (SoapFault $sf) {
+
+      }
     }
+    return $result;
   }
 
   public function fetchDoc($id) {

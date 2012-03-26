@@ -79,8 +79,8 @@ function os2web_config_form($form, &$form_state) {
  * @return AcadrePWS object
  */
 function _os2web_pws_get_instance() {
-  module_load_include('inc', 'os2web_pws', 'AcadrePWS.class');
-  return new AcadrePWS();
+//  module_load_include('inc', 'os2web_pws', 'AcadrePWS.class');
+//  return new AcadrePWS();
   module_load_include('inc', 'os2web_pws', 'AcadrePWSMock.class');
   return new AcadrePWSMock();
 }
@@ -91,9 +91,14 @@ function os2web_test_page() {
 //  $cid = $pws->lookupCase('11/14293');
 //  $call = $pws->fetchCase($cid);
 //  $call = $pws->getCaseDocs(340222);
-  $call = $pws->fetchCase(340222);
-  $call = $pws->test_v4();
+//  $call = $pws->fetchCase(340222);
+  $call = $pws->getCaseDocs(340222);
+//  $call = $call->ArrayOfDocuments->DocumentOutput;
 //  $call = $pws->searchCases('12/2252');
 //  error_log(var_export($call,1));
-  return '<div><textarea rows=50>' . var_export($call, 1) . '</textarea></div>';
+  foreach ($call as $item) {
+    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item = ' . print_r($item, 1));
+  }
+//  return 'test';
+  return '<div><textarea rows=50>' . var_export($call,1) . '</textarea></div>';
 }
