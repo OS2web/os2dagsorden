@@ -5,6 +5,7 @@ function os2web_case_field_field_schema($field) {
       'columns' => array(
           'case_ident' => array(
               'type' => 'varchar',
+              'length' => 32,
               'not null' => TRUE,
               'default' => '',
           )
