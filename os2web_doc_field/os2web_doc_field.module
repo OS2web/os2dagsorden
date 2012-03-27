@@ -43,7 +43,10 @@ function os2web_doc_field_field_widget_info() {
 function os2web_doc_field_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
   $field_name = $field['field_name'];
   $field_type = $field['type'];
-  $default = ($form_state['node']->{$field_name}[$langcode][$delta][$field_type])?:0;
+  $default = '';
+  if (isset($form_state['node'])) {
+    $default = ($form_state['node']->{$field_name}[$langcode][$delta][$field_type])? : 0;
+  }
   switch ($instance['widget']['type']) {
     case 'doc_ident_widget':
 
@@ -80,7 +83,7 @@ function os2web_doc_field_field_formatter_view($entity_type, $entity, $field, $i
     case 'doc_ident_formatter':
       foreach ($items as $delta => $item) {
         if ($item['doc_ident']) {
-          $element[$delta]['#markup'] = '<span>' . 'OMGWTFBBQ!!!' . '</span>';
+          $element[$delta]['#markup'] = '<div class="documenttable">' . _os2web_get_rendered_doc($item['doc_ident']) . '</div>';
         }
       }
       break;

@@ -1,5 +1,7 @@
 <?php
 
+define('AVAILABLE_PUBLIC',3);
+
 function os2web_pws_admin_paths() {
   return array(
       'admin/config/os2web/pws' => TRUE,
@@ -99,7 +101,7 @@ function _os2web_get_rendered_case($id) {
   $header = array(t('Document Title'), t('Date'), t('Actions'));
   $rows = array();
   foreach ($docs as $doc) {
-    if ($doc->Record->PublicationIndicator == 3) {
+    if ($doc->Record->PublicationIndicator == AVAILABLE_PUBLIC) {
       $row = array();
       $row[] = $doc->Document->DocumentTitleText;
       $row[] = format_date(strtotime($doc->Record->DocumentDate), 'custom', 'd-m-Y');
@@ -112,6 +114,29 @@ function _os2web_get_rendered_case($id) {
   return $html;
 }
 
+function _os2web_get_rendered_doc($id) {
+  $pws = _os2web_pws_get_instance();
+  if (!is_array($id)) {
+    $id = array($id);
+  }
+  $html = '';
+  $rows = array();
+  $header = array(t('Title'), t('Description'), t('Date'));
+
+  foreach ($id as $docid) {
+    $doc = $pws->getDocument($docid);
+    if (FALSE != $doc && $doc[3]->PublicationIndicator == AVAILABLE_PUBLIC) { // Only show public documents
+      //FIXME: Check publication status
+      $rows[] = array($doc[0]->DocumentTitleText, $doc[3]->DescriptionText, $doc[3]->DocumentDate);
+    }
+  }
+  if (count($rows) == 0) {
+    return false;
+  }
+  $html .= theme('table', array('header' => $header, 'rows' => $rows));
+  return $html;
+}
+
 function os2web_test_page() {
   error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
   $pws = _os2web_pws_get_instance();
@@ -119,13 +144,15 @@ function os2web_test_page() {
 //  $call = $pws->fetchCase($cid);
 //  $call = $pws->getCaseDocs(340222);
 //  $call = $pws->fetchCase(340222);
-  $call = $pws->getCaseDocs(340222);
+  return _os2web_get_rendered_doc(array(1420175,1369822));
+//  $call = $pws->getDocument(1420175);
+//  $call = $pws->getDocData(3081831,1);
 //  $call = $call->ArrayOfDocuments->DocumentOutput;
 //  $call = $pws->searchCases('12/2252');
 //  error_log(var_export($call,1));
-  foreach ($call as $item) {
-    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item = ' . print_r($item, 1));
-  }
+//  foreach ($call as $item) {
+//    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item = ' . print_r($item, 1));
+//  }
 //  return 'test';
-  return '<div><textarea rows=50>' . var_export($call, 1) . '</textarea></div>';
+  return '<div><textarea cols="175" rows=50>' . var_export($call, 1) . '</textarea></div>';
 }
