@@ -5,6 +5,7 @@ function os2web_doc_field_field_schema($field) {
       'columns' => array(
           'doc_ident' => array(
               'type' => 'varchar',
+              'lenght' => 32,
               'not null' => TRUE,
               'default' => '',
           )
