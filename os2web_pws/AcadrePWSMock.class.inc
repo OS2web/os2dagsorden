@@ -19,6 +19,7 @@ class AcadrePWSMock extends AcadrePWS {
     } catch (Exception $exc) {
 
     }
+    drupal_get_messages('error');
   }
 
   /**

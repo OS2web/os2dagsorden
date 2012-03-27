@@ -38,7 +38,7 @@ class AcadrePWS extends CaseService {
       $url = variable_get('os2web_pws_url');
       $url = trim($url);
       if ($url == '') {
-        drupal_set_message(t('Error, no endpoint url set for v4soap.'));
+        drupal_set_message(t('Error, no endpoint url set for v4soap.'),'error');
       } else {
         //FIXME: Use a wellformed WSDL for V4 services.
         $options['location'] = $url;
@@ -51,7 +51,7 @@ class AcadrePWS extends CaseService {
       $url = variable_get('os2web_pws_url_v6');
       $url = trim($url);
       if ($url == '') {
-        drupal_set_message(t('Error, no endpoint url set for v6.'));
+        drupal_set_message(t('Error, no endpoint url set for v6.'),'error');
       } else {
         $options['cache_swdl'] = WSDL_CACHE_DISK;
         $this->client6 = new SoapClient($url . '?WSDL', $options);

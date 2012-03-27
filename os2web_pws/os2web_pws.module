@@ -54,11 +54,14 @@ function _os2web_pws_get_instance() {
 }
 
 function os2web_pws_case_listing_title($id, $id2 = false) {
-  $pws = _os2web_pws_get_instance();
-  if (FALSE != $id2) {
-    $id = $pws->lookupCase($id . "/" . $id2);
+  $case = &drupal_static('os2web_pws_case', FALSE);
+  if (FALSE === $case) {
+    $pws = _os2web_pws_get_instance();
+    if (FALSE != $id2) {
+      $id = $pws->lookupCase($id . "/" . $id2);
+    }
+    $case = $pws->fetchCase($id);
   }
-  $case = $pws->fetchCase($id);
   error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $case = ' . print_r($case, 1));
   if (FALSE != $case) {
     return t('Show case: @caseid - @titletext', array('@caseid' => $case->CaseFileNumberIdentifier, '@titletext' => $case->CaseFileTitleText));
@@ -82,7 +85,7 @@ function os2web_pws_case_listing($id, $id2 = false) {
 
 function _os2web_get_rendered_case($id) {
   $pws = _os2web_pws_get_instance();
-  $case = $pws->fetchCase($id);
+  $case = &drupal_static('os2web_pws_case', FALSE);
   if (FALSE === $case) {
     return FALSE;
   }
@@ -124,92 +127,3 @@ function os2web_test_page() {
 //  return 'test';
   return '<div><textarea rows=50>' . var_export($call, 1) . '</textarea></div>';
 }
-
-/* Field information hooks */
-
-function os2web_pws_field_info() {
-  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
-
-  return array(
-      'case_ident' => array(
-          'label' => t('ESDH Case'),
-          'description' => t('Case identifer.'),
-          'default_widget' => 'case_ident_widget',
-          'default_formatter' => 'case_ident_formatter',
-      ),
-  );
-}
-
-function os2web_pws_field_formatter_info() {
-  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
-
-  return array(
-      'case_ident_formatter' => array(
-          'label' => t('ESDH Case includer'),
-          'field types' => array('case_ident'),
-      )
-  );
-}
-
-function os2web_pws_field_widget_info() {
-
-  return array(
-      'case_ident_widget' => array(
-          'label' => t('Case Identifier'),
-          'field types' => array('case_ident'),
-      )
-  );
-}
-
-/**
- * Field widget form hook
- *
- */
-function os2web_pws_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
-  $field_name = $field['field_name'];
-  $field_type = $field['type'];
-  $default = ($form_state['node']->{$field_name}[$langcode][$delta][$field_type])?:0;
-  switch ($instance['widget']['type']) {
-    case 'case_ident_widget':
-
-      $element['case_ident'] = array(
-          '#type' => 'textfield',
-          '#title' => $element['#title'],
-          '#description' => $element['#description'],
-          '#default_value' => $default,
-          '#required' => $element['#required'],
-          '#weight' => isset($element['#weight']) ? $element['#weight'] : 0,
-          '#delta' => $delta,
-      );
-      break;
-  }
-  return $element;
-}
-
-function os2web_pws_field_is_empty($item, $field) {
-  if (empty($item['case_ident'])) {
-    return true;
-  }
-}
-
-/**
- * Field formatter hook
- *
- */
-function os2web_pws_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
-
-  $element = array();
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $display["type"] = ' . print_r($display['type'], 1));
-  switch ($display['type']) {
-    case 'case_ident_formatter':
-      foreach ($items as $delta => $item) {
-        if ($item['os2web_pws']) {
-          $element[$delta]['#markup'] = '<span>' . 'OMGWTFBBQ!!!' . '</span>';
-        }
-      }
-      break;
-  }
-  return $element;
-}
-

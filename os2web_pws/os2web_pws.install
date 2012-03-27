@@ -1,17 +1,5 @@
 <?php
 
-function os2web_pws_field_schema($field) {
-  return array(
-      'columns' => array(
-          'case_ident' => array(
-              'type' => 'int',
-              'not null' => TRUE,
-              'default' => 0,
-          )
-      )
-  );
-}
-
 function os2web_pws_install() {
   error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
 }

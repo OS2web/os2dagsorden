@@ -1,4 +1,4 @@
-manda<?php
+<?php
 
 // $Id$
 /*

@@ -1,0 +1,20 @@
+<?php
+
+function os2web_case_field_field_schema($field) {
+  return array(
+      'columns' => array(
+          'case_ident' => array(
+              'type' => 'int',
+              'not null' => TRUE,
+              'default' => 0,
+          )
+      )
+  );
+}
+
+function os2web_case_field_install() {
+  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
+}
+
+function os2web_case_field_uninstall() {
+}
