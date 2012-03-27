@@ -84,8 +84,10 @@ function os2web_pws_case_listing($id, $id2 = false) {
 }
 
 function _os2web_get_rendered_case($id) {
+  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
+
   $pws = _os2web_pws_get_instance();
-  $case = &drupal_static('os2web_pws_case', FALSE);
+  $case = $pws->fetchCase($id);
   if (FALSE === $case) {
     return FALSE;
   }

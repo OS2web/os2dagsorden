@@ -1,11 +1,10 @@
 <?php
 
-function os2web_case_field_field_schema($field) {
+function os2web_doc_field_field_schema($field) {
   return array(
       'columns' => array(
-          'case_ident' => array(
+          'doc_ident' => array(
               'type' => 'varchar',
-              'length' => 32,
               'not null' => TRUE,
               'default' => '',
           )
@@ -13,9 +12,9 @@ function os2web_case_field_field_schema($field) {
   );
 }
 
-function os2web_case_field_install() {
+function os2web_doc_field_install() {
   error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
 }
 
-function os2web_case_field_uninstall() {
+function os2web_doc_field_uninstall() {
 }

@@ -1,8 +1,14 @@
 <?php
 
 function os2web_pws_install() {
-  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
 }
 
 function os2web_pws_uninstall() {
+  variable_del('os2web_pws_url');
+  variable_del('os2web_pws_url_v6');
+  variable_del('os2web_pws_user');
+  variable_del('os2web_pws_password');
+  variable_del('os2web_pws_proxy');
+  variable_del('os2web_pws_proxy_host');
+  variable_del('os2web_pws_proxy_port');
 }

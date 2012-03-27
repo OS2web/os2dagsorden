@@ -1,0 +1,90 @@
+<?php
+
+/* Field information hooks */
+
+function os2web_doc_field_field_info() {
+  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
+
+  return array(
+      'doc_ident' => array(
+          'label' => t('ESDH Document'),
+          'description' => t('Document identifer.'),
+          'default_widget' => 'doc_ident_widget',
+          'default_formatter' => 'doc_ident_formatter',
+      ),
+  );
+}
+
+function os2web_doc_field_field_formatter_info() {
+  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
+
+  return array(
+      'doc_ident_formatter' => array(
+          'label' => t('ESDH Document includer'),
+          'field types' => array('doc_ident'),
+      )
+  );
+}
+
+function os2web_doc_field_field_widget_info() {
+
+  return array(
+      'doc_ident_widget' => array(
+          'label' => t('Document Identifier'),
+          'field types' => array('doc_ident'),
+      )
+  );
+}
+
+/**
+ * Field widget form hook
+ *
+ */
+function os2web_doc_field_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  $field_name = $field['field_name'];
+  $field_type = $field['type'];
+  $default = ($form_state['node']->{$field_name}[$langcode][$delta][$field_type])?:0;
+  switch ($instance['widget']['type']) {
+    case 'doc_ident_widget':
+
+      $element['doc_ident'] = array(
+          '#type' => 'textfield',
+          '#title' => $element['#title'],
+          '#description' => $element['#description'],
+          '#default_value' => $default,
+          '#required' => $element['#required'],
+          '#weight' => isset($element['#weight']) ? $element['#weight'] : 0,
+          '#delta' => $delta,
+      );
+      break;
+  }
+  return $element;
+}
+
+function os2web_doc_field_field_is_empty($item, $field) {
+  if (empty($item['doc_ident'])) {
+    return true;
+  }
+}
+
+/**
+ * Field formatter hook
+ *
+ */
+function os2web_doc_field_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
+
+  $element = array();
+  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $display["type"] = ' . print_r($display['type'], 1));
+  switch ($display['type']) {
+    case 'doc_ident_formatter':
+      foreach ($items as $delta => $item) {
+        if ($item['os2web_pws']) {
+          $element[$delta]['#markup'] = '<span>' . 'OMGWTFBBQ!!!' . '</span>';
+        }
+      }
+      break;
+  }
+  return $element;
+}
+
