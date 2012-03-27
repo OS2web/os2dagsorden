@@ -4,9 +4,9 @@ function os2web_case_field_field_schema($field) {
   return array(
       'columns' => array(
           'case_ident' => array(
-              'type' => 'int',
+              'type' => 'varchar',
               'not null' => TRUE,
-              'default' => 0,
+              'default' => '',
           )
       )
   );
