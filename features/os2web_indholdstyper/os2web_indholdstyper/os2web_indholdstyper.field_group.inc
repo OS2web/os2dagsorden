@@ -21,25 +21,49 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Borger.dk',
-    'weight' => '0',
+    'weight' => '2',
     'children' => array(
       0 => 'field_borger_url',
       1 => 'field_local_coda',
       2 => 'field_local_intro',
       3 => 'field_local_title',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'multistep',
     'format_settings' => array(
-      'label' => 'Borger.dk',
-      'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => '',
-        'description' => 'Ekstra felter. Især relevante i forbindelse med artikler importeret fra Borger.dk',
-      ),
-      'formatter' => 'collapsed',
+      'formatter' => '',
+      'instance_settings' => NULL,
     ),
   );
   $export['group_borgerdk|node|contentpage|form'] = $field_group;
+
+  $field_group = new stdClass;
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_general|node|contentpage|form';
+  $field_group->group_name = 'group_general';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'contentpage';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Generelt',
+    'weight' => '0',
+    'children' => array(
+      0 => 'body',
+      1 => 'field_case',
+      2 => 'field_doc',
+      3 => 'field_lead_image',
+      4 => 'field_resume_long',
+      5 => 'field_site_structure',
+      6 => 'field_source_id',
+      7 => 'title',
+    ),
+    'format_type' => 'multistep',
+    'format_settings' => array(
+      'formatter' => '',
+    ),
+  );
+  $export['group_general|node|contentpage|form'] = $field_group;
 
   $field_group = new stdClass;
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -52,7 +76,7 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Højrespalte unik',
-    'weight' => '9',
+    'weight' => '8',
     'children' => array(
       0 => 'field_additional_info',
       1 => 'field_mediafile',
@@ -61,15 +85,10 @@ function os2web_indholdstyper_field_group_info() {
       4 => 'field_related_tema',
       5 => 'field_right_column',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'multistep',
     'format_settings' => array(
-      'label' => 'Højrespalte unik',
-      'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => '',
-        'description' => '',
-      ),
-      'formatter' => 'collapsed',
+      'formatter' => '',
+      'instance_settings' => NULL,
     ),
   );
   $export['group_right_column_unique|node|contentpage|form'] = $field_group;
@@ -90,15 +109,10 @@ function os2web_indholdstyper_field_group_info() {
       0 => 'field_inherit_right_column',
       1 => 'field_parent_node',
     ),
-    'format_type' => 'fieldset',
+    'format_type' => 'multistep',
     'format_settings' => array(
-      'label' => 'Højrespalte Genbrug',
-      'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => '',
-        'description' => 'For at nedarve en højrespalte fra forældrepunktet skal du først markere feltet "Nedarv højrespalte", derefter indsætte overskriften af forældrepunktet i feltet "Forældre-menupunkt". DET SKAL DU ALTID, HVIS DENNE SIDE BOR I HØJRESPALTE! ',
-      ),
-      'formatter' => 'collapsed',
+      'formatter' => '',
+      'instance_settings' => NULL,
     ),
   );
   $export['group_right_column|node|contentpage|form'] = $field_group;

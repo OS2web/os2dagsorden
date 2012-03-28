@@ -40,7 +40,7 @@ function os2web_doc_field_field_widget_form(&$form, &$form_state, $field, $insta
   $field_name = $field['field_name'];
   $field_type = $field['type'];
   $default = '';
-  if (isset($form_state['node'])) {
+  if (isset($form_state['node']->{$field_name}[$langcode][$delta][$field_type])) {
     $default = ($form_state['node']->{$field_name}[$langcode][$delta][$field_type])? : 0;
   }
   switch ($instance['widget']['type']) {

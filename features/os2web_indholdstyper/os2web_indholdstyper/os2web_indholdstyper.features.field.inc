@@ -84,7 +84,7 @@ function os2web_indholdstyper_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '7',
+        'weight' => '5',
       ),
     ),
   );
@@ -290,7 +290,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'os2web_case_field',
         'settings' => array(),
         'type' => 'case_ident_widget',
-        'weight' => '9',
+        'weight' => '7',
       ),
     ),
   );
@@ -348,7 +348,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'os2web_doc_field',
         'settings' => array(),
         'type' => 'doc_ident_widget',
-        'weight' => '10',
+        'weight' => '8',
       ),
     ),
   );
@@ -527,7 +527,7 @@ function os2web_indholdstyper_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',
-        'weight' => '5',
+        'weight' => '4',
       ),
     ),
   );
@@ -1297,7 +1297,7 @@ function os2web_indholdstyper_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '4',
+        'weight' => '3',
       ),
     ),
   );
@@ -1469,7 +1469,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '3',
+        'weight' => '2',
       ),
     ),
   );
@@ -1530,7 +1530,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '8',
+        'weight' => '6',
       ),
     ),
   );
