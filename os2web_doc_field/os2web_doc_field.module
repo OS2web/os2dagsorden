@@ -3,8 +3,6 @@
 /* Field information hooks */
 
 function os2web_doc_field_field_info() {
-  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
-
   return array(
       'doc_ident' => array(
           'label' => t('ESDH Document'),
@@ -16,8 +14,6 @@ function os2web_doc_field_field_info() {
 }
 
 function os2web_doc_field_field_formatter_info() {
-  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
-
   return array(
       'doc_ident_formatter' => array(
           'label' => t('ESDH Document includer'),
