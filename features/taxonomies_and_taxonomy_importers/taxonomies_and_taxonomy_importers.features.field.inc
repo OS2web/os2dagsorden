@@ -223,6 +223,87 @@ function taxonomies_and_taxonomy_importers_field_default_fields() {
     ),
   );
 
+  // Exported field: 'taxonomy_term-egennavne_stednavne-field_gis_reference'
+  $fields['taxonomy_term-egennavne_stednavne-field_gis_reference'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_gis_reference',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'first' => array(
+          0 => 'first',
+        ),
+        'second' => array(
+          0 => 'second',
+        ),
+      ),
+      'module' => 'double_field',
+      'settings' => array(
+        'first_maxlength' => '255',
+        'second_maxlength' => '255',
+      ),
+      'translatable' => '0',
+      'type' => 'double_field',
+    ),
+    'field_instance' => array(
+      'bundle' => 'egennavne_stednavne',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'inline',
+          'module' => 'double_field',
+          'settings' => array(
+            'collapsed' => 0,
+            'collapsible' => 1,
+            'first' => array(
+              'prefix' => 'Gis id',
+              'suffix' => '',
+            ),
+            'second' => array(
+              'prefix' => 'Gis type',
+              'suffix' => '',
+            ),
+          ),
+          'type' => 'double_field_fieldset',
+          'weight' => '5',
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_gis_reference',
+      'label' => 'Gis reference',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'double_field',
+        'settings' => array(
+          'first' => array(
+            'prefix' => 'Gis id',
+            'required' => 1,
+            'size' => '10',
+            'suffix' => '',
+          ),
+          'inline' => 1,
+          'second' => array(
+            'prefix' => 'Gis type',
+            'required' => 1,
+            'size' => '10',
+            'suffix' => '',
+          ),
+        ),
+        'type' => 'double_textfield',
+        'weight' => '9',
+      ),
+    ),
+  );
+
   // Exported field: 'taxonomy_term-egennavne_stednavne-field_search_word'
   $fields['taxonomy_term-egennavne_stednavne-field_search_word'] = array(
     'field_config' => array(
@@ -1003,6 +1084,7 @@ function taxonomies_and_taxonomy_importers_field_default_fields() {
   t('Dagsordensvisning');
   t('GIS id');
   t('GIS type');
+  t('Gis reference');
   t('KLE stikord');
   t('Lovhenvisninger');
   t('Systemid');
