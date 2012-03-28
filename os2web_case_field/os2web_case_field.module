@@ -85,7 +85,7 @@ function os2web_case_field_field_formatter_view($entity_type, $entity, $field, $
             $pws = _os2web_pws_get_instance();
             $id = $pws->lookupCase($id);
           }
-          $element[$delta]['#markup'] = '<div class="fullcaserender">' . _os2web_get_rendered_case($id) . '</div>';
+          $element[$delta]['#markup'] = '<div class="fullcaserender">' . theme('esdh_case',array('id' => $id)) . '</div>';
         }
       }
       break;

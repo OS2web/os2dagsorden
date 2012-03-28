@@ -8,7 +8,7 @@ function os2web_doc_field_field_info() {
   return array(
       'doc_ident' => array(
           'label' => t('ESDH Document'),
-          'description' => t('Document identifer.'),
+          'description' => t('Document identifer, Use either numeric id\'s, of journaling nr. ie. 79339/11. For multiple documents, separate with , (comma). '),
           'default_widget' => 'doc_ident_widget',
           'default_formatter' => 'doc_ident_formatter',
       ),
@@ -75,15 +75,24 @@ function os2web_doc_field_field_is_empty($item, $field) {
  *
  */
 function os2web_doc_field_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
-
   $element = array();
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $display["type"] = ' . print_r($display['type'], 1));
   switch ($display['type']) {
     case 'doc_ident_formatter':
       foreach ($items as $delta => $item) {
         if ($item['doc_ident']) {
-          $element[$delta]['#markup'] = '<div class="documenttable">' . _os2web_get_rendered_doc($item['doc_ident']) . '</div>';
+          $docs = array();
+          $ids = explode(',', $item['doc_ident']);
+          error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $ids = ' . print_r($ids, 1));
+          foreach ($ids as $id) {
+            if (!is_numeric($id)) {
+              $pws = _os2web_pws_get_instance();
+              $docs[] = $pws->lookupDoc($id);
+            } else {
+              $docs[] = trim($id);
+            }
+          }
+          error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $docs = ' . print_r($docs, 1));
+          $element[$delta]['#markup'] = '<div class="documenttable">' . theme('esdh_document', array('id' => $docs)) . '</div>';
         }
       }
       break;
