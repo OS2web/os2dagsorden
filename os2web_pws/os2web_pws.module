@@ -12,16 +12,17 @@ function os2web_pws_admin_paths() {
 function os2web_pws_menu() {
   $items['admin/config/os2web/pws'] = array(
       'title' => 'PWS Setup',
+      'description' => t('Set up endpoints for PWS webservices.'),
       'page callback' => 'drupal_get_form',
       'page arguments' => array('os2web_config_form'),
-      'access callback' => TRUE,
+      'access arguments' => array('administer os2web'),
       'file' => 'os2web_pws.admin.inc',
       'type' => MENU_LOCAL_TASK | MENU_NORMAL_ITEM,
   );
   $items['os2web/test/pws'] = array(
       'title' => 'PWS Test',
       'page callback' => 'os2web_test_page',
-      'access callback' => TRUE,
+      'access arguments' => array('administer os2web'),
       'type' => MENU_CALLBACK,
   );
   $items['os2web/pws/%'] = array(

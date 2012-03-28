@@ -55,6 +55,8 @@ class AcadrePWS extends CaseService {
       } else {
         $options['cache_swdl'] = WSDL_CACHE_DISK;
         $options['soap_version'] = SOAP_1_2;
+        unset($options['location']);
+        unset($options['uri']);
         $this->client6 = new SoapClient($url . '?WSDL', $options);
       }
     }
@@ -127,21 +129,10 @@ XML;
       return $result;
     }
     if ($this->client6) {
-      $request = <<< XML
-<?xml version="1.0" encoding="utf-8"?>
-<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-  <soap:Body>
-    <DocumentIdentifier xmlns="http://www.traen.com/2007/09/06/schema">@DocumentID</DocumentIdentifier>
-  </soap:Body>
-</soap:Envelope>
-XML;
       try {
         $result = $this->client6->getMainDocument($id);
-//        $result = $this->client->__doRequest(t($request, array('@DocumentID' => $id)), $this->client->location, $this->client->uri . 'GetMainDocument', SOAP_1_1);
-//        $result = simplexml_load_string($result)->xpath('/soap:Envelope/soap:Body[1]/*/*');
       } catch (SoapFault $sf) {
-        error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $this->client6->__getLastRequest() = ' . print_r($this->client6->__getLastRequest(), 1));
-        $result = $sf;
+        $result = FALSE;
       }
     }
 
