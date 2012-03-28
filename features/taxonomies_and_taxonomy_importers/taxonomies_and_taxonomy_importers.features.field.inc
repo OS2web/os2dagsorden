@@ -213,7 +213,7 @@ function taxonomies_and_taxonomy_importers_field_default_fields() {
       ),
       'entity_type' => 'taxonomy_term',
       'field_name' => 'field_city',
-      'label' => 'GIS by',
+      'label' => 'GIS postby',
       'required' => 0,
       'settings' => array(
         'text_processing' => '0',
@@ -227,59 +227,6 @@ function taxonomies_and_taxonomy_importers_field_default_fields() {
         ),
         'type' => 'text_textfield',
         'weight' => '11',
-      ),
-    ),
-  );
-
-  // Exported field: 'taxonomy_term-egennavne_stednavne-field_discontinued'
-  $fields['taxonomy_term-egennavne_stednavne-field_discontinued'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_discontinued',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'module' => 'number',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'number_integer',
-    ),
-    'field_instance' => array(
-      'bundle' => 'egennavne_stednavne',
-      'default_value' => array(
-        0 => array(
-          'value' => '0',
-        ),
-      ),
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '0',
-        ),
-      ),
-      'entity_type' => 'taxonomy_term',
-      'field_name' => 'field_discontinued',
-      'label' => 'Udgået',
-      'required' => 0,
-      'settings' => array(
-        'max' => '1',
-        'min' => '0',
-        'prefix' => '',
-        'suffix' => '',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '2',
       ),
     ),
   );
@@ -341,67 +288,6 @@ function taxonomies_and_taxonomy_importers_field_default_fields() {
         ),
         'type' => 'text_textfield',
         'weight' => '9',
-      ),
-    ),
-  );
-
-  // Exported field: 'taxonomy_term-egennavne_stednavne-field_postcode'
-  $fields['taxonomy_term-egennavne_stednavne-field_postcode'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_postcode',
-      'foreign keys' => array(
-        'format' => array(
-          'columns' => array(
-            'format' => 'format',
-          ),
-          'table' => 'filter_format',
-        ),
-      ),
-      'indexes' => array(
-        'format' => array(
-          0 => 'format',
-        ),
-      ),
-      'module' => 'text',
-      'settings' => array(
-        'max_length' => '255',
-      ),
-      'translatable' => '0',
-      'type' => 'text',
-    ),
-    'field_instance' => array(
-      'bundle' => 'egennavne_stednavne',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '6',
-        ),
-      ),
-      'entity_type' => 'taxonomy_term',
-      'field_name' => 'field_postcode',
-      'label' => 'GIS postnummer',
-      'required' => 0,
-      'settings' => array(
-        'text_processing' => '0',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'text',
-        'settings' => array(
-          'size' => '60',
-        ),
-        'type' => 'text_textfield',
-        'weight' => '10',
       ),
     ),
   );
@@ -1121,10 +1007,9 @@ function taxonomies_and_taxonomy_importers_field_default_fields() {
   t('Afdelingsid');
   t('Afdelingsnavn');
   t('Dagsordensvisning');
-  t('GIS by');
   t('GIS id');
   t('GIS navn');
-  t('GIS postnummer');
+  t('GIS postby');
   t('GIS type');
   t('KLE stikord');
   t('Lovhenvisninger');
