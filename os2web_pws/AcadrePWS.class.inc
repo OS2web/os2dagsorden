@@ -53,7 +53,7 @@ class AcadrePWS extends CaseService {
       if ($url == '') {
         drupal_set_message(t('Error, no endpoint url set for v6.'), 'error');
       } else {
-        $options['cache_swdl'] = WSDL_CACHE_DISK;
+        $options['cache_wsdl'] = WSDL_CACHE_DISK;
         $options['soap_version'] = SOAP_1_2;
         unset($options['location']);
         unset($options['uri']);
