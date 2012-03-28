@@ -4,3 +4,5 @@ package = OS2Web
 core = 7.x
 configure = admin/config/os2web/pws
 tags[] = os2web
+
+dependencies[]=os2web_admin

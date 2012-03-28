@@ -54,15 +54,10 @@ class AcadrePWS extends CaseService {
         drupal_set_message(t('Error, no endpoint url set for v6.'), 'error');
       } else {
         $options['cache_swdl'] = WSDL_CACHE_DISK;
+        $options['soap_version'] = SOAP_1_2;
         $this->client6 = new SoapClient($url . '?WSDL', $options);
       }
     }
-  }
-
-  function test_v4() {
-    $result = false;
-    $result = $this->getDocument(1420175);
-    return $result;
   }
 
   /**
@@ -75,20 +70,38 @@ class AcadrePWS extends CaseService {
     return false;
   }
 
+  /**
+   * Looks up a journaling entry and returns the id of a document.
+   * FIXME: Make this a true call to webservice.
+   *
+   * @param string $query A case journaling number, ie. 14293/11
+   */
+  public function lookupDoc($query) {
+    return false;
+  }
+
   public function fetchCase($id) {
+    $result = &drupal_static(__FUNCTION__ . $id, FALSE);
+    if ($result != FALSE) {
+      return $result;
+    }
     if ($this->client6) {
 
-        return $this->client6->getCase($id);
+      $result = $this->client6->getCase($id);
       try {
+        
       } catch (Exception $exc) {
 
       }
     }
-    return false;
+    return $result;
   }
 
   public function getCaseDocs($id) {
-    $result = false;
+    $result = &drupal_static(__FUNCTION__ . $id, FALSE);
+    if ($result != FALSE) {
+      return $result;
+    }
     if ($this->client) {
       $request = <<< XML
 <?xml version="1.0" encoding="utf-8"?>
@@ -109,19 +122,49 @@ XML;
   }
 
   public function getDocument($id) {
+    $result = &drupal_static(__FUNCTION__ . $id, FALSE);
+    if ($result != FALSE) {
+      return $result;
+    }
+    if ($this->client6) {
+      $request = <<< XML
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <DocumentIdentifier xmlns="http://www.traen.com/2007/09/06/schema">@DocumentID</DocumentIdentifier>
+  </soap:Body>
+</soap:Envelope>
+XML;
+      try {
+        $result = $this->client6->getMainDocument($id);
+//        $result = $this->client->__doRequest(t($request, array('@DocumentID' => $id)), $this->client->location, $this->client->uri . 'GetMainDocument', SOAP_1_1);
+//        $result = simplexml_load_string($result)->xpath('/soap:Envelope/soap:Body[1]/*/*');
+      } catch (SoapFault $sf) {
+        error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $this->client6->__getLastRequest() = ' . print_r($this->client6->__getLastRequest(), 1));
+        $result = $sf;
+      }
+    }
+
+    return $result;
+  }
+
+  public function getDocFileName($ref, $ver) {
     $result = false;
     if ($this->client) {
       $request = <<< XML
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
-    <DocumentIdentifier xmlns="http://www.traen.com/2007/09/06/schema">[DocumentID]</DocumentIdentifier>
+    <FileVersionReference1 xmlns="http://www.traen.com/2007/09/06/schema">
+      <FileReference>@FileRef</FileReference>
+      <Version>@Version</Version>
+    </FileVersionReference1>
   </soap:Body>
 </soap:Envelope>
 XML;
       try {
-        $result = $this->client->__doRequest(t($request, array('[DocumentID]' => $id)), $this->client->location, $this->client->uri . 'GetMainDocument', SOAP_1_1);
-        $result = simplexml_load_string($result)->xpath('/soap:Envelope/soap:Body[1]/*/*');
+        $result = $this->client->__doRequest(t($request, array('@FileRef' => $ref, '@Version' => $ver)), $this->client->location, $this->client->uri . 'GetFileName', SOAP_1_1);
+        $result = array_shift(simplexml_load_string($result)->xpath('/soap:Envelope/soap:Body'))->FileName1;
       } catch (SoapFault $sf) {
 
       }
@@ -137,15 +180,15 @@ XML;
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
     <FileVersionReference xmlns="http://www.traen.com/2007/09/06/schema">
-      <FileReference>[FileRef]</FileReference>
-      <Version>[Version]</Version>
+      <FileReference>@FileRef</FileReference>
+      <Version>@Version</Version>
     </FileVersionReference>
   </soap:Body>
 </soap:Envelope>
 XML;
       try {
-        $result = $this->client->__doRequest(t($request, array('[FileRef]' => $ref, '[Version]' => $ver)), $this->client->location, $this->client->uri . 'GetPhysicalDocument', SOAP_1_1);
-        $result = simplexml_load_string($result)->xpath('/soap:Envelope/soap:Body[1]/*/*');
+        $result = $this->client->__doRequest(t($request, array('@FileRef' => $ref, '@Version' => $ver)), $this->client->location, $this->client->uri . 'GetPhysicalDocument', SOAP_1_1);
+//        $result = simplexml_load_string($result)->xpath('/soap:Envelope/soap:Body[1]/*/*');
       } catch (SoapFault $sf) {
 
       }

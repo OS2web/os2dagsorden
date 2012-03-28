@@ -38,6 +38,15 @@ class AcadrePWSMock extends AcadrePWS {
     }
   }
 
+  public function lookupDoc($query) {
+    switch ($query) {
+      case '79339/11':
+        return 1420175;
+      default:
+        return parent::lookupDoc($query);
+    }
+  }
+
   public function getDocument($id) {
     switch ($id) {
       case '1420175':
@@ -480,6 +489,10 @@ class AcadrePWSMock extends AcadrePWS {
       default:
         return parent::fetchCase($id);
     }
+  }
+
+  public function getDocData($ref, $ver) {
+    return parent::getDocData($ref, $ver);
   }
 
 }
