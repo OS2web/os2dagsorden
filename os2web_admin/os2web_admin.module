@@ -24,17 +24,17 @@ function os2web_admin_menu() {
       'description' => 'Set up OS2 cms services',
       'position' => 'right',
       'weight' => -15,
-      'access arguments' => array('administer group'),
+      'access arguments' => array('administer os2web'),
       'page callback' => 'system_admin_menu_block_page',
       'file' => 'system.admin.inc',
       'file path' => drupal_get_path('module', 'system'),
   );
   $items['admin/config/os2web/settings'] = array(
       'title' => 'OS2web Settings',
+      'description' => t('General settings for the OS2Web project'),
       'page callback' => 'drupal_get_form',
       'page arguments' => array('os2web_admin_settings_form'),
-      'access callback' => TRUE,
-      'type' => MENU_CALLBACK,
+      'access arguments' => array('administer os2web'),
   );
 	return $items;
 }
