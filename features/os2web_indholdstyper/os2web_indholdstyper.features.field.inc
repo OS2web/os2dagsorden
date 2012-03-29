@@ -1696,7 +1696,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_foto',
-      'label' => 'Foto',
+      'label' => 'Fotos',
       'required' => 0,
       'settings' => array(
         'alt_field' => 1,
@@ -1705,7 +1705,7 @@ function os2web_indholdstyper_field_default_fields() {
         'max_filesize' => '',
         'max_resolution' => '5000x5000',
         'min_resolution' => '',
-        'title_field' => 1,
+        'title_field' => 0,
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -3103,7 +3103,7 @@ function os2web_indholdstyper_field_default_fields() {
   t('Dokument');
   t('Du kan ikke redigere dette link. Slet siden, hvis linket irriterer dig.');
   t('Forældre-menupunkt');
-  t('Foto');
+  t('Fotos');
   t('Hvis du har yderligere information, links eller fakta som er unikke for denne side, kan det tilføjes i dette felt. Indholdet vises i højre kolonne sammen med siden.');
   t('Højrespalte-afsnit');
   t('Indhold');
