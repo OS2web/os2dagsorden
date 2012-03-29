@@ -23,14 +23,6 @@ function ballerup_content_types_ctools_plugin_api() {
  */
 function ballerup_content_types_node_info() {
   $items = array(
-    'contentpage' => array(
-      'name' => t('Indholdsside'),
-      'base' => 'node_content',
-      'description' => t('Almindelig webside til generel brug på sitet.'),
-      'has_title' => '1',
-      'title_label' => t('Titel'),
-      'help' => '',
-    ),
     'files' => array(
       'name' => t('Dokumenter og filer'),
       'base' => 'node_content',
