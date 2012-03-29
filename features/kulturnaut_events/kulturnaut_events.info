@@ -1,7 +1,7 @@
 name = "Kulturnaut events"
 description = "Varetager integration af begivenhed fra Kulturnaut.dk"
 core = "7.x"
-package = "Features"
+package = "OS2Web"
 php = "5.2.4"
 version = "7.x-1.0"
 project = "kulturnaut_events"

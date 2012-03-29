@@ -1617,7 +1617,7 @@ function os2web_indholdstyper_field_default_fields() {
   $fields['node-galleri-field_foto'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_foto',
@@ -1696,19 +1696,16 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_foto',
-      'label' => 'Foto',
+      'label' => 'Fotos',
       'required' => 0,
       'settings' => array(
-        'alt_field' => 1,
-        'file_directory' => '',
+        'alt_field' => 0,
+        'file_directory' => 'gallery_images',
         'file_extensions' => 'png gif jpg jpeg',
-        'imagecrop' => array(
-          'medium' => 0,
-        ),
         'max_filesize' => '',
         'max_resolution' => '',
         'min_resolution' => '',
-        'title_field' => 1,
+        'title_field' => 0,
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -1716,11 +1713,16 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'image',
         'settings' => array(
           'filefield_sources' => array(
-            'filefield_sources' => array(),
+            'filefield_sources' => array(
+              'attach' => 0,
+              'plupload' => 'plupload',
+              'reference' => 0,
+              'remote' => 0,
+            ),
             'source_attach' => array(
-              'absolute' => 0,
-              'attach_mode' => 'move',
-              'path' => 'file_attach',
+              'absolute' => '0',
+              'attach_mode' => 'copy',
+              'path' => '',
             ),
             'source_reference' => array(
               'autocomplete' => '0',
@@ -3101,7 +3103,7 @@ function os2web_indholdstyper_field_default_fields() {
   t('Dokument');
   t('Du kan ikke redigere dette link. Slet siden, hvis linket irriterer dig.');
   t('Forældre-menupunkt');
-  t('Foto');
+  t('Fotos');
   t('Hvis du har yderligere information, links eller fakta som er unikke for denne side, kan det tilføjes i dette felt. Indholdet vises i højre kolonne sammen med siden.');
   t('Højrespalte-afsnit');
   t('Indhold');

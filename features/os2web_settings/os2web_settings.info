@@ -1,7 +1,7 @@
 name = "OS2Web indstillinger"
 description = "Indstillinger til div. moduler samt administration sektion"
 core = "7.x"
-package = "Features"
+package = "OS2Web"
 version = "7.x-0.1"
 project = "os2web_settings"
 dependencies[] = "ctools"
