@@ -22,7 +22,7 @@ function os2web_ad_integration_default_ldap_servers() {
   $ldap_servers_conf->tls = FALSE;
   $ldap_servers_conf->bind_method = TRUE;
   $ldap_servers_conf->binddn = 'DrupalAdLookup';
-  $ldap_servers_conf->bindpw = '';
+  $ldap_servers_conf->bindpw = '2Secret4You';
   $ldap_servers_conf->basedn = array(
     0 => 'OU=syddjurs,DC=intern,DC=syddjurs,DC=dk',
   );
