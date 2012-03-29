@@ -31,14 +31,6 @@ function ballerup_content_types_node_info() {
       'title_label' => t('Titel'),
       'help' => '',
     ),
-    'galleri' => array(
-      'name' => t('Galleri'),
-      'base' => 'node_content',
-      'description' => '',
-      'has_title' => '1',
-      'title_label' => t('Title'),
-      'help' => '',
-    ),
     'iframe_selvbetjeningsl_sning_mm' => array(
       'name' => t('iFrame, Selvbetjeningsløsning mm.'),
       'base' => 'node_content',
