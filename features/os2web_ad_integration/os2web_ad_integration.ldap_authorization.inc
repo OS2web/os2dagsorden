@@ -28,11 +28,11 @@ function os2web_ad_integration_default_ldap_authorization() {
   $consumer_type->derive_from_entry_entries = '';
   $consumer_type->derive_from_entry_attr = '';
   $consumer_type->derive_from_entry_search_all = FALSE;
-  $consumer_type->mappings = 'DW_Dotnetnuke_Admins|Administrator
-DW_Dotnetnuke_Admins|Webmaster
-DW_Dotnetnuke_Admins|Editor
-DW_Dotnetnuke_Admins|Kommunikation
-DW_Dotnetnuke_Admins|Student
+  $consumer_type->mappings = 'syddjurs_dk_student|Student
+syddjurs_dk_editor|Editor
+syddjurs_dk_webmaster|Webmaster
+syddjurs_dk_administrator|Administrator
+syddjurs_dk_kommunikation|Kommunikation
 syddjurs|authenticated user
 ';
   $consumer_type->use_filter = TRUE;
