@@ -1,6 +1,0 @@
-name = OS2Web Administration
-description = General settings for the OS2Web system
-package = OS2Web
-core = 7.x
-configure = admin/config/os2web
-tags[] = os2web
