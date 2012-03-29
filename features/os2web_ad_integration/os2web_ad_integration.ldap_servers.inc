@@ -22,7 +22,7 @@ function os2web_ad_integration_default_ldap_servers() {
   $ldap_servers_conf->tls = FALSE;
   $ldap_servers_conf->bind_method = TRUE;
   $ldap_servers_conf->binddn = 'DrupalAdLookup';
-  $ldap_servers_conf->bindpw = '2Secret4You';
+  $ldap_servers_conf->bindpw = '';
   $ldap_servers_conf->basedn = array(
     0 => 'OU=syddjurs,DC=intern,DC=syddjurs,DC=dk',
   );
@@ -33,7 +33,7 @@ function os2web_ad_integration_default_ldap_servers() {
   $ldap_servers_conf->unique_persistent_attr = '';
   $ldap_servers_conf->user_dn_expression = '';
   $ldap_servers_conf->ldap_to_drupal_user = '';
-  $ldap_servers_conf->testing_drupal_username = 'petsoe';
+  $ldap_servers_conf->testing_drupal_username = '';
   $ldap_servers_conf->weight = 0;
   $export['ldap_syddjursnet'] = $ldap_servers_conf;
 
