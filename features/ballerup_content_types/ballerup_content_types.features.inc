@@ -71,14 +71,6 @@ function ballerup_content_types_node_info() {
       'title_label' => t('Titel'),
       'help' => '',
     ),
-    'news' => array(
-      'name' => t('Nyhed'),
-      'base' => 'node_content',
-      'description' => '',
-      'has_title' => '1',
-      'title_label' => t('Titel'),
-      'help' => '',
-    ),
     'person' => array(
       'name' => t('Person'),
       'base' => 'node_content',
