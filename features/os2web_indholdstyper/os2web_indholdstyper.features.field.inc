@@ -1617,7 +1617,7 @@ function os2web_indholdstyper_field_default_fields() {
   $fields['node-galleri-field_foto'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_foto',
@@ -1700,13 +1700,10 @@ function os2web_indholdstyper_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'alt_field' => 1,
-        'file_directory' => '',
+        'file_directory' => 'gallery_images',
         'file_extensions' => 'png gif jpg jpeg',
-        'imagecrop' => array(
-          'medium' => 0,
-        ),
         'max_filesize' => '',
-        'max_resolution' => '',
+        'max_resolution' => '5000x5000',
         'min_resolution' => '',
         'title_field' => 1,
         'user_register_form' => FALSE,
@@ -1716,11 +1713,16 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'image',
         'settings' => array(
           'filefield_sources' => array(
-            'filefield_sources' => array(),
+            'filefield_sources' => array(
+              'attach' => 0,
+              'plupload' => 'plupload',
+              'reference' => 0,
+              'remote' => 0,
+            ),
             'source_attach' => array(
-              'absolute' => 0,
-              'attach_mode' => 'move',
-              'path' => 'file_attach',
+              'absolute' => '0',
+              'attach_mode' => 'copy',
+              'path' => '',
             ),
             'source_reference' => array(
               'autocomplete' => '0',
