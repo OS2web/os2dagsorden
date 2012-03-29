@@ -12,41 +12,18 @@ function borger_dk_integration_default_rules_configuration() {
   $items['rules_borger_dk_lookup_by_url'] = entity_import('rules_config', '{ "rules_borger_dk_lookup_by_url" : {
       "LABEL" : "Borger.dk lookup by permalink",
       "PLUGIN" : "reaction rule",
-      "REQUIRES" : [ "rules", "php", "wsclient" ],
+      "REQUIRES" : [ "rules", "php" ],
       "ON" : [ "node_insert" ],
       "IF" : [
         { "entity_has_field" : { "entity" : [ "node" ], "field" : "field_borger_permalink" } }
       ],
       "DO" : [
-        { "data_create" : {
-            "USING" : {
-              "type" : "wsclient_borger_dk_GetArticleIDByUrl",
-              "param_url" : "[node:field-borger-permalink]"
-            },
-            "PROVIDE" : { "data_created" : { "artikel_id_fra_url" : "Artikel ID fra URL" } }
-          }
-        },
+        { "data_create" : [] },
         { "php_eval" : { "code" : "borgerdk_permalink_true($artikel_id_fra_url);" } },
-        { "wsclient_borger_dk_GetArticleIDByUrl" : {
-            "USING" : { "param_parameters" : [ "artikel-id-fra-url" ] },
-            "PROVIDE" : { "result" : { "artikel_id_fra_url_resultat" : "Artikel ID fra URL resultat" } }
-          }
-        },
-        { "data_create" : {
-            "USING" : {
-              "type" : "wsclient_borger_dk_GetArticleByID",
-              "param_articleID" : [ "artikel-id-fra-url-resultat:GetArticleIDByUrlResult:ArticleID" ],
-              "param_municipalityCode" : "101"
-            },
-            "PROVIDE" : { "data_created" : { "artikel_id" : "Artikel ID" } }
-          }
-        },
-        { "wsclient_borger_dk_GetArticleByID" : {
-            "USING" : { "param_parameters" : [ "artikel-id" ] },
-            "PROVIDE" : { "result" : { "artikel_id_resultat" : "Artikel ID resultat" } }
-          }
-        },
-        { "php_eval" : { "code" : "\\/\\/ drupal_set_message(\'S\\u00e5 spiller vi bolden videre til borgerdk_add_as_node($artikel_id_resultat), FALSE, $node\');\\r\\nborgerdk_add_as_node($artikel_id_resultat, FALSE, $node);" } }
+        { "wsclient_borger_dk_GetArticleIDByUrl" : [] },
+        { "data_create" : [] },
+        { "wsclient_borger_dk_GetArticleByID" : [] },
+        { "php_eval" : { "code" : "\\/\\/ drupal_set_message(\\u0027S\\u00e5 spiller vi bolden videre til borgerdk_add_as_node($artikel_id_resultat), FALSE, $node\\u0027);\\r\\nborgerdk_add_as_node($artikel_id_resultat, FALSE, $node);" } }
       ]
     }
   }');
@@ -54,7 +31,7 @@ function borger_dk_integration_default_rules_configuration() {
       "LABEL" : "Update borger.dk derived articles",
       "PLUGIN" : "reaction rule",
       "ACTIVE" : false,
-      "REQUIRES" : [ "rules", "wsclient", "php" ],
+      "REQUIRES" : [ "rules", "php" ],
       "ON" : [ "watchdog" ],
       "IF" : [
         { "data_is" : {
@@ -64,34 +41,11 @@ function borger_dk_integration_default_rules_configuration() {
         }
       ],
       "DO" : [
-        { "data_create" : {
-            "USING" : {
-              "type" : "wsclient_borger_dk_GetArticleIDByUrl",
-              "param_url" : [ "log-entry:message" ]
-            },
-            "PROVIDE" : { "data_created" : { "artikel_id_fra_url" : "Artikel ID fra URL" } }
-          }
-        },
-        { "wsclient_borger_dk_GetArticleIDByUrl" : {
-            "USING" : { "param_parameters" : [ "artikel-id-fra-url" ] },
-            "PROVIDE" : { "result" : { "artikel_id_fra_url_resultat" : "Artikel ID fra URL resultat" } }
-          }
-        },
-        { "data_create" : {
-            "USING" : {
-              "type" : "wsclient_borger_dk_GetArticleByID",
-              "param_articleID" : [ "artikel-id-fra-url-resultat:GetArticleIDByUrlResult:ArticleID" ],
-              "param_municipalityCode" : "101"
-            },
-            "PROVIDE" : { "data_created" : { "artikel_id" : "Artikel ID" } }
-          }
-        },
-        { "wsclient_borger_dk_GetArticleByID" : {
-            "USING" : { "param_parameters" : [ "artikel-id" ] },
-            "PROVIDE" : { "result" : { "artikel_id_resultat" : "Artikel ID resultat" } }
-          }
-        },
-        { "php_eval" : { "code" : "\\/\\/ drupal_set_message(\'S\\u00e5 spiller vi bolden videre til borgerdk_add_as_node($artikel_id_resultat), TRUE\');\\r\\nborgerdk_add_as_node($artikel_id_resultat, TRUE);" } }
+        { "data_create" : [] },
+        { "wsclient_borger_dk_GetArticleIDByUrl" : [] },
+        { "data_create" : [] },
+        { "wsclient_borger_dk_GetArticleByID" : [] },
+        { "php_eval" : { "code" : "\\/\\/ drupal_set_message(\\u0027S\\u00e5 spiller vi bolden videre til borgerdk_add_as_node($artikel_id_resultat), TRUE\\u0027);\\r\\nborgerdk_add_as_node($artikel_id_resultat, TRUE);" } }
       ]
     }
   }');
