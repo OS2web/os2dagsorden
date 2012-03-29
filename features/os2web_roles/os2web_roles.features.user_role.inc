@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * roles.features.user_role.inc
+ * os2web_roles.features.user_role.inc
  */
 
 /**
  * Implements hook_user_default_roles().
  */
-function roles_user_default_roles() {
+function os2web_roles_user_default_roles() {
   $roles = array();
 
   // Exported role: Administrator
