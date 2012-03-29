@@ -19,6 +19,7 @@ class AcadrePWSMock extends AcadrePWS {
     } catch (Exception $exc) {
 
     }
+    drupal_get_messages('error');
   }
 
   /**
@@ -37,14 +38,80 @@ class AcadrePWSMock extends AcadrePWS {
     }
   }
 
+  public function lookupDoc($query) {
+    switch ($query) {
+      case '79339/11':
+        return 1420175;
+      default:
+        return parent::lookupDoc($query);
+    }
+  }
+
+  public function getDocument($id) {
+    switch ($id) {
+      case '1420175':
+        return array(
+            0 =>
+            (object) array(
+                'DocumentIdentifier' => '1420175',
+                'DocumentCategoryCode' => 'Besvarelse',
+                'DocumentTitleText' => 'Test vedr 2 underskrifter',
+                'DocumentPaperStorageIndicator' => 'false',
+                'DocumentStatusCode' => 'B',
+            ),
+            1 =>
+            (object) array(
+                'DocumentLinkTypeCode' => 'H',
+                'RecordReference' => '1420178',
+                'DocumentReference' => '1420175',
+                'LinkDate' => '2011-04-28',
+            ),
+            2 =>
+            (object) array(
+                'DocumentVersionIdentifier' => '1',
+                'DocumentReference' => '1420175',
+                'DocumentFileReference' => '3081831',
+                'VersionNumber' => '1',
+                'ActiveIndicator' => 'true',
+                'RegisteringOfficerReference' => '1017',
+                'VariantTypeCode' => 'P',
+            ),
+            3 =>
+            (object) array(
+                'RecordIdentifier' => '1420178',
+                'CreationYear' => '2011',
+                'RecordSerialNumber' => '4',
+                'CaseFileReference' => '340222',
+                'RecordSequenceNumber' => '79339',
+                'RegistrationDate' => '2011-04-28',
+                'DocumentDate' => '2011-04-28',
+                'DocumentDateUnknownIndicator' => 'false',
+                'DescriptionText' => 'Test vedr 2 underskrifter',
+                'AlternativeDescriptionText' =>
+                (object) array(
+                ),
+                'PublicationIndicator' => '3',
+                'RecordPaperStorageIndicator' => 'false',
+                'RecordLatestUpdateDate' => '2011-04-28',
+                'CaseFileManagerReference' => '1017',
+                'DocumentTypeCode' => 'U',
+                'RecordStatusCode' => 'R',
+                'AccessCode' => 'KK',
+            ),
+        );
+      default:
+        return parent::getDocument($id);
+    }
+  }
+
   public function getCaseDocs($id) {
     switch ($id) {
       case 340222:
         return array(
             0 =>
-            (object)array(
+            (object) array(
                 'Document' =>
-                (object)array(
+                (object) array(
                     'DocumentIdentifier' => '1369822',
                     'DocumentCategoryCode' => 'Henvend',
                     'DocumentTitleText' => 'Test1',
@@ -52,14 +119,14 @@ class AcadrePWSMock extends AcadrePWS {
                     'DocumentStatusCode' => 'B',
                 ),
                 'DocumentLink' =>
-                (object)array(
+                (object) array(
                     'DocumentLinkTypeCode' => 'H',
                     'RecordReference' => '1369826',
                     'DocumentReference' => '1369822',
                     'LinkDate' => '2011-02-11',
                 ),
                 'DocumentVersion' =>
-                (object)array(
+                (object) array(
                     'DocumentVersionIdentifier' => '1',
                     'DocumentReference' => '1369822',
                     'DocumentFileReference' => '3023484',
@@ -69,7 +136,7 @@ class AcadrePWSMock extends AcadrePWS {
                     'VariantTypeCode' => 'P',
                 ),
                 'Record' =>
-                (object)array(
+                (object) array(
                     'RecordIdentifier' => '1369826',
                     'CreationYear' => '2011',
                     'RecordSerialNumber' => '1',
@@ -80,7 +147,7 @@ class AcadrePWSMock extends AcadrePWS {
                     'DocumentDateUnknownIndicator' => 'false',
                     'DescriptionText' => 'Test1',
                     'AlternativeDescriptionText' =>
-                    (object)array(
+                    (object) array(
                     ),
                     'PublicationIndicator' => '3',
                     'RecordPaperStorageIndicator' => 'false',
@@ -92,9 +159,9 @@ class AcadrePWSMock extends AcadrePWS {
                 ),
             ),
             1 =>
-            (object)array(
+            (object) array(
                 'Document' =>
-                (object)array(
+                (object) array(
                     'DocumentIdentifier' => '1386113',
                     'DocumentCategoryCode' => 'Henvend',
                     'DocumentTitleText' => 'TestF',
@@ -102,14 +169,14 @@ class AcadrePWSMock extends AcadrePWS {
                     'DocumentStatusCode' => 'B',
                 ),
                 'DocumentLink' =>
-                (object)array(
+                (object) array(
                     'DocumentLinkTypeCode' => 'H',
                     'RecordReference' => '1386117',
                     'DocumentReference' => '1386113',
                     'LinkDate' => '2011-03-08',
                 ),
                 'DocumentVersion' =>
-                (object)array(
+                (object) array(
                     'DocumentVersionIdentifier' => '1',
                     'DocumentReference' => '1386113',
                     'DocumentFileReference' => '3042551',
@@ -119,7 +186,7 @@ class AcadrePWSMock extends AcadrePWS {
                     'VariantTypeCode' => 'P',
                 ),
                 'Record' =>
-                (object)array(
+                (object) array(
                     'RecordIdentifier' => '1386117',
                     'CreationYear' => '2011',
                     'RecordSerialNumber' => '2',
@@ -130,7 +197,7 @@ class AcadrePWSMock extends AcadrePWS {
                     'DocumentDateUnknownIndicator' => 'false',
                     'DescriptionText' => 'Testskabelon til Natur og miljø',
                     'AlternativeDescriptionText' =>
-                    (object)array(
+                    (object) array(
                     ),
                     'PublicationIndicator' => '1',
                     'RecordPaperStorageIndicator' => 'false',
@@ -142,9 +209,9 @@ class AcadrePWSMock extends AcadrePWS {
                 ),
             ),
             2 =>
-            (object)array(
+            (object) array(
                 'Document' =>
-                (object)array(
+                (object) array(
                     'DocumentIdentifier' => '1386114',
                     'DocumentCategoryCode' => 'Henvend',
                     'DocumentTitleText' => 'TestF',
@@ -152,14 +219,14 @@ class AcadrePWSMock extends AcadrePWS {
                     'DocumentStatusCode' => 'B',
                 ),
                 'DocumentLink' =>
-                (object)array(
+                (object) array(
                     'DocumentLinkTypeCode' => 'H',
                     'RecordReference' => '1386118',
                     'DocumentReference' => '1386114',
                     'LinkDate' => '2011-03-08',
                 ),
                 'DocumentVersion' =>
-                (object)array(
+                (object) array(
                     'DocumentVersionIdentifier' => '1',
                     'DocumentReference' => '1386114',
                     'DocumentFileReference' => '3042552',
@@ -169,7 +236,7 @@ class AcadrePWSMock extends AcadrePWS {
                     'VariantTypeCode' => 'P',
                 ),
                 'Record' =>
-                (object)array(
+                (object) array(
                     'RecordIdentifier' => '1386118',
                     'CreationYear' => '2011',
                     'RecordSerialNumber' => '3',
@@ -180,7 +247,7 @@ class AcadrePWSMock extends AcadrePWS {
                     'DocumentDateUnknownIndicator' => 'false',
                     'DescriptionText' => 'Testskabelon til Natur og miljø',
                     'AlternativeDescriptionText' =>
-                    (object)array(
+                    (object) array(
                     ),
                     'PublicationIndicator' => '1',
                     'RecordPaperStorageIndicator' => 'false',
@@ -192,9 +259,9 @@ class AcadrePWSMock extends AcadrePWS {
                 ),
             ),
             3 =>
-            (object)array(
+            (object) array(
                 'Document' =>
-                (object)array(
+                (object) array(
                     'DocumentIdentifier' => '1420175',
                     'DocumentCategoryCode' => 'Besvarelse',
                     'DocumentTitleText' => 'Test vedr 2 underskrifter',
@@ -202,14 +269,14 @@ class AcadrePWSMock extends AcadrePWS {
                     'DocumentStatusCode' => 'B',
                 ),
                 'DocumentLink' =>
-                (object)array(
+                (object) array(
                     'DocumentLinkTypeCode' => 'H',
                     'RecordReference' => '1420178',
                     'DocumentReference' => '1420175',
                     'LinkDate' => '2011-04-28',
                 ),
                 'DocumentVersion' =>
-                (object)array(
+                (object) array(
                     'DocumentVersionIdentifier' => '1',
                     'DocumentReference' => '1420175',
                     'DocumentFileReference' => '3081831',
@@ -219,7 +286,7 @@ class AcadrePWSMock extends AcadrePWS {
                     'VariantTypeCode' => 'P',
                 ),
                 'Record' =>
-                (object)array(
+                (object) array(
                     'RecordIdentifier' => '1420178',
                     'CreationYear' => '2011',
                     'RecordSerialNumber' => '4',
@@ -230,7 +297,7 @@ class AcadrePWSMock extends AcadrePWS {
                     'DocumentDateUnknownIndicator' => 'false',
                     'DescriptionText' => 'Test vedr 2 underskrifter',
                     'AlternativeDescriptionText' =>
-                    (object)array(
+                    (object) array(
                     ),
                     'PublicationIndicator' => '3',
                     'RecordPaperStorageIndicator' => 'false',
@@ -422,6 +489,10 @@ class AcadrePWSMock extends AcadrePWS {
       default:
         return parent::fetchCase($id);
     }
+  }
+
+  public function getDocData($ref, $ver) {
+    return parent::getDocData($ref, $ver);
   }
 
 }

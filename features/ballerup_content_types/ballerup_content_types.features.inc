@@ -23,28 +23,12 @@ function ballerup_content_types_ctools_plugin_api() {
  */
 function ballerup_content_types_node_info() {
   $items = array(
-    'contentpage' => array(
-      'name' => t('Indholdsside'),
-      'base' => 'node_content',
-      'description' => t('Almindelig webside til generel brug på sitet.'),
-      'has_title' => '1',
-      'title_label' => t('Titel'),
-      'help' => '',
-    ),
     'files' => array(
       'name' => t('Dokumenter og filer'),
       'base' => 'node_content',
       'description' => t('Filer, pdf\'er, docs og andre filtyper.'),
       'has_title' => '1',
       'title_label' => t('Titel'),
-      'help' => '',
-    ),
-    'galleri' => array(
-      'name' => t('Galleri'),
-      'base' => 'node_content',
-      'description' => '',
-      'has_title' => '1',
-      'title_label' => t('Title'),
       'help' => '',
     ),
     'iframe_selvbetjeningsl_sning_mm' => array(
@@ -75,14 +59,6 @@ function ballerup_content_types_node_info() {
       'name' => t('Medier'),
       'base' => 'node_content',
       'description' => t('Video og audio.'),
-      'has_title' => '1',
-      'title_label' => t('Titel'),
-      'help' => '',
-    ),
-    'news' => array(
-      'name' => t('Nyhed'),
-      'base' => 'node_content',
-      'description' => '',
       'has_title' => '1',
       'title_label' => t('Titel'),
       'help' => '',

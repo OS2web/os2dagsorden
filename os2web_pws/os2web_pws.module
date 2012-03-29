@@ -1,7 +1,10 @@
 <?php
 
+define('AVAILABLE_PUBLIC', 3);
+
 function os2web_pws_admin_paths() {
   return array(
+      'admin/config/os2web' => TRUE,
       'admin/config/os2web/pws' => TRUE,
   );
 }
@@ -9,17 +12,18 @@ function os2web_pws_admin_paths() {
 function os2web_pws_menu() {
   $items['admin/config/os2web/pws'] = array(
       'title' => 'PWS Setup',
+      'description' => t('Set up endpoints for PWS webservices.'),
       'page callback' => 'drupal_get_form',
       'page arguments' => array('os2web_config_form'),
-      'access callback' => TRUE,
-      'type' => MENU_NORMAL_ITEM,
+      'access arguments' => array('administer os2web'),
       'file' => 'os2web_pws.admin.inc',
+      'type' => MENU_LOCAL_TASK | MENU_NORMAL_ITEM,
   );
   $items['os2web/test/pws'] = array(
       'title' => 'PWS Test',
       'page callback' => 'os2web_test_page',
-      'access callback' => TRUE,
-      'type' => MENU_NORMAL_ITEM,
+      'access arguments' => array('administer os2web'),
+      'type' => MENU_CALLBACK,
   );
   $items['os2web/pws/%'] = array(
       'title callback' => 'os2web_pws_case_listing_title',
@@ -27,7 +31,7 @@ function os2web_pws_menu() {
       'page callback' => 'os2web_pws_case_listing',
       'page arguments' => array(2),
       'access arguments' => array('access content'),
-      'type' => MENU_NORMAL_ITEM,
+      'type' => MENU_CALLBACK,
   );
   $items['os2web/pws/%/%'] = array(
       'title callback' => 'os2web_pws_case_listing_title',
@@ -35,9 +39,20 @@ function os2web_pws_menu() {
       'page callback' => 'os2web_pws_case_listing',
       'page arguments' => array(2, 3),
       'access arguments' => array('access content'),
-      'type' => MENU_NORMAL_ITEM,
+      'type' => MENU_CALLBACK,
   );
   return $items;
+}
+
+function os2web_pws_theme() {
+  return array(
+      'esdh_document' => array(
+          'variables' => array('id' => FALSE),
+      ),
+      'esdh_case' => array(
+          'variables' => array('id' => FALSE),
+      ),
+  );
 }
 
 /**
@@ -54,11 +69,14 @@ function _os2web_pws_get_instance() {
 }
 
 function os2web_pws_case_listing_title($id, $id2 = false) {
-  $pws = _os2web_pws_get_instance();
-  if (FALSE != $id2) {
-    $id = $pws->lookupCase($id . "/" . $id2);
+  $case = &drupal_static('os2web_pws_case', FALSE);
+  if (FALSE === $case) {
+    $pws = _os2web_pws_get_instance();
+    if (FALSE != $id2) {
+      $id = $pws->lookupCase($id . "/" . $id2);
+    }
+    $case = $pws->fetchCase($id);
   }
-  $case = $pws->fetchCase($id);
   error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $case = ' . print_r($case, 1));
   if (FALSE != $case) {
     return t('Show case: @caseid - @titletext', array('@caseid' => $case->CaseFileNumberIdentifier, '@titletext' => $case->CaseFileTitleText));
@@ -72,7 +90,7 @@ function os2web_pws_case_listing($id, $id2 = false) {
   if (FALSE != $id2) {
     $id = $pws->lookupCase($id . "/" . $id2);
   }
-  $output = _os2web_get_rendered_case($id);
+  $output = theme('esdh_case', array('id' => $id));
   if (FALSE != $output) {
     return $output;
   } else {
@@ -80,7 +98,9 @@ function os2web_pws_case_listing($id, $id2 = false) {
   }
 }
 
-function _os2web_get_rendered_case($id) {
+function theme_esdh_case($vars) {
+  $id = $vars['id'];
+
   $pws = _os2web_pws_get_instance();
   $case = $pws->fetchCase($id);
   if (FALSE === $case) {
@@ -94,7 +114,7 @@ function _os2web_get_rendered_case($id) {
   $header = array(t('Document Title'), t('Date'), t('Actions'));
   $rows = array();
   foreach ($docs as $doc) {
-    if ($doc->Record->PublicationIndicator == 3) {
+    if ($doc->Record->PublicationIndicator == AVAILABLE_PUBLIC) {
       $row = array();
       $row[] = $doc->Document->DocumentTitleText;
       $row[] = format_date(strtotime($doc->Record->DocumentDate), 'custom', 'd-m-Y');
@@ -102,7 +122,32 @@ function _os2web_get_rendered_case($id) {
       $rows[] = $row;
     }
   }
-  $html .= '<p>' . t('This case contains @docs documents', array('@docs' => count($rows))) . '</p>';
+  $html .= '<p>' . t('This case contains @docs public documents', array('@docs' => count($rows))) . '</p>';
+  $html .= theme('table', array('header' => $header, 'rows' => $rows));
+  return $html;
+}
+
+function theme_esdh_document($vars) {
+  $id = $vars['id'];
+
+  $pws = _os2web_pws_get_instance();
+  if (!is_array($id)) {
+    $id = array($id);
+  }
+  $html = '';
+  $rows = array();
+  $header = array(t('Title'), t('Description'), t('Date'));
+
+  foreach ($id as $docid) {
+    $doc = $pws->getDocument($docid);
+    if (FALSE != $doc && $doc[3]->PublicationIndicator == AVAILABLE_PUBLIC) { // Only show public documents
+      //FIXME: Check publication status
+      $rows[] = array($doc[0]->DocumentTitleText, $doc[3]->DescriptionText, $doc[3]->DocumentDate);
+    }
+  }
+  if (count($rows) == 0) {
+    return false;
+  }
   $html .= theme('table', array('header' => $header, 'rows' => $rows));
   return $html;
 }
@@ -114,102 +159,19 @@ function os2web_test_page() {
 //  $call = $pws->fetchCase($cid);
 //  $call = $pws->getCaseDocs(340222);
 //  $call = $pws->fetchCase(340222);
-  $call = $pws->getCaseDocs(340222);
+//  return _os2web_get_rendered_doc(array(1420175,1369822));
+//  $call = $pws->getDocument(1420175);
+  $call = $pws->getDocument(1369822);
+//
+//  $call = $pws->getDocFileName(3023484,1);
+//  $call = $pws->getDocFileName(3081831,1);
+//  $call = $pws->getDocData(3023484, 1);
 //  $call = $call->ArrayOfDocuments->DocumentOutput;
 //  $call = $pws->searchCases('12/2252');
 //  error_log(var_export($call,1));
-  foreach ($call as $item) {
-    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item = ' . print_r($item, 1));
-  }
+//  foreach ($call as $item) {
+//    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item = ' . print_r($item, 1));
+//  }
 //  return 'test';
-  return '<div><textarea rows=50>' . var_export($call, 1) . '</textarea></div>';
+  return '<div><textarea cols="150" rows=50>' . print_r($call, 1) . '</textarea></div>';
 }
-
-/* Field information hooks */
-
-function os2web_pws_field_info() {
-  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
-
-  return array(
-      'case_ident' => array(
-          'label' => t('ESDH Case'),
-          'description' => t('Case identifer.'),
-          'default_widget' => 'case_ident_widget',
-          'default_formatter' => 'case_ident_formatter',
-      ),
-  );
-}
-
-function os2web_pws_field_formatter_info() {
-  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
-
-  return array(
-      'case_ident_formatter' => array(
-          'label' => t('ESDH Case includer'),
-          'field types' => array('case_ident'),
-      )
-  );
-}
-
-function os2web_pws_field_widget_info() {
-
-  return array(
-      'case_ident_widget' => array(
-          'label' => t('Case Identifier'),
-          'field types' => array('case_ident'),
-      )
-  );
-}
-
-/**
- * Field widget form hook
- *
- */
-function os2web_pws_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
-  $field_name = $field['field_name'];
-  $field_type = $field['type'];
-  $default = ($form_state['node']->{$field_name}[$langcode][$delta][$field_type])?:0;
-  switch ($instance['widget']['type']) {
-    case 'case_ident_widget':
-
-      $element['case_ident'] = array(
-          '#type' => 'textfield',
-          '#title' => $element['#title'],
-          '#description' => $element['#description'],
-          '#default_value' => $default,
-          '#required' => $element['#required'],
-          '#weight' => isset($element['#weight']) ? $element['#weight'] : 0,
-          '#delta' => $delta,
-      );
-      break;
-  }
-  return $element;
-}
-
-function os2web_pws_field_is_empty($item, $field) {
-  if (empty($item['case_ident'])) {
-    return true;
-  }
-}
-
-/**
- * Field formatter hook
- *
- */
-function os2web_pws_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
-
-  $element = array();
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $display["type"] = ' . print_r($display['type'], 1));
-  switch ($display['type']) {
-    case 'case_ident_formatter':
-      foreach ($items as $delta => $item) {
-        if ($item['os2web_pws']) {
-          $element[$delta]['#markup'] = '<span>' . 'OMGWTFBBQ!!!' . '</span>';
-        }
-      }
-      break;
-  }
-  return $element;
-}
-

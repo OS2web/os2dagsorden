@@ -1,0 +1,51 @@
+<?php
+/**
+ * @file
+ * Code for the OS2Web indstillinger feature.
+ */
+
+include_once('os2web_settings.features.inc');
+
+function os2web_admin_permission() {
+  return array(
+    'administer os2web' => array(
+        'title' => t('Administer OS2Web'),
+        'description' => t('Access settings and administration pages for OS2Web')
+    )
+  );
+}
+
+/**
+ * Implementation of hook_menu()
+ *
+ */
+function os2web_admin_menu() {
+  $items['admin/config/os2web'] = array(
+      'title' => 'OS2Web Setup',
+      'description' => 'Set up OS2 cms services',
+      'position' => 'right',
+      'weight' => -15,
+      'access arguments' => array('administer os2web'),
+      'page callback' => 'system_admin_menu_block_page',
+      'file' => 'system.admin.inc',
+      'file path' => drupal_get_path('module', 'system'),
+  );
+  $items['admin/config/os2web/settings'] = array(
+      'title' => 'OS2web Settings',
+      'description' => t('General settings for the OS2Web project'),
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('os2web_admin_settings_form'),
+      'access arguments' => array('administer os2web'),
+  );
+	return $items;
+}
+
+
+function os2web_admin_settings_form($form, $form_state) {
+  $form['dummy'] = array(
+      '#type' => 'markup',
+      '#value' => 'Placeholder until more settings are needed.',
+
+  );
+  return system_settings_form($form);
+}

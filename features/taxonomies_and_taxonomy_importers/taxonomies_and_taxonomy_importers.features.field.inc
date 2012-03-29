@@ -170,67 +170,14 @@ function taxonomies_and_taxonomy_importers_field_default_fields() {
     ),
   );
 
-  // Exported field: 'taxonomy_term-egennavne_stednavne-field_discontinued'
-  $fields['taxonomy_term-egennavne_stednavne-field_discontinued'] = array(
+  // Exported field: 'taxonomy_term-egennavne_stednavne-field_city'
+  $fields['taxonomy_term-egennavne_stednavne-field_city'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_discontinued',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'module' => 'number',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'number_integer',
-    ),
-    'field_instance' => array(
-      'bundle' => 'egennavne_stednavne',
-      'default_value' => array(
-        0 => array(
-          'value' => '0',
-        ),
-      ),
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '0',
-        ),
-      ),
-      'entity_type' => 'taxonomy_term',
-      'field_name' => 'field_discontinued',
-      'label' => 'Udgået',
-      'required' => 0,
-      'settings' => array(
-        'max' => '1',
-        'min' => '0',
-        'prefix' => '',
-        'suffix' => '',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '2',
-      ),
-    ),
-  );
-
-  // Exported field: 'taxonomy_term-egennavne_stednavne-field_search_word'
-  $fields['taxonomy_term-egennavne_stednavne-field_search_word'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_search_word',
+      'field_name' => 'field_city',
       'foreign keys' => array(
         'format' => array(
           'columns' => array(
@@ -259,15 +206,14 @@ function taxonomies_and_taxonomy_importers_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '1',
+          'type' => 'hidden',
+          'weight' => '7',
         ),
       ),
       'entity_type' => 'taxonomy_term',
-      'field_name' => 'field_search_word',
-      'label' => 'Søgeord',
+      'field_name' => 'field_city',
+      'label' => 'GIS postby',
       'required' => 0,
       'settings' => array(
         'text_processing' => '0',
@@ -280,7 +226,68 @@ function taxonomies_and_taxonomy_importers_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '4',
+        'weight' => '11',
+      ),
+    ),
+  );
+
+  // Exported field: 'taxonomy_term-egennavne_stednavne-field_name'
+  $fields['taxonomy_term-egennavne_stednavne-field_name'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_name',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'egennavne_stednavne',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '5',
+        ),
+      ),
+      'entity_type' => 'taxonomy_term',
+      'field_name' => 'field_name',
+      'label' => 'GIS navn',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '9',
       ),
     ),
   );
@@ -370,9 +377,8 @@ function taxonomies_and_taxonomy_importers_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
+          'type' => 'hidden',
           'weight' => '4',
         ),
       ),
@@ -1002,6 +1008,8 @@ function taxonomies_and_taxonomy_importers_field_default_fields() {
   t('Afdelingsnavn');
   t('Dagsordensvisning');
   t('GIS id');
+  t('GIS navn');
+  t('GIS postby');
   t('GIS type');
   t('KLE stikord');
   t('Lovhenvisninger');

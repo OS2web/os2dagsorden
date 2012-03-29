@@ -57,5 +57,13 @@ function taxonomies_and_taxonomy_importers_taxonomy_default_vocabularies() {
       'module' => 'taxonomy',
       'weight' => '0',
     ),
+    'redaktoertags' => array(
+      'name' => 'Redaktørtags',
+      'machine_name' => 'redaktoertags',
+      'description' => 'Taksonomi til at opsamle redaktørers egne tags',
+      'hierarchy' => '0',
+      'module' => 'taxonomy',
+      'weight' => '0',
+    ),
   );
 }
