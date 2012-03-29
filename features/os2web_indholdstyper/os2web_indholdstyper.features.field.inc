@@ -1699,11 +1699,11 @@ function os2web_indholdstyper_field_default_fields() {
       'label' => 'Fotos',
       'required' => 0,
       'settings' => array(
-        'alt_field' => 0,
+        'alt_field' => 1,
         'file_directory' => 'gallery_images',
         'file_extensions' => 'png gif jpg jpeg',
         'max_filesize' => '',
-        'max_resolution' => '',
+        'max_resolution' => '5000x5000',
         'min_resolution' => '',
         'title_field' => 0,
         'user_register_form' => FALSE,
