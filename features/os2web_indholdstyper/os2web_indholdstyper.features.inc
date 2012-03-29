@@ -31,6 +31,14 @@ function os2web_indholdstyper_node_info() {
       'title_label' => t('Titel'),
       'help' => '',
     ),
+    'galleri' => array(
+      'name' => t('Galleri'),
+      'base' => 'node_content',
+      'description' => '',
+      'has_title' => '1',
+      'title_label' => t('Title'),
+      'help' => '',
+    ),
     'news' => array(
       'name' => t('Nyhed'),
       'base' => 'node_content',
