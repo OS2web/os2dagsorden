@@ -89,8 +89,8 @@ class AcadrePWS extends CaseService {
     }
     if ($this->client6) {
 
-      $result = $this->client6->getCase($id);
       try {
+      $result = $this->client6->getCase($id);
         
       } catch (Exception $exc) {
 
@@ -115,7 +115,7 @@ class AcadrePWS extends CaseService {
 XML;
       try {
         $result = $this->client->__doRequest(t($request, array('[CaseID]' => $id)), $this->client->location, $this->client->uri . 'GetAllDocuments', SOAP_1_1);
-        $result = simplexml_load_string($result)->xpath('/soap:Envelope/soap:Body[1]/*/*');
+        $result = simplexml_load_string($result)->xpath('//soap:Body[1]/*/*');
       } catch (SoapFault $sf) {
 
       }
@@ -139,8 +139,21 @@ XML;
     return $result;
   }
 
-  public function getDocFileName($ref, $ver) {
+  public function getDocRef($id) {
+    $doc = $this->getDocument($id);
+    return array(
+        'ref' => $doc->DocumentVersion->DocumentFileReference,
+        'ver' => $doc->DocumentVersion->VersionNumber,
+    );
+  }
+
+  public function getDocFileName($ref, $ver = FALSE) {
     $result = false;
+    if (!is_numeric($ver)) {
+      $info = $this->getDocRef($ref);
+      $ref = $info['ref'];
+      $ver = $info['ver'];
+    }
     if ($this->client) {
       $request = <<< XML
 <?xml version="1.0" encoding="utf-8"?>
@@ -155,7 +168,7 @@ XML;
 XML;
       try {
         $result = $this->client->__doRequest(t($request, array('@FileRef' => $ref, '@Version' => $ver)), $this->client->location, $this->client->uri . 'GetFileName', SOAP_1_1);
-        $result = array_shift(simplexml_load_string($result)->xpath('/soap:Envelope/soap:Body'))->FileName1;
+        $result = (string) array_shift(simplexml_load_string($result)->xpath('//soap:Body'))->FileName1;
       } catch (SoapFault $sf) {
 
       }
@@ -163,10 +176,24 @@ XML;
     return $result;
   }
 
-  public function getDocData($ref, $ver) {
+  public function getDocData($ref, $ver = FALSE) {
+    $dest = DEFAULT_DOC_CACHE_PATH;
     $result = false;
-    if ($this->client) {
-      $request = <<< XML
+    if (!is_numeric($ver)) {
+      $info = $this->getDocRef($ref);
+      $ref = $info['ref'];
+      $ver = $info['ver'];
+    }
+    $query = db_select('os2web_pws_doc_files', 'df')->fields('df', array('fid'))->condition('did', $ref);
+    $fid = $query->execute()->fetchField();
+    if ($fid > 0) {
+      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File cached.");
+      $result = file_load($fid);
+      $result = file_create_url($result->uri);
+    } else {
+      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Fetching file from WS.");
+      if ($this->client) {
+        $request = <<< XML
 <?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
   <soap:Body>
@@ -177,11 +204,24 @@ XML;
   </soap:Body>
 </soap:Envelope>
 XML;
-      try {
-        $result = $this->client->__doRequest(t($request, array('@FileRef' => $ref, '@Version' => $ver)), $this->client->location, $this->client->uri . 'GetPhysicalDocument', SOAP_1_1);
-//        $result = simplexml_load_string($result)->xpath('/soap:Envelope/soap:Body[1]/*/*');
-      } catch (SoapFault $sf) {
+        try {
+          $result = $this->client->__doRequest(t($request, array('@FileRef' => $ref, '@Version' => $ver)), $this->client->location, $this->client->uri . 'GetPhysicalDocument', SOAP_1_1);
+//        $result = simplexml_load_string($result)->xpath('/soap:Envelope/soap:Body/*');
+          $result = (string) array_shift(simplexml_load_string($result)->xpath('//soap:Body'))->XMLBinary;
+          if (file_prepare_directory($dest, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
+            $result = file_save_data(base64_decode($result), $dest . $this->getDocFileName($ref, $ver), FILE_EXISTS_REPLACE);
+            if (FALSE != $result) {
+              $rec = array('fid' => $result->fid, 'did' => $ref);
+              drupal_write_record('os2web_pws_doc_files', $rec);
+              $result = file_create_url($result->uri);
+            }
+          } else {
+            drupal_set_message('There was an error creating the file', 'error');
+          }
+//        $result = $result[0];
+        } catch (SoapFault $sf) {
 
+        }
       }
     }
     return $result;

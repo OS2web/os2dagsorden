@@ -8,7 +8,7 @@
  */
 
 
-function os2web_config_form($form, &$form_state) {
+function os2web_pws_config_form($form, &$form_state) {
   $form['os2web_pws_config_group'] = array(
       '#type' => 'fieldset',
       '#title' => t('Endpoint configuration'),

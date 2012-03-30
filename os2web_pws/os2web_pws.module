@@ -1,6 +1,7 @@
 <?php
 
 define('AVAILABLE_PUBLIC', 3);
+define('DEFAULT_DOC_CACHE_PATH', 'public://pws_documents/');
 
 function os2web_pws_admin_paths() {
   return array(
@@ -14,10 +15,10 @@ function os2web_pws_menu() {
       'title' => 'PWS Setup',
       'description' => t('Set up endpoints for PWS webservices.'),
       'page callback' => 'drupal_get_form',
-      'page arguments' => array('os2web_config_form'),
+      'page arguments' => array('os2web_pws_config_form'),
       'access arguments' => array('administer os2web'),
       'file' => 'os2web_pws.admin.inc',
-      'type' => MENU_LOCAL_TASK | MENU_NORMAL_ITEM,
+      'type' => MENU_NORMAL_ITEM | MENU_LOCAL_TASK,
   );
   $items['os2web/test/pws'] = array(
       'title' => 'PWS Test',
@@ -25,7 +26,7 @@ function os2web_pws_menu() {
       'access arguments' => array('administer os2web'),
       'type' => MENU_CALLBACK,
   );
-  $items['os2web/pws/%'] = array(
+  $items['os2web/showcase/%'] = array(
       'title callback' => 'os2web_pws_case_listing_title',
       'title arguments' => array(2),
       'page callback' => 'os2web_pws_case_listing',
@@ -33,7 +34,7 @@ function os2web_pws_menu() {
       'access arguments' => array('access content'),
       'type' => MENU_CALLBACK,
   );
-  $items['os2web/pws/%/%'] = array(
+  $items['os2web/showcase/%/%'] = array(
       'title callback' => 'os2web_pws_case_listing_title',
       'title arguments' => array(2, 3),
       'page callback' => 'os2web_pws_case_listing',
@@ -62,8 +63,8 @@ function os2web_pws_theme() {
  * @return AcadrePWS object
  */
 function _os2web_pws_get_instance() {
-//  module_load_include('inc', 'os2web_pws', 'AcadrePWS.class');
-//  return new AcadrePWS();
+  module_load_include('inc', 'os2web_pws', 'AcadrePWS.class');
+  return new AcadrePWS();
   module_load_include('inc', 'os2web_pws', 'AcadrePWSMock.class');
   return new AcadrePWSMock();
 }
@@ -77,7 +78,6 @@ function os2web_pws_case_listing_title($id, $id2 = false) {
     }
     $case = $pws->fetchCase($id);
   }
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $case = ' . print_r($case, 1));
   if (FALSE != $case) {
     return t('Show case: @caseid - @titletext', array('@caseid' => $case->CaseFileNumberIdentifier, '@titletext' => $case->CaseFileTitleText));
   } else {
@@ -87,6 +87,8 @@ function os2web_pws_case_listing_title($id, $id2 = false) {
 
 function os2web_pws_case_listing($id, $id2 = false) {
   $pws = _os2web_pws_get_instance();
+  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $id = ' . print_r($id, 1));
+  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $id2 = ' . print_r($id2, 1));
   if (FALSE != $id2) {
     $id = $pws->lookupCase($id . "/" . $id2);
   }
@@ -107,23 +109,16 @@ function theme_esdh_case($vars) {
     return FALSE;
   }
   $docs = $pws->getCaseDocs($id);
-  $header = array(t('Title'), t('Contents'), t('Date'), t('Actions'));
+  $header = array(t('Id'), t('Title'), t('Contents'), t('Date'));
   $rows = array();
-  $rows[] = array($case->CaseFileTitleText, $case->CustomFields->df1, format_date(strtotime($case->CreationDate), 'custom', 'd-m-Y'), 'ph');
+  $rows[] = array($case->CaseFileNumberIdentifier,$case->CaseFileTitleText, $case->CustomFields->df1, format_date(strtotime($case->CreationDate), 'custom', 'd-m-Y'));
   $html = theme('table', array('header' => $header, 'rows' => $rows));
-  $header = array(t('Document Title'), t('Date'), t('Actions'));
-  $rows = array();
+  $docids = array();
   foreach ($docs as $doc) {
-    if ($doc->Record->PublicationIndicator == AVAILABLE_PUBLIC) {
-      $row = array();
-      $row[] = $doc->Document->DocumentTitleText;
-      $row[] = format_date(strtotime($doc->Record->DocumentDate), 'custom', 'd-m-Y');
-      $row[] = 'ph';
-      $rows[] = $row;
-    }
+    $docids[] = (int) $doc->Document->DocumentIdentifier;
   }
   $html .= '<p>' . t('This case contains @docs public documents', array('@docs' => count($rows))) . '</p>';
-  $html .= theme('table', array('header' => $header, 'rows' => $rows));
+  $html .= theme('esdh_document', array('id' => $docids));
   return $html;
 }
 
@@ -140,9 +135,14 @@ function theme_esdh_document($vars) {
 
   foreach ($id as $docid) {
     $doc = $pws->getDocument($docid);
-    if (FALSE != $doc && $doc[3]->PublicationIndicator == AVAILABLE_PUBLIC) { // Only show public documents
+    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $doc = ' . print_r($doc, 1));
+    if (FALSE != $doc && $doc->Record->PublicationIndicator == AVAILABLE_PUBLIC) { // Only show public documents
       //FIXME: Check publication status
-      $rows[] = array($doc[0]->DocumentTitleText, $doc[3]->DescriptionText, $doc[3]->DocumentDate);
+      $rows[] = array(
+          l($doc->Document->DocumentTitleText, $pws->getDocData($doc->Document->DocumentIdentifier)),
+          $doc->Record->DescriptionText,
+          $doc->Record->DocumentDate,
+      );
     }
   }
   if (count($rows) == 0) {
@@ -156,16 +156,19 @@ function os2web_test_page() {
   error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
   $pws = _os2web_pws_get_instance();
 //  $cid = $pws->lookupCase('11/14293');
-//  $call = $pws->fetchCase($cid);
-//  $call = $pws->getCaseDocs(340222);
+  $call = $pws->fetchCase(373830);
+//  $call = $pws->getCaseDocs(373830);
 //  $call = $pws->fetchCase(340222);
 //  return _os2web_get_rendered_doc(array(1420175,1369822));
-//  $call = $pws->getDocument(1420175);
-  $call = $pws->getDocument(1369822);
+//  $call = $pws->getDocument(1565429);
+//  $call = $pws->getDocument(373830);
 //
 //  $call = $pws->getDocFileName(3023484,1);
-//  $call = $pws->getDocFileName(3081831,1);
-//  $call = $pws->getDocData(3023484, 1);
+//  $call = $pws->getDocFileName(1565429);
+//  $call = $pws->getDocFileName(3258320,1);
+//  $call = $pws->getDocData(3258320, 1);
+//  $call = $pws->getDocData(1565429);
+//
 //  $call = $call->ArrayOfDocuments->DocumentOutput;
 //  $call = $pws->searchCases('12/2252');
 //  error_log(var_export($call,1));
