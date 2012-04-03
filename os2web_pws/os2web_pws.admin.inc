@@ -31,6 +31,12 @@ function os2web_pws_config_form($form, &$form_state) {
       '#title' => t('PWS URL for Search service'),
       '#description' => t('URL to the webservice endpoint that runs the search service.'),
   );
+  $form['os2web_pws_config_group']['os2web_pws_url_search_case'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2web_pws_url_search_case'),
+      '#title' => t('PWS URL for Search service'),
+      '#description' => t('URL to the webservice endpoint that runs the search service.'),
+  );
   $form['os2web_pws_config_group']['os2web_pws_user'] = array(
       '#type' => 'textfield',
       '#default_value' => variable_get('os2web_pws_user'),

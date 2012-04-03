@@ -65,8 +65,8 @@ function os2web_pws_theme() {
 function _os2web_pws_get_instance() {
   module_load_include('inc', 'os2web_pws', 'AcadrePWS.class');
   return new AcadrePWS();
-  module_load_include('inc', 'os2web_pws', 'AcadrePWSMock.class');
-  return new AcadrePWSMock();
+//  module_load_include('inc', 'os2web_pws', 'AcadrePWSMock.class');
+//  return new AcadrePWSMock();
 }
 
 function os2web_pws_case_listing_title($id, $id2 = false) {
@@ -155,7 +155,7 @@ function theme_esdh_document($vars) {
 function os2web_test_page() {
   error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
   $pws = _os2web_pws_get_instance();
-//  $cid = $pws->lookupCase('11/14293');
+  $call = $pws->lookupCase('11/14293');
 //  $call = $pws->fetchCase(373830);
 //  $call = $pws->getCaseDocs(373830);
 //  $call = $pws->fetchCase(340222);
@@ -170,7 +170,7 @@ function os2web_test_page() {
 //  $call = $pws->getDocData(1565429);
 //
 //  $call = $call->ArrayOfDocuments->DocumentOutput;
-  $call = $pws->lookupDoc('4949/11');
+//  $call = $pws->lookupDoc('4949/11');
 //  error_log(var_export($call,1));
 //  foreach ($call as $item) {
 //    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item = ' . print_r($item, 1));
