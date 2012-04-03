@@ -12,6 +12,7 @@ class AcadrePWS extends CaseService {
 
   private $client;
   private $client6;
+  private $client_search;
 
   /**
    * Initial service setup.
@@ -53,11 +54,34 @@ class AcadrePWS extends CaseService {
       if ($url == '') {
         drupal_set_message(t('Error, no endpoint url set for v6.'), 'error');
       } else {
-        $options['cache_wsdl'] = WSDL_CACHE_DISK;
+//        $options['cache_wsdl'] = WSDL_CACHE_DISK;
+        $options['cache_wsdl'] = WSDL_CACHE_MEMORY;
         $options['soap_version'] = SOAP_1_2;
         unset($options['location']);
         unset($options['uri']);
-        $this->client6 = new SoapClient($url . '?WSDL', $options);
+        try {
+          $this->client6 = new SoapClient($url . '?WSDL', $options);
+        } catch (SoapFault $sf) {
+          drupal_set_message('Error connecting to PWSv6 endpoint', 'error');
+        }
+      }
+    }
+    if (!$this->client_search) {
+      $url = variable_get('os2web_pws_url_search');
+      $url = trim($url);
+      if ($url == '') {
+        drupal_set_message(t('Error, no endpoint url set for search searvice.'), 'error');
+      } else {
+//        $options['cache_wsdl'] = WSDL_CACHE_DISK;
+        $options['cache_wsdl'] = WSDL_CACHE_MEMORY;
+        $options['soap_version'] = SOAP_1_2;
+        unset($options['location']);
+        unset($options['uri']);
+        try {
+          $this->client_search = new SoapClient($url . '?WSDL', $options);
+        } catch (SoapFault $sf) {
+          drupal_set_message('Error connecting to PWS search service endpoint', 'error');
+        }
       }
     }
   }
@@ -74,12 +98,28 @@ class AcadrePWS extends CaseService {
 
   /**
    * Looks up a journaling entry and returns the id of a document.
-   * FIXME: Make this a true call to webservice.
    *
    * @param string $query A case journaling number, ie. 14293/11
    */
   public function lookupDoc($query) {
-    return false;
+    $result = &drupal_static(__FUNCTION__ . $query, FALSE);
+    if ($result != FALSE) {
+      return $result;
+    }
+    if ($this->client_search) {
+      $query = explode('/', $query);
+      if (is_numeric($query[0]) && is_numeric($query[1])) {
+        try {
+          $result = (int)$this->client_search->getSystemIdByYearAndSerial(array('year' => $query[1], 'serial' => $query[0]))->GetSystemIdByYearAndSerialResult;
+          $result = $result!=-1?$result:false;
+        } catch (SoapFault $sf) {
+          $trace = $this->client_search->__getLastRequest();
+          error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $trace = ' . print_r($trace, 1));
+          $result = $sf;
+        }
+      }
+    }
+    return $result;
   }
 
   public function fetchCase($id) {
@@ -90,8 +130,7 @@ class AcadrePWS extends CaseService {
     if ($this->client6) {
 
       try {
-      $result = $this->client6->getCase($id);
-        
+        $result = $this->client6->getCase($id);
       } catch (Exception $exc) {
 
       }

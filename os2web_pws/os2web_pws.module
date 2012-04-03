@@ -156,7 +156,7 @@ function os2web_test_page() {
   error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
   $pws = _os2web_pws_get_instance();
 //  $cid = $pws->lookupCase('11/14293');
-  $call = $pws->fetchCase(373830);
+//  $call = $pws->fetchCase(373830);
 //  $call = $pws->getCaseDocs(373830);
 //  $call = $pws->fetchCase(340222);
 //  return _os2web_get_rendered_doc(array(1420175,1369822));
@@ -170,7 +170,7 @@ function os2web_test_page() {
 //  $call = $pws->getDocData(1565429);
 //
 //  $call = $call->ArrayOfDocuments->DocumentOutput;
-//  $call = $pws->searchCases('12/2252');
+  $call = $pws->lookupDoc('4949/11');
 //  error_log(var_export($call,1));
 //  foreach ($call as $item) {
 //    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item = ' . print_r($item, 1));
