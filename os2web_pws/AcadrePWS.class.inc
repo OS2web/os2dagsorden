@@ -12,8 +12,7 @@ class AcadrePWS extends CaseService {
 
   private $client;
   private $client6;
-  private $client_search_doc;
-  private $client_search_case;
+  private $client_search;
 
   /**
    * Initial service setup.
@@ -31,9 +30,9 @@ class AcadrePWS extends CaseService {
     $options['login'] = $user;
     $options['password'] = $password;
     $options['soap_version'] = SOAP_1_1;
-    if (variable_get('os2web_pws_proxy', false)) {
-      $options['proxy_host'] = variable_get('os2web_pws_proxy_host');
-      $options['proxy_port'] = variable_get('os2web_pws_proxy_port');
+    if ($proxy) {
+      $options['proxy_host'] = $proxy_host;
+      $options['proxy_port'] = $proxy_port;
     }
 
     if (!$this->client) {
@@ -67,7 +66,7 @@ class AcadrePWS extends CaseService {
         }
       }
     }
-    if (!$this->client_search_doc) {
+    if (!$this->client_search) {
       $url = variable_get('os2web_pws_url_search');
       $url = trim($url);
       if ($url == '') {
@@ -79,27 +78,9 @@ class AcadrePWS extends CaseService {
         unset($options['location']);
         unset($options['uri']);
         try {
-          $this->client_search_doc = new SoapClient($url . '?WSDL', $options);
+          $this->client_search = new SoapClient($url . '?WSDL', $options);
         } catch (SoapFault $sf) {
           drupal_set_message('Error connecting to PWS document search service endpoint', 'error');
-        }
-      }
-    }
-    if (!$this->client_search_case) {
-      $url = variable_get('os2web_pws_url_search');
-      $url = trim($url);
-      if ($url == '') {
-        drupal_set_message(t('Error, no endpoint url set for case search searvice.'), 'error');
-      } else {
-//        $options['cache_wsdl'] = WSDL_CACHE_DISK;
-        $options['cache_wsdl'] = WSDL_CACHE_MEMORY;
-        $options['soap_version'] = SOAP_1_2;
-        unset($options['location']);
-        unset($options['uri']);
-        try {
-          $this->client_search_case = new SoapClient($url . '?WSDL', $options);
-        } catch (SoapFault $sf) {
-          drupal_set_message('Error connecting to PWS search case service endpoint', 'error');
         }
       }
     }
@@ -116,14 +97,14 @@ class AcadrePWS extends CaseService {
     if ($result != FALSE) {
       return $result;
     }
-    if ($this->client_search_case) {
+    if ($this->client_search) {
       $query = explode('/', $query);
       if (is_numeric($query[0]) && is_numeric($query[1])) {
         try {
-          $result = (int)$this->client_search_case->getSystemIdByYearAndSerial(array('year' => $query[0], 'serial' => $query[1]))->GetSystemIdByYearAndSerialResult;
-          $result = $result!=-1?$result:false;
+          $result = (int)$this->client_search->getCaseSystemIdByYearAndSerial(array('year' => $query[0], 'serial' => $query[1]))->GetCaseSystemIdByYearAndSerialResult;
+//          $result = $result!=-1?$result:false;
         } catch (SoapFault $sf) {
-          $trace = $this->client_search_doc->__getLastRequest();
+          $trace = $this->client_search->__getLastRequest();
           error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $trace = ' . print_r($trace, 1));
           $result = $sf;
         }
@@ -142,14 +123,14 @@ class AcadrePWS extends CaseService {
     if ($result != FALSE) {
       return $result;
     }
-    if ($this->client_search_doc) {
+    if ($this->client_search) {
       $query = explode('/', $query);
       if (is_numeric($query[0]) && is_numeric($query[1])) {
         try {
-          $result = (int)$this->client_search_doc->getSystemIdByYearAndSerial(array('year' => $query[1], 'serial' => $query[0]))->GetSystemIdByYearAndSerialResult;
+          $result = (int)$this->client_search->getDocumentSystemIdByYearAndSerial(array('year' => $query[1], 'serial' => $query[0]))->GetDocumentSystemIdByYearAndSerialResult;
           $result = $result!=-1?$result:false;
         } catch (SoapFault $sf) {
-          $trace = $this->client_search_doc->__getLastRequest();
+          $trace = $this->client_search->__getLastRequest();
           error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $trace = ' . print_r($trace, 1));
           $result = $sf;
         }
