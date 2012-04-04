@@ -1535,6 +1535,201 @@ function os2web_indholdstyper_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-esdh_dokument-body'
+  $fields['node-esdh_dokument-body'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(
+        0 => 'node',
+      ),
+      'field_name' => 'body',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '1',
+      'type' => 'text_with_summary',
+    ),
+    'field_instance' => array(
+      'bundle' => 'esdh_dokument',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Brødtekst der beskriver filerne og deres relevans.',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 0,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(
+            'trim_length' => 600,
+          ),
+          'type' => 'text_summary_or_trimmed',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'body',
+      'label' => 'Beskrivelse',
+      'required' => 0,
+      'settings' => array(
+        'display_summary' => 1,
+        'text_processing' => '1',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '20',
+          'summary_rows' => 5,
+        ),
+        'type' => 'text_textarea_with_summary',
+        'weight' => '-4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-esdh_dokument-field_doc'
+  $fields['node-esdh_dokument-field_doc'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_doc',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'os2web_doc_field',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'doc_ident',
+    ),
+    'field_instance' => array(
+      'bundle' => 'esdh_dokument',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'os2web_doc_field',
+          'settings' => array(),
+          'type' => 'doc_ident_formatter',
+          'weight' => 1,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_doc',
+      'label' => 'Dokument id',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'os2web_doc_field',
+        'settings' => array(),
+        'type' => 'doc_ident_widget',
+        'weight' => '-2',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-esdh_sag-field_case'
+  $fields['node-esdh_sag-field_case'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_case',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'os2web_case_field',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'case_ident',
+    ),
+    'field_instance' => array(
+      'bundle' => 'esdh_sag',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Et sags nr. på formen år/nummer f.eks. 11/123456',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'os2web_case_field',
+          'settings' => array(),
+          'type' => 'case_ident_formatter',
+          'weight' => 0,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_case',
+      'label' => 'Sags id',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'os2web_case_field',
+        'settings' => array(),
+        'type' => 'case_ident_widget',
+        'weight' => '-3',
+      ),
+    ),
+  );
+
   // Exported field: 'node-galleri-body'
   $fields['node-galleri-body'] = array(
     'field_config' => array(
@@ -3097,11 +3292,15 @@ function os2web_indholdstyper_field_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Beskrivelse');
   t('Body');
   t('Borger.dk permalink');
+  t('Brødtekst der beskriver filerne og deres relevans.');
   t('Dette felt kan du kun bruge, hvis du i forvejen har oprettet en indholdstype "Højre kolonne indhold", som er en sektion der kan placeres i flere højrespalter.');
   t('Dokument');
+  t('Dokument id');
   t('Du kan ikke redigere dette link. Slet siden, hvis linket irriterer dig.');
+  t('Et sags nr. på formen år/nummer f.eks. 11/123456');
   t('Forældre-menupunkt');
   t('Fotos');
   t('Hvis du har yderligere information, links eller fakta som er unikke for denne side, kan det tilføjes i dette felt. Indholdet vises i højre kolonne sammen med siden.');
@@ -3120,6 +3319,7 @@ function os2web_indholdstyper_field_default_fields() {
   t('Primære billede - fra bibliotek');
   t('Resume (maks 2 linier!)');
   t('Sag');
+  t('Sags id');
   t('Source ID');
   t('Unikke personer');
   t('Unikke relaterede links');
