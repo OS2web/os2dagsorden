@@ -6,7 +6,7 @@ core = 7.x
 libraries[jquery_ui][download][type] = "get"
 libraries[jquery_ui][download][url] = "http://jquery-ui.googlecode.com/files/jquery-ui-1.7.3.zip"
 libraries[jquery_ui][directory_name] = "jquery.ui"
-libraries[jquery_ui][destination] = "modules/contrib/jquery_ui"
+libraries[jquery_ui][destination] = "libraries"
 
 libraries[jcycle][download][type] = "get"
 libraries[jcycle][download][url] = "http://malsup.github.com/jquery.cycle.all.js"
