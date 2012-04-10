@@ -88,21 +88,8 @@ projects[feeds][patch][] = "http://drupal.org/files/feeds-taxonomy-text-format-1
 projects[feeds_xpathparser][subdir] = "contrib"
 projects[feeds_xpathparser][version] = "1.0-beta3"
 
-
-
 ; Themes
 
-projects[cmstheme][type] = "theme"
-projects[cmstheme][download][type] = "git"
-projects[cmstheme][download][url] = "git@github.com:bellcom/cmstheme.git"
-projects[cmstheme][download][revision] = "master"
-
-projects[syddjurs][type] = "theme"
-projects[syddjurs][download][type] = "git"
-projects[syddjurs][download][url] = "git@github.com:bellcom/os2web-theme-syddjurs.git"
-projects[syddjurs][download][revision] = "master"
-
-projects[omega][version] = "3.1"
 projects[rubik][version] = "4.0-beta8"
 projects[tao][version] = "3.0-beta4"
 
