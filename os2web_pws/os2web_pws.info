@@ -6,6 +6,5 @@ configure = admin/config/os2web/pws
 tags[] = os2web
 
 dependencies[]=os2web_settings
-dependencies[]=simpletest
 
 files[]=os2web_pws.test
