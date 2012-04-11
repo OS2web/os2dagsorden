@@ -10,7 +10,7 @@
 function os2web_ad_integration_strongarm() {
   $export = array();
 
-  $strongarm = new stdClass;
+  $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ldap_authentication_conf';
@@ -38,7 +38,7 @@ function os2web_ad_integration_strongarm() {
   );
   $export['ldap_authentication_conf'] = $strongarm;
 
-  $strongarm = new stdClass;
+  $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ldap_profile_conf';
@@ -61,21 +61,21 @@ function os2web_ad_integration_strongarm() {
   );
   $export['ldap_profile_conf'] = $strongarm;
 
-  $strongarm = new stdClass;
+  $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ldap_servers_encryption';
-  $strongarm->value = 10;
+  $strongarm->value = '6';
   $export['ldap_servers_encryption'] = $strongarm;
 
-  $strongarm = new stdClass;
+  $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ldap_servers_encrypt_key';
-  $strongarm->value = 'xPvgUhP0fZ';
+  $strongarm->value = '8nATpSXoOJ';
   $export['ldap_servers_encrypt_key'] = $strongarm;
 
-  $strongarm = new stdClass;
+  $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'ldap_servers_require_ssl_for_credentails';

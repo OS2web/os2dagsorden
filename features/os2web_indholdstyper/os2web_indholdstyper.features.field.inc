@@ -84,7 +84,7 @@ function os2web_indholdstyper_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '5',
+        'weight' => '2',
       ),
     ),
   );
@@ -160,79 +160,6 @@ function os2web_indholdstyper_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-contentpage-field_borger_url'
-  $fields['node-contentpage-field_borger_url'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_borger_url',
-      'foreign keys' => array(
-        'format' => array(
-          'columns' => array(
-            'format' => 'format',
-          ),
-          'table' => 'filter_format',
-        ),
-      ),
-      'indexes' => array(
-        'format' => array(
-          0 => 'format',
-        ),
-      ),
-      'module' => 'text',
-      'settings' => array(
-        'max_length' => '999',
-      ),
-      'translatable' => '0',
-      'type' => 'text',
-    ),
-    'field_instance' => array(
-      'bundle' => 'contentpage',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => 'Du kan ikke redigere dette link. Slet siden, hvis linket irriterer dig.',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '8',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '15',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_borger_url',
-      'label' => 'Borger.dk permalink',
-      'required' => 0,
-      'settings' => array(
-        'text_processing' => '0',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'text',
-        'settings' => array(
-          'size' => '60',
-        ),
-        'type' => 'text_textfield',
-        'weight' => '1',
-      ),
-    ),
-  );
-
   // Exported field: 'node-contentpage-field_case'
   $fields['node-contentpage-field_case'] = array(
     'field_config' => array(
@@ -259,11 +186,11 @@ function os2web_indholdstyper_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'os2web_case_field',
           'settings' => array(),
           'type' => 'case_ident_formatter',
-          'weight' => 18,
+          'weight' => '18',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -290,7 +217,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'os2web_case_field',
         'settings' => array(),
         'type' => 'case_ident_widget',
-        'weight' => '7',
+        'weight' => '2',
       ),
     ),
   );
@@ -317,11 +244,11 @@ function os2web_indholdstyper_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'os2web_doc_field',
           'settings' => array(),
           'type' => 'doc_ident_formatter',
-          'weight' => 19,
+          'weight' => '19',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -348,80 +275,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'os2web_doc_field',
         'settings' => array(),
         'type' => 'doc_ident_widget',
-        'weight' => '8',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-contentpage-field_inherit_right_column'
-  $fields['node-contentpage-field_inherit_right_column'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_inherit_right_column',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
-        ),
-      ),
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => '0',
-          1 => '1',
-        ),
-        'allowed_values_function' => '',
-      ),
-      'translatable' => '0',
-      'type' => 'list_boolean',
-    ),
-    'field_instance' => array(
-      'bundle' => 'contentpage',
-      'default_value' => array(
-        0 => array(
-          'value' => 0,
-        ),
-      ),
-      'deleted' => '0',
-      'description' => 'Markér feltet hvis du vil nedarve højrespalten fra forældrepunktet. ',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '17',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '3',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_inherit_right_column',
-      'label' => 'Nedarv højrespalte',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(
-          'display_label' => 1,
-        ),
-        'type' => 'options_onoff',
-        'weight' => '1',
+        'weight' => '3',
       ),
     ),
   );
@@ -489,15 +343,12 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_lead_image',
-      'label' => 'Primære billede - fra bibliotek',
+      'label' => 'Billeder',
       'required' => 0,
       'settings' => array(
         'alt_field' => 0,
         'file_directory' => '',
         'file_extensions' => 'png gif jpg jpeg swf',
-        'imagecrop' => array(
-          'medium' => 'medium',
-        ),
         'max_filesize' => '',
         'max_resolution' => '',
         'min_resolution' => '460x260',
@@ -510,242 +361,18 @@ function os2web_indholdstyper_field_default_fields() {
         'settings' => array(
           'allowed_schemes' => array(
             'public' => 'public',
-            'youtube' => 0,
+            'youtube' => 'youtube',
           ),
           'allowed_types' => array(
             'audio' => 0,
             'default' => 0,
             'image' => 'image',
-            'video' => 0,
-          ),
-          'browser_plugins' => array(
-            'library' => 'library',
-            'media_default--media_browser_1' => 'media_default--media_browser_1',
-            'media_internet' => 'media_internet',
-            'upload' => 'upload',
+            'video' => 'video',
           ),
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',
-        'weight' => '4',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-contentpage-field_local_coda'
-  $fields['node-contentpage-field_local_coda'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_local_coda',
-      'foreign keys' => array(
-        'format' => array(
-          'columns' => array(
-            'format' => 'format',
-          ),
-          'table' => 'filter_format',
-        ),
-      ),
-      'indexes' => array(
-        'format' => array(
-          0 => 'format',
-        ),
-      ),
-      'module' => 'text',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'text_long',
-    ),
-    'field_instance' => array(
-      'bundle' => 'contentpage',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '6',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '5',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_local_coda',
-      'label' => 'Lokal afslutning',
-      'required' => 0,
-      'settings' => array(
-        'text_processing' => '1',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'text',
-        'settings' => array(
-          'rows' => '5',
-        ),
-        'type' => 'text_textarea',
-        'weight' => '4',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-contentpage-field_local_intro'
-  $fields['node-contentpage-field_local_intro'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_local_intro',
-      'foreign keys' => array(
-        'format' => array(
-          'columns' => array(
-            'format' => 'format',
-          ),
-          'table' => 'filter_format',
-        ),
-      ),
-      'indexes' => array(
-        'format' => array(
-          0 => 'format',
-        ),
-      ),
-      'module' => 'text',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'text_long',
-    ),
-    'field_instance' => array(
-      'bundle' => 'contentpage',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '1',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '9',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_local_intro',
-      'label' => 'Lokal intro',
-      'required' => 0,
-      'settings' => array(
-        'text_processing' => '1',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'text',
-        'settings' => array(
-          'rows' => '5',
-        ),
-        'type' => 'text_textarea',
-        'weight' => '3',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-contentpage-field_local_title'
-  $fields['node-contentpage-field_local_title'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_local_title',
-      'foreign keys' => array(
-        'format' => array(
-          'columns' => array(
-            'format' => 'format',
-          ),
-          'table' => 'filter_format',
-        ),
-      ),
-      'indexes' => array(
-        'format' => array(
-          0 => 'format',
-        ),
-      ),
-      'module' => 'text',
-      'settings' => array(
-        'max_length' => '255',
-      ),
-      'translatable' => '0',
-      'type' => 'text',
-    ),
-    'field_instance' => array(
-      'bundle' => 'contentpage',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '0',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '10',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_local_title',
-      'label' => 'Lokal titel',
-      'required' => 0,
-      'settings' => array(
-        'text_processing' => '0',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'text',
-        'settings' => array(
-          'size' => '60',
-        ),
-        'type' => 'text_textfield',
-        'weight' => '2',
+        'weight' => '-2',
       ),
     ),
   );
@@ -843,392 +470,6 @@ function os2web_indholdstyper_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-contentpage-field_parent_node'
-  $fields['node-contentpage-field_parent_node'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_parent_node',
-      'foreign keys' => array(
-        'nid' => array(
-          'columns' => array(
-            'nid' => 'nid',
-          ),
-          'table' => 'node',
-        ),
-      ),
-      'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
-        ),
-      ),
-      'module' => 'node_reference',
-      'settings' => array(
-        'referenceable_types' => array(
-          'activity' => 0,
-          'borger_dk_permalink' => 0,
-          'contentpage' => 'contentpage',
-          'files' => 0,
-          'forum' => 0,
-          'galleri' => 0,
-          'iframe_selvbetjeningsl_sning_mm' => 0,
-          'institution' => 0,
-          'local_plan' => 0,
-          'media' => 0,
-          'news' => 0,
-          'person' => 0,
-          'politician' => 0,
-          'referat' => 0,
-          'right_column' => 0,
-          'tema' => 0,
-          'webform' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'node_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'contentpage',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => 'Indsæt overskriften fra forældrepunktet, hvis du vil nedarve højrespalten. Vent til menupunktet dukker op. Hvis der kommer flere menupunkter med samme navn, skal du tjekke id-nr. (jf. vejledning under Dashboard!)',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '9',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '6',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_parent_node',
-      'label' => 'Forældre-menupunkt',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'node_reference',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
-          'size' => '60',
-        ),
-        'type' => 'node_reference_autocomplete',
-        'weight' => '2',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-contentpage-field_related'
-  $fields['node-contentpage-field_related'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_related',
-      'foreign keys' => array(
-        'nid' => array(
-          'columns' => array(
-            'nid' => 'nid',
-          ),
-          'table' => 'node',
-        ),
-      ),
-      'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
-        ),
-      ),
-      'module' => 'node_reference',
-      'settings' => array(
-        'referenceable_types' => array(
-          'activity' => 'activity',
-          'borger_dk_permalink' => 0,
-          'contentpage' => 'contentpage',
-          'files' => 'files',
-          'forum' => 0,
-          'iframe_selvbetjeningsl_sning_mm' => 0,
-          'institution' => 'institution',
-          'local_plan' => 'local_plan',
-          'media' => 'media',
-          'news' => 'news',
-          'person' => 'person',
-          'politician' => 'politician',
-          'referat' => 'referat',
-          'right_column' => 0,
-          'tema' => 'tema',
-          'webform' => 'webform',
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'node_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'contentpage',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => '5',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '17',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_related',
-      'label' => 'Unikke relaterede links',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'node_reference',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
-          'size' => '60',
-        ),
-        'type' => 'node_reference_autocomplete',
-        'weight' => '3',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-contentpage-field_related_person'
-  $fields['node-contentpage-field_related_person'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_related_person',
-      'foreign keys' => array(
-        'nid' => array(
-          'columns' => array(
-            'nid' => 'nid',
-          ),
-          'table' => 'node',
-        ),
-      ),
-      'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
-        ),
-      ),
-      'module' => 'node_reference',
-      'settings' => array(
-        'referenceable_types' => array(
-          'activity' => 0,
-          'borger_dk_permalink' => 0,
-          'contentpage' => 0,
-          'files' => 0,
-          'forum' => 0,
-          'iframe_selvbetjeningsl_sning_mm' => 0,
-          'institution' => 0,
-          'local_plan' => 0,
-          'media' => 0,
-          'news' => 0,
-          'person' => 'person',
-          'politician' => 0,
-          'referat' => 0,
-          'right_column' => 0,
-          'tema' => 0,
-          'webform' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'node_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'contentpage',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '13',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '14',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_related_person',
-      'label' => 'Unikke personer',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'node_reference',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
-          'size' => '60',
-        ),
-        'type' => 'node_reference_autocomplete',
-        'weight' => '5',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-contentpage-field_related_tema'
-  $fields['node-contentpage-field_related_tema'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_related_tema',
-      'foreign keys' => array(
-        'nid' => array(
-          'columns' => array(
-            'nid' => 'nid',
-          ),
-          'table' => 'node',
-        ),
-      ),
-      'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
-        ),
-      ),
-      'module' => 'node_reference',
-      'settings' => array(
-        'referenceable_types' => array(
-          'activity' => 0,
-          'borger_dk_permalink' => 0,
-          'contentpage' => 0,
-          'files' => 0,
-          'forum' => 0,
-          'iframe_selvbetjeningsl_sning_mm' => 0,
-          'institution' => 0,
-          'local_plan' => 0,
-          'media' => 0,
-          'news' => 0,
-          'person' => 0,
-          'politician' => 0,
-          'referat' => 0,
-          'right_column' => 0,
-          'tema' => 'tema',
-          'webform' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'node_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'contentpage',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '16',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '4',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_related_tema',
-      'label' => 'Unikke relaterede temaer',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'node_reference',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
-          'size' => '60',
-        ),
-        'type' => 'node_reference_autocomplete',
-        'weight' => '4',
-      ),
-    ),
-  );
-
   // Exported field: 'node-contentpage-field_resume_long'
   $fields['node-contentpage-field_resume_long'] = array(
     'field_config' => array(
@@ -1283,118 +524,21 @@ function os2web_indholdstyper_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_resume_long',
       'label' => 'Resume (maks 2 linier!)',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'display_summary' => 0,
-        'text_processing' => '1',
+        'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
         'module' => 'text',
         'settings' => array(
-          'rows' => '3',
+          'rows' => '2',
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '3',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-contentpage-field_right_column'
-  $fields['node-contentpage-field_right_column'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_right_column',
-      'foreign keys' => array(
-        'nid' => array(
-          'columns' => array(
-            'nid' => 'nid',
-          ),
-          'table' => 'node',
-        ),
-      ),
-      'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
-        ),
-      ),
-      'module' => 'node_reference',
-      'settings' => array(
-        'referenceable_types' => array(
-          'activity' => 0,
-          'borger_dk_permalink' => 0,
-          'contentpage' => 0,
-          'files' => 0,
-          'forum' => 0,
-          'iframe_selvbetjeningsl_sning_mm' => 0,
-          'institution' => 0,
-          'local_plan' => 0,
-          'media' => 0,
-          'news' => 0,
-          'person' => 0,
-          'politician' => 0,
-          'referat' => 0,
-          'right_column' => 'right_column',
-          'tema' => 0,
-          'webform' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'node_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'contentpage',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => 'Dette felt kan du kun bruge, hvis du i forvejen har oprettet en indholdstype "Højre kolonne indhold", som er en sektion der kan placeres i flere højrespalter.',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => '7',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '7',
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_right_column',
-      'label' => 'Højrespalte-afsnit',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'node_reference',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
-          'size' => '60',
-        ),
-        'type' => 'node_reference_autocomplete',
-        'weight' => '6',
+        'weight' => '1',
       ),
     ),
   );
@@ -1460,7 +604,7 @@ function os2web_indholdstyper_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_site_structure',
       'label' => 'Overordnet placering',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -1469,7 +613,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '2',
+        'weight' => '36',
       ),
     ),
   );
@@ -1530,7 +674,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '6',
+        'weight' => '37',
       ),
     ),
   );
@@ -3097,27 +2241,19 @@ function os2web_indholdstyper_field_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Billeder');
   t('Body');
-  t('Borger.dk permalink');
-  t('Dette felt kan du kun bruge, hvis du i forvejen har oprettet en indholdstype "Højre kolonne indhold", som er en sektion der kan placeres i flere højrespalter.');
   t('Dokument');
-  t('Du kan ikke redigere dette link. Slet siden, hvis linket irriterer dig.');
   t('Forældre-menupunkt');
   t('Fotos');
   t('Hvis du har yderligere information, links eller fakta som er unikke for denne side, kan det tilføjes i dette felt. Indholdet vises i højre kolonne sammen med siden.');
   t('Højrespalte-afsnit');
   t('Indhold');
-  t('Indsæt overskriften fra forældrepunktet, hvis du vil nedarve højrespalten. Vent til menupunktet dukker op. Hvis der kommer flere menupunkter med samme navn, skal du tjekke id-nr. (jf. vejledning under Dashboard!)');
-  t('Lokal afslutning');
-  t('Lokal intro');
-  t('Lokal titel');
-  t('Markér feltet hvis du vil nedarve højrespalten fra forældrepunktet. ');
   t('Nedarv højrespalte');
   t('Nyhedskategori');
   t('Overordnet placering');
   t('PDF filer');
   t('Primære billede');
-  t('Primære billede - fra bibliotek');
   t('Resume (maks 2 linier!)');
   t('Sag');
   t('Source ID');

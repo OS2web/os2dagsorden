@@ -10,7 +10,7 @@
 function os2web_ad_integration_default_ldap_authorization() {
   $export = array();
 
-  $consumer_type = new stdClass;
+  $consumer_type = new stdClass();
   $consumer_type->disabled = FALSE; /* Edit this to true to make a default consumer_type disabled initially */
   $consumer_type->api_version = 1;
   $consumer_type->sid = 'ldap_syddjursnet';

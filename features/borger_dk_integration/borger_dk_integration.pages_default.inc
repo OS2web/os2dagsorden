@@ -10,7 +10,7 @@
 function borger_dk_integration_default_page_manager_handlers() {
   $export = array();
 
-  $handler = new stdClass;
+  $handler = new stdClass();
   $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'term_view_panel_context';
@@ -42,7 +42,7 @@ function borger_dk_integration_default_page_manager_handlers() {
       'logic' => 'and',
     ),
   );
-  $display = new panels_display;
+  $display = new panels_display();
   $display->layout = 'balk_section';
   $display->layout_settings = array();
   $display->panel_settings = array(
@@ -58,7 +58,7 @@ function borger_dk_integration_default_page_manager_handlers() {
   $display->title = '%term:name';
   $display->content = array();
   $display->panels = array();
-    $pane = new stdClass;
+    $pane = new stdClass();
     $pane->pid = 'new-1';
     $pane->panel = 'content';
     $pane->type = 'views';
@@ -100,7 +100,7 @@ function borger_dk_integration_default_page_manager_handlers() {
   $handler->conf['display'] = $display;
   $export['term_view_panel_context'] = $handler;
 
-  $handler = new stdClass;
+  $handler = new stdClass();
   $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'term_view_panel_context_2';
@@ -132,7 +132,7 @@ function borger_dk_integration_default_page_manager_handlers() {
       'logic' => 'and',
     ),
   );
-  $display = new panels_display;
+  $display = new panels_display();
   $display->layout = 'balk_section';
   $display->layout_settings = array();
   $display->panel_settings = array(
@@ -148,7 +148,7 @@ function borger_dk_integration_default_page_manager_handlers() {
   $display->title = 'Nyheder fra Ballerup Kommune';
   $display->content = array();
   $display->panels = array();
-    $pane = new stdClass;
+    $pane = new stdClass();
     $pane->pid = 'new-2';
     $pane->panel = 'content';
     $pane->type = 'views';
@@ -185,7 +185,7 @@ function borger_dk_integration_default_page_manager_handlers() {
     $pane->locks = '';
     $display->content['new-2'] = $pane;
     $display->panels['content'][0] = 'new-2';
-    $pane = new stdClass;
+    $pane = new stdClass();
     $pane->pid = 'new-3';
     $pane->panel = 'lead';
     $pane->type = 'block';

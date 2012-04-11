@@ -10,7 +10,7 @@
 function os2web_ad_integration_default_ldap_servers() {
   $export = array();
 
-  $ldap_servers_conf = new stdClass;
+  $ldap_servers_conf = new stdClass();
   $ldap_servers_conf->disabled = FALSE; /* Edit this to true to make a default ldap_servers_conf disabled initially */
   $ldap_servers_conf->api_version = 1;
   $ldap_servers_conf->sid = 'ldap_syddjursnet';

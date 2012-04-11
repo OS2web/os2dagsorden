@@ -122,21 +122,21 @@ function os2web_indholdstyper_strongarm() {
   $strongarm->value = '1';
   $export['comment_preview_contentpage'] = $strongarm;
 
-  $strongarm = new stdClass;
+  $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_preview_galleri';
   $strongarm->value = '1';
   $export['comment_preview_galleri'] = $strongarm;
 
-  $strongarm = new stdClass;
+  $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_preview_news';
   $strongarm->value = '1';
   $export['comment_preview_news'] = $strongarm;
 
-  $strongarm = new stdClass;
+  $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'comment_subject_field_contentpage';
@@ -183,7 +183,8 @@ function os2web_indholdstyper_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_contentpage';
   $strongarm->value = array(
-    0 => 'main-menu',
+    0 => 'menu-mega-menu-borger',
+    1 => 'menu-mega-menu-erhverv',
   );
   $export['menu_options_contentpage'] = $strongarm;
 
@@ -207,24 +208,24 @@ function os2web_indholdstyper_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_parent_contentpage';
-  $strongarm->value = 'main-menu:0';
+  $strongarm->value = 'menu-mega-menu-borger:0';
   $export['menu_parent_contentpage'] = $strongarm;
 
-  $strongarm = new stdClass;
+  $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_parent_galleri';
   $strongarm->value = 'main-menu:0';
   $export['menu_parent_galleri'] = $strongarm;
 
-  $strongarm = new stdClass;
+  $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_parent_news';
   $strongarm->value = 'main-menu:0';
   $export['menu_parent_news'] = $strongarm;
 
-  $strongarm = new stdClass;
+  $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_options_contentpage';
@@ -261,21 +262,21 @@ function os2web_indholdstyper_strongarm() {
   $strongarm->value = '1';
   $export['node_preview_contentpage'] = $strongarm;
 
-  $strongarm = new stdClass;
+  $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_preview_galleri';
   $strongarm->value = '1';
   $export['node_preview_galleri'] = $strongarm;
 
-  $strongarm = new stdClass;
+  $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_preview_news';
   $strongarm->value = '1';
   $export['node_preview_news'] = $strongarm;
 
-  $strongarm = new stdClass;
+  $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_submitted_contentpage';

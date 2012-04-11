@@ -682,7 +682,7 @@ function ballerup_menuer_menu_default_menu_links() {
     'module' => 'menu',
     'hidden' => '1',
     'external' => '1',
-    'has_children' => '0',
+    'has_children' => '1',
     'expanded' => '0',
     'weight' => '-46',
   );
@@ -818,22 +818,6 @@ function ballerup_menuer_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-45',
   );
-  // Exported menu link: menu-header:sitemap
-  $menu_links['menu-header:sitemap'] = array(
-    'menu_name' => 'menu-header',
-    'link_path' => 'sitemap',
-    'router_path' => 'sitemap',
-    'link_title' => 'Oversigt ',
-    'options' => array(
-      'attributes' => array(),
-    ),
-    'module' => 'menu',
-    'hidden' => '0',
-    'external' => '0',
-    'has_children' => '0',
-    'expanded' => '0',
-    'weight' => '-44',
-  );
   // Exported menu link: menu-header:taxonomy/term/198
   $menu_links['menu-header:taxonomy/term/198'] = array(
     'menu_name' => 'menu-header',
@@ -887,7 +871,6 @@ function ballerup_menuer_menu_default_menu_links() {
   t('Om kommunen');
   t('Opkrævning');
   t('Oversigt');
-  t('Oversigt ');
   t('Pas');
   t('Politik og planer');
   t('Sagsbehandling');

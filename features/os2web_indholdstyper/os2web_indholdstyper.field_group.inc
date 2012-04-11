@@ -45,24 +45,7 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->bundle = 'contentpage';
   $field_group->mode = 'form';
   $field_group->parent_name = '';
-  $field_group->data = array(
-    'label' => 'Generelt',
-    'weight' => '0',
-    'children' => array(
-      0 => 'body',
-      1 => 'field_case',
-      2 => 'field_doc',
-      3 => 'field_lead_image',
-      4 => 'field_resume_long',
-      5 => 'field_site_structure',
-      6 => 'field_source_id',
-      7 => 'title',
-    ),
-    'format_type' => 'multistep',
-    'format_settings' => array(
-      'formatter' => '',
-    ),
-  );
+  $field_group->data = '';
   $export['group_general|node|contentpage|form'] = $field_group;
 
   $field_group = new stdClass();
@@ -74,23 +57,7 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->bundle = 'contentpage';
   $field_group->mode = 'form';
   $field_group->parent_name = '';
-  $field_group->data = array(
-    'label' => 'Højrespalte unik',
-    'weight' => '8',
-    'children' => array(
-      0 => 'field_additional_info',
-      1 => 'field_mediafile',
-      2 => 'field_related',
-      3 => 'field_related_person',
-      4 => 'field_related_tema',
-      5 => 'field_right_column',
-    ),
-    'format_type' => 'multistep',
-    'format_settings' => array(
-      'formatter' => '',
-      'instance_settings' => NULL,
-    ),
-  );
+  $field_group->data = '';
   $export['group_right_column_unique|node|contentpage|form'] = $field_group;
 
   $field_group = new stdClass();

@@ -161,7 +161,7 @@ function ballerup_content_types_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '0',
+          'weight' => '2',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -237,11 +237,11 @@ function ballerup_content_types_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_default',
-          'weight' => '2',
+          'weight' => '3',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -330,11 +330,11 @@ function ballerup_content_types_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'image',
           'settings' => array(
             'image_link' => '',
-            'image_style' => '',
+            'image_style' => 'large',
           ),
           'type' => 'image',
           'weight' => '1',
@@ -427,10 +427,11 @@ function ballerup_content_types_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
+          'module' => 'text',
           'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '3',
+          'type' => 'text_default',
+          'weight' => '0',
         ),
         'related_block' => array(
           'label' => 'above',
