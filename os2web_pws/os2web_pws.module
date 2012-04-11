@@ -65,8 +65,8 @@ function os2web_pws_theme() {
 function _os2web_pws_get_instance() {
   module_load_include('inc', 'os2web_pws', 'AcadrePWS.class');
   return new AcadrePWS();
-  module_load_include('inc', 'os2web_pws', 'AcadrePWSMock.class');
-  return new AcadrePWSMock();
+//  module_load_include('inc', 'os2web_pws', 'AcadrePWSMock.class');
+//  return new AcadrePWSMock();
 }
 
 function os2web_pws_case_listing_title($id, $id2 = false) {
@@ -117,7 +117,7 @@ function theme_esdh_case($vars) {
   foreach ($docs as $doc) {
     $docids[] = (int) $doc->Document->DocumentIdentifier;
   }
-  $html .= '<p>' . t('This case contains @docs public documents', array('@docs' => count($rows))) . '</p>';
+  $html .= '<p>' . t('This case contains @docs documents', array('@docs' => count($rows))) . '</p>';
   $html .= theme('esdh_document', array('id' => $docids));
   return $html;
 }
@@ -135,8 +135,9 @@ function theme_esdh_document($vars) {
 
   foreach ($id as $docid) {
     $doc = $pws->getDocument($docid);
-    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $doc = ' . print_r($doc, 1));
-    if (FALSE != $doc && $doc->Record->PublicationIndicator == AVAILABLE_PUBLIC) { // Only show public documents
+//    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $doc = ' . print_r($doc, 1));
+//    if (FALSE != $doc && $doc->Record->PublicationIndicator == AVAILABLE_PUBLIC) { // Only show public documents
+    if (FALSE != $doc) { // Only show public documents
       //FIXME: Check publication status
       $rows[] = array(
           l($doc->Document->DocumentTitleText, $pws->getDocData($doc->Document->DocumentIdentifier)),
@@ -155,8 +156,13 @@ function theme_esdh_document($vars) {
 function os2web_test_page() {
   error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
   $pws = _os2web_pws_get_instance();
-//  $cid = $pws->lookupCase('11/14293');
-//  $call = $pws->fetchCase(373830);
+//  $call = $pws->lookupCase('11/14293');
+//  $call = $pws->fetchCase(349566);
+//  $call = $pws->getCaseDocs(349566);
+//  $call = $pws->getCaseDocs($pws->lookupCase('12/6202'));
+//  $call = $pws->getCaseDocs($pws->lookupCase('12/6202'));
+
+  $call = $pws->fetchCase($pws->lookupCase('12/6202'));
 //  $call = $pws->getCaseDocs(373830);
 //  $call = $pws->fetchCase(340222);
 //  return _os2web_get_rendered_doc(array(1420175,1369822));
@@ -170,7 +176,7 @@ function os2web_test_page() {
 //  $call = $pws->getDocData(1565429);
 //
 //  $call = $call->ArrayOfDocuments->DocumentOutput;
-  $call = $pws->lookupDoc('4949/11');
+//  $call = $pws->lookupDoc('4949/11');
 //  error_log(var_export($call,1));
 //  foreach ($call as $item) {
 //    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item = ' . print_r($item, 1));

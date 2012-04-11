@@ -8,7 +8,7 @@
  * Implements hook_default_page_manager_pages().
  */
 function os2web_grund_paneler_default_page_manager_pages() {
-  $page = new stdClass;
+  $page = new stdClass();
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
   $page->api_version = 1;
   $page->name = 'borger';
@@ -16,7 +16,10 @@ function os2web_grund_paneler_default_page_manager_pages() {
   $page->admin_title = 'Borger';
   $page->admin_description = '';
   $page->path = 'borger';
-  $page->access = array();
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
   $page->menu = array(
     'type' => 'normal',
     'title' => 'Borger',
@@ -34,7 +37,7 @@ function os2web_grund_paneler_default_page_manager_pages() {
     'admin_paths' => FALSE,
   );
   $page->default_handlers = array();
-  $handler = new stdClass;
+  $handler = new stdClass();
   $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'page_borger_panel_context';
@@ -53,7 +56,7 @@ function os2web_grund_paneler_default_page_manager_pages() {
     'contexts' => array(),
     'relationships' => array(),
   );
-  $display = new panels_display;
+  $display = new panels_display();
   $display->layout = 'balk_section_plus';
   $display->layout_settings = array();
   $display->panel_settings = array(
@@ -75,7 +78,7 @@ function os2web_grund_paneler_default_page_manager_pages() {
   $page->default_handlers[$handler->name] = $handler;
   $pages['borger'] = $page;
 
-  $page = new stdClass;
+  $page = new stdClass();
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
   $page->api_version = 1;
   $page->name = 'erhverv';
@@ -83,7 +86,10 @@ function os2web_grund_paneler_default_page_manager_pages() {
   $page->admin_title = 'Erhverv';
   $page->admin_description = '';
   $page->path = 'erhverv';
-  $page->access = array();
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
   $page->menu = array(
     'type' => 'normal',
     'title' => 'Erhverv',
@@ -101,7 +107,7 @@ function os2web_grund_paneler_default_page_manager_pages() {
     'admin_paths' => FALSE,
   );
   $page->default_handlers = array();
-  $handler = new stdClass;
+  $handler = new stdClass();
   $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'page_erhverv_panel_context';
@@ -120,7 +126,7 @@ function os2web_grund_paneler_default_page_manager_pages() {
     'contexts' => array(),
     'relationships' => array(),
   );
-  $display = new panels_display;
+  $display = new panels_display();
   $display->layout = 'balk_section_plus';
   $display->layout_settings = array();
   $display->panel_settings = array(
@@ -142,7 +148,7 @@ function os2web_grund_paneler_default_page_manager_pages() {
   $page->default_handlers[$handler->name] = $handler;
   $pages['erhverv'] = $page;
 
-  $page = new stdClass;
+  $page = new stdClass();
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
   $page->api_version = 1;
   $page->name = 'forside';
@@ -150,14 +156,17 @@ function os2web_grund_paneler_default_page_manager_pages() {
   $page->admin_title = 'Forside';
   $page->admin_description = '';
   $page->path = 'forside';
-  $page->access = array();
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
   $page->menu = array();
   $page->arguments = array();
   $page->conf = array(
     'admin_paths' => FALSE,
   );
   $page->default_handlers = array();
-  $handler = new stdClass;
+  $handler = new stdClass();
   $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'page_forside_panel_context';
@@ -176,7 +185,7 @@ function os2web_grund_paneler_default_page_manager_pages() {
     'contexts' => array(),
     'relationships' => array(),
   );
-  $display = new panels_display;
+  $display = new panels_display();
   $display->layout = 'balk_homepage';
   $display->layout_settings = array();
   $display->panel_settings = array(
@@ -201,7 +210,7 @@ function os2web_grund_paneler_default_page_manager_pages() {
   $page->default_handlers[$handler->name] = $handler;
   $pages['forside'] = $page;
 
-  $page = new stdClass;
+  $page = new stdClass();
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
   $page->api_version = 1;
   $page->name = 'politik_planer';
@@ -209,7 +218,10 @@ function os2web_grund_paneler_default_page_manager_pages() {
   $page->admin_title = 'Politik og Planer';
   $page->admin_description = '';
   $page->path = 'politik-og-planer';
-  $page->access = array();
+  $page->access = array(
+    'type' => 'none',
+    'settings' => NULL,
+  );
   $page->menu = array(
     'type' => 'normal',
     'title' => 'Politik & Planer',
@@ -227,7 +239,7 @@ function os2web_grund_paneler_default_page_manager_pages() {
     'admin_paths' => FALSE,
   );
   $page->default_handlers = array();
-  $handler = new stdClass;
+  $handler = new stdClass();
   $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'page_politik_planer_panel_context';
@@ -246,7 +258,7 @@ function os2web_grund_paneler_default_page_manager_pages() {
     'contexts' => array(),
     'relationships' => array(),
   );
-  $display = new panels_display;
+  $display = new panels_display();
   $display->layout = 'balk_section_plus';
   $display->layout_settings = array();
   $display->panel_settings = array(
@@ -268,6 +280,6 @@ function os2web_grund_paneler_default_page_manager_pages() {
   $page->default_handlers[$handler->name] = $handler;
   $pages['politik_planer'] = $page;
 
- return $pages;
+  return $pages;
 
 }

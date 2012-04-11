@@ -1,0 +1,36 @@
+<?php
+
+// $Id$
+/*
+ * 
+ * @author Jesper Mathiassen <jm@bellcom.dk>
+ * @copyright Bellcom Open Source aps.
+ */
+
+class Os2WebPwsTestCase extends DrupalUnitTestCase {
+
+  public static function getInfo() {
+    error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
+
+    return array(
+        'name' => 'Webservice API Test',
+        'description' => 'This will test connectivity and responsecodes from the PWS',
+        'group' => 'SimpleTest',
+    );
+  }
+
+  function setUp() {
+    
+    drupal_load('module', 'simpletest_example');
+    parent::setUp();
+  }
+
+  public function testLookUpCase() {
+    $pws = _os2web_pws_get_instance();
+    $case_id = $pws->lookupCase('11/14293'); // Valid case
+    $this->assertEqual($case_id, 1355124, 'Incorrect ID returned from PWS');
+    $case_id = $pws->lookupCase('19/14293'); // Invalid Case
+    $this->assertFalse($case_id, 'Invalid cases must return FALSE.');
+  }
+
+}

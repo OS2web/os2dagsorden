@@ -24,6 +24,22 @@ function os2web_indholdstyper_node_info() {
       'title_label' => t('Titel'),
       'help' => '',
     ),
+    'esdh_dokument' => array(
+      'name' => t('ESDH Dokument'),
+      'base' => 'node_content',
+      'description' => t('En side der præsentere en eller flere filer fra ESDH systemet.'),
+      'has_title' => '1',
+      'title_label' => t('Overskrift'),
+      'help' => '',
+    ),
+    'esdh_sag' => array(
+      'name' => t('ESDH Sag'),
+      'base' => 'node_content',
+      'description' => t('Viser en sag fra ESDH systemet.'),
+      'has_title' => '1',
+      'title_label' => t('Overskrift'),
+      'help' => '',
+    ),
     'galleri' => array(
       'name' => t('Galleri'),
       'base' => 'node_content',

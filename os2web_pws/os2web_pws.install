@@ -28,6 +28,7 @@ function os2web_pws_uninstall() {
   variable_del('os2web_pws_url');
   variable_del('os2web_pws_url_v6');
   variable_del('os2web_pws_url_search');
+  variable_del('os2web_pws_url_search_case');
   variable_del('os2web_pws_user');
   variable_del('os2web_pws_password');
   variable_del('os2web_pws_proxy');
