@@ -64,8 +64,6 @@ projects[views_bulk_operations][subdir] = "contrib"
 projects[plupload][subdir] = "contrib"
 projects[filefield_sources][subdir] = "contrib"
 projects[filefield_sources_plupload][subdir] = "contrib"
-projects[workbench][subdir] = "contrib"
-projects[workbench_files][subdir] = "contrib"
 ; Fra Franz:
 projects[wysiwyg][subdir] = "contrib"
 projects[skinr][subdir] = "contrib"
