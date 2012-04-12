@@ -49,9 +49,11 @@ function os2web_pws_theme() {
   return array(
       'esdh_document' => array(
           'variables' => array('id' => FALSE),
+          'file' => 'os2web_pws.theme.inc',
       ),
       'esdh_case' => array(
           'variables' => array('id' => FALSE),
+          'file' => 'os2web_pws.theme.inc',
       ),
   );
 }
@@ -100,69 +102,16 @@ function os2web_pws_case_listing($id, $id2 = false) {
   }
 }
 
-function theme_esdh_case($vars) {
-  $id = $vars['id'];
-
-  $pws = _os2web_pws_get_instance();
-  $case = $pws->fetchCase($id);
-  if (FALSE === $case) {
-    return FALSE;
-  }
-  $docs = $pws->getCaseDocs($id);
-  $header = array(t('Id'), t('Title'), t('Contents'), t('Date'));
-  $rows = array();
-  $rows[] = array($case->CaseFileNumberIdentifier,$case->CaseFileTitleText, $case->CustomFields->df1, format_date(strtotime($case->CreationDate), 'custom', 'd-m-Y'));
-  $html = theme('table', array('header' => $header, 'rows' => $rows));
-  $docids = array();
-  foreach ($docs as $doc) {
-    $docids[] = (int) $doc->Document->DocumentIdentifier;
-  }
-  $html .= '<p>' . t('This case contains @docs documents', array('@docs' => count($rows))) . '</p>';
-  $html .= theme('esdh_document', array('id' => $docids));
-  return $html;
-}
-
-function theme_esdh_document($vars) {
-  $id = $vars['id'];
-
-  $pws = _os2web_pws_get_instance();
-  if (!is_array($id)) {
-    $id = array($id);
-  }
-  $html = '';
-  $rows = array();
-  $header = array(t('Title'), t('Description'), t('Date'));
-
-  foreach ($id as $docid) {
-    $doc = $pws->getDocument($docid);
-//    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $doc = ' . print_r($doc, 1));
-//    if (FALSE != $doc && $doc->Record->PublicationIndicator == AVAILABLE_PUBLIC) { // Only show public documents
-    if (FALSE != $doc) { // Only show public documents
-      //FIXME: Check publication status
-      $rows[] = array(
-          l($doc->Document->DocumentTitleText, $pws->getDocData($doc->Document->DocumentIdentifier)),
-          $doc->Record->DescriptionText,
-          $doc->Record->DocumentDate,
-      );
-    }
-  }
-  if (count($rows) == 0) {
-    return false;
-  }
-  $html .= theme('table', array('header' => $header, 'rows' => $rows));
-  return $html;
-}
-
 function os2web_test_page() {
   error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
   $pws = _os2web_pws_get_instance();
 //  $call = $pws->lookupCase('11/14293');
 //  $call = $pws->fetchCase(349566);
-//  $call = $pws->getCaseDocs(349566);
+  $call = $pws->getCaseDocs(349566);
 //  $call = $pws->getCaseDocs($pws->lookupCase('12/6202'));
 //  $call = $pws->getCaseDocs($pws->lookupCase('12/6202'));
 
-  $call = $pws->fetchCase($pws->lookupCase('12/6202'));
+//  $call = $pws->fetchCase($pws->lookupCase('12/6202'));
 //  $call = $pws->getCaseDocs(373830);
 //  $call = $pws->fetchCase(340222);
 //  return _os2web_get_rendered_doc(array(1420175,1369822));
