@@ -71,6 +71,19 @@ function _os2web_pws_get_instance() {
 //  return new AcadrePWSMock();
 }
 
+/**
+ * Factory for class instances. This allows easy changing between api classes.
+ * TODO: Make this proper plugin-able.
+ *
+ * @return AdLibWS object
+ */
+function _os2web_adlib_get_instance() {
+  module_load_include('inc', 'os2web_pws', 'AdLibWS.class');
+  return new AdLibWS();
+//  module_load_include('inc', 'os2web_pws', 'AcadrePWSMock.class');
+//  return new AcadrePWSMock();
+}
+
 function os2web_pws_case_listing_title($id, $id2 = false) {
   $case = &drupal_static('os2web_pws_case', FALSE);
   if (FALSE === $case) {
@@ -105,12 +118,12 @@ function os2web_pws_case_listing($id, $id2 = false) {
 function os2web_test_page() {
   error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
   $pws = _os2web_pws_get_instance();
+  $adlib = _os2web_adlib_get_instance();
 //  $call = $pws->lookupCase('11/14293');
 //  $call = $pws->fetchCase(349566);
-  $call = $pws->getCaseDocs(349566);
+//  $call = $pws->getCaseDocs(349566);
 //  $call = $pws->getCaseDocs($pws->lookupCase('12/6202'));
-//  $call = $pws->getCaseDocs($pws->lookupCase('12/6202'));
-
+//  $call = $pws->getCaseDocs($pws->lookupCase('11/14293'));
 //  $call = $pws->fetchCase($pws->lookupCase('12/6202'));
 //  $call = $pws->getCaseDocs(373830);
 //  $call = $pws->fetchCase(340222);
@@ -123,6 +136,12 @@ function os2web_test_page() {
 //  $call = $pws->getDocFileName(3258320,1);
 //  $call = $pws->getDocData(3258320, 1);
 //  $call = $pws->getDocData(1565429);
+//  $call = $pws->getDocDataRaw(1428287);
+
+  $call = $adlib->uploadData('test.txt', 'test');
+
+
+//  $call = $adlib->__getFunctions();
 //
 //  $call = $call->ArrayOfDocuments->DocumentOutput;
 //  $call = $pws->lookupDoc('4949/11');
@@ -131,5 +150,7 @@ function os2web_test_page() {
 //    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item = ' . print_r($item, 1));
 //  }
 //  return 'test';
-  return '<div><textarea cols="150" rows=50>' . print_r($call, 1) . '</textarea></div>';
+//  return theme('esdh_case', array('id' => 349566));
+  return '<div><textarea cols="150" rows=50>' . print_r($call, 1) . '</textarea>
+    <textarea cols="150" rows=20>' . print_r($adlib->getTrace(),1) . '</textarea></div>';
 }
