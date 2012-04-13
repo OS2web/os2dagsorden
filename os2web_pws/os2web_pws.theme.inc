@@ -46,11 +46,13 @@ function theme_esdh_document($vars) {
 //    if (FALSE != $doc && $doc->Record->PublicationIndicator == AVAILABLE_PUBLIC) { // Only show public documents
     if (FALSE != $doc) { // Only show public documents
       //FIXME: Check publication status
-      $rows[] = array(
-          l($doc->Document->DocumentTitleText, $pws->getDocData($doc->Document->DocumentIdentifier)),
-          $doc->Record->DescriptionText,
-          $doc->Record->DocumentDate,
-      );
+      if (isset($doc->Document)) {
+        $rows[] = array(
+            l($doc->Document->DocumentTitleText, $pws->getDocData($doc->Document->DocumentIdentifier)),
+            $doc->Record->DescriptionText,
+            $doc->Record->DocumentDate,
+        );
+      }
     }
   }
   if (count($rows) == 0) {

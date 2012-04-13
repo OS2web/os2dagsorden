@@ -491,7 +491,7 @@ class AcadrePWSMock extends AcadrePWS {
     }
   }
 
-  public function getDocData($ref, $ver) {
+  public function getDocData($ref, $ver = FALSE) {
     return parent::getDocData($ref, $ver);
   }
 

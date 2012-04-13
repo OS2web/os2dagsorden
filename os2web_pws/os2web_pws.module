@@ -65,10 +65,10 @@ function os2web_pws_theme() {
  * @return AcadrePWS object
  */
 function _os2web_pws_get_instance() {
-  module_load_include('inc', 'os2web_pws', 'AcadrePWS.class');
-  return new AcadrePWS();
-//  module_load_include('inc', 'os2web_pws', 'AcadrePWSMock.class');
-//  return new AcadrePWSMock();
+//  module_load_include('inc', 'os2web_pws', 'AcadrePWS.class');
+//  return new AcadrePWS();
+  module_load_include('inc', 'os2web_pws', 'AcadrePWSMock.class');
+  return new AcadrePWSMock();
 }
 
 function os2web_pws_case_listing_title($id, $id2 = false) {
