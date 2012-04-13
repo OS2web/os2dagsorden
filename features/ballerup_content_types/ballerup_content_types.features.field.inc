@@ -647,7 +647,7 @@ function ballerup_content_types_field_default_fields() {
           'module' => 'balk_custom',
           'settings' => array(
             'height' => '1200',
-            'width' => '760',
+            'width' => '700',
           ),
           'type' => 'balk_custom_iframe',
           'weight' => '0',
