@@ -86,6 +86,7 @@ projects[megamenu][subdir] = "contrib"
 projects[better_formats][subdir] = "contrib"
 projects[context][subdir] = "contrib"
 projects[rel][subdir] = "contrib"
+projects[job_scheduler][subdir] = "contrib"
 
 projects[feeds][subdir] = "contrib"
 projects[feeds][version] = "2.0-alpha4"
