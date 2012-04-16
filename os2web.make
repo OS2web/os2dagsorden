@@ -88,6 +88,23 @@ projects[context][subdir] = "contrib"
 projects[rel][subdir] = "contrib"
 projects[job_scheduler][subdir] = "contrib"
 
+projects[admin][subdir] = "contrib"
+projects[context_menu_block][subdir] = "contrib"
+projects[disable_messages][subdir] = "contrib"
+projects[ds][subdir] = "contrib"
+projects[globalredirect][subdir] = "contrib"
+projects[i18n][subdir] = "contrib"
+projects[job_scheduler][subdir] = "contrib"
+projects[l10n_client][subdir] = "contrib"
+projects[l10n_update][subdir] = "contrib"
+projects[menu_minipanels][subdir] = "contrib"
+projects[pathauto][subdir] = "contrib"
+projects[print][subdir] = "contrib"
+projects[taxonomy_menu][subdir] = "contrib"
+projects[token][subdir] = "contrib"
+
+
+
 projects[feeds][subdir] = "contrib"
 projects[feeds][version] = "2.0-alpha4"
 ; Patch to support import of hierarchical taxonomy terms
