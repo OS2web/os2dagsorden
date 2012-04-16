@@ -17,22 +17,9 @@ function os2web_sovs_context_default_contexts() {
   $context->description = 'Borger sider';
   $context->tag = '';
   $context->conditions = array(
-    'node' => array(
+    'menu' => array(
       'values' => array(
-        'contentpage' => 'contentpage',
-        'esdh_dokument' => 'esdh_dokument',
-        'esdh_sag' => 'esdh_sag',
-        'files' => 'files',
-        'galleri' => 'galleri',
-        'iframe_selvbetjeningsl_sning_mm' => 'iframe_selvbetjeningsl_sning_mm',
-        'local_plan' => 'local_plan',
-        'ofir_job' => 'ofir_job',
-        'panel' => 'panel',
-        'politician' => 'politician',
-        'referat' => 'referat',
-      ),
-      'options' => array(
-        'node_form' => '1',
+        'taxonomy/term/4' => 'taxonomy/term/4',
       ),
     ),
     'node_taxonomy' => array(
@@ -47,9 +34,9 @@ function os2web_sovs_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'menu-menu-mega-menu-borger' => array(
-          'module' => 'menu',
-          'delta' => 'menu-mega-menu-borger',
+        'menu_block-5' => array(
+          'module' => 'menu_block',
+          'delta' => 5,
           'region' => 'sidebar_first',
           'weight' => '-10',
         ),
@@ -79,28 +66,16 @@ function os2web_sovs_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'menu-menu-selvbetjening' => array(
-          'module' => 'menu',
-          'delta' => 'menu-selvbetjening',
+        'panels_mini-footer_menuer' => array(
+          'module' => 'panels_mini',
+          'delta' => 'footer_menuer',
           'region' => 'footer_second',
           'weight' => '-10',
         ),
-        'menu-menu-mega-menu-erhverv' => array(
-          'module' => 'menu',
-          'delta' => 'menu-mega-menu-erhverv',
-          'region' => 'footer_second',
-          'weight' => '-10',
-        ),
-        'menu-menu-mega-menu-borger' => array(
-          'module' => 'menu',
-          'delta' => 'menu-mega-menu-borger',
-          'region' => 'footer_second',
-          'weight' => '-10',
-        ),
-        'menu-menu-fritid-og-planer' => array(
-          'module' => 'menu',
-          'delta' => 'menu-fritid-og-planer',
-          'region' => 'footer_second',
+        'block-6' => array(
+          'module' => 'block',
+          'delta' => 6,
+          'region' => 'footer_third',
           'weight' => '-10',
         ),
       ),

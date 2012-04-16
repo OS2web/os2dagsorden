@@ -36,34 +36,10 @@ function os2web_sovs_default_panels_mini() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-1';
+    $pane->pid = 'new-18';
     $pane->panel = 'left';
     $pane->type = 'block';
-    $pane->subtype = 'menu_block-2';
-    $pane->shown = FALSE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'override_title' => 1,
-      'override_title_text' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array(
-      'css_id' => '',
-      'css_class' => 'grid-12 alpha',
-    );
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $display->content['new-1'] = $pane;
-    $display->panels['left'][0] = 'new-1';
-    $pane = new stdClass();
-    $pane->pid = 'new-2';
-    $pane->panel = 'left';
-    $pane->type = 'block';
-    $pane->subtype = 'menu_block-3';
+    $pane->subtype = 'menu_block-8';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
@@ -76,10 +52,10 @@ function os2web_sovs_default_panels_mini() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-2'] = $pane;
-    $display->panels['left'][1] = 'new-2';
+    $display->content['new-18'] = $pane;
+    $display->panels['left'][0] = 'new-18';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $mini->display = $display;
@@ -111,10 +87,10 @@ function os2web_sovs_default_panels_mini() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-3';
+    $pane->pid = 'new-19';
     $pane->panel = 'left';
     $pane->type = 'block';
-    $pane->subtype = 'menu-menu-mega-menu-erhverv';
+    $pane->subtype = 'menu_block-9';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
@@ -129,8 +105,8 @@ function os2web_sovs_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-3'] = $pane;
-    $display->panels['left'][0] = 'new-3';
+    $display->content['new-19'] = $pane;
+    $display->panels['left'][0] = 'new-19';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $mini->display = $display;
@@ -162,10 +138,10 @@ function os2web_sovs_default_panels_mini() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-4';
+    $pane->pid = 'new-20';
     $pane->panel = 'left';
     $pane->type = 'block';
-    $pane->subtype = 'menu-menu-fritid-og-planer';
+    $pane->subtype = 'menu_block-10';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
@@ -180,8 +156,8 @@ function os2web_sovs_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-4'] = $pane;
-    $display->panels['left'][0] = 'new-4';
+    $display->content['new-20'] = $pane;
+    $display->panels['left'][0] = 'new-20';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $mini->display = $display;

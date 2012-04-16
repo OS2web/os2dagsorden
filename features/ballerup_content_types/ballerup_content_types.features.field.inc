@@ -299,7 +299,7 @@ function ballerup_content_types_field_default_fields() {
   $fields['node-files-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -559,16 +559,22 @@ function ballerup_content_types_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'iframe_selvbetjeningsl_sning_mm',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'summary' => '',
+          'value' => '',
+          'format' => 'filtered_html',
+        ),
+      ),
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Vises før indholdet af iframe',
       'display' => array(
         'default' => array(
           'label' => 'hidden',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '1',
+          'weight' => '0',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -588,7 +594,7 @@ function ballerup_content_types_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'body',
-      'label' => 'Body',
+      'label' => 'Indhold',
       'required' => 0,
       'settings' => array(
         'display_summary' => 0,
@@ -603,7 +609,85 @@ function ballerup_content_types_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '5',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_editortags'
+  $fields['node-iframe_selvbetjeningsl_sning_mm-field_editortags'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_editortags',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'redaktoertags',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '6',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_editortags',
+      'label' => 'Stikord',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '9',
       ),
     ),
   );
@@ -650,7 +734,7 @@ function ballerup_content_types_field_default_fields() {
             'width' => '700',
           ),
           'type' => 'balk_custom_iframe',
-          'weight' => '0',
+          'weight' => '2',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -680,60 +764,43 @@ function ballerup_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '1',
+        'weight' => '3',
       ),
     ),
   );
 
-  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_related_tema'
-  $fields['node-iframe_selvbetjeningsl_sning_mm-field_related_tema'] = array(
+  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_organization'
+  $fields['node-iframe_selvbetjeningsl_sning_mm-field_organization'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_related_tema',
+      'field_name' => 'field_organization',
       'foreign keys' => array(
-        'nid' => array(
+        'tid' => array(
           'columns' => array(
-            'nid' => 'nid',
+            'tid' => 'tid',
           ),
-          'table' => 'node',
+          'table' => 'taxonomy_term_data',
         ),
       ),
       'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
+        'tid' => array(
+          0 => 'tid',
         ),
       ),
-      'module' => 'node_reference',
+      'module' => 'taxonomy',
       'settings' => array(
-        'referenceable_types' => array(
-          'activity' => 0,
-          'borger_dk_permalink' => 0,
-          'contentpage' => 0,
-          'files' => 0,
-          'forum' => 0,
-          'iframe_selvbetjeningsl_sning_mm' => 0,
-          'institution' => 0,
-          'local_plan' => 0,
-          'media' => 0,
-          'news' => 0,
-          'person' => 0,
-          'politician' => 0,
-          'referat' => 0,
-          'right_column' => 0,
-          'tema' => 'tema',
-          'webform' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'organisation',
+            'parent' => '0',
+          ),
         ),
       ),
       'translatable' => '0',
-      'type' => 'node_reference',
+      'type' => 'taxonomy_term_reference',
     ),
     'field_instance' => array(
       'bundle' => 'iframe_selvbetjeningsl_sning_mm',
@@ -745,7 +812,7 @@ function ballerup_content_types_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '4',
+          'weight' => '7',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -761,95 +828,21 @@ function ballerup_content_types_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_related_tema',
-      'label' => 'Relateret tema',
+      'field_name' => 'field_organization',
+      'label' => 'Organisation',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 1,
-        'module' => 'node_reference',
+        'active' => 0,
+        'module' => 'taxonomy',
         'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
-          'size' => '60',
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
         ),
-        'type' => 'node_reference_autocomplete',
-        'weight' => '5',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_resume_long'
-  $fields['node-iframe_selvbetjeningsl_sning_mm-field_resume_long'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_resume_long',
-      'foreign keys' => array(
-        'format' => array(
-          'columns' => array(
-            'format' => 'format',
-          ),
-          'table' => 'filter_format',
-        ),
-      ),
-      'indexes' => array(
-        'format' => array(
-          0 => 'format',
-        ),
-      ),
-      'module' => 'text',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'text_with_summary',
-    ),
-    'field_instance' => array(
-      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '3',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_resume_long',
-      'label' => 'Resume',
-      'required' => 0,
-      'settings' => array(
-        'display_summary' => 0,
-        'text_processing' => '1',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'text',
-        'settings' => array(
-          'rows' => '6',
-          'summary_rows' => 5,
-        ),
-        'type' => 'text_textarea_with_summary',
-        'weight' => '2',
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '7',
       ),
     ),
   );
@@ -895,10 +888,9 @@ function ballerup_content_types_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'taxonomy',
           'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
-          'weight' => '5',
+          'type' => 'hidden',
+          'weight' => '3',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -915,7 +907,7 @@ function ballerup_content_types_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_site_structure',
-      'label' => 'Overordnet placering',
+      'label' => 'Portalkategori',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -925,7 +917,7 @@ function ballerup_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '9',
+        'weight' => '5',
       ),
     ),
   );
@@ -955,7 +947,7 @@ function ballerup_content_types_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '2',
+          'weight' => '8',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -986,7 +978,235 @@ function ballerup_content_types_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '7',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_termref_kle'
+  $fields['node-iframe_selvbetjeningsl_sning_mm-field_termref_kle'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_termref_kle',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'kle',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '5',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_termref_kle',
+      'label' => 'KLE',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '6',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_termref_sofd'
+  $fields['node-iframe_selvbetjeningsl_sning_mm-field_termref_sofd'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_termref_sofd',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 's_egeord_sofd',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '4',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_termref_sofd',
+      'label' => 'Søgeord SOFD',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '8',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_text'
+  $fields['node-iframe_selvbetjeningsl_sning_mm-field_text'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_text',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 9,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_text',
+      'label' => 'Intro',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '2',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '1',
       ),
     ),
   );
@@ -1222,7 +1442,7 @@ function ballerup_content_types_field_default_fields() {
   $fields['node-institution-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -2157,7 +2377,7 @@ function ballerup_content_types_field_default_fields() {
   $fields['node-local_plan-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -2276,21 +2496,26 @@ function ballerup_content_types_field_default_fields() {
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
-          'activity' => 0,
           'borger_dk_permalink' => 0,
           'contentpage' => 'contentpage',
+          'esdh_dokument' => 0,
+          'esdh_sag' => 0,
           'files' => 0,
-          'forum' => 0,
           'galleri' => 0,
           'iframe_selvbetjeningsl_sning_mm' => 0,
           'institution' => 0,
+          'knactivity' => 0,
           'local_plan' => 0,
           'media' => 0,
           'news' => 0,
+          'ofir_job' => 0,
+          'panel' => 0,
           'person' => 0,
           'politician' => 0,
           'referat' => 0,
           'right_column' => 0,
+          'rotating_image' => 0,
+          'spotbox' => 0,
           'tema' => 0,
           'webform' => 0,
         ),
@@ -2877,7 +3102,7 @@ function ballerup_content_types_field_default_fields() {
   $fields['node-media-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -3090,21 +3315,26 @@ function ballerup_content_types_field_default_fields() {
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
-          'activity' => 0,
           'borger_dk_permalink' => 0,
           'contentpage' => 'contentpage',
+          'esdh_dokument' => 0,
+          'esdh_sag' => 0,
           'files' => 0,
-          'forum' => 0,
           'galleri' => 0,
           'iframe_selvbetjeningsl_sning_mm' => 0,
           'institution' => 0,
+          'knactivity' => 0,
           'local_plan' => 0,
           'media' => 0,
           'news' => 0,
+          'ofir_job' => 0,
+          'panel' => 0,
           'person' => 0,
           'politician' => 0,
           'referat' => 0,
           'right_column' => 0,
+          'rotating_image' => 0,
+          'spotbox' => 0,
           'tema' => 0,
           'webform' => 0,
         ),
@@ -3681,7 +3911,7 @@ function ballerup_content_types_field_default_fields() {
   $fields['node-person-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -3907,21 +4137,26 @@ function ballerup_content_types_field_default_fields() {
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
-          'activity' => 0,
           'borger_dk_permalink' => 0,
           'contentpage' => 'contentpage',
+          'esdh_dokument' => 0,
+          'esdh_sag' => 0,
           'files' => 0,
-          'forum' => 0,
           'galleri' => 0,
           'iframe_selvbetjeningsl_sning_mm' => 0,
           'institution' => 0,
+          'knactivity' => 0,
           'local_plan' => 0,
           'media' => 0,
           'news' => 0,
+          'ofir_job' => 0,
+          'panel' => 0,
           'person' => 0,
           'politician' => 0,
           'referat' => 0,
           'right_column' => 0,
+          'rotating_image' => 0,
+          'spotbox' => 0,
           'tema' => 0,
           'webform' => 0,
         ),
@@ -4757,7 +4992,7 @@ function ballerup_content_types_field_default_fields() {
   $fields['node-politician-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -7370,22 +7605,29 @@ function ballerup_content_types_field_default_fields() {
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
-          'activity' => 'activity',
           'borger_dk_permalink' => 'borger_dk_permalink',
           'contentpage' => 'contentpage',
+          'esdh_dokument' => 0,
+          'esdh_sag' => 0,
           'files' => 'files',
-          'forum' => 'forum',
+          'galleri' => 0,
           'iframe_selvbetjeningsl_sning_mm' => 'iframe_selvbetjeningsl_sning_mm',
-          'institution' => 'institution',
-          'local_plan' => 'local_plan',
-          'media' => 'media',
-          'news' => 'news',
-          'person' => 'person',
-          'politician' => 'politician',
-          'referat' => 'referat',
-          'right_column' => 'right_column',
+          'institution' => 0,
+          'knactivity' => 0,
+          'local_plan' => 0,
+          'media' => 0,
+          'news' => 0,
+          'ofir_job' => 0,
+          'panel' => 0,
+          'person' => 0,
+          'politician' => 0,
+          'referat' => 0,
+          'right_column' => 0,
+          'rotating_image' => 0,
+          'selvbetjeningslinks' => 0,
+          'spotbox' => 0,
           'tema' => 0,
-          'webform' => 'webform',
+          'webform' => 0,
         ),
         'view' => array(
           'args' => array(),
@@ -7624,7 +7866,7 @@ function ballerup_content_types_field_default_fields() {
   $fields['node-tema-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -8007,7 +8249,7 @@ function ballerup_content_types_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => '1',
+          'weight' => '0',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -8039,60 +8281,43 @@ function ballerup_content_types_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '3',
+        'weight' => '2',
       ),
     ),
   );
 
-  // Exported field: 'node-webform-field_related_person'
-  $fields['node-webform-field_related_person'] = array(
+  // Exported field: 'node-webform-field_editortags'
+  $fields['node-webform-field_editortags'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_related_person',
+      'field_name' => 'field_editortags',
       'foreign keys' => array(
-        'nid' => array(
+        'tid' => array(
           'columns' => array(
-            'nid' => 'nid',
+            'tid' => 'tid',
           ),
-          'table' => 'node',
+          'table' => 'taxonomy_term_data',
         ),
       ),
       'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
+        'tid' => array(
+          0 => 'tid',
         ),
       ),
-      'module' => 'node_reference',
+      'module' => 'taxonomy',
       'settings' => array(
-        'referenceable_types' => array(
-          'activity' => 0,
-          'borger_dk_permalink' => 0,
-          'contentpage' => 0,
-          'files' => 0,
-          'forum' => 0,
-          'iframe_selvbetjeningsl_sning_mm' => 0,
-          'institution' => 0,
-          'local_plan' => 0,
-          'media' => 0,
-          'news' => 0,
-          'person' => 'person',
-          'politician' => 0,
-          'referat' => 0,
-          'right_column' => 0,
-          'tema' => 0,
-          'webform' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'redaktoertags',
+            'parent' => '0',
+          ),
         ),
       ),
       'translatable' => '0',
-      'type' => 'node_reference',
+      'type' => 'taxonomy_term_reference',
     ),
     'field_instance' => array(
       'bundle' => 'webform',
@@ -8101,10 +8326,87 @@ function ballerup_content_types_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'hidden',
-          'module' => 'node_reference',
+          'label' => 'above',
           'settings' => array(),
-          'type' => 'node_reference_default',
+          'type' => 'hidden',
+          'weight' => '6',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_editortags',
+      'label' => 'Stikord',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '12',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-webform-field_organization'
+  $fields['node-webform-field_organization'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_organization',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'organisation',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'webform',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
           'weight' => '3',
         ),
         'related_block' => array(
@@ -8121,119 +8423,21 @@ function ballerup_content_types_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_related_person',
-      'label' => 'Personer',
+      'field_name' => 'field_organization',
+      'label' => 'Organisation',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 1,
-        'module' => 'node_reference',
+        'active' => 0,
+        'module' => 'taxonomy',
         'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
-          'size' => '60',
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
         ),
-        'type' => 'node_reference_autocomplete',
-        'weight' => '4',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-webform-field_related_tema'
-  $fields['node-webform-field_related_tema'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_related_tema',
-      'foreign keys' => array(
-        'nid' => array(
-          'columns' => array(
-            'nid' => 'nid',
-          ),
-          'table' => 'node',
-        ),
-      ),
-      'indexes' => array(
-        'nid' => array(
-          0 => 'nid',
-        ),
-      ),
-      'module' => 'node_reference',
-      'settings' => array(
-        'referenceable_types' => array(
-          'activity' => 0,
-          'borger_dk_permalink' => 0,
-          'contentpage' => 0,
-          'files' => 0,
-          'forum' => 0,
-          'iframe_selvbetjeningsl_sning_mm' => 0,
-          'institution' => 0,
-          'local_plan' => 0,
-          'media' => 0,
-          'news' => 0,
-          'person' => 0,
-          'politician' => 0,
-          'referat' => 0,
-          'right_column' => 0,
-          'tema' => 'tema',
-          'webform' => 0,
-        ),
-        'view' => array(
-          'args' => array(),
-          'display_name' => '',
-          'view_name' => '',
-        ),
-      ),
-      'translatable' => '0',
-      'type' => 'node_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'webform',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'module' => 'node_reference',
-          'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => '2',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_related_tema',
-      'label' => 'Relateret tema',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'node_reference',
-        'settings' => array(
-          'autocomplete_match' => 'contains',
-          'autocomplete_path' => 'node_reference/autocomplete',
-          'size' => '60',
-        ),
-        'type' => 'node_reference_autocomplete',
-        'weight' => '5',
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '10',
       ),
     ),
   );
@@ -8274,7 +8478,7 @@ function ballerup_content_types_field_default_fields() {
           'label' => 'hidden',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '4',
+          'weight' => '7',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -8306,7 +8510,316 @@ function ballerup_content_types_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '2',
+        'weight' => '1',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-webform-field_site_structure'
+  $fields['node-webform-field_site_structure'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_site_structure',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'site_struktur',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'webform',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '1',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_site_structure',
+      'label' => 'Portalkategori',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '7',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-webform-field_termref_kle'
+  $fields['node-webform-field_termref_kle'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_termref_kle',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'kle',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'webform',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '2',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_termref_kle',
+      'label' => 'KLE',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '8',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-webform-field_termref_sofd'
+  $fields['node-webform-field_termref_sofd'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_termref_sofd',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 's_egeord_sofd',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'webform',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '4',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_termref_sofd',
+      'label' => 'Søgeord SOFD',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '11',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-webform-field_termref_sted'
+  $fields['node-webform-field_termref_sted'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_termref_sted',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'egennavne_stednavne',
+            'parent' => '0',
+          ),
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'webform',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '5',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_termref_sted',
+      'label' => 'Egenavne / stednavne',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '9',
       ),
     ),
   );
@@ -8389,6 +8902,7 @@ function ballerup_content_types_field_default_fields() {
   t('Bydel');
   t('CV eller beskrivelse');
   t('Dagsorden');
+  t('Egenavne / stednavne');
   t('Email');
   t('External link');
   t('Filer');
@@ -8398,6 +8912,8 @@ function ballerup_content_types_field_default_fields() {
   t('Hjemmeside');
   t('Indhold');
   t('Indhold inden formularen');
+  t('Intro');
+  t('KLE');
   t('Kategorier');
   t('Kolofon');
   t('Lokalplansnummer');
@@ -8409,10 +8925,12 @@ function ballerup_content_types_field_default_fields() {
   t('Navn og stilling');
   t('Nedarv højrespalte');
   t('Nedarv højrespalte ');
+  t('Organisation');
   t('Overordnet placering');
   t('PDF');
   t('Partimedlemsskab');
   t('Personer');
+  t('Portalkategori');
   t('Portræt');
   t('Primær billede');
   t('Primære billede');
@@ -8432,6 +8950,8 @@ function ballerup_content_types_field_default_fields() {
   t('Skriv UDEN http://
 <br>Start med www fx: www.dr.dk');
   t('Source ID');
+  t('Stikord');
+  t('Søgeord SOFD');
   t('Tekst');
   t('Telefon');
   t('Telefonnummer');
@@ -8442,6 +8962,7 @@ function ballerup_content_types_field_default_fields() {
   t('Tilføj medie');
   t('Titel');
   t('Upload forsiden af lokalplan.');
+  t('Vises før indholdet af iframe');
   t('iFrame URL');
 
   return $fields;

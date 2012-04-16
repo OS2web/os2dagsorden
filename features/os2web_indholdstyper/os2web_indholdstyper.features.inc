@@ -31,7 +31,7 @@ function os2web_indholdstyper_image_default_styles() {
         'module' => 'image',
         'name' => 'image_scale',
         'data' => array(
-          'width' => '450',
+          'width' => '460',
           'height' => '',
           'upscale' => 1,
         ),
@@ -47,7 +47,7 @@ function os2web_indholdstyper_image_default_styles() {
         'module' => 'image',
         'name' => 'image_crop',
         'data' => array(
-          'width' => '450',
+          'width' => '460',
           'height' => '260',
           'anchor' => 'center-center',
         ),

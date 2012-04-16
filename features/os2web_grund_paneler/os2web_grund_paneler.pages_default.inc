@@ -842,7 +842,7 @@ function os2web_grund_paneler_default_page_manager_pages() {
       'url' => '',
       'display' => 'block',
       'override_title' => 1,
-      'override_title_text' => '<none>',
+      'override_title_text' => 'Aktuelt',
     );
     $pane->cache = array();
     $pane->style = array(

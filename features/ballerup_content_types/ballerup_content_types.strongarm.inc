@@ -552,6 +552,48 @@ function ballerup_content_types_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'language_content_type_iframe_selvbetjeningsl_sning_mm';
+  $strongarm->value = '0';
+  $export['language_content_type_iframe_selvbetjeningsl_sning_mm'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'language_content_type_institution';
+  $strongarm->value = '0';
+  $export['language_content_type_institution'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'language_content_type_local_plan';
+  $strongarm->value = '0';
+  $export['language_content_type_local_plan'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'language_content_type_media';
+  $strongarm->value = '0';
+  $export['language_content_type_media'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'language_content_type_referat';
+  $strongarm->value = '0';
+  $export['language_content_type_referat'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'language_content_type_webform';
+  $strongarm->value = '0';
+  $export['language_content_type_webform'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_files';
   $strongarm->value = array();
   $export['menu_options_files'] = $strongarm;
@@ -561,9 +603,8 @@ function ballerup_content_types_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_iframe_selvbetjeningsl_sning_mm';
   $strongarm->value = array(
-    0 => 'menu-mega-menu-borger',
-    1 => 'menu-mega-menu-erhverv',
-    2 => 'menu-fritid-og-planer',
+    0 => 'menu-indholdsmenu',
+    1 => 'menu-selvbetjening',
   );
   $export['menu_options_iframe_selvbetjeningsl_sning_mm'] = $strongarm;
 
@@ -572,7 +613,7 @@ function ballerup_content_types_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_institution';
   $strongarm->value = array(
-    0 => 'menu-mega-menu-borger',
+    0 => 'menu-indholdsmenu',
   );
   $export['menu_options_institution'] = $strongarm;
 
@@ -581,9 +622,7 @@ function ballerup_content_types_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_local_plan';
   $strongarm->value = array(
-    0 => 'menu-mega-menu-borger',
-    1 => 'menu-mega-menu-erhverv',
-    2 => 'menu-fritid-og-planer',
+    0 => 'menu-indholdsmenu',
   );
   $export['menu_options_local_plan'] = $strongarm;
 
@@ -592,9 +631,7 @@ function ballerup_content_types_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_media';
   $strongarm->value = array(
-    0 => 'menu-mega-menu-borger',
-    1 => 'menu-mega-menu-erhverv',
-    2 => 'menu-fritid-og-planer',
+    0 => 'menu-indholdsmenu',
   );
   $export['menu_options_media'] = $strongarm;
 
@@ -625,9 +662,7 @@ function ballerup_content_types_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_referat';
   $strongarm->value = array(
-    0 => 'menu-mega-menu-borger',
-    1 => 'menu-mega-menu-erhverv',
-    2 => 'menu-fritid-og-planer',
+    0 => 'menu-indholdsmenu',
   );
   $export['menu_options_referat'] = $strongarm;
 
@@ -652,9 +687,7 @@ function ballerup_content_types_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_webform';
   $strongarm->value = array(
-    0 => 'menu-mega-menu-borger',
-    1 => 'menu-mega-menu-erhverv',
-    2 => 'menu-fritid-og-planer',
+    0 => 'menu-indholdsmenu',
   );
   $export['menu_options_webform'] = $strongarm;
 
@@ -669,28 +702,28 @@ function ballerup_content_types_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_parent_iframe_selvbetjeningsl_sning_mm';
-  $strongarm->value = 'menu-mega-menu-borger:0';
+  $strongarm->value = 'menu-selvbetjening:0';
   $export['menu_parent_iframe_selvbetjeningsl_sning_mm'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_parent_institution';
-  $strongarm->value = 'menu-mega-menu-borger:0';
+  $strongarm->value = 'menu-indholdsmenu:0';
   $export['menu_parent_institution'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_parent_local_plan';
-  $strongarm->value = 'menu-mega-menu-borger:0';
+  $strongarm->value = 'menu-indholdsmenu:0';
   $export['menu_parent_local_plan'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_parent_media';
-  $strongarm->value = 'menu-mega-menu-borger:0';
+  $strongarm->value = 'menu-indholdsmenu:0';
   $export['menu_parent_media'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -711,7 +744,7 @@ function ballerup_content_types_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_parent_referat';
-  $strongarm->value = 'menu-mega-menu-borger:0';
+  $strongarm->value = 'menu-indholdsmenu:0';
   $export['menu_parent_referat'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -732,7 +765,7 @@ function ballerup_content_types_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_parent_webform';
-  $strongarm->value = 'menu-fritid-og-planer:0';
+  $strongarm->value = 'menu-indholdsmenu:0';
   $export['menu_parent_webform'] = $strongarm;
 
   $strongarm = new stdClass();
