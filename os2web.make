@@ -81,6 +81,8 @@ projects[workbench_files][subdir] = "contrib"
 projects[workbench_access][subdir] = "contrib"
 projects[image_url_formatter][subdir] = "contrib"
 projects[views_slideshow][subdir] = "contrib"
+projects[content_taxonomy][subdir] = "contrib"
+projects[autocomplete_deluxe][subdir] = "contrib"
 
 ; Fra Franz:
 projects[wysiwyg][subdir] = "contrib"
