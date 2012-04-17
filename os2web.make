@@ -93,7 +93,6 @@ projects[delta][subdir] = "contrib"
 projects[float_filter][subdir] = "contrib"
 projects[omega_tools][subdir] = "contrib"
 projects[jquery_ui][subdir] = "contrib"
-projects[multistep][subdir] = "contrib"
 projects[megamenu][subdir] = "contrib"
 projects[better_formats][subdir] = "contrib"
 projects[context][subdir] = "contrib"
@@ -116,6 +115,10 @@ projects[taxonomy_menu][subdir] = "contrib"
 projects[token][subdir] = "contrib"
 
 
+projects[multistep][subdir] = "contrib"
+projects[multistep][version] = "1.x-dev"
+; patch from fix in http://drupal.org/node/1065458
+projects[multistep][patch][] = "http://drupal.org/files/multistep_limit_validations2.patch"
 
 projects[feeds][subdir] = "contrib"
 projects[feeds][version] = "2.0-alpha4"
