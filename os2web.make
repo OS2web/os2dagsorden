@@ -43,7 +43,7 @@ projects[features][subdir] = "contrib"
 projects[features][version] = "1.0-rc1"
 
 projects[strongarm][subdir] = "contrib"
-projects[strongarm][version] = "2.0-beta5"
+projects[strongarm][version] = "2.0-rc1"
 
 projects[jcarousel][subdir] = "contrib"
 projects[jcarousel][version] = "2.6"
