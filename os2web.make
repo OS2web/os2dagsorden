@@ -34,7 +34,7 @@ libraries[markitdown][directory_name] = "markitdown"
 libraries[markitdown][destination] = "libraries"
 
 libraries[qtip][download][type] = "get"
-libraries[qtip][download][url] = "http://craigsworks.com/projects/qtip/download/package/development/"
+libraries[qtip][download][url] = "https://github.com/Craga89/qTip1/blob/master/1.0.0-rc3/jquery.qtip-1.0.0-rc3.zip"
 libraries[qtip][directory_name] = "qtip"
 libraries[qtip][destination] = "libraries"
 
