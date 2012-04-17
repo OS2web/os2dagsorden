@@ -99,7 +99,9 @@ projects[megamenu][subdir] = "contrib"
 projects[better_formats][subdir] = "contrib"
 projects[context][subdir] = "contrib"
 projects[rel][subdir] = "contrib"
+
 projects[job_scheduler][subdir] = "contrib"
+projects[job_scheduler][version] = "2.0-alpha2"
 
 projects[admin][subdir] = "contrib"
 projects[context_menu_block][subdir] = "contrib"
