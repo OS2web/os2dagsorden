@@ -76,13 +76,15 @@ projects[views_bulk_operations][subdir] = "contrib"
 projects[plupload][subdir] = "contrib"
 projects[filefield_sources][subdir] = "contrib"
 projects[filefield_sources_plupload][subdir] = "contrib"
-projects[workbench][subdir] = "contrib"
-projects[workbench_files][subdir] = "contrib"
-projects[workbench_access][subdir] = "contrib"
 projects[image_url_formatter][subdir] = "contrib"
 projects[views_slideshow][subdir] = "contrib"
 projects[content_taxonomy][subdir] = "contrib"
 projects[autocomplete_deluxe][subdir] = "contrib"
+
+projects[workbench][subdir] = "contrib"
+projects[workbench_files][subdir] = "contrib"
+projects[workbench_media][subdir] = "contrib"
+projects[workbench_access][subdir] = "contrib"
 
 ; Fra Franz:
 projects[wysiwyg][subdir] = "contrib"
