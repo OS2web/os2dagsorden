@@ -21,12 +21,22 @@ libraries[jcarousel][destination] = "libraries"
 libraries[ckeditor][download][type]= "get"
 libraries[ckeditor][download][url] = "http://download.cksource.com/CKEditor/CKEditor/CKEditor%203.6.2/ckeditor_3.6.2.zip"
 libraries[ckeditor][directory_name] = "ckeditor"
-libraries[ckeditor][destination] = "modules/contrib/ckeditor/ckeditor"
+libraries[ckeditor][destination] = "libraries"
 
 libraries[plupload][download][type] = "get"
 libraries[plupload][download][url] = "https://github.com/downloads/moxiecode/plupload/plupload_1_5_2.zip"
 libraries[plupload][directory_name] = "plupload"
 libraries[plupload][destination] = "libraries"
+
+libraries[markitdown][download][type] = "get"
+libraries[markitdown][download][url] = "http://markitup.jaysalvat.com/downloads/download.php?id=releases/latest"
+libraries[markitdown][directory_name] = "markitdown"
+libraries[markitdown][destination] = "libraries"
+
+libraries[qtip][download][type] = "get"
+libraries[qtip][download][url] = "http://craigsworks.com/projects/qtip/download/package/development/"
+libraries[qtip][directory_name] = "qtip"
+libraries[qtip][destination] = "libraries"
 
 ; Contrib modules
 projects[features][subdir] = "contrib"
