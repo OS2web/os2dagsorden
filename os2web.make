@@ -34,7 +34,7 @@ libraries[markitdown][directory_name] = "markitdown"
 libraries[markitdown][destination] = "libraries"
 
 libraries[qtip][download][type] = "get"
-libraries[qtip][download][url] = "https://github.com/bellcom/qTip1/raw/master/1.0.0-rc3/jquery.qtip-1.0.0-rc3.zip"
+libraries[qtip][download][url] = "https://raw.github.com/bellcom/qTip1/master/1.0.0-rc3/jquery.qtip-1.0.0-rc3.min.js"
 libraries[qtip][directory_name] = "qtip"
 libraries[qtip][destination] = "libraries"
 
