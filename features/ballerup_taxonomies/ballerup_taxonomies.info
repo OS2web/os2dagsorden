@@ -14,3 +14,10 @@ features[taxonomy][] = "galleri"
 features[taxonomy][] = "kilder"
 features[taxonomy][] = "medlemstype"
 features[taxonomy][] = "tags"
+
+
+; Information added by drush on 2012-04-17
+version = "dev"
+project = "os2web"
+datestamp = "1334666157"
+

@@ -9,3 +9,10 @@ features[user_role][] = "Editor"
 features[user_role][] = "Kommunikation"
 features[user_role][] = "Student"
 features[user_role][] = "Webmaster"
+
+
+; Information added by drush on 2012-04-17
+version = "dev"
+project = "os2web"
+datestamp = "1334666157"
+

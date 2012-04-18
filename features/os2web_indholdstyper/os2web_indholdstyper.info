@@ -185,3 +185,10 @@ features[variable][] = "node_submitted_gallery_item"
 features[variable][] = "node_submitted_news"
 features[variable][] = "node_submitted_rotating_image"
 features[variable][] = "node_submitted_spotbox"
+
+
+; Information added by drush on 2012-04-17
+version = "dev"
+project = "os2web"
+datestamp = "1334666157"
+

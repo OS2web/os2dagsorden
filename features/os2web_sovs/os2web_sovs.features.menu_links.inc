@@ -29,7 +29,7 @@ function os2web_sovs_menu_default_menu_links() {
           ),
         ),
         'show' => array(
-          'delay' => '0',
+          'delay' => '30',
           'when' => array(
             'event' => 'mouseover',
           ),
@@ -39,14 +39,14 @@ function os2web_sovs_menu_default_menu_links() {
           ),
         ),
         'hide' => array(
-          'fixed' => 'true',
+          'delay' => '30',
           'effect' => array(
             'type' => 'false',
             'length' => '0',
           ),
         ),
         'style' => array(
-          'name' => 'cmstheme',
+          'name' => 'cream',
           'width' => array(
             'min' => '960',
             'max' => '960',

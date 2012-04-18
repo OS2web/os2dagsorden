@@ -20,3 +20,10 @@ features[variable][] = "ldap_profile_conf"
 features[variable][] = "ldap_servers_encrypt_key"
 features[variable][] = "ldap_servers_encryption"
 features[variable][] = "ldap_servers_require_ssl_for_credentails"
+
+
+; Information added by drush on 2012-04-17
+version = "dev"
+project = "os2web"
+datestamp = "1334666157"
+
