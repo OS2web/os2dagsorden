@@ -790,6 +790,27 @@ function os2web_grund_paneler_default_page_manager_pages() {
     $display->panels['center'][0] = 'new-12';
     $pane = new stdClass();
     $pane->pid = 'new-13';
+    $pane->panel = 'center';
+    $pane->type = 'block';
+    $pane->subtype = 'delta_blocks-messages';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 0,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $display->content['new-13'] = $pane;
+    $display->panels['center'][1] = 'new-13';
+    $pane = new stdClass();
+    $pane->pid = 'new-14';
     $pane->panel = 'left';
     $pane->type = 'views';
     $pane->subtype = 'rotating_image_view';
@@ -819,10 +840,10 @@ function os2web_grund_paneler_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-13'] = $pane;
-    $display->panels['left'][0] = 'new-13';
+    $display->content['new-14'] = $pane;
+    $display->panels['left'][0] = 'new-14';
     $pane = new stdClass();
-    $pane->pid = 'new-14';
+    $pane->pid = 'new-15';
     $pane->panel = 'left';
     $pane->type = 'views';
     $pane->subtype = 'newslist';
@@ -852,10 +873,10 @@ function os2web_grund_paneler_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-14'] = $pane;
-    $display->panels['left'][1] = 'new-14';
+    $display->content['new-15'] = $pane;
+    $display->panels['left'][1] = 'new-15';
     $pane = new stdClass();
-    $pane->pid = 'new-15';
+    $pane->pid = 'new-16';
     $pane->panel = 'left';
     $pane->type = 'block';
     $pane->subtype = 'block-3';
@@ -863,7 +884,7 @@ function os2web_grund_paneler_default_page_manager_pages() {
     $pane->access = array();
     $pane->configuration = array(
       'override_title' => 1,
-      'override_title_text' => '<none>',
+      'override_title_text' => 'Det sker',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -873,10 +894,10 @@ function os2web_grund_paneler_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-15'] = $pane;
-    $display->panels['left'][2] = 'new-15';
+    $display->content['new-16'] = $pane;
+    $display->panels['left'][2] = 'new-16';
     $pane = new stdClass();
-    $pane->pid = 'new-16';
+    $pane->pid = 'new-17';
     $pane->panel = 'right_';
     $pane->type = 'block';
     $pane->subtype = 'block-4';
@@ -894,8 +915,8 @@ function os2web_grund_paneler_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-16'] = $pane;
-    $display->panels['right_'][0] = 'new-16';
+    $display->content['new-17'] = $pane;
+    $display->panels['right_'][0] = 'new-17';
   $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -971,7 +992,7 @@ function os2web_grund_paneler_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-17';
+    $pane->pid = 'new-18';
     $pane->panel = 'lead';
     $pane->type = 'views';
     $pane->subtype = 'rotating_image_view';
@@ -1001,8 +1022,8 @@ function os2web_grund_paneler_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-17'] = $pane;
-    $display->panels['lead'][0] = 'new-17';
+    $display->content['new-18'] = $pane;
+    $display->panels['lead'][0] = 'new-18';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

@@ -3,16 +3,12 @@ description = "Feature containing os2web roles"
 core = "7.x"
 package = "OS2Web"
 php = "5.2.4"
+version = "dev"
+project = "os2web"
 dependencies[] = "features"
+datestamp = "1334666157"
 features[user_role][] = "Administrator"
 features[user_role][] = "Editor"
 features[user_role][] = "Kommunikation"
 features[user_role][] = "Student"
 features[user_role][] = "Webmaster"
-
-
-; Information added by drush on 2012-04-17
-version = "dev"
-project = "os2web"
-datestamp = "1334666157"
-

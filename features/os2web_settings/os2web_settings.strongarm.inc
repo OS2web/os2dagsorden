@@ -28,7 +28,7 @@ function os2web_settings_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'multistep_status_revisions';
-  $strongarm->value = 'complete';
+  $strongarm->value = 'default';
   $export['multistep_status_revisions'] = $strongarm;
 
   $strongarm = new stdClass();
