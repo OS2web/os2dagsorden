@@ -62,13 +62,6 @@ function borger_dk_integration_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'language_content_type_borger_dk_permalink';
-  $strongarm->value = '0';
-  $export['language_content_type_borger_dk_permalink'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_borger_dk_permalink';
   $strongarm->value = array();
   $export['menu_options_borger_dk_permalink'] = $strongarm;

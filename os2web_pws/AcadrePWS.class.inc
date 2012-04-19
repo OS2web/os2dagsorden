@@ -200,10 +200,14 @@ XML;
 
   public function getDocRef($id) {
     $doc = $this->getDocument($id);
-    return array(
-        'ref' => $doc->DocumentVersion->DocumentFileReference,
-        'ver' => $doc->DocumentVersion->VersionNumber,
-    );
+    if (isset($doc->DocumentVersion->DocumentFileReference) && isset($doc->DocumentVersion->VersionNumber)) {
+      return array(
+          'ref' => $doc->DocumentVersion->DocumentFileReference,
+          'ver' => $doc->DocumentVersion->VersionNumber,
+      );
+    } else {
+      return false;
+    }
   }
 
   public function getDocFileName($ref, $ver = FALSE) {

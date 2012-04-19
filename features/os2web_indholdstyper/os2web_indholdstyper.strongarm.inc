@@ -197,8 +197,7 @@ function os2web_indholdstyper_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_contentpage';
   $strongarm->value = array(
-    0 => 'menu-mega-menu-borger',
-    1 => 'menu-mega-menu-erhverv',
+    0 => 'menu-indholdsmenu',
   );
   $export['menu_options_contentpage'] = $strongarm;
 
@@ -207,7 +206,7 @@ function os2web_indholdstyper_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_esdh_dokument';
   $strongarm->value = array(
-    0 => 'main-menu',
+    0 => 'menu-indholdsmenu',
   );
   $export['menu_options_esdh_dokument'] = $strongarm;
 
@@ -216,7 +215,7 @@ function os2web_indholdstyper_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_esdh_sag';
   $strongarm->value = array(
-    0 => 'main-menu',
+    0 => 'menu-indholdsmenu',
   );
   $export['menu_options_esdh_sag'] = $strongarm;
 
@@ -225,51 +224,99 @@ function os2web_indholdstyper_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_galleri';
   $strongarm->value = array(
-    0 => 'main-menu',
+    0 => 'menu-indholdsmenu',
   );
   $export['menu_options_galleri'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'menu_options_gallery_item';
+  $strongarm->value = array(
+    0 => 'main-menu',
+  );
+  $export['menu_options_gallery_item'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_news';
-  $strongarm->value = array();
+  $strongarm->value = array(
+    0 => 'menu-nyhedstype',
+  );
   $export['menu_options_news'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'menu_options_rotating_image';
+  $strongarm->value = array(
+    0 => 'main-menu',
+  );
+  $export['menu_options_rotating_image'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_options_spotbox';
+  $strongarm->value = array();
+  $export['menu_options_spotbox'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'menu_parent_contentpage';
-  $strongarm->value = 'menu-mega-menu-borger:0';
+  $strongarm->value = 'menu-indholdsmenu:0';
   $export['menu_parent_contentpage'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_parent_esdh_dokument';
-  $strongarm->value = 'main-menu:0';
+  $strongarm->value = 'menu-indholdsmenu:0';
   $export['menu_parent_esdh_dokument'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_parent_esdh_sag';
-  $strongarm->value = 'main-menu:0';
+  $strongarm->value = 'menu-indholdsmenu:0';
   $export['menu_parent_esdh_sag'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_parent_galleri';
-  $strongarm->value = 'main-menu:0';
+  $strongarm->value = 'menu-indholdsmenu:0';
   $export['menu_parent_galleri'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'menu_parent_news';
+  $strongarm->name = 'menu_parent_gallery_item';
   $strongarm->value = 'main-menu:0';
+  $export['menu_parent_gallery_item'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_parent_news';
+  $strongarm->value = 'menu-nyhedstype:0';
   $export['menu_parent_news'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_parent_rotating_image';
+  $strongarm->value = 'main-menu:0';
+  $export['menu_parent_rotating_image'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'menu_parent_spotbox';
+  $strongarm->value = 'main-menu:0';
+  $export['menu_parent_spotbox'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -311,13 +358,41 @@ function os2web_indholdstyper_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'node_options_gallery_item';
+  $strongarm->value = array(
+    0 => 'status',
+    1 => 'promote',
+  );
+  $export['node_options_gallery_item'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'node_options_news';
   $strongarm->value = array(
     0 => 'status',
     1 => 'promote',
-    2 => 'revision',
   );
   $export['node_options_news'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'node_options_rotating_image';
+  $strongarm->value = array(
+    0 => 'status',
+    1 => 'promote',
+  );
+  $export['node_options_rotating_image'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'node_options_spotbox';
+  $strongarm->value = array(
+    0 => 'status',
+  );
+  $export['node_options_spotbox'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
@@ -357,6 +432,20 @@ function os2web_indholdstyper_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'node_preview_rotating_image';
+  $strongarm->value = '1';
+  $export['node_preview_rotating_image'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'node_preview_spotbox';
+  $strongarm->value = '0';
+  $export['node_preview_spotbox'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'node_submitted_contentpage';
   $strongarm->value = 0;
   $export['node_submitted_contentpage'] = $strongarm;
@@ -385,9 +474,30 @@ function os2web_indholdstyper_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'node_submitted_gallery_item';
+  $strongarm->value = 1;
+  $export['node_submitted_gallery_item'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'node_submitted_news';
   $strongarm->value = 1;
   $export['node_submitted_news'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'node_submitted_rotating_image';
+  $strongarm->value = 1;
+  $export['node_submitted_rotating_image'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'node_submitted_spotbox';
+  $strongarm->value = 1;
+  $export['node_submitted_spotbox'] = $strongarm;
 
   return $export;
 }

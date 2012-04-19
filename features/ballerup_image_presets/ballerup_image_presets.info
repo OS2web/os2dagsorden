@@ -7,7 +7,6 @@ version = "7.x-0.1"
 project = "ballerup_image_presets"
 dependencies[] = "image"
 features[image][] = "medium-460px"
-features[image][] = "medium-content"
 features[image][] = "medium-media-front"
 features[image][] = "medium-news-front"
 features[image][] = "medium-person"
@@ -23,3 +22,10 @@ features[image][] = "thumbnail-person"
 features[image][] = "thumbnail-subsite-banner"
 features[image][] = "thumbnail-subsite-logo"
 features[image][] = "thumbnail-tema-right-column"
+
+
+; Information added by drush on 2012-04-17
+version = "dev"
+project = "os2web"
+datestamp = "1334666157"
+

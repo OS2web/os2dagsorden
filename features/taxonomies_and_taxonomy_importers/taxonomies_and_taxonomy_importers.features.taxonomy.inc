@@ -58,7 +58,7 @@ function taxonomies_and_taxonomy_importers_taxonomy_default_vocabularies() {
       'weight' => '0',
     ),
     'redaktoertags' => array(
-      'name' => 'Redaktørtags',
+      'name' => 'Stikord',
       'machine_name' => 'redaktoertags',
       'description' => 'Taksonomi til at opsamle redaktørers egne tags',
       'hierarchy' => '0',

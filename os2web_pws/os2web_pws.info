@@ -6,6 +6,12 @@ configure = admin/config/os2web/pws
 tags[] = os2web
 
 dependencies[]=os2web_settings
-dependencies[]=simpletest
 
 files[]=os2web_pws.test
+
+
+; Information added by drush on 2012-04-17
+version = "dev"
+project = "os2web"
+datestamp = "1334666157"
+

@@ -3,13 +3,6 @@
 define('AVAILABLE_PUBLIC', 3);
 define('DEFAULT_DOC_CACHE_PATH', 'public://pws_documents/');
 
-function os2web_pws_admin_paths() {
-  return array(
-      'admin/config/os2web' => TRUE,
-      'admin/config/os2web/pws' => TRUE,
-  );
-}
-
 function os2web_pws_menu() {
   $items['admin/config/os2web/pws'] = array(
       'title' => 'PWS Setup',
