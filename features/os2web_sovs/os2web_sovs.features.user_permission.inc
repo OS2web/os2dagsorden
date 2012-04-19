@@ -91,7 +91,8 @@ function os2web_sovs_user_default_permissions() {
   $permissions['create rotating_image content'] = array(
     'name' => 'create rotating_image content',
     'roles' => array(
-      0 => 'Kommunikation',
+      0 => 'Editor',
+      1 => 'Kommunikation',
     ),
     'module' => 'node',
   );
@@ -100,7 +101,8 @@ function os2web_sovs_user_default_permissions() {
   $permissions['create spotbox content'] = array(
     'name' => 'create spotbox content',
     'roles' => array(
-      0 => 'Kommunikation',
+      0 => 'Editor',
+      1 => 'Kommunikation',
     ),
     'module' => 'node',
   );
@@ -108,31 +110,52 @@ function os2web_sovs_user_default_permissions() {
   // Exported permission: delete any contentpage content
   $permissions['delete any contentpage content'] = array(
     'name' => 'delete any contentpage content',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Kommunikation',
+      2 => 'Webmaster',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: delete any esdh_dokument content
   $permissions['delete any esdh_dokument content'] = array(
     'name' => 'delete any esdh_dokument content',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Webmaster',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: delete any esdh_sag content
   $permissions['delete any esdh_sag content'] = array(
     'name' => 'delete any esdh_sag content',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Webmaster',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: delete any galleri content
   $permissions['delete any galleri content'] = array(
     'name' => 'delete any galleri content',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Webmaster',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: delete any news content
   $permissions['delete any news content'] = array(
     'name' => 'delete any news content',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Webmaster',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: delete any rotating_image content
@@ -148,7 +171,9 @@ function os2web_sovs_user_default_permissions() {
   $permissions['delete any spotbox content'] = array(
     'name' => 'delete any spotbox content',
     'roles' => array(
-      0 => 'Kommunikation',
+      0 => 'Administrator',
+      1 => 'Kommunikation',
+      2 => 'Webmaster',
     ),
     'module' => 'node',
   );
@@ -156,7 +181,13 @@ function os2web_sovs_user_default_permissions() {
   // Exported permission: delete own contentpage content
   $permissions['delete own contentpage content'] = array(
     'name' => 'delete own contentpage content',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Editor',
+      2 => 'Kommunikation',
+      3 => 'Webmaster',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: delete own esdh_dokument content
@@ -180,7 +211,13 @@ function os2web_sovs_user_default_permissions() {
   // Exported permission: delete own galleri content
   $permissions['delete own galleri content'] = array(
     'name' => 'delete own galleri content',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Editor',
+      2 => 'Kommunikation',
+      3 => 'Webmaster',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: delete own news content
@@ -196,7 +233,8 @@ function os2web_sovs_user_default_permissions() {
   $permissions['delete own rotating_image content'] = array(
     'name' => 'delete own rotating_image content',
     'roles' => array(
-      0 => 'Kommunikation',
+      0 => 'Editor',
+      1 => 'Kommunikation',
     ),
     'module' => 'node',
   );
@@ -205,7 +243,8 @@ function os2web_sovs_user_default_permissions() {
   $permissions['delete own spotbox content'] = array(
     'name' => 'delete own spotbox content',
     'roles' => array(
-      0 => 'Kommunikation',
+      0 => 'Editor',
+      1 => 'Kommunikation',
     ),
     'module' => 'node',
   );
@@ -223,38 +262,63 @@ function os2web_sovs_user_default_permissions() {
   // Exported permission: edit any contentpage content
   $permissions['edit any contentpage content'] = array(
     'name' => 'edit any contentpage content',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Editor',
+      2 => 'Kommunikation',
+      3 => 'Webmaster',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: edit any esdh_dokument content
   $permissions['edit any esdh_dokument content'] = array(
     'name' => 'edit any esdh_dokument content',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Editor',
+      2 => 'Kommunikation',
+      3 => 'Webmaster',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: edit any esdh_sag content
   $permissions['edit any esdh_sag content'] = array(
     'name' => 'edit any esdh_sag content',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Webmaster',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: edit any galleri content
   $permissions['edit any galleri content'] = array(
     'name' => 'edit any galleri content',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Webmaster',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: edit any news content
   $permissions['edit any news content'] = array(
     'name' => 'edit any news content',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Webmaster',
+    ),
+    'module' => 'node',
   );
 
   // Exported permission: edit any rotating_image content
   $permissions['edit any rotating_image content'] = array(
     'name' => 'edit any rotating_image content',
     'roles' => array(
-      0 => 'Kommunikation',
+      0 => 'Editor',
+      1 => 'Kommunikation',
     ),
     'module' => 'node',
   );
@@ -263,7 +327,10 @@ function os2web_sovs_user_default_permissions() {
   $permissions['edit any spotbox content'] = array(
     'name' => 'edit any spotbox content',
     'roles' => array(
-      0 => 'Kommunikation',
+      0 => 'Administrator',
+      1 => 'Editor',
+      2 => 'Kommunikation',
+      3 => 'Webmaster',
     ),
     'module' => 'node',
   );
@@ -317,7 +384,8 @@ function os2web_sovs_user_default_permissions() {
   $permissions['edit own rotating_image content'] = array(
     'name' => 'edit own rotating_image content',
     'roles' => array(
-      0 => 'Kommunikation',
+      0 => 'Editor',
+      1 => 'Kommunikation',
     ),
     'module' => 'node',
   );
@@ -326,7 +394,8 @@ function os2web_sovs_user_default_permissions() {
   $permissions['edit own spotbox content'] = array(
     'name' => 'edit own spotbox content',
     'roles' => array(
-      0 => 'Kommunikation',
+      0 => 'Editor',
+      1 => 'Kommunikation',
     ),
     'module' => 'node',
   );

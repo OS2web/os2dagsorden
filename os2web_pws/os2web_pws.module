@@ -100,7 +100,7 @@ function os2web_test_page() {
   $pws = _os2web_pws_get_instance();
 //  $call = $pws->lookupCase('11/14293');
 //  $call = $pws->fetchCase(349566);
-  $call = $pws->getCaseDocs(349566);
+//  $call = $pws->getCaseDocs($pws->lookupCase('11/4949'));
 //  $call = $pws->getCaseDocs($pws->lookupCase('12/6202'));
 //  $call = $pws->getCaseDocs($pws->lookupCase('12/6202'));
 
@@ -109,7 +109,7 @@ function os2web_test_page() {
 //  $call = $pws->fetchCase(340222);
 //  return _os2web_get_rendered_doc(array(1420175,1369822));
 //  $call = $pws->getDocument(1565429);
-//  $call = $pws->getDocument(373830);
+  $call = $pws->getDocument($pws->lookupDoc('79339/11'));
 //
 //  $call = $pws->getDocFileName(3023484,1);
 //  $call = $pws->getDocFileName(1565429);

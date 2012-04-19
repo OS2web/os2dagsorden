@@ -50,7 +50,7 @@ function os2web_sovs_default_panels_mini() {
     );
     $pane->css = array(
       'css_id' => '',
-      'css_class' => 'grid-2',
+      'css_class' => 'grid-4',
     );
     $pane->extras = array();
     $pane->position = 0;
@@ -75,7 +75,7 @@ function os2web_sovs_default_panels_mini() {
     );
     $pane->css = array(
       'css_id' => '',
-      'css_class' => 'grid-2',
+      'css_class' => 'grid-4',
     );
     $pane->extras = array();
     $pane->position = 1;
@@ -99,7 +99,7 @@ function os2web_sovs_default_panels_mini() {
     );
     $pane->css = array(
       'css_id' => '',
-      'css_class' => 'grid-2',
+      'css_class' => 'grid-4',
     );
     $pane->extras = array();
     $pane->position = 2;
