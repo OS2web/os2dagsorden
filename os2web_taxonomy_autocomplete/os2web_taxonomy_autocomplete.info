@@ -1,0 +1,8 @@
+name = OS2web Taxonomy Autocomplete
+description = Extends core taxonomy autocomplete functionality
+package = OS2Web
+core = 7.x
+;configure = admin/config/os2web/taxonomy
+tags[] = os2web
+
+dependencies[]=taxonomy
