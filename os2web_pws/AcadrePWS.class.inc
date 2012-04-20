@@ -20,6 +20,9 @@ class AcadrePWS extends CaseService {
   function __construct() {
     // Using a static allows singleton use of the connector class 
     $this->client = &drupal_static('os2web_acadre_pws_client');
+    $this->client6 = &drupal_static('os2web_acadre_pws_client6');
+    $this->client_search = &drupal_static('os2web_acadre_pws_client_search');
+
     $user = variable_get('os2web_pws_user');
     $password = variable_get('os2web_pws_password');
 
@@ -281,6 +284,36 @@ XML;
         } catch (SoapFault $sf) {
 
         }
+      }
+    }
+    return $result;
+  }
+
+  public function getDocDataRaw($ref, $ver = FALSE) {
+    $result = false;
+    if (!is_numeric($ver)) {
+      $info = $this->getDocRef($ref);
+      $ref = $info['ref'];
+      $ver = $info['ver'];
+    }
+    error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Fetching file from WS.");
+    if ($this->client) {
+      $request = <<< XML
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <FileVersionReference xmlns="http://www.traen.com/2007/09/06/schema">
+      <FileReference>@FileRef</FileReference>
+      <Version>@Version</Version>
+    </FileVersionReference>
+  </soap:Body>
+</soap:Envelope>
+XML;
+      try {
+        $result = $this->client->__doRequest(t($request, array('@FileRef' => $ref, '@Version' => $ver)), $this->client->location, $this->client->uri . 'GetPhysicalDocument', SOAP_1_1);
+        $result = (string) array_shift(simplexml_load_string($result)->xpath('//soap:Body'))->XMLBinary;
+      } catch (SoapFault $sf) {
+        
       }
     }
     return $result;
