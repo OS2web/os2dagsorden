@@ -50,10 +50,10 @@ class AdLibWS {
         <JOBS xmlns:JOBS="http://www.Adlibsoftware.com" xmlns:JOB="http://www.Adlibsoftware.com">
           <JOB>
             <JOB:DOCINPUTS>
-              <JOB:DOCINPUT FILENAME="' . $fileInfo['filename'] . '" FOLDER="' . $fileInfo['in_folder'] . '" />
+              <JOB:DOCINPUT FILENAME="' . $fileInfo['filename'] . '" FOLDER="c:\\Inetpub\\wwwroot\\' . $fileInfo['in_folder'] . '" />
             </JOB:DOCINPUTS>
             <JOB:DOCOUTPUTS>
-              <JOB:DOCOUTPUT FILENAME="' . $filename . '.pdf' . '" FOLDER="' . $fileInfo['out_folder'] . '" DOCTYPE="PDF" />
+              <JOB:DOCOUTPUT FILENAME="' . $filename . '.pdf' . '" FOLDER="c:\\Inetpub\\wwwroot\\' . $fileInfo['out_folder'] . '" DOCTYPE="PDF" />
             </JOB:DOCOUTPUTS>
             <JOB:SETTINGS>
               <JOB:HEADER ENABLED="Yes" TEXTRIGHT="&amp;[Page] of &amp;[Pages]" LAYER="Foreground" />
@@ -74,7 +74,8 @@ class AdLibWS {
 
   public function addJobFolder() {
     $folder_info = simplexml_load_string(self::$client->addJobFolder()->AddJobFolderResult);
-    $result = '\\\\ExponentJobs\\' . ((string) $folder_info['FolderID']);
+    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $folder_info = ' . print_r($folder_info, 1));
+    $result = 'ExponentJobs\\' . ((string) $folder_info['FolderID']);
     return $result;
   }
 
@@ -95,15 +96,15 @@ class AdLibWS {
         <JobFile FileName="' . $filename . '" Data="' . base64_encode($data) . '" Length="' . strlen($data) . '" />
       </JobFiles>';
     $status = self::$client->AddJobFilesAsStream(array(
-            'JobFolder' => $folder . '/Input',
+            'JobFolder' => $folder . '\\Input',
             'XmlStream' => $payload,
         ))->AddJobFilesAsStreamResult;
     $status = (string) simplexml_load_string($status)->System['Status'];
     if (strcmp($status, 'Success') == 0) {
       return array(
           'basefolder' => $folder,
-          'in_folder' => $folder . '/Input',
-          'out_folder' => $folder . '/Output',
+          'in_folder' => $folder . '\\Input',
+          'out_folder' => $folder . '\\Output',
           'filename' => $filename
       );
     } else {
