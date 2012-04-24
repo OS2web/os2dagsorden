@@ -184,9 +184,11 @@ function _os2web_pws_process_pdf($limit = FALSE) {
 
         $file_url = $jobfileinfo['out_url'] . rawurlencode($jobfileinfo['out_filename']);
         $download = curl_init($file_url);
-        curl_setopt($download, CURLOPT_PROXY, '193.84.27.176');
-        curl_setopt($download, CURLOPT_PROXYPORT, 3128);
-        curl_setopt($download, CURLOPT_HTTPPROXYTUNNEL, TRUE);
+        if (variable_get('os2web_pws_proxy')) {
+          curl_setopt($download, CURLOPT_PROXY, variable_get('os2web_pws_host'));
+          curl_setopt($download, CURLOPT_PROXYPORT, variable_get('os2web_pws_port'));
+          curl_setopt($download, CURLOPT_HTTPPROXYTUNNEL, TRUE);
+        }
         curl_setopt($download, CURLOPT_RETURNTRANSFER, TRUE);
         $data = curl_exec($download);
 

@@ -29,8 +29,8 @@ class AdLibWS {
       }
       $url = variable_get('os2web_adlib_url', 'http://706CAR01/ExponentWSA/ExponentWSA.asmx?wsdl');
       $url = preg_replace('/([fhtps]{3,5}):\/\/(.+?)\//', self::$base_url, $url);
-
-      error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $url = ' . print_r($url, 1));
+      preg_match('%http://.+?/%',$url,$matches);
+      self::$base_url = array_shift($matches);
       self::$client = new SoapClient($url, $options);
     }
   }
