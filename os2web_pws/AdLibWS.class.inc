@@ -14,6 +14,8 @@
 class AdLibWS {
 
   private static $client;
+  private static $base_path = 'c:\\Inetpub\\wwwroot\\';
+  private static $base_url = 'http://10.1.1.127/';
 
   public function __construct() {
     if (!isset(self::$client)) {
@@ -25,7 +27,11 @@ class AdLibWS {
         $options['proxy_host'] = variable_get('os2web_pws_proxy_host');
         $options['proxy_port'] = variable_get('os2web_pws_proxy_port');
       }
-      self::$client = new SoapClient('http://10.1.1.127/ExponentWSA/ExponentWSA.asmx?wsdl', $options);
+      $url = variable_get('os2web_adlib_url', 'http://706CAR01/ExponentWSA/ExponentWSA.asmx?wsdl');
+      $url = preg_replace('/([fhtps]{3,5}):\/\/(.+?)\//', self::$base_url, $url);
+
+      error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $url = ' . print_r($url, 1));
+      self::$client = new SoapClient($url, $options);
     }
   }
 
@@ -36,7 +42,6 @@ class AdLibWS {
    * @return type
    */
   public function addJob($fileInfo) {
-    $filename = pathinfo($fileInfo['filename'], PATHINFO_FILENAME);
     $jobInfo = '<JobInfo>
         <JobSettings JobID="" UserJobID="" JobPriority="3" AdlibServer="" AdlibServerGroup=""/>
         <JobFileMsg Count=""/>
@@ -50,10 +55,10 @@ class AdLibWS {
         <JOBS xmlns:JOBS="http://www.Adlibsoftware.com" xmlns:JOB="http://www.Adlibsoftware.com">
           <JOB>
             <JOB:DOCINPUTS>
-              <JOB:DOCINPUT FILENAME="' . $fileInfo['filename'] . '" FOLDER="c:\\Inetpub\\wwwroot\\' . $fileInfo['in_folder'] . '" />
+              <JOB:DOCINPUT FILENAME="' . $fileInfo['filename'] . '" FOLDER="' . self::$base_path . $fileInfo['in_folder'] . '" />
             </JOB:DOCINPUTS>
             <JOB:DOCOUTPUTS>
-              <JOB:DOCOUTPUT FILENAME="' . $filename . '.pdf' . '" FOLDER="c:\\Inetpub\\wwwroot\\' . $fileInfo['out_folder'] . '" DOCTYPE="PDF" />
+              <JOB:DOCOUTPUT FILENAME="' . $fileInfo['out_filename'] . '" FOLDER="' . self::$base_path . $fileInfo['out_folder'] . '" DOCTYPE="PDF" />
             </JOB:DOCOUTPUTS>
             <JOB:SETTINGS>
               <JOB:HEADER ENABLED="Yes" TEXTRIGHT="&amp;[Page] of &amp;[Pages]" LAYER="Foreground" />
@@ -62,19 +67,26 @@ class AdLibWS {
           </JOB>
         </JOBS>';
     return simplexml_load_string(self::$client->addJob(array('jobInfo' => $jobInfo, 'jobTicket' => $jobTicket))->AddJobResult);
-
   }
 
   public function getJobStatus($id) {
     if (isset($id->JobSettings['JobID'])) {
       $id = $id->JobSettings['JobID'];
     }
-    return simplexml_load_string(self::$client->getJobStatus(array('jobID' => $id, 'isUserJobID' => false))->GetJobStatusResult);
+    $result = self::$client->getJobStatus(array('jobID' => $id, 'isUserJobID' => false))->GetJobStatusResult;
+    $return = (object) array();
+    if (strncmp('<', $result, 1) === 0) {
+      $return->status = (string) simplexml_load_string($result)->CurrentJobStatus['Status'];
+      $return->result = simplexml_load_string($result);
+    } else {
+      $return->status = 'Not found';
+      $return->result = $result;
+    }
+    return $return;
   }
 
   public function addJobFolder() {
     $folder_info = simplexml_load_string(self::$client->addJobFolder()->AddJobFolderResult);
-    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $folder_info = ' . print_r($folder_info, 1));
     $result = 'ExponentJobs\\' . ((string) $folder_info['FolderID']);
     return $result;
   }
@@ -102,10 +114,12 @@ class AdLibWS {
     $status = (string) simplexml_load_string($status)->System['Status'];
     if (strcmp($status, 'Success') == 0) {
       return array(
-          'basefolder' => $folder,
-          'in_folder' => $folder . '\\Input',
-          'out_folder' => $folder . '\\Output',
-          'filename' => $filename
+      'basefolder' => $folder,
+      'in_folder' => $folder . '\\Input',
+      'out_folder' => $folder . '\\Output',
+      'out_url' => self::$base_url.str_replace('\\', '/', $folder.'/Output/'),
+      'filename' => $filename,
+      'out_filename' => pathinfo($filename, PATHINFO_FILENAME) . '.pdf',
       );
     } else {
       return false;
