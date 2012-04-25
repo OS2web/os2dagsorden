@@ -155,6 +155,7 @@ function os2web_test_page() {
  */
 function os2web_pws_init() {
   _os2web_pws_process_pdf(1);
+  _os2web_pws_cleanup_files();
 }
 
 function _os2web_pws_process_pdf($limit = FALSE) {
@@ -207,6 +208,19 @@ function _os2web_pws_process_pdf($limit = FALSE) {
           drupal_write_record('os2web_pws_doc_files', $record, array('fid'));
           file_save($upd_file);
         }
+      }
+    }
+  }
+
+  function _os2web_pws_cleanup_files() {
+    $dir = preg_replace('/\/$/','',DEFAULT_DOC_CACHE_PATH); // Remove trailing /
+    $filelist = file_scan_directory($dir, '/.*/');
+    foreach ($filelist as $uri => $file) {
+      $file = db_select('file_managed','f')->fields('f')->condition('uri',$uri)->execute()->fetchAll();
+      if (count($file)===0) {
+        // File is not linked in the drupal database
+        file_unmanaged_delete($uri);
+        error_log(basename(__FILE__) . ':' . __LINE__ . ' Deleted: ' . print_r($uri, 1));
       }
     }
   }
