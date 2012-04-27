@@ -120,11 +120,13 @@ function _os2web_meetings_publish_meeting($info, $xml) {
       'cdate' => strtotime((string) array_shift($xml->xpath("//table[@name='agenda']/fields/field[@name='producedate']"))),
       'id' => $info['xmlFusionID'],
   );
-  if (in_array($options['committee'],$no_publish_committee)) {
+  if (in_array($options['committee'], $no_publish_committee)) {
     return;
   }
   error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $xpaths = ' . print_r($options, 1));
 
+
+  //FIXME: Refactor dupe-check to seperate function.
   $nid = db_select('os2web_meetings_imported', 'mi')
       ->fields('mi')
       ->condition('aid', $options['id'])
@@ -154,6 +156,23 @@ function _os2web_meetings_publish_meeting($info, $xml) {
   $location_term = _os2web_meetings_import_location(array_shift($xml->xpath("//table[@name='meeting']")));
   $node->field_location[LANGUAGE_NONE][0]['tid'] = $location_term->tid;
 
+  //TODO: Add nodes for each bullet
+  error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Meeting");
+
+  $items = $xml->xpath("//table[@name='agendaitem']");
+  $item_nids = array();
+  foreach ($items as $item) {
+    $item_nids[] = _os2web_meetings_add_item($item);
+    // add node for each items
+  }
+  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item_nids = ' . print_r($item_nids, 1));
+
+  foreach ($item_nids as $nid) {
+    $node->field_bullet_points[$node->language][]['nid'] = $nid;
+  }
+
+  // Add items to meeting node.
+  // Save the meeting node.
   node_submit($node);
   node_save($node);
   //TODO: add reference to the os2web_meetings_import table
@@ -162,8 +181,77 @@ function _os2web_meetings_publish_meeting($info, $xml) {
       'aid' => $options['id'],
   );
   drupal_write_record('os2web_meetings_imported', $record);
+}
 
-  //TODO: Add nodes for each bullet
+function _os2web_meetings_add_item($xml) {
+
+  $options = array(
+      'sysid' => (int) array_shift($xml->xpath("fields/field[@name='sysid']")),
+      'name' => (string) array_shift($xml->xpath("fields/field[@name='name']")),
+  );
+  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $options = ' . print_r($options, 1));
+
+
+  // Gather the bullets for the item
+  $bullets = $xml->xpath("table[@name='bullet']");
+  $nids = array();
+  foreach ($bullets as $bullet) {
+    $bullet_id = (int) array_shift($bullet->xpath("fields/field[@name='sysid']"));
+    // Add node for each bullet
+    $nids[] = _os2web_meetings_add_bullet($bullet);
+  }
+  //TODO: Gather enclosures
+
+  $node = new stdClass();
+  $node->type = "bullet_point"; // Or any other content type you want
+  $node->language = LANGUAGE_NONE; // Or any language code if Locale module is enabled. More on this below *
+  $node->uid = 1; // Or any id you wish
+  $node->title = $options['name'];
+  node_object_prepare($node); // Set some default values.
+
+  foreach ($nids as $nid) {
+    $node->field_attachments[LANGUAGE_NONE][]['nid'] = $nid;
+  }
+
+  node_submit($node);
+  node_save($node);
+
+  return $node->nid;
+}
+
+/**
+ * Creates a bullet node from xml input
+ *
+ * @param SimpleXMLElement $xml
+ * @return int - Node ID
+ */
+function _os2web_meetings_add_bullet(SimpleXMLElement $xml) {
+
+  $options = array(
+      'sysid' => (int) array_shift($xml->xpath("fields/field[@name='sysid']")),
+      'name' => (string) array_shift($xml->xpath("fields/field[@name='bulletname']")),
+      'content' => (string) array_shift($xml->xpath("fields/field[@name='bulletcontent']")),
+      'type' => (int) array_shift($xml->xpath("fields/field[@name='bullettype']")),
+      'weight' => (int) array_shift($xml->xpath("fields/field[@name='bulletsortorder']")),
+      'lastbullet' => (int) array_shift($xml->xpath("fields/field[@name='lastbullet']")),
+  );
+  $node = new stdClass();
+  $node->type = "bullet_point_attachment"; // Or any other content type you want
+  $node->language = LANGUAGE_NONE; // Or any language code if Locale module is enabled. More on this below *
+  $node->uid = 1; // Or any id you wish
+
+  $node->title = $options['name'];
+
+  node_object_prepare($node); // Set some default values.
+  // Let's add standard body field
+  $node->body[$node->language][0]['value'] = $options['content'];
+  $node->body[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field
+  $node->field_weight[LANGUAGE_NONE][0]['value'] = $options['weight'];
+
+  node_submit($node);
+  node_save($node);
+
+  return $node->nid;
 }
 
 /**
@@ -172,7 +260,7 @@ function _os2web_meetings_publish_meeting($info, $xml) {
  * @param SimpleXMLElement $xml
  * @return \stdClass 
  */
-function _os2web_meetings_import_committee($xml) {
+function _os2web_meetings_import_committee(SimpleXMLElement $xml) {
   //TODO: Process members of the committee.
   //FIXME: MAke vocab name configurable.
   $vid = db_query("SELECT vid FROM {taxonomy_vocabulary} WHERE machine_name = 'acadremmcomittee'")->fetchField();
@@ -204,7 +292,7 @@ function _os2web_meetings_import_committee($xml) {
  * @param SimpleXMLElement $xml
  * @return \stdClass
  */
-function _os2web_meetings_import_location($xml) {
+function _os2web_meetings_import_location(SimpleXMLElement $xml) {
   //TODO: Process members of the committee.
   //FIXME: MAke vocab name configurable.
   $vid = db_query("SELECT vid FROM {taxonomy_vocabulary} WHERE machine_name = 'acadremmlocation'")->fetchField();
