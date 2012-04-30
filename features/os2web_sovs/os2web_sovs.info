@@ -177,3 +177,10 @@ features[variable][] = "save_continue_spotbox"
 features[views_view][] = "newslist"
 features[views_view][] = "rotating_image_view"
 features[views_view][] = "spot_view"
+
+
+; Information added by drush on 2012-04-19
+version = "dev"
+project = "os2web"
+datestamp = "1334828867"
+

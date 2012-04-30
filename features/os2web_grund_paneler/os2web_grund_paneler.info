@@ -39,3 +39,10 @@ features[user_permission][] = "use panels dashboard"
 features[user_permission][] = "use panels in place editing"
 features[user_permission][] = "use panels locks"
 features[user_permission][] = "view pane admin links"
+
+
+; Information added by drush on 2012-04-19
+version = "dev"
+project = "os2web"
+datestamp = "1334828867"
+
