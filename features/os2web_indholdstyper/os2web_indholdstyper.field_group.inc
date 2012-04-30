@@ -20,7 +20,7 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Billeder',
+    'label' => 'Billeder og filer',
     'weight' => '1',
     'children' => array(
       0 => 'field_lead_image',
@@ -28,8 +28,7 @@ function os2web_indholdstyper_field_group_info() {
     ),
     'format_type' => 'multistep',
     'format_settings' => array(
-      'formatter' => '',
-      'instance_settings' => NULL,
+      'label' => 'Billeder og filer',
     ),
   );
   $export['group_billeder|node|contentpage|form'] = $field_group;
@@ -45,13 +44,12 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Billede',
-    'weight' => '0',
+    'weight' => '2',
     'children' => array(
       0 => 'field_lead_image',
       1 => 'field_short_description',
       2 => 'field_site_structure',
-      3 => 'field_spotbpxtype',
-      4 => 'title',
+      3 => 'title',
     ),
     'format_type' => 'multistep',
     'format_settings' => array(
@@ -118,7 +116,7 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'ESDH',
+    'label' => 'Sager og dokumenter',
     'weight' => '2',
     'children' => array(
       0 => 'field_case',
@@ -126,8 +124,7 @@ function os2web_indholdstyper_field_group_info() {
     ),
     'format_type' => 'multistep',
     'format_settings' => array(
-      'formatter' => '',
-      'instance_settings' => NULL,
+      'label' => 'Sager og dokumenter',
     ),
   );
   $export['group_esdh|node|contentpage|form'] = $field_group;
@@ -142,18 +139,17 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Taksonomi og emner',
+    'label' => 'Emneord',
     'weight' => '3',
     'children' => array(
-      0 => 'field_termref_kle',
-      1 => 'field_editortags',
-      2 => 'field_termref_sted',
-      3 => 'field_termref_sofd',
-      4 => 'field_organization',
+      0 => 'field_editortags',
+      1 => 'field_termref_sted',
+      2 => 'field_organization',
+      3 => 'field_politics',
     ),
     'format_type' => 'multistep',
     'format_settings' => array(
-      'label' => 'Taksonomi og emner',
+      'label' => 'Emneord',
     ),
   );
   $export['group_extras|node|contentpage|form'] = $field_group;
@@ -173,7 +169,7 @@ function os2web_indholdstyper_field_group_info() {
     'children' => array(
       0 => 'body',
       1 => 'field_resume_long',
-      2 => 'field_site_structure',
+      2 => 'field_termref_kle',
       3 => 'title',
     ),
     'format_type' => 'multistep',
@@ -197,21 +193,24 @@ function os2web_indholdstyper_field_group_info() {
     'label' => 'Indstillinger',
     'weight' => '4',
     'children' => array(
-      0 => 'path',
-      1 => 'additional_settings',
-      2 => 'revision_information',
-      3 => 'revision',
-      4 => 'options',
-      5 => 'status',
-      6 => 'link',
-      7 => 'alias',
-      8 => 'pathauto',
-      9 => 'print',
-      10 => 'label',
-      11 => 'print_display',
-      12 => 'print_display_urllist',
-      13 => 'group_menu',
-      14 => 'group_hidden',
+      0 => 'field_rotate_publish',
+      1 => 'path',
+      2 => 'additional_settings',
+      3 => 'revision_information',
+      4 => 'revision',
+      5 => 'author',
+      6 => 'name',
+      7 => 'date',
+      8 => 'options',
+      9 => 'promote',
+      10 => 'link',
+      11 => 'alias',
+      12 => 'pathauto',
+      13 => 'print',
+      14 => 'label',
+      15 => 'print_display',
+      16 => 'print_display_urllist',
+      17 => 'group_hidden',
     ),
     'format_type' => 'multistep',
     'format_settings' => array(
@@ -232,16 +231,12 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->parent_name = 'group_gruppe3';
   $field_group->data = array(
     'label' => 'Skjult',
-    'weight' => '53',
+    'weight' => '33',
     'children' => array(
       0 => 'field_source_id',
       1 => 'log',
-      2 => 'author',
-      3 => 'name',
-      4 => 'date',
-      5 => 'promote',
-      6 => 'sticky',
-      7 => 'print_display_comment',
+      2 => 'sticky',
+      3 => 'print_display_comment',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -349,7 +344,7 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Links',
-    'weight' => '2',
+    'weight' => '3',
     'children' => array(
       0 => 'field_url',
     ),
@@ -368,10 +363,10 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'contentpage';
   $field_group->mode = 'form';
-  $field_group->parent_name = 'group_gruppe3';
+  $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Menu',
-    'weight' => '36',
+    'weight' => '11',
     'children' => array(
       0 => 'menu',
       1 => 'enabled',
@@ -528,7 +523,7 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Taksonomi',
-    'weight' => '3',
+    'weight' => '4',
     'children' => array(
       0 => 'field_termref_kle',
       1 => 'field_termref_sofd',

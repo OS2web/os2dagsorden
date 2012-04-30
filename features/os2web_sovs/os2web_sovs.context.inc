@@ -99,7 +99,7 @@ function os2web_sovs_context_default_contexts() {
   );
   $context->reactions = array(
     'delta' => array(
-      'delta_template' => 'forside',
+      'delta_template' => 'foside',
     ),
   );
   $context->condition_mode = 0;

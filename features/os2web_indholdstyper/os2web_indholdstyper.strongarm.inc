@@ -195,6 +195,13 @@ function os2web_indholdstyper_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'language_content_type_rotating_image';
+  $strongarm->value = '0';
+  $export['language_content_type_rotating_image'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_contentpage';
   $strongarm->value = array(
     0 => 'menu-indholdsmenu',
@@ -250,9 +257,7 @@ function os2web_indholdstyper_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_rotating_image';
-  $strongarm->value = array(
-    0 => 'main-menu',
-  );
+  $strongarm->value = array();
   $export['menu_options_rotating_image'] = $strongarm;
 
   $strongarm = new stdClass();

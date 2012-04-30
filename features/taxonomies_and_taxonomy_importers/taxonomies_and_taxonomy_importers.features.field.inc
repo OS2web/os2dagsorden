@@ -797,6 +797,7 @@ function taxonomies_and_taxonomy_importers_field_default_fields() {
             'parent' => '0',
           ),
         ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
       ),
       'translatable' => '0',
       'type' => 'taxonomy_term_reference',

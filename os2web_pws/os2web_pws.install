@@ -2,7 +2,7 @@
 
 function os2web_pws_schema() {
   $schema['os2web_pws_doc_files'] = array(
-    'description' => 'This table relates cached files from the PWS to the drupal file entry',
+      'description' => 'This table relates cached files from the PWS to the drupal file entry',
       'fields' => array(
           'fid' => array(
               'description' => 'The file entry id.',
@@ -11,10 +11,21 @@ function os2web_pws_schema() {
               'not null' => TRUE,
           ),
           'did' => array(
-              'description' => 'The document identifier from PWS',
+              'description' => 'The document identifier from PWS.',
               'type' => 'int',
               'unsigned' => TRUE,
               'not null' => TRUE,
+          ),
+          'job_id' => array(
+              'description' => 'ID used for the pdf conversion job.',
+              'type' => 'varchar',
+              'length' => 128,
+          ),
+          'job_info' => array(
+              'description' => 'Information object about the pdf conversion job.',
+              'type' => 'varchar',
+              'length' => 1024,
+              'serialize' => TRUE,
           ),
       ),
   );
@@ -22,6 +33,7 @@ function os2web_pws_schema() {
 }
 
 function os2web_pws_install() {
+
 }
 
 function os2web_pws_uninstall() {
@@ -29,6 +41,7 @@ function os2web_pws_uninstall() {
   variable_del('os2web_pws_url_v6');
   variable_del('os2web_pws_url_search');
   variable_del('os2web_pws_url_search_case');
+  variable_del('os2web_adlib_url');
   variable_del('os2web_pws_user');
   variable_del('os2web_pws_password');
   variable_del('os2web_pws_proxy');
@@ -36,7 +49,20 @@ function os2web_pws_uninstall() {
   variable_del('os2web_pws_proxy_port');
 }
 
-
 function os2web_pws_update_7001() {
   drupal_install_schema('os2web_pws');
+}
+
+function os2web_pws_update_7002() {
+  db_add_field('os2web_pws_doc_files', 'job_id', array(
+      'description' => 'ID used for the pdf conversion job.',
+      'type' => 'varchar',
+      'length' => 128,
+  ));
+  db_add_field('os2web_pws_doc_files', 'job_info', array(
+      'description' => 'Information object about the pdf conversion job.',
+      'type' => 'varchar',
+      'length' => 1024,
+      'serialize' => TRUE,
+  ));
 }
