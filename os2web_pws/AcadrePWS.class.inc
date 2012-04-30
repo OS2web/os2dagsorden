@@ -348,4 +348,11 @@ XML;
     return $result;
   }
 
+  public function getTrace() {
+    return array(
+        'request' => $this->client6->__getLastRequest(),
+        'response' => $this->client6->__getLastResponse(),
+    );
+  }
+
 }

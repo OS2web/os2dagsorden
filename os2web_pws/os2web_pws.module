@@ -122,8 +122,12 @@ function os2web_test_page() {
 //  $call = $pws->fetchCase(340222);
 //  return _os2web_get_rendered_doc(array(1420175,1369822));
 //  $call = $pws->getDocument(1565429);
-//  $call = $pws->getDocument($pws->lookupDoc('79339/11'));
-//
+//  $call = $pws->getCaseDocs($pws->lookupCase('07/4408'));
+//  $call = $pws->getDocument($pws->lookupDoc('268704/07'));
+  _os2web_pws_cleanup_files();
+  $call = $pws->getDocument(350654);
+  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $pws->lookupDoc("268704/07") = ' . print_r($pws->lookupDoc("268704/07"), 1));
+
 //  $call = $pws->getDocFileName(3023484,1);
 //  $call = $pws->getDocFileName(1565429);
 //  $call = $pws->getDocFileName(3258320,1);
@@ -145,9 +149,9 @@ function os2web_test_page() {
 //    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item = ' . print_r($item, 1));
 //  }
 //  return 'test';
-  return theme('esdh_case', array('id' => 349566));
+//  return theme('esdh_case', array('id' => 349566));
   return '<div><textarea cols="150" rows=50>' . print_r($call, 1) . '</textarea>
-    <textarea cols="150" rows=20>' . print_r($adlib->getTrace(), 1) . '</textarea></div>';
+    <textarea cols="150" rows=20>' . print_r($pws->getTrace(), 1) . '</textarea></div>';
 }
 
 /**
@@ -213,11 +217,11 @@ function _os2web_pws_process_pdf($limit = FALSE) {
   }
 
   function _os2web_pws_cleanup_files() {
-    $dir = preg_replace('/\/$/','',DEFAULT_DOC_CACHE_PATH); // Remove trailing /
+    $dir = preg_replace('/\/$/', '', DEFAULT_DOC_CACHE_PATH); // Remove trailing /
     $filelist = file_scan_directory($dir, '/.*/');
     foreach ($filelist as $uri => $file) {
-      $file = db_select('file_managed','f')->fields('f')->condition('uri',$uri)->execute()->fetchAll();
-      if (count($file)===0) {
+      $file = db_select('file_managed', 'f')->fields('f')->condition('uri', $uri)->execute()->fetchAll();
+      if (count($file) === 0) {
         // File is not linked in the drupal database
         file_unmanaged_delete($uri);
         error_log(basename(__FILE__) . ':' . __LINE__ . ' Deleted: ' . print_r($uri, 1));
@@ -239,12 +243,14 @@ function _os2web_pws_process_pdf($limit = FALSE) {
       if ($file['is_pdf'] === FALSE) {
         $upload = $adlib->uploadData($file['file']->filename, file_get_contents(drupal_realpath($file['file']->uri)));
         $job = $adlib->addJob($upload);
-        $jobinfo = array(
-            'fid' => $file['file']->fid,
-            'job_id' => (string) $job->JobSettings['JobID'],
-            'job_info' => $upload,
-        );
-        drupal_write_record('os2web_pws_doc_files', $jobinfo, array('fid'));
+        if ($job !== FALSE) {
+          $jobinfo = array(
+              'fid' => $file['file']->fid,
+              'job_id' => (string) $job->JobSettings['JobID'],
+              'job_info' => $upload,
+          );
+          drupal_write_record('os2web_pws_doc_files', $jobinfo, array('fid'));
+        }
       }
     }
   }

@@ -23,15 +23,20 @@ class AdLibWS {
           'soapversion' => SOAP_1_1,
           'trace' => TRUE,
       );
-      if (variable_get('os2web_pws_proxy', FALSE)) {
-        $options['proxy_host'] = variable_get('os2web_pws_proxy_host');
-        $options['proxy_port'] = variable_get('os2web_pws_proxy_port');
-      }
+//      if (variable_get('os2web_pws_proxy', FALSE)) {
+//        $options['proxy_host'] = variable_get('os2web_pws_proxy_host');
+//        $options['proxy_port'] = variable_get('os2web_pws_proxy_port');
+//      }
       $url = variable_get('os2web_adlib_url', 'http://706CAR01/ExponentWSA/ExponentWSA.asmx?wsdl');
       $url = preg_replace('/([fhtps]{3,5}):\/\/(.+?)\//', self::$base_url, $url);
-      preg_match('%http://.+?/%',$url,$matches);
+      preg_match('%http://.+?/%', $url, $matches);
       self::$base_url = array_shift($matches);
-      self::$client = new SoapClient($url, $options);
+      try {
+        error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $matches = ' . print_r($matches, 1));
+//        self::$client = new SoapClient($url, $options);
+      } catch (SoapFault $sf) {
+        error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $sf = ' . print_r($sf, 1));
+      }
     }
   }
 
@@ -42,6 +47,9 @@ class AdLibWS {
    * @return type
    */
   public function addJob($fileInfo) {
+    if (!isset(self::$client)) {
+      return false;
+    }
     $jobInfo = '<JobInfo>
         <JobSettings JobID="" UserJobID="" JobPriority="3" AdlibServer="" AdlibServerGroup=""/>
         <JobFileMsg Count=""/>
@@ -73,22 +81,28 @@ class AdLibWS {
     if (isset($id->JobSettings['JobID'])) {
       $id = $id->JobSettings['JobID'];
     }
-    $result = self::$client->getJobStatus(array('jobID' => $id, 'isUserJobID' => false))->GetJobStatusResult;
-    $return = (object) array();
-    if (strncmp('<', $result, 1) === 0) {
-      $return->status = (string) simplexml_load_string($result)->CurrentJobStatus['Status'];
-      $return->result = simplexml_load_string($result);
+    if (isset(self::$client)) {
+      $result = self::$client->getJobStatus(array('jobID' => $id, 'isUserJobID' => false))->GetJobStatusResult;
+      $return = (object) array();
+      if (strncmp('<', $result, 1) === 0) {
+        $return->status = (string) simplexml_load_string($result)->CurrentJobStatus['Status'];
+        $return->result = simplexml_load_string($result);
+      } else {
+        $return->status = 'Not found';
+        $return->result = $result;
+      }
     } else {
-      $return->status = 'Not found';
-      $return->result = $result;
+      $result->status = 'Not found';
     }
-    return $return;
+    return $result;
   }
 
   public function addJobFolder() {
-    $folder_info = simplexml_load_string(self::$client->addJobFolder()->AddJobFolderResult);
-    $result = 'ExponentJobs\\' . ((string) $folder_info['FolderID']);
-    return $result;
+    if (self::$client) {
+      $folder_info = simplexml_load_string(self::$client->addJobFolder()->AddJobFolderResult);
+      $result = 'ExponentJobs\\' . ((string) $folder_info['FolderID']);
+      return $result;
+    }
   }
 
   /**
@@ -100,6 +114,9 @@ class AdLibWS {
    * @return mixed - False if call failed, otherwise a fileinfo structure
    */
   public function uploadData($filename, $data, $folder = NULL) {
+    if (!isset(self::$client)) {
+      return false;
+    }
     if (!isset($folder)) {
       $folder = $this->addJobFolder();
     }
@@ -114,12 +131,12 @@ class AdLibWS {
     $status = (string) simplexml_load_string($status)->System['Status'];
     if (strcmp($status, 'Success') == 0) {
       return array(
-      'basefolder' => $folder,
-      'in_folder' => $folder . '\\Input',
-      'out_folder' => $folder . '\\Output',
-      'out_url' => self::$base_url.str_replace('\\', '/', $folder.'/Output/'),
-      'filename' => $filename,
-      'out_filename' => pathinfo($filename, PATHINFO_FILENAME) . '.pdf',
+          'basefolder' => $folder,
+          'in_folder' => $folder . '\\Input',
+          'out_folder' => $folder . '\\Output',
+          'out_url' => self::$base_url . str_replace('\\', '/', $folder . '/Output/'),
+          'filename' => $filename,
+          'out_filename' => pathinfo($filename, PATHINFO_FILENAME) . '.pdf',
       );
     } else {
       return false;
