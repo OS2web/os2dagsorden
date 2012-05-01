@@ -15,6 +15,7 @@ dependencies[] = "php"
 dependencies[] = "rules"
 dependencies[] = "strongarm"
 dependencies[] = "taxonomy"
+datestamp = "1334666157"
 features[ctools][] = "page_manager:pages_default:1"
 features[ctools][] = "strongarm:strongarm:1"
 features[field][] = "node-borger_dk_permalink-body"
@@ -42,3 +43,10 @@ features[variable][] = "menu_parent_borger_dk_permalink"
 features[variable][] = "node_options_borger_dk_permalink"
 features[variable][] = "node_preview_borger_dk_permalink"
 features[variable][] = "node_submitted_borger_dk_permalink"
+
+
+; Information added by drush on 2012-04-19
+version = "dev"
+project = "os2web"
+datestamp = "1334828867"
+

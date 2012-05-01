@@ -28,10 +28,15 @@ libraries[plupload][download][url] = "https://github.com/downloads/moxiecode/plu
 libraries[plupload][directory_name] = "plupload"
 libraries[plupload][destination] = "libraries"
 
-libraries[markitdown][download][type] = "get"
-libraries[markitdown][download][url] = "http://markitup.jaysalvat.com/downloads/download.php?id=releases/latest"
-libraries[markitdown][directory_name] = "markitdown"
-libraries[markitdown][destination] = "libraries"
+libraries[markitup][download][type] = "get"
+libraries[markitup][download][url] = "http://markitup.jaysalvat.com/downloads/download.php?id=releases/latest"
+libraries[markitup][directory_name] = "markitup"
+libraries[markitup][destination] = "libraries"
+
+libraries[tinymce][download][type] = "get"
+libraries[tinymce][download][url] = "http://cloud.github.com/downloads/tinymce/tinymce/tinymce_3.5b3.zip"
+libraries[tinymce][directory_name] = "tinymce"
+libraries[tinymce][destination] = "libraries"
 
 libraries[qtip][download][type] = "get"
 libraries[qtip][download][url] = "https://raw.github.com/bellcom/qTip1/master/1.0.0-rc3/jquery.qtip-1.0.0-rc3.min.js"
@@ -118,6 +123,8 @@ projects[print][subdir] = "contrib"
 projects[taxonomy_menu][subdir] = "contrib"
 projects[token][subdir] = "contrib"
 
+projects[imagefield_crop][subdir] = "contrib"
+projects[linkit][subdir] = "contrib"
 
 projects[multistep][subdir] = "contrib"
 projects[multistep][version] = "1.x-dev"

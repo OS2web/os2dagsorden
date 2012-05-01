@@ -33,7 +33,7 @@ syddjurs_dk_editor|Editor
 syddjurs_dk_webmaster|Webmaster
 syddjurs_dk_administrator|Administrator
 syddjurs_dk_kommunikation|Kommunikation
-syddjurs|authenticated user
+syddjurs|godkendt bruger
 ';
   $consumer_type->use_filter = TRUE;
   $consumer_type->synch_to_ldap = FALSE;

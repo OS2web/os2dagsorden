@@ -41,3 +41,10 @@ features[taxonomy][] = "organisation"
 features[taxonomy][] = "politik"
 features[taxonomy][] = "portalkategori"
 features[taxonomy][] = "redaktoertags"
+
+
+; Information added by drush on 2012-04-19
+version = "dev"
+project = "os2web"
+datestamp = "1334828867"
+

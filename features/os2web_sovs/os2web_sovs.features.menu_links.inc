@@ -229,20 +229,6 @@ function os2web_sovs_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-50',
   );
-  // Exported menu link: menu-mega-menu-borger:node/2039
-  $menu_links['menu-mega-menu-borger:node/2039'] = array(
-    'menu_name' => 'menu-mega-menu-borger',
-    'link_path' => 'node/2039',
-    'router_path' => 'node/%',
-    'link_title' => 'Arbejdsløs',
-    'options' => array(),
-    'module' => 'menu',
-    'hidden' => '0',
-    'external' => '0',
-    'has_children' => '0',
-    'expanded' => '0',
-    'weight' => '-49',
-  );
   // Exported menu link: menu-mega-menu-erhverv:<front>
   $menu_links['menu-mega-menu-erhverv:<front>'] = array(
     'menu_name' => 'menu-mega-menu-erhverv',
@@ -469,7 +455,7 @@ function os2web_sovs_menu_default_menu_links() {
     'menu_name' => 'user-menu',
     'link_path' => 'node/add/contentpage',
     'router_path' => 'node/add/contentpage',
-    'link_title' => 'Opret indholds side m/u ESDH indhold',
+    'link_title' => 'Opret indhold',
     'options' => array(
       'minipanel' => '',
       'attributes' => array(
@@ -481,7 +467,7 @@ function os2web_sovs_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-47',
+    'weight' => '-46',
   );
   // Exported menu link: user-menu:node/add/esdh-dokument
   $menu_links['user-menu:node/add/esdh-dokument'] = array(
@@ -500,7 +486,7 @@ function os2web_sovs_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-45',
+    'weight' => '-44',
   );
   // Exported menu link: user-menu:node/add/esdh-sag
   $menu_links['user-menu:node/add/esdh-sag'] = array(
@@ -519,7 +505,7 @@ function os2web_sovs_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-46',
+    'weight' => '-45',
   );
   // Exported menu link: user-menu:node/add/galleri
   $menu_links['user-menu:node/add/galleri'] = array(
@@ -538,7 +524,7 @@ function os2web_sovs_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-44',
+    'weight' => '-43',
   );
   // Exported menu link: user-menu:node/add/iframe-selvbetjeningsl-sning-mm
   $menu_links['user-menu:node/add/iframe-selvbetjeningsl-sning-mm'] = array(
@@ -554,7 +540,7 @@ function os2web_sovs_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '0',
+    'weight' => '-42',
   );
   // Exported menu link: user-menu:node/add/news
   $menu_links['user-menu:node/add/news'] = array(
@@ -573,7 +559,7 @@ function os2web_sovs_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-48',
+    'weight' => '-47',
   );
   // Exported menu link: user-menu:user
   $menu_links['user-menu:user'] = array(
@@ -609,7 +595,6 @@ function os2web_sovs_menu_default_menu_links() {
   // Included for use with string extractors like potx.
   t('Arbejde');
   t('Arbejdskraft');
-  t('Arbejdsløs');
   t('Borger');
   t('Erhverv');
   t('Kontakt');
@@ -619,7 +604,7 @@ function os2web_sovs_menu_default_menu_links() {
   t('Opret ESDH sag');
   t('Opret galleri');
   t('Opret iframe/selvbetjeningsløsning m.m.');
-  t('Opret indholds side m/u ESDH indhold');
+  t('Opret indhold');
   t('Opret nyhed');
   t('Politik og planer');
   t('User account');

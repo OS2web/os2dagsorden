@@ -11,7 +11,7 @@
 function os2web_pws_config_form($form, &$form_state) {
   $form['os2web_pws_config_group'] = array(
       '#type' => 'fieldset',
-      '#title' => t('Endpoint configuration'),
+      '#title' => t('PWS Endpoint configuration'),
   );
   $form['os2web_pws_config_group']['os2web_pws_url'] = array(
       '#type' => 'textfield',
@@ -43,6 +43,19 @@ function os2web_pws_config_form($form, &$form_state) {
       '#title' => t('PWS password'),
       '#description' => t('PWS HTTP authentification password.'),
   );
+
+  $form['os2web_pws_adlib_group'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Adlib Endpoint configuration'),
+  );
+  $form['os2web_pws_adlib_group']['os2web_adlib_url'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2web_adlib_url','http://706CAR01/ExponentWSA/ExponentWSA.asmx?wsdl'),
+      '#title' => t('URL for Adlib service endpoint'),
+      '#description' => t('URL to the webservice endpoint that runs the Adlib service.'),
+  );
+
+
   $form['os2web_pws_proxy_group'] = array(
       '#type' => 'fieldset',
       '#collapsible' => TRUE,

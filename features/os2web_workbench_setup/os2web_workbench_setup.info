@@ -45,3 +45,17 @@ features[variable][] = "workbench_access_node_type_right_column"
 features[variable][] = "workbench_access_node_type_tema"
 features[variable][] = "workbench_access_node_type_webform"
 features[variable][] = "workbench_access_taxonomy"
+
+
+; Information added by drush on 2012-04-17
+version = "dev"
+project = "os2web"
+datestamp = "1334666157"
+
+
+
+; Information added by drush on 2012-04-19
+version = "dev"
+project = "os2web"
+datestamp = "1334828867"
+
