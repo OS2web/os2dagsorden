@@ -85,6 +85,7 @@ projects[image_url_formatter][subdir] = "contrib"
 projects[views_slideshow][subdir] = "contrib"
 projects[content_taxonomy][subdir] = "contrib"
 projects[autocomplete_deluxe][subdir] = "contrib"
+projects[menuux][subdir] = "contrib"
 
 projects[workbench][subdir] = "contrib"
 projects[workbench_files][subdir] = "contrib"
