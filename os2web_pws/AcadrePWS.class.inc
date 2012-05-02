@@ -100,6 +100,7 @@ class AcadrePWS extends CaseService {
       return $result;
     }
     if ($this->client_search) {
+      $query = str_replace('-','/',$query);
       $query = explode('/', $query);
       if (is_numeric($query[0]) && is_numeric($query[1])) {
         try {
@@ -126,6 +127,7 @@ class AcadrePWS extends CaseService {
       return $result;
     }
     if ($this->client_search) {
+      $query = str_replace('-','/',$query);
       $query = explode('/', $query);
       if (is_numeric($query[0]) && is_numeric($query[1])) {
         try {
