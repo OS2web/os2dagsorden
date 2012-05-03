@@ -240,7 +240,7 @@ function _os2web_pws_process_pdf($limit = FALSE) {
     $pdfs = _os2web_pws_is_file_pdf($files->fetchAll(PDO::FETCH_COLUMN, 0));
 
     foreach ($pdfs as $file) {
-      if ($file['is_pdf'] === FALSE) {
+      if ($file['is_pdf'] === FALSE && is_file(drupal_realpath($file['file']->uri))) {
         $upload = $adlib->uploadData($file['file']->filename, file_get_contents(drupal_realpath($file['file']->uri)));
         $job = $adlib->addJob($upload);
         if ($job !== FALSE) {

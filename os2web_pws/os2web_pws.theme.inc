@@ -42,8 +42,6 @@ function theme_esdh_document($vars) {
 
   foreach ($id as $docid) {
     $doc = $pws->getDocument($docid);
-//    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $doc = ' . print_r($doc, 1));
-//    if (FALSE != $doc && $doc->Record->PublicationIndicator == AVAILABLE_PUBLIC) { // Only show public documents
     if (FALSE != $doc) { // Only show public documents
       //FIXME: Check publication status
       if (isset($doc->Document)) {
