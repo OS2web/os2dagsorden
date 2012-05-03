@@ -5,7 +5,6 @@ define('DEFAULT_ACADRE_IMPORT_DIR', 'public://acadre');
 function os2web_meetings_menu() {
   $items = array();
   $items['os2web/test/meetings'] = array(
-      'title' => 'Meetings Test',
       'page callback' => 'os2web_meetings_test_page',
       'access arguments' => array('administer os2web'),
       'type' => MENU_CALLBACK,
@@ -16,10 +15,15 @@ function os2web_meetings_menu() {
 function os2web_meetings_test_page() {
   global $debug_info;
   $options = array(
-      'callback' => '_os2web_meetings_process_manifest',
+//      'callback' => '_os2web_meetings_process_manifest',
       'recurse' => FALSE,
   );
-  file_scan_directory(DEFAULT_ACADRE_IMPORT_DIR, '/\.xml$/i', $options);
+  $manifest_list = file_scan_directory(DEFAULT_ACADRE_IMPORT_DIR, '/\.xml$/i', $options);
+  $result = array();
+  foreach ($manifest_list as $manifest) {
+    $result[] = _os2web_meetings_process_manifest($manifest->uri);
+  }
+
 
   return '<div><textarea cols="150" rows=50>' . print_r($debug_info, 1) . '</textarea>';
 }
@@ -82,8 +86,8 @@ function _os2web_meetings_process_agenda($agendainfo_xml) {
 function _os2web_meetings_unpublish_meeting($info) {
 //  error_log(basename(__FILE__) . ':' . __LINE__ . ' Unpublish: $agendainfo = ' . print_r($info, 1));
   //TODO: Look up nid of the meeting
-  $aid = $info['xmlFusionID'];
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $aid = ' . print_r($aid, 1));
+  $aid = $info['sysid'];
+  error_log(basename(__FILE__) . ':' . __LINE__ . ' Unpublish requested: $aid = ' . print_r($aid, 1));
   //TODO: Remove attached nodes, buttom-up
   //TODO: Remove node.
 }
@@ -98,7 +102,6 @@ function _os2web_meetings_unpublish_meeting($info) {
 function _os2web_meetings_publish_meeting($info, $xml) {
   global $debug_info;
   $debug_info = $xml;
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Publish: $agendainfo = ' . print_r($info, 1));
 
   //FIXME: Verify this list!
   $no_publish_committee = array(
@@ -114,16 +117,18 @@ function _os2web_meetings_publish_meeting($info, $xml) {
   // Gather info
   $options = array(
       'title' => (string) array_shift($xml->xpath("//table[@name='meeting']/fields/field[@name='name']")),
+      'date' => (string) array_shift($xml->xpath("//table[@name='meeting']/fields/field[@name='date']")),
+      'finish' => (string) array_shift($xml->xpath("//table[@name='meeting']/fields/field[@name='finish']")),
       'location' => (string) array_shift($xml->xpath("//table[@name='location']/fields/field[@name='name']")),
       'committee' => (string) array_shift($xml->xpath("//table[@name='committee']/fields/field[@name='name']")),
       'description' => (string) array_shift($xml->xpath("//table[@name='agenda']/fields/field[@name='description']")),
       'cdate' => strtotime((string) array_shift($xml->xpath("//table[@name='agenda']/fields/field[@name='producedate']"))),
-      'id' => $info['xmlFusionID'],
+      'id' => $info['sysid'],
   );
   if (in_array($options['committee'], $no_publish_committee)) {
     return;
   }
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $xpaths = ' . print_r($options, 1));
+  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $options = ' . print_r($options, 1));
 
 
   //FIXME: Refactor dupe-check to seperate function.
@@ -132,14 +137,14 @@ function _os2web_meetings_publish_meeting($info, $xml) {
       ->condition('aid', $options['id'])
       ->execute()
       ->fetchObject();
-  if (isset($nid->tid) && $nid->nid > 0) {
-    $node = node_load($nid);
-  } else {
-    $node = new stdClass(); // We create a new node object
-    $node->type = "meeting"; // Or any other content type you want
-    $node->language = LANGUAGE_NONE; // Or any language code if Locale module is enabled. More on this below *
-    $node->uid = 1; // Or any id you wish
+  if (isset($nid->nid) && $nid->nid > 0) {
+    node_delete($nid->nid);
   }
+
+  $node = new stdClass(); // We create a new node object
+  $node->type = "meeting"; // Or any other content type you want
+  $node->language = LANGUAGE_NONE; // Or any language code if Locale module is enabled. More on this below *
+  $node->uid = 1; // Or any id you wish
 
   $node->title = $options['title'];
   $node->path = array('alias' => 'agenda/' . $options['id']); // Setting a node path
@@ -147,14 +152,20 @@ function _os2web_meetings_publish_meeting($info, $xml) {
 
   $node->created = $options['cdate'];
   // Let's add standard body field
-  $node->body[$node->language][0]['value'] = $options['description'];
-  $node->body[$node->language][0]['summary'] = $options['description'];
-  $node->body[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field
+  $node->field_meeting_abbr[$node->language][0]['value'] = $options['description'];
+  $node->field_meeting_abbr[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field
+  // The date
+  $node->field_date[$node->language][0]['value'] = $options['date'];
+  $node->field_date[$node->language][0]['value2'] = $options['finish'];
+  $node->field_date[$node->language][0]['timezone'] = 'Europe/Berlin';
+  $node->field_date[$node->language][0]['timezone_db'] = 'UTC';
+  $node->field_date[$node->language][0]['date_type'] = 'datetime';
   // Make sure the committee term is created and get the term.
   $committee_term = _os2web_meetings_import_committee(array_shift($xml->xpath("//table[@name='committee']")));
   $node->field_committee[LANGUAGE_NONE][0]['tid'] = $committee_term->tid;
   $location_term = _os2web_meetings_import_location(array_shift($xml->xpath("//table[@name='meeting']")));
   $node->field_location[LANGUAGE_NONE][0]['tid'] = $location_term->tid;
+
 
   //TODO: Add nodes for each bullet
   error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Meeting");
@@ -168,7 +179,7 @@ function _os2web_meetings_publish_meeting($info, $xml) {
   error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item_nids = ' . print_r($item_nids, 1));
 
   foreach ($item_nids as $nid) {
-    $node->field_bullet_points[$node->language][]['nid'] = $nid;
+    $node->field_ref_bullet_points[$node->language][]['target_id'] = $nid;
   }
 
   // Add items to meeting node.
@@ -210,7 +221,7 @@ function _os2web_meetings_add_item($xml) {
   node_object_prepare($node); // Set some default values.
 
   foreach ($nids as $nid) {
-    $node->field_attachments[LANGUAGE_NONE][]['nid'] = $nid;
+    $node->field_ref_attachment[LANGUAGE_NONE][]['target_id'] = $nid;
   }
 
   node_submit($node);
@@ -244,9 +255,9 @@ function _os2web_meetings_add_bullet(SimpleXMLElement $xml) {
 
   node_object_prepare($node); // Set some default values.
   // Let's add standard body field
-  $node->body[$node->language][0]['value'] = $options['content'];
-  $node->body[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field
-  $node->field_weight[LANGUAGE_NONE][0]['value'] = $options['weight'];
+  $node->field_bpa_body[$node->language][0]['value'] = $options['content'];
+  $node->field_bpa_body[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field
+//  $node->field_weight[LANGUAGE_NONE][0]['value'] = $options['weight'];
 
   node_submit($node);
   node_save($node);
@@ -263,7 +274,11 @@ function _os2web_meetings_add_bullet(SimpleXMLElement $xml) {
 function _os2web_meetings_import_committee(SimpleXMLElement $xml) {
   //TODO: Process members of the committee.
   //FIXME: MAke vocab name configurable.
-  $vid = db_query("SELECT vid FROM {taxonomy_vocabulary} WHERE machine_name = 'acadremmcomittee'")->fetchField();
+  $vid = db_select('taxonomy_vocabulary', 'tv')
+      ->fields('tv', array('vid'))
+      ->condition('machine_name', 'committee')
+      ->execute()
+      ->fetchField();
 
   $term = new stdClass();
   $term->vid = $vid;
@@ -295,7 +310,11 @@ function _os2web_meetings_import_committee(SimpleXMLElement $xml) {
 function _os2web_meetings_import_location(SimpleXMLElement $xml) {
   //TODO: Process members of the committee.
   //FIXME: MAke vocab name configurable.
-  $vid = db_query("SELECT vid FROM {taxonomy_vocabulary} WHERE machine_name = 'acadremmlocation'")->fetchField();
+  $vid = db_select('taxonomy_vocabulary', 'tv')
+      ->fields('tv', array('vid'))
+      ->condition('machine_name', 'lokation')
+      ->execute()
+      ->fetchField();
 
   $term = new stdClass();
   $term->vid = $vid;
@@ -336,4 +355,20 @@ function _os2web_meetings_similar_file_exists($filename) {
     }
   }
   return false;
+}
+
+function os2web_meetings_node_delete($node) {
+  if ($node->type === 'meeting') {
+    db_delete('os2web_meetings_imported')->condition('nid', $node->nid)->execute();
+    //TODO: Delete bullets from meeting.
+    foreach ($node->field_ref_bullet_points[$node->language] as $nids) {
+      node_delete($nids['target_id']);
+    }
+  }
+  if ($node->type === 'bullet_point') {
+    //TODO: Delete bullet attachments from meeting.
+    foreach ($node->field_ref_attachment[$node->language] as $nids) {
+      node_delete($nids['target_id']);
+    }
+  }
 }

@@ -30,6 +30,7 @@ class AcadrePWS extends CaseService {
     $proxy_host = variable_get('os2web_pws_proxy_host');
     $proxy_port = variable_get('os2web_pws_proxy_port');
     $options['trace'] = TRUE; // For debugging purposes. Remove on prod.
+    $options['exceptions'] = TRUE;
     $options['login'] = $user;
     $options['cache_wsdl'] = WSDL_CACHE_DISK;
     $options['password'] = $password;
@@ -64,7 +65,7 @@ class AcadrePWS extends CaseService {
         unset($options['uri']);
         try {
           $this->client6 = new SoapClient($url . '?WSDL', $options);
-        } catch (SoapFault $sf) {
+        } catch (Exception $sf) {
           drupal_set_message('Error connecting to PWSv6 endpoint', 'error');
         }
       }
