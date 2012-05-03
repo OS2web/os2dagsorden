@@ -51,6 +51,12 @@ function os2web_content_types_and_user_fields_field_default_fields() {
           'type' => 'text_default',
           'weight' => '0',
         ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'teaser' => array(
           'label' => 'hidden',
           'module' => 'text',
@@ -135,13 +141,19 @@ function os2web_content_types_and_user_fields_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'entityreference',
           'settings' => array(
-            'link' => FALSE,
+            'view_mode' => 'full',
           ),
-          'type' => 'entityreference_label',
+          'type' => 'entityreference_entity_view',
           'weight' => '1',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -200,10 +212,16 @@ function os2web_content_types_and_user_fields_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
+          'weight' => '0',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
           'weight' => 0,
         ),
         'teaser' => array(
@@ -262,6 +280,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
             'parent' => '0',
           ),
         ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
       ),
       'translatable' => '0',
       'type' => 'taxonomy_term_reference',
@@ -273,11 +292,17 @@ function os2web_content_types_and_user_fields_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
           'weight' => '3',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -338,7 +363,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'date',
           'settings' => array(
             'format_type' => 'long',
@@ -349,6 +374,12 @@ function os2web_content_types_and_user_fields_field_default_fields() {
           ),
           'type' => 'date_default',
           'weight' => '1',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -414,6 +445,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
             'parent' => '0',
           ),
         ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
       ),
       'translatable' => '0',
       'type' => 'taxonomy_term_reference',
@@ -425,11 +457,17 @@ function os2web_content_types_and_user_fields_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'inline',
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
           'weight' => '2',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -481,7 +519,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(
-        'max_length' => '50',
+        'max_length' => '2048',
       ),
       'translatable' => '0',
       'type' => 'text',
@@ -493,11 +531,17 @@ function os2web_content_types_and_user_fields_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 7,
+          'weight' => '0',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -562,11 +606,16 @@ function os2web_content_types_and_user_fields_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
-          'module' => 'list',
+          'label' => 'hidden',
           'settings' => array(),
-          'type' => 'list_default',
+          'type' => 'hidden',
           'weight' => '5',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -648,11 +697,16 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
-          'module' => 'computed_field',
+          'label' => 'hidden',
           'settings' => array(),
-          'type' => 'computed_field_plain',
-          'weight' => 8,
+          'type' => 'hidden',
+          'weight' => '7',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -707,6 +761,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
             'parent' => '0',
           ),
         ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
       ),
       'translatable' => '0',
       'type' => 'taxonomy_term_reference',
@@ -718,11 +773,16 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
-          'module' => 'taxonomy',
+          'label' => 'hidden',
           'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
+          'type' => 'hidden',
           'weight' => '4',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -801,13 +861,19 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'entityreference',
           'settings' => array(
-            'link' => FALSE,
+            'view_mode' => 'full',
           ),
-          'type' => 'entityreference_label',
-          'weight' => 9,
+          'type' => 'entityreference_entity_view',
+          'weight' => '6',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -825,9 +891,13 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_buttons',
+        'module' => 'entityreference',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'size' => 60,
+        ),
+        'type' => 'entityreference_autocomplete',
         'weight' => '9',
       ),
     ),
@@ -872,6 +942,12 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
+          'weight' => 0,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
           'weight' => 0,
         ),
         'teaser' => array(
@@ -966,6 +1042,12 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
           'type' => 'entityreference_label',
           'weight' => 1,
         ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
         'teaser' => array(
           'label' => 'above',
           'settings' => array(),
@@ -1019,6 +1101,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
             'parent' => '0',
           ),
         ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
       ),
       'translatable' => '0',
       'type' => 'taxonomy_term_reference',
@@ -1083,6 +1166,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
             'parent' => '0',
           ),
         ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
       ),
       'translatable' => '0',
       'type' => 'taxonomy_term_reference',

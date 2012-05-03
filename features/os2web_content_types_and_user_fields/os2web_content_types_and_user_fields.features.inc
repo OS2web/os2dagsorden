@@ -8,10 +8,7 @@
  * Implements hook_ctools_plugin_api().
  */
 function os2web_content_types_and_user_fields_ctools_plugin_api() {
-  list($module, $api) = func_get_args();
-  if ($module == "strongarm" && $api == "strongarm") {
-    return array("version" => "1");
-  }
+  return array("version" => "1");
 }
 
 /**
@@ -24,7 +21,7 @@ function os2web_content_types_and_user_fields_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'bullet_point_attachment' => array(
@@ -32,7 +29,7 @@ function os2web_content_types_and_user_fields_node_info() {
       'base' => 'node_content',
       'description' => t('is an attachment to bullet point'),
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'meeting' => array(
@@ -40,7 +37,7 @@ function os2web_content_types_and_user_fields_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
     'speaker_paper' => array(
@@ -48,7 +45,7 @@ function os2web_content_types_and_user_fields_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Title'),
+      'title_label' => t('Titel'),
       'help' => '',
     ),
   );

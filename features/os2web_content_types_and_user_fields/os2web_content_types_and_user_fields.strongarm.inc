@@ -209,6 +209,27 @@ function os2web_content_types_and_user_fields_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'language_content_type_bullet_point';
+  $strongarm->value = '0';
+  $export['language_content_type_bullet_point'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'language_content_type_bullet_point_attachment';
+  $strongarm->value = '0';
+  $export['language_content_type_bullet_point_attachment'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'language_content_type_meeting';
+  $strongarm->value = '0';
+  $export['language_content_type_meeting'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_bullet_point';
   $strongarm->value = array();
   $export['menu_options_bullet_point'] = $strongarm;
@@ -224,9 +245,7 @@ function os2web_content_types_and_user_fields_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'menu_options_meeting';
-  $strongarm->value = array(
-    0 => 'main-menu',
-  );
+  $strongarm->value = array();
   $export['menu_options_meeting'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -270,7 +289,6 @@ function os2web_content_types_and_user_fields_strongarm() {
   $strongarm->name = 'node_options_bullet_point';
   $strongarm->value = array(
     0 => 'status',
-    1 => 'promote',
   );
   $export['node_options_bullet_point'] = $strongarm;
 
@@ -305,21 +323,21 @@ function os2web_content_types_and_user_fields_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_preview_bullet_point';
-  $strongarm->value = '1';
+  $strongarm->value = '0';
   $export['node_preview_bullet_point'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_preview_bullet_point_attachment';
-  $strongarm->value = '1';
+  $strongarm->value = '0';
   $export['node_preview_bullet_point_attachment'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_preview_meeting';
-  $strongarm->value = '1';
+  $strongarm->value = '0';
   $export['node_preview_meeting'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -333,7 +351,7 @@ function os2web_content_types_and_user_fields_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'node_submitted_bullet_point';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['node_submitted_bullet_point'] = $strongarm;
 
   $strongarm = new stdClass();
