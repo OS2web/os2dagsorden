@@ -71,8 +71,12 @@ projects[entity][subdir] = "contrib"
 projects[field_group][subdir] = "contrib"
 projects[field_slideshow][subdir] = "contrib"
 projects[libraries][subdir] = "contrib"
+
 projects[media][subdir] = "contrib"
+projects[media][version] = "2.0-unstable3"
+
 projects[media_youtube][subdir] = "contrib"
+
 projects[panels][subdir] = "contrib"
 projects[references][subdir] = "contrib"
 projects[rules][subdir] = "contrib"
@@ -123,6 +127,10 @@ projects[pathauto][subdir] = "contrib"
 projects[print][subdir] = "contrib"
 projects[taxonomy_menu][subdir] = "contrib"
 projects[token][subdir] = "contrib"
+
+projects[prepopulate][subdir] = "contrib"
+projects[calendar][subdir] = "contrib"
+projects[calendar][version] = "3.3"
 
 projects[imagefield_crop][subdir] = "contrib"
 projects[linkit][subdir] = "contrib"
