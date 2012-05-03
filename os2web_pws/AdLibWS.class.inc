@@ -13,29 +13,28 @@
  */
 class AdLibWS {
 
-  private static $client;
+  private $client;
   private static $base_path = 'c:\\Inetpub\\wwwroot\\';
   private static $base_url = 'http://10.1.1.127/';
 
   public function __construct() {
-    if (!isset(self::$client)) {
+    if (!isset($this->client)) {
       $options = array(
-          'soapversion' => SOAP_1_1,
+          'soapversion' => SOAP_1_2,
           'trace' => TRUE,
       );
-//      if (variable_get('os2web_pws_proxy', FALSE)) {
-//        $options['proxy_host'] = variable_get('os2web_pws_proxy_host');
-//        $options['proxy_port'] = variable_get('os2web_pws_proxy_port');
-//      }
+      if (variable_get('os2web_pws_proxy', FALSE)) {
+        $options['proxy_host'] = variable_get('os2web_pws_proxy_host');
+        $options['proxy_port'] = variable_get('os2web_pws_proxy_port');
+      }
       $url = variable_get('os2web_adlib_url', 'http://706CAR01/ExponentWSA/ExponentWSA.asmx?wsdl');
       $url = preg_replace('/([fhtps]{3,5}):\/\/(.+?)\//', self::$base_url, $url);
       preg_match('%http://.+?/%', $url, $matches);
       self::$base_url = array_shift($matches);
       try {
-        error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $matches = ' . print_r($matches, 1));
-//        self::$client = new SoapClient($url, $options);
-      } catch (SoapFault $sf) {
-        error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $sf = ' . print_r($sf, 1));
+//        $this->client = new SoapClient($url, $options);
+      } catch (Exception $exc) {
+        error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $exc = ' . print_r($exc, 1));
       }
     }
   }
@@ -47,7 +46,7 @@ class AdLibWS {
    * @return type
    */
   public function addJob($fileInfo) {
-    if (!isset(self::$client)) {
+    if (!isset($this->client)) {
       return false;
     }
     $jobInfo = '<JobInfo>
@@ -74,15 +73,15 @@ class AdLibWS {
             </JOB:SETTINGS>
           </JOB>
         </JOBS>';
-    return simplexml_load_string(self::$client->addJob(array('jobInfo' => $jobInfo, 'jobTicket' => $jobTicket))->AddJobResult);
+    return simplexml_load_string($this->client->addJob(array('jobInfo' => $jobInfo, 'jobTicket' => $jobTicket))->AddJobResult);
   }
 
   public function getJobStatus($id) {
     if (isset($id->JobSettings['JobID'])) {
       $id = $id->JobSettings['JobID'];
     }
-    if (isset(self::$client)) {
-      $result = self::$client->getJobStatus(array('jobID' => $id, 'isUserJobID' => false))->GetJobStatusResult;
+    if (isset($this->client)) {
+      $result = $this->client->getJobStatus(array('jobID' => $id, 'isUserJobID' => false))->GetJobStatusResult;
       $return = (object) array();
       if (strncmp('<', $result, 1) === 0) {
         $return->status = (string) simplexml_load_string($result)->CurrentJobStatus['Status'];
@@ -98,8 +97,8 @@ class AdLibWS {
   }
 
   public function addJobFolder() {
-    if (self::$client) {
-      $folder_info = simplexml_load_string(self::$client->addJobFolder()->AddJobFolderResult);
+    if ($this->client) {
+      $folder_info = simplexml_load_string($this->client->addJobFolder()->AddJobFolderResult);
       $result = 'ExponentJobs\\' . ((string) $folder_info['FolderID']);
       return $result;
     }
@@ -114,7 +113,7 @@ class AdLibWS {
    * @return mixed - False if call failed, otherwise a fileinfo structure
    */
   public function uploadData($filename, $data, $folder = NULL) {
-    if (!isset(self::$client)) {
+    if (!isset($this->client)) {
       return false;
     }
     if (!isset($folder)) {
@@ -124,7 +123,7 @@ class AdLibWS {
       <JobFiles>
         <JobFile FileName="' . $filename . '" Data="' . base64_encode($data) . '" Length="' . strlen($data) . '" />
       </JobFiles>';
-    $status = self::$client->AddJobFilesAsStream(array(
+    $status = $this->client->AddJobFilesAsStream(array(
             'JobFolder' => $folder . '\\Input',
             'XmlStream' => $payload,
         ))->AddJobFilesAsStreamResult;
@@ -155,8 +154,8 @@ class AdLibWS {
 
   public function getTrace() {
     return array(
-        'request' => self::$client->__getLastRequest(),
-        'response' => self::$client->__getLastResponse(),
+        'request' => $this->client->__getLastRequest(),
+        'response' => $this->client->__getLastResponse(),
     );
   }
 

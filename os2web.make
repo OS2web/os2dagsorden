@@ -71,8 +71,12 @@ projects[entity][subdir] = "contrib"
 projects[field_group][subdir] = "contrib"
 projects[field_slideshow][subdir] = "contrib"
 projects[libraries][subdir] = "contrib"
+
 projects[media][subdir] = "contrib"
+projects[media][version] = "2.0-unstable3"
+
 projects[media_youtube][subdir] = "contrib"
+
 projects[panels][subdir] = "contrib"
 projects[references][subdir] = "contrib"
 projects[rules][subdir] = "contrib"
@@ -85,6 +89,7 @@ projects[image_url_formatter][subdir] = "contrib"
 projects[views_slideshow][subdir] = "contrib"
 projects[content_taxonomy][subdir] = "contrib"
 projects[autocomplete_deluxe][subdir] = "contrib"
+projects[menuux][subdir] = "contrib"
 
 projects[workbench][subdir] = "contrib"
 projects[workbench_files][subdir] = "contrib"
@@ -123,6 +128,10 @@ projects[print][subdir] = "contrib"
 projects[taxonomy_menu][subdir] = "contrib"
 projects[token][subdir] = "contrib"
 
+projects[prepopulate][subdir] = "contrib"
+projects[calendar][subdir] = "contrib"
+projects[calendar][version] = "3.3"
+
 projects[imagefield_crop][subdir] = "contrib"
 projects[linkit][subdir] = "contrib"
 
@@ -140,6 +149,16 @@ projects[feeds][patch][] = "http://drupal.org/files/feeds-taxonomy-text-format-1
 
 projects[feeds_xpathparser][subdir] = "contrib"
 projects[feeds_xpathparser][version] = "1.0-beta3"
+
+projects[entityreference][subdir] = "contrib"
+projects[file_entity][subdir] = "contrib"
+
+projects[computed_field][subdir] = "contrib"
+
+; Morten, Rolr
+projects[apachesolr][version] = "1.0-beta19"
+projects[apachesolr_autocomplete][version] = "1.2"
+projects[apachesolr_attachments][version] = "1.0"
 
 ; Themes
 
