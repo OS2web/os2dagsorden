@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the OS2Web meetings calendar view feature.
+ */
+
+include_once 'os2web_meetings_calendar_view.features.inc';
