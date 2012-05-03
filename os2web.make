@@ -155,6 +155,11 @@ projects[file_entity][subdir] = "contrib"
 
 projects[computed_field][subdir] = "contrib"
 
+; Morten, Rolr
+projects[apachesolr][version] = "1.0-beta19"
+projects[apachesolr_autocomplete][version] = "1.2"
+projects[apachesolr_attachments][version] = "1.0"
+
 ; Themes
 
 projects[rubik][version] = "4.0-beta8"
