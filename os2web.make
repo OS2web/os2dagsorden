@@ -141,6 +141,12 @@ projects[feeds][patch][] = "http://drupal.org/files/feeds-taxonomy-text-format-1
 projects[feeds_xpathparser][subdir] = "contrib"
 projects[feeds_xpathparser][version] = "1.0-beta3"
 
+; Morten, Rolr
+projects[apachesolr][version] = "1.0-beta19"
+projects[apachesolr_autocomplete][version] = "1.2"
+projects[apachesolr_attachments][version] = "1.0"
+
+
 ; Themes
 
 projects[rubik][version] = "4.0-beta8"
