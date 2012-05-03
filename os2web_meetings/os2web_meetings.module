@@ -173,7 +173,7 @@ function _os2web_meetings_publish_meeting($info, $xml) {
   $items = $xml->xpath("//table[@name='agendaitem']");
   $item_nids = array();
   foreach ($items as $item) {
-    $item_nids[] = _os2web_meetings_add_item($item);
+    $item_nids[] = _os2web_meetings_add_item($info, $item);
     // add node for each items
   }
   error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item_nids = ' . print_r($item_nids, 1));
@@ -194,7 +194,7 @@ function _os2web_meetings_publish_meeting($info, $xml) {
   drupal_write_record('os2web_meetings_imported', $record);
 }
 
-function _os2web_meetings_add_item($xml) {
+function _os2web_meetings_add_item($info, $xml) {
 
   $options = array(
       'sysid' => (int) array_shift($xml->xpath("fields/field[@name='sysid']")),
@@ -211,8 +211,6 @@ function _os2web_meetings_add_item($xml) {
     // Add node for each bullet
     $nids[] = _os2web_meetings_add_bullet($bullet);
   }
-  //TODO: Gather enclosures
-
   $node = new stdClass();
   $node->type = "bullet_point"; // Or any other content type you want
   $node->language = LANGUAGE_NONE; // Or any language code if Locale module is enabled. More on this below *
@@ -222,6 +220,34 @@ function _os2web_meetings_add_item($xml) {
 
   foreach ($nids as $nid) {
     $node->field_ref_attachment[LANGUAGE_NONE][]['target_id'] = $nid;
+  }
+
+  //TODO: Gather enclosures
+  $enclosures = $xml->xpath("table[@name='enclosure']");
+  $fids = array();
+  foreach ($enclosures as $enclosure) {
+    $filename = (string) array_shift($enclosure->xpath("fields/field[@name='filename']"));
+    $uri = implode('/', array(DEFAULT_ACADRE_IMPORT_DIR, $info['filesfolder'], $filename));
+    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $filename = ' . print_r($uri, 1));
+
+    $fid = db_select('file_managed', 'fm')
+          ->fields('fm', array('fid'))
+          ->condition('uri', $uri)
+          ->execute()->fetchField();
+
+    $file = new stdClass();
+    if ($fid) {
+      $file->fid = $fid;
+    }
+    $file->uri = $uri;
+    $file->display = 1;
+    $file->filename = drupal_basename($file->uri);
+    $file->filemime = file_get_mimetype($file->uri);
+    $file->uid = 1;
+    $file->status = FILE_STATUS_PERMANENT;
+    $file = file_save($file);
+
+    $node->field_enclosures[$node->language][]= (array)$file;
   }
 
   node_submit($node);
@@ -369,6 +395,9 @@ function os2web_meetings_node_delete($node) {
     //TODO: Delete bullet attachments from meeting.
     foreach ($node->field_ref_attachment[$node->language] as $nids) {
       node_delete($nids['target_id']);
+    }
+    foreach ($node->field_enclosures[$node->language] as $file) {
+      file_delete($file, true);
     }
   }
 }

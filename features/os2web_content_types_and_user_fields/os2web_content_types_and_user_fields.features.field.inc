@@ -83,7 +83,101 @@ function os2web_content_types_and_user_fields_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '-4',
+        'weight' => '1',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-bullet_point-field_enclosures'
+  $fields['node-bullet_point-field_enclosures'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_enclosures',
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'file',
+      'settings' => array(
+        'display_default' => 1,
+        'display_field' => 1,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '0',
+      'type' => 'file',
+    ),
+    'field_instance' => array(
+      'bundle' => 'bullet_point',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'file',
+          'settings' => array(),
+          'type' => 'file_default',
+          'weight' => 2,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_enclosures',
+      'label' => 'Enclosures',
+      'required' => 0,
+      'settings' => array(
+        'description_field' => 0,
+        'file_directory' => '',
+        'file_extensions' => 'pdf tif doc docx msg',
+        'max_filesize' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'file',
+        'settings' => array(
+          'filefield_sources' => array(
+            'filefield_sources' => array(
+              'attach' => 0,
+              'plupload' => 0,
+              'reference' => 0,
+              'remote' => 0,
+            ),
+            'source_attach' => array(
+              'absolute' => '0',
+              'attach_mode' => 'copy',
+              'path' => 'file_attach',
+            ),
+            'source_reference' => array(
+              'autocomplete' => '0',
+            ),
+          ),
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'file_generic',
+        'weight' => '3',
       ),
     ),
   );
@@ -171,10 +265,14 @@ function os2web_content_types_and_user_fields_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_buttons',
-        'weight' => '-3',
+        'module' => 'entityreference',
+        'settings' => array(
+          'match_operator' => 'CONTAINS',
+          'path' => '',
+          'size' => 60,
+        ),
+        'type' => 'entityreference_autocomplete',
+        'weight' => '2',
       ),
     ),
   );
@@ -1332,6 +1430,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
   t('Body');
   t('Committee');
   t('Date');
+  t('Enclosures');
   t('Follows committees');
   t('Full name');
   t('Is part of Committee');
