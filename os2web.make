@@ -151,6 +151,7 @@ projects[feeds_xpathparser][subdir] = "contrib"
 projects[feeds_xpathparser][version] = "1.0-beta3"
 
 projects[entityreference][subdir] = "contrib"
+projects[file_entity][subdir] = "contrib"
 
 projects[computed_field][subdir] = "contrib"
 
