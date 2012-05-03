@@ -150,6 +150,10 @@ projects[feeds][patch][] = "http://drupal.org/files/feeds-taxonomy-text-format-1
 projects[feeds_xpathparser][subdir] = "contrib"
 projects[feeds_xpathparser][version] = "1.0-beta3"
 
+projects[entityreference][subdir] = "contrib"
+
+projects[computed_field][subdir] = "contrib"
+
 ; Themes
 
 projects[rubik][version] = "4.0-beta8"
