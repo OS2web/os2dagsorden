@@ -70,8 +70,9 @@ function os2web_case_field_field_validate($entity_type, $entity, $field, $instan
   error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
 
   foreach ($items as $delta => $item) {
-    $valid = preg_match('/^\d{2}[-,\/]\d{1,20}$/', trim($item['case_ident'])); // Adopt this for further testing
-    if (!$valid) {
+    $value = trim($item['case_ident']);
+    $valid = preg_match('/^\d{2}[-,\/]\d{1,20}$/', $value); // Adopt this for further testing
+    if (!$valid && ($value!='')) {
       $errors[$field['field_name']][$langcode][$delta][] = array(
           'error' => 'Ugyldig fremstilling af sags-id. Sags-id skal være på formen år/nummer eller år-nummer. Kun én værdi er tilladte.',
           'message' => t('%name: illegal value.', array('%name' => $instance['label'])),

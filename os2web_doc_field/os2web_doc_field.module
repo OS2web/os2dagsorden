@@ -74,7 +74,7 @@ function os2web_doc_field_field_validate($entity_type, $entity, $field, $instanc
     foreach ($docids as $docid) {
       $docid = trim($docid);
       $valid = preg_match('/^\d{1,20}[-,\/]\d{2}$/', $docid); // Adopt this for further testing
-      if (!$valid) {
+      if (!$valid && ($docid!='')) {
         $errors[$field['field_name']][$langcode][$delta][] = array(
             'error' => 'Ugyldig fremstilling af dokument-id. Dokument-id skal være på formen nummer/år eller nummer-år. Flere dokumenter skal være adskildt af , (komma).',
             'message' => t('%name: illegal value.', array('%name' => $instance['label'])),
