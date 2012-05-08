@@ -113,8 +113,9 @@ function os2web_test_page() {
   $pws = _os2web_pws_get_instance();
   $adlib = _os2web_adlib_get_instance();
 //  $call = $pws->lookupCase('11/14293');
-//  $call = $pws->fetchCase(349566);
+//  $call = $pws->fetchCase($pws->lookupCase('11/4949'));
 //  $call = $pws->getCaseDocs($pws->lookupCase('11/4949'));
+//  $call = array($pws->getCaseDocs('388538'),$pws->getCaseDocs('388531'));
 //  $call = $pws->getCaseDocs($pws->lookupCase('12/6202'));
 //  $call = $pws->getCaseDocs($pws->lookupCase('11/14293'));
 //  $call = $pws->fetchCase($pws->lookupCase('12/6202'));
@@ -123,11 +124,12 @@ function os2web_test_page() {
 //  return _os2web_get_rendered_doc(array(1420175,1369822));
 //  $call = $pws->getDocument(1565429);
 //  $call = $pws->getCaseDocs($pws->lookupCase('07/4408'));
+//  $call = $pws->getDocLock($pws->lookupDoc('268704/07'));
+//  $call = $pws->getDocLock(1);
 //  $call = $pws->getDocument($pws->lookupDoc('268704/07'));
-  _os2web_pws_cleanup_files();
-  $call = $pws->getDocument(350654);
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $pws->lookupDoc("268704/07") = ' . print_r($pws->lookupDoc("268704/07"), 1));
-
+//  _os2web_pws_cleanup_files();
+//  $call = $pws->getDocument(350654);
+//  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $pws->lookupDoc("268704/07") = ' . print_r($pws->lookupDoc("268704/07"), 1));
 //  $call = $pws->getDocFileName(3023484,1);
 //  $call = $pws->getDocFileName(1565429);
 //  $call = $pws->getDocFileName(3258320,1);
@@ -150,6 +152,21 @@ function os2web_test_page() {
 //  }
 //  return 'test';
 //  return theme('esdh_case', array('id' => 349566));
+//  echo '<pre>';print_r($call);die;
+
+  module_load_include('inc', 'os2web_pws','os2web_pws.theme');
+  $a1 = array(
+      'test' => 1,
+  );
+  $a2 = array(
+      'test' => 1,
+  );
+  if (_os2web_pws_array_compare($a1, $a2)) {
+    $call = 'success!';
+  } else {
+    $call = 'fail';
+  }
+
   return '<div><textarea cols="150" rows=50>' . print_r($call, 1) . '</textarea>
     <textarea cols="150" rows=20>' . print_r($pws->getTrace(), 1) . '</textarea></div>';
 }
@@ -257,10 +274,9 @@ function _os2web_pws_process_pdf($limit = FALSE) {
 }
 
 /**
- * Implementation of hook_file_insert()
+ * Implementation of hook_node_validate()
  */
-function os2web_pws_file_insert($file) {
-
+function os2web_pws_node_validate($node, $form, &$form_state) {
 }
 
 function _os2web_pws_is_file_pdf($fid) {

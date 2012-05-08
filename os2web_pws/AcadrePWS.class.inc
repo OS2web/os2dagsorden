@@ -184,6 +184,37 @@ XML;
     return $result;
   }
 
+  public function getDocLock($id) {
+    $result = &drupal_static(__FUNCTION__ . $id, FALSE);
+    if ($result != FALSE) {
+      return $result;
+    }
+    if ($this->client) {
+      $request = <<< XML
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetLockStatusDocumentId xmlns="http://www.traen.com/2007/09/06/schema">[DocID]</GetLockStatusDocumentId>
+  </soap:Body>
+</soap:Envelope>
+XML;
+      try {
+        $result = $this->client->__doRequest(t($request, array('[DocID]' => $id)), $this->client->location, $this->client->uri . 'GetLockStatus', SOAP_1_1);
+        $result = simplexml_load_string($result);
+        if ('' !== (string)array_pop($result->xpath('//soap:Fault/faultcode'))) { // This will indicate fault
+          $result = false;
+
+        } else {
+        $result = $result->xpath('//soap:Body');
+        $result = ('true' === (string)$result[0]->DocumentLockStatus)?true:false;
+//        $result = (string)array_pop($result->xpath('//soap:Fault/faultcode')); // This will indicate fault
+        }
+      } catch (SoapFault $sf) {
+      }
+    }
+    return $result;
+  }
+
   public function getDocument($id) {
     $result = &drupal_static(__FUNCTION__ . $id, FALSE);
     if ($result != FALSE) {
