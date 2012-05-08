@@ -1,0 +1,23 @@
+<?php
+/**
+ * Implements hook_menu_minipanels_styles().
+ */
+function menu_style_menu_minipanels_styles() {
+  $styles = array(
+    'cmstheme' => t('CMSTheme'),
+  );
+  return $styles;
+}
+?>
+
+
+<?php
+/**
+ * Implements hook_menu_minipanels_style().
+ */
+function menu_style_menu_minipanels_style($menu_config) {
+  // Load the custom styles in the footer but after other things have loaded.
+  drupal_add_js(drupal_get_path('module', 'menu_style') . '/menu_style.js', array('scope' => 'footer', 'weight' => 100));
+}
+?>
+

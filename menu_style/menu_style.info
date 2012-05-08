@@ -1,0 +1,3 @@
+name = Menu_minipanel style
+desctiption = "Adds custom style to menu_minipanel"
+core = 7.x
