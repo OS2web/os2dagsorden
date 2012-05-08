@@ -95,8 +95,8 @@ function os2web_pws_case_listing_title($id, $id2 = false) {
 
 function os2web_pws_case_listing($id, $id2 = false) {
   $pws = _os2web_pws_get_instance();
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $id = ' . print_r($id, 1));
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $id2 = ' . print_r($id2, 1));
+//  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $id = ' . print_r($id, 1));
+//  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $id2 = ' . print_r($id2, 1));
   if (FALSE != $id2) {
     $id = $pws->lookupCase($id . "/" . $id2);
   }
@@ -225,7 +225,7 @@ function _os2web_pws_process_pdf($limit = FALSE) {
           $upd_file->filemime = file_get_mimetype($upd_file->uri);
           $upd_file->filesize = filesize(drupal_realpath($upd_file->uri));
           $upd_file->timestamp = time();
-          error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $upd_file = ' . print_r($upd_file, 1));
+//          error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $upd_file = ' . print_r($upd_file, 1));
           drupal_write_record('os2web_pws_doc_files', $record, array('fid'));
           file_save($upd_file);
         }

@@ -67,8 +67,6 @@ function os2web_case_field_field_is_empty($item, $field) {
 }
 
 function os2web_case_field_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
-  error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
-
   foreach ($items as $delta => $item) {
     $value = trim($item['case_ident']);
     $valid = preg_match('/^\d{2}[-,\/]\d{1,20}$/', $value); // Adopt this for further testing
