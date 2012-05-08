@@ -37,7 +37,7 @@ function theme_esdh_case($vars) {
   foreach ($docs as $doc) {
     $docids[] = (int) $doc->Document->DocumentIdentifier;
   }
-  $html .= theme('esdh_document', array('id' => $docids));
+  $html .= theme('esdh_document', array('id' => $docids, 'iscase' => true));
   return $html;
 }
 
@@ -81,10 +81,14 @@ function theme_esdh_document($vars) {
     }
   }
   if (count($rows) == 0) {
-    $html .= '<p>' . t('This case contains no public documents.') . '</p>';
+    if ($vars['iscase']) {
+      $html .= '<p>' . t('This case contains no public documents.') . '</p>';
+    }
     return $html;
   }
-  $html .= '<p>' . t('This case contains @docs public documents', array('@docs' => count($rows))) . '</p>';
+  if ($vars['iscase']) {
+    $html .= '<p>' . t('This case contains @docs public documents', array('@docs' => count($rows))) . '</p>';
+  }
   $html .= theme('table', array('header' => $header, 'rows' => $rows));
   return $html;
 }
