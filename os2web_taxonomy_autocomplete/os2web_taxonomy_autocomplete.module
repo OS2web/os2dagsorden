@@ -79,17 +79,17 @@ function os2web_taxonomy_autocomplete_taxonomy_autocomplete($field_name, $tags_t
     $query->addTag('translatable');
     $query->addTag('term_access');
 	
-	//Do not return terms that are discontinued
+	// Do not return terms that are discontinued
 	$query->leftJoin('field_data_field_discontinued', 'd', 't.tid = d.entity_id'); 
 	$query->where('(d.field_discontinued_value IS NULL OR d.field_discontinued_value = 0)');
 	
-	//Only return KLE terms in third level of the hierarchy
+	// Only return KLE terms in third level of the hierarchy
 	if( in_array($vocabularies['kle']->vid,$vids) ) {
 	  $query->leftJoin('taxonomy_term_hierarchy', 'p1', 'p1.tid = t.tid'); 
 	  $query->leftJoin('taxonomy_term_hierarchy', 'p2', 'p2.tid = p1.parent');
 	  $query->condition('p2.parent','0','<>');
 	}	 
-	
+		
     // Do not select already entered terms.
     if (!empty($tags_typed)) {
       $query->condition('t.name', $tags_typed, 'NOT IN');
@@ -97,6 +97,8 @@ function os2web_taxonomy_autocomplete_taxonomy_autocomplete($field_name, $tags_t
     // Select rows that match by term name.
     $tags_return = $query
       ->fields('t', array('tid', 'name'))
+	  ->orderBy("LEFT(name,Length('$tag_last')-1)='$tag_last'", 'DESC')// Order by entered tag at beginning of term name
+	  ->orderBy('name','asc')
       ->condition('t.vid', $vids)
       ->condition('t.name', '%' . db_like($tag_last) . '%', 'LIKE')
       ->range(0, 30)
