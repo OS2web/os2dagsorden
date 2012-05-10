@@ -155,6 +155,10 @@ projects[file_entity][subdir] = "contrib"
 
 projects[computed_field][subdir] = "contrib"
 
+projects[better_exposed_filters][subdir] = "contrib"
+projects[poshy_tip][subdir] = "contrib"
+projects[views_php][subdir] = "contrib"
+
 ; Morten, Rolr
 projects[apachesolr][version] = "1.0-beta19"
 projects[apachesolr_autocomplete][version] = "1.2"
