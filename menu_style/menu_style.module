@@ -8,10 +8,8 @@ function menu_style_menu_minipanels_styles() {
   );
   return $styles;
 }
-?>
 
 
-<?php
 /**
  * Implements hook_menu_minipanels_style().
  */
@@ -21,13 +19,11 @@ function menu_style_menu_minipanels_style($menu_config) {
 /* Ekstra til søge-felt */
   drupal_add_js(drupal_get_path('module', 'menu_style') . '/search.js', array('scope' => 'header', 'weight' => 100));
 }
-?>
 
-<?php
 /**
  * Implements hook_search_api_ajax_settings().
  */
-function mymodule_search_api_ajax_settings() {
+function menu_style_search_api_ajax_settings() {
   $settings = array(
   
     // required: CSS ID for the main content (search results html)
@@ -54,8 +50,3 @@ function mymodule_search_api_ajax_settings() {
   
   return $settings;
 }
-?>
-
-<?php
-
-
