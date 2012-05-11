@@ -18,6 +18,8 @@ function menu_style_menu_minipanels_styles() {
 function menu_style_menu_minipanels_style($menu_config) {
   // Load the custom styles in the footer but after other things have loaded.
   drupal_add_js(drupal_get_path('module', 'menu_style') . '/menu_style.js', array('scope' => 'footer', 'weight' => 100));
+/* Ekstra til søge-felt */
+  drupal_add_js(drupal_get_path('module', 'menu_style') . '/search.js', array('scope' => 'header', 'weight' => 100));
 }
 ?>
 
@@ -55,12 +57,5 @@ function mymodule_search_api_ajax_settings() {
 ?>
 
 <?php
-/* Ekstra til søge-felt */
 
 
-function menu_style_menu_minipanels_style($menu_config) {
-  // Load the custom styles in the footer but after other things have loaded.
-  drupal_add_js(drupal_get_path('module', 'menu_style') . '/search.js', array('scope' => 'header', 'weight' => 100));
-}
-
-?>
