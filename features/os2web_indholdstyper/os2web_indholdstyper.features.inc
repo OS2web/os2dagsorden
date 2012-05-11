@@ -115,7 +115,7 @@ function os2web_indholdstyper_image_default_styles() {
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => '460',
-          'height' => '261',
+          'height' => '260',
         ),
         'weight' => '1',
       ),
@@ -157,7 +157,7 @@ function os2web_indholdstyper_node_info() {
       'base' => 'node_content',
       'description' => t('Almindelig webside til generel brug på sitet.'),
       'has_title' => '1',
-      'title_label' => t('Titel'),
+      'title_label' => t('Overskrift'),
       'help' => '',
     ),
     'esdh_dokument' => array(
@@ -181,7 +181,7 @@ function os2web_indholdstyper_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Titel'),
+      'title_label' => t('Overskrift'),
       'help' => '',
     ),
     'news' => array(
@@ -189,7 +189,7 @@ function os2web_indholdstyper_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Titel'),
+      'title_label' => t('Overskrift'),
       'help' => '',
     ),
     'rotating_image' => array(
@@ -197,7 +197,7 @@ function os2web_indholdstyper_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Titel'),
+      'title_label' => t('Overskrift'),
       'help' => '',
     ),
     'spotbox' => array(
@@ -205,7 +205,7 @@ function os2web_indholdstyper_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Titel'),
+      'title_label' => t('Overskrift'),
       'help' => '',
     ),
   );

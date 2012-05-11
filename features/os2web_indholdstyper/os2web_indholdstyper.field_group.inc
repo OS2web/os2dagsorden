@@ -41,19 +41,26 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'spotbox';
   $field_group->mode = 'form';
-  $field_group->parent_name = '';
+  $field_group->parent_name = 'group_spotbox';
   $field_group->data = array(
-    'label' => 'Billede',
-    'weight' => '2',
+    'label' => 'Spotbox',
+    'weight' => '1',
     'children' => array(
       0 => 'field_lead_image',
-      1 => 'field_short_description',
+      1 => 'field_termref_kle',
       2 => 'field_site_structure',
-      3 => 'title',
+      3 => 'field_spotbox_image_tall',
+      4 => 'title',
     ),
-    'format_type' => 'multistep',
+    'format_type' => 'htab',
     'format_settings' => array(
-      'formatter' => '',
+      'label' => 'Spotbox',
+      'instance_settings' => array(
+        'required_fields' => 1,
+        'classes' => '',
+        'description' => '',
+      ),
+      'formatter' => 'closed',
     ),
   );
   $export['group_billeder|node|spotbox|form'] = $field_group;
@@ -116,7 +123,7 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Sager og dokumenter',
+    'label' => 'Acadre sager og dokumenter',
     'weight' => '2',
     'children' => array(
       0 => 'field_case',
@@ -124,7 +131,7 @@ function os2web_indholdstyper_field_group_info() {
     ),
     'format_type' => 'multistep',
     'format_settings' => array(
-      'label' => 'Sager og dokumenter',
+      'label' => 'Acadre sager og dokumenter',
     ),
   );
   $export['group_esdh|node|contentpage|form'] = $field_group;
@@ -194,23 +201,14 @@ function os2web_indholdstyper_field_group_info() {
     'weight' => '4',
     'children' => array(
       0 => 'field_rotate_publish',
-      1 => 'path',
-      2 => 'additional_settings',
-      3 => 'revision_information',
-      4 => 'revision',
-      5 => 'author',
-      6 => 'name',
-      7 => 'date',
-      8 => 'options',
-      9 => 'promote',
-      10 => 'link',
-      11 => 'alias',
-      12 => 'pathauto',
-      13 => 'print',
-      14 => 'label',
-      15 => 'print_display',
-      16 => 'print_display_urllist',
-      17 => 'group_hidden',
+      1 => 'field_node_reference_kontaktblok',
+      2 => 'field_indholdsside_spotboxe',
+      3 => 'path',
+      4 => 'additional_settings',
+      5 => 'revision_information',
+      6 => 'author',
+      7 => 'options',
+      8 => 'group_hidden',
     ),
     'format_type' => 'multistep',
     'format_settings' => array(
@@ -231,12 +229,11 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->parent_name = 'group_gruppe3';
   $field_group->data = array(
     'label' => 'Skjult',
-    'weight' => '33',
+    'weight' => '37',
     'children' => array(
       0 => 'field_source_id',
-      1 => 'log',
-      2 => 'sticky',
-      3 => 'print_display_comment',
+      1 => 'field_site_structure',
+      2 => 'workbench_access',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -341,16 +338,22 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'spotbox';
   $field_group->mode = 'form';
-  $field_group->parent_name = '';
+  $field_group->parent_name = 'group_spotbox';
   $field_group->data = array(
     'label' => 'Links',
     'weight' => '3',
     'children' => array(
       0 => 'field_url',
+      1 => 'field_text',
     ),
-    'format_type' => 'multistep',
+    'format_type' => 'htab',
     'format_settings' => array(
-      'formatter' => '',
+      'formatter' => 'closed',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
     ),
   );
   $export['group_links|node|spotbox|form'] = $field_group;
@@ -366,24 +369,20 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->parent_name = '';
   $field_group->data = array(
     'label' => 'Menu',
-    'weight' => '11',
-    'children' => array(
-      0 => 'menu',
-      1 => 'enabled',
-      2 => 'link_title',
-      3 => 'description',
-      4 => 'parent',
-      5 => 'weight',
-    ),
-    'format_type' => 'tab',
+    'weight' => '8',
+    'children' => array(),
+    'format_type' => 'div',
     'format_settings' => array(
-      'label' => 'Menu',
-      'instance_settings' => array(
-        'required_fields' => 1,
-        'classes' => 'husk-menuen',
-        'description' => '',
-      ),
       'formatter' => 'open',
+      'instance_settings' => array(
+        'description' => '',
+        'show_label' => 1,
+        'label_element' => 'h3',
+        'effect' => 'none',
+        'speed' => 'fast',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
     ),
   );
   $export['group_menu|node|contentpage|form'] = $field_group;
@@ -427,6 +426,34 @@ function os2web_indholdstyper_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_spotbox|node|spotbox|form';
+  $field_group->group_name = 'group_spotbox';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'spotbox';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Spotbox',
+    'weight' => '0',
+    'children' => array(
+      0 => 'group_billeder',
+      1 => 'group_links',
+      2 => 'group_taksonomi',
+      3 => 'group_tekst',
+    ),
+    'format_type' => 'htabs',
+    'format_settings' => array(
+      'formatter' => '',
+      'instance_settings' => array(
+        'classes' => '',
+      ),
+    ),
+  );
+  $export['group_spotbox|node|spotbox|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_taksonomi|node|esdh_dokument|form';
   $field_group->group_name = 'group_taksonomi';
   $field_group->entity_type = 'node';
@@ -434,23 +461,24 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Taksonomi',
+    'label' => 'Emneord',
     'weight' => '4',
     'children' => array(
-      0 => 'field_termref_sofd',
-      1 => 'field_termref_kle',
-      2 => 'field_termref_sted',
-      3 => 'field_editortags',
-      4 => 'field_organization',
+      0 => 'field_termref_kle',
+      1 => 'field_termref_sted',
+      2 => 'field_editortags',
+      3 => 'field_organization',
+      4 => 'field_politics',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
-      'formatter' => 'collapsible',
+      'label' => 'Emneord',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
         'required_fields' => 1,
+        'classes' => '',
+        'description' => '',
       ),
+      'formatter' => 'collapsible',
     ),
   );
   $export['group_taksonomi|node|esdh_dokument|form'] = $field_group;
@@ -470,9 +498,9 @@ function os2web_indholdstyper_field_group_info() {
     'children' => array(
       0 => 'field_termref_kle',
       1 => 'field_termref_sted',
-      2 => 'field_termref_sofd',
-      3 => 'field_organization',
-      4 => 'field_editortags',
+      2 => 'field_organization',
+      3 => 'field_editortags',
+      4 => 'field_politics',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -496,18 +524,18 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = '';
   $field_group->data = array(
-    'label' => 'Taksonomi',
+    'label' => 'Emneord',
     'weight' => '2',
     'children' => array(
       0 => 'field_termref_kle',
-      1 => 'field_termref_sofd',
-      2 => 'field_organization',
-      3 => 'field_editortags',
-      4 => 'field_termref_sted',
+      1 => 'field_organization',
+      2 => 'field_editortags',
+      3 => 'field_termref_sted',
+      4 => 'field_politics',
     ),
     'format_type' => 'multistep',
     'format_settings' => array(
-      'formatter' => '',
+      'label' => 'Emneord',
     ),
   );
   $export['group_taksonomi|node|news|form'] = $field_group;
@@ -520,25 +548,59 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->entity_type = 'node';
   $field_group->bundle = 'spotbox';
   $field_group->mode = 'form';
-  $field_group->parent_name = '';
+  $field_group->parent_name = 'group_spotbox';
   $field_group->data = array(
-    'label' => 'Taksonomi',
+    'label' => 'Emneord',
     'weight' => '4',
     'children' => array(
-      0 => 'field_termref_kle',
-      1 => 'field_termref_sofd',
-      2 => 'field_termref_sted',
-      3 => 'field_organization',
-      4 => 'field_editortags',
-      5 => 'path',
+      0 => 'field_termref_sted',
+      1 => 'field_organization',
+      2 => 'field_editortags',
+      3 => 'field_politics',
+      4 => 'field_promoteto',
     ),
-    'format_type' => 'multistep',
+    'format_type' => 'htab',
     'format_settings' => array(
-      'formatter' => '',
-      'instance_settings' => NULL,
+      'formatter' => 'closed',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
     ),
   );
   $export['group_taksonomi|node|spotbox|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_taxonomy|node|esdh_sag|form';
+  $field_group->group_name = 'group_taxonomy';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'esdh_sag';
+  $field_group->mode = 'form';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Emneord',
+    'weight' => '4',
+    'children' => array(
+      0 => 'field_termref_sted',
+      1 => 'field_termref_kle',
+      2 => 'field_editortags',
+      3 => 'field_organization',
+      4 => 'field_politics',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'formatter' => 'collapsible',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_taxonomy|node|esdh_sag|form'] = $field_group;
 
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
@@ -565,6 +627,33 @@ function os2web_indholdstyper_field_group_info() {
     ),
   );
   $export['group_tekst|node|news|form'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
+  $field_group->identifier = 'group_tekst|node|spotbox|form';
+  $field_group->group_name = 'group_tekst';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'spotbox';
+  $field_group->mode = 'form';
+  $field_group->parent_name = 'group_spotbox';
+  $field_group->data = array(
+    'label' => 'Tekst',
+    'weight' => '2',
+    'children' => array(
+      0 => 'body',
+    ),
+    'format_type' => 'htab',
+    'format_settings' => array(
+      'formatter' => 'closed',
+      'instance_settings' => array(
+        'description' => '',
+        'classes' => '',
+        'required_fields' => 1,
+      ),
+    ),
+  );
+  $export['group_tekst|node|spotbox|form'] = $field_group;
 
   return $export;
 }

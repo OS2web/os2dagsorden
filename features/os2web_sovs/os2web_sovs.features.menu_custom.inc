@@ -16,6 +16,12 @@ function os2web_sovs_menu_default_menu_custom() {
     'title' => 'Fritid og planer',
     'description' => '',
   );
+  // Exported menu: menu-indholdsmenu
+  $menus['menu-indholdsmenu'] = array(
+    'menu_name' => 'menu-indholdsmenu',
+    'title' => 'Indholdsmenu',
+    'description' => '',
+  );
   // Exported menu: menu-mega-menu-borger
   $menus['menu-mega-menu-borger'] = array(
     'menu_name' => 'menu-mega-menu-borger',
@@ -39,6 +45,7 @@ function os2web_sovs_menu_default_menu_custom() {
   t('Borger');
   t('Erhverv');
   t('Fritid og planer');
+  t('Indholdsmenu');
   t('Overordnet sitemenu');
 
 

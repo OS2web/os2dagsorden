@@ -21,7 +21,7 @@ function os2web_sovs_menu_default_menu_links() {
       'menu_minipanels_hover' => array(
         'position' => array(
           'target' => 'custom',
-          'target_custom' => '.region-menu-inner',
+          'target_custom' => '#zone-menu',
           'type' => 'absolute',
           'corner' => array(
             'target' => 'bottomLeft',
@@ -39,7 +39,7 @@ function os2web_sovs_menu_default_menu_links() {
           ),
         ),
         'hide' => array(
-          'fixed' => 'true',
+          'delay' => '30',
           'effect' => array(
             'type' => 'false',
             'length' => '0',
@@ -48,8 +48,8 @@ function os2web_sovs_menu_default_menu_links() {
         'style' => array(
           'name' => 'cmstheme',
           'width' => array(
-            'min' => '960',
-            'max' => '960',
+            'min' => '970',
+            'max' => '970',
           ),
           'border' => array(
             'width' => '0',
@@ -78,11 +78,11 @@ function os2web_sovs_menu_default_menu_links() {
     'router_path' => 'taxonomy/term/%',
     'link_title' => 'Erhverv',
     'options' => array(
-      'minipanel' => 'mega_menu_erhverv',
+      'minipanel' => 'mega_menu_for_erhverv',
       'menu_minipanels_hover' => array(
         'position' => array(
           'target' => 'custom',
-          'target_custom' => '.region-menu-inner',
+          'target_custom' => '#zone-menu',
           'type' => 'absolute',
           'corner' => array(
             'target' => 'bottomLeft',
@@ -100,7 +100,7 @@ function os2web_sovs_menu_default_menu_links() {
           ),
         ),
         'hide' => array(
-          'fixed' => 'true',
+          'delay' => '0',
           'effect' => array(
             'type' => 'false',
             'length' => '0',
@@ -109,8 +109,8 @@ function os2web_sovs_menu_default_menu_links() {
         'style' => array(
           'name' => 'cmstheme',
           'width' => array(
-            'min' => '960',
-            'max' => '960',
+            'min' => '970',
+            'max' => '970',
           ),
           'border' => array(
             'width' => '0',
@@ -139,11 +139,11 @@ function os2web_sovs_menu_default_menu_links() {
     'router_path' => 'taxonomy/term/%',
     'link_title' => 'Politik og planer',
     'options' => array(
-      'minipanel' => 'mega_menu_politikogplaner',
+      'minipanel' => 'mega_menu_for_politik_og_planer',
       'menu_minipanels_hover' => array(
         'position' => array(
           'target' => 'custom',
-          'target_custom' => '.region-menu-inner',
+          'target_custom' => '#zone-menu',
           'type' => 'absolute',
           'corner' => array(
             'target' => 'bottomLeft',
@@ -161,7 +161,7 @@ function os2web_sovs_menu_default_menu_links() {
           ),
         ),
         'hide' => array(
-          'fixed' => 'true',
+          'delay' => '0',
           'effect' => array(
             'type' => 'false',
             'length' => '0',
@@ -170,8 +170,8 @@ function os2web_sovs_menu_default_menu_links() {
         'style' => array(
           'name' => 'cmstheme',
           'width' => array(
-            'min' => '960',
-            'max' => '960',
+            'min' => '970',
+            'max' => '970',
           ),
           'border' => array(
             'width' => '0',
@@ -431,6 +431,105 @@ function os2web_sovs_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '0',
   );
+  // Exported menu link: menu-selvbetjening:taxonomy/term/4
+  $menu_links['menu-selvbetjening:taxonomy/term/4'] = array(
+    'menu_name' => 'menu-selvbetjening',
+    'link_path' => 'taxonomy/term/4',
+    'router_path' => 'taxonomy/term/%',
+    'link_title' => 'Borgere',
+    'options' => array(
+      'minipanel' => '',
+      'attributes' => array(
+        'title' => '',
+      ),
+    ),
+    'module' => 'menu',
+    'hidden' => '0',
+    'external' => '0',
+    'has_children' => '0',
+    'expanded' => '0',
+    'weight' => '0',
+  );
+  // Exported menu link: menu-selvbetjening:taxonomy/term/5
+  $menu_links['menu-selvbetjening:taxonomy/term/5'] = array(
+    'menu_name' => 'menu-selvbetjening',
+    'link_path' => 'taxonomy/term/5',
+    'router_path' => 'taxonomy/term/%',
+    'link_title' => 'Erhverv',
+    'options' => array(
+      'minipanel' => '',
+      'attributes' => array(
+        'title' => '',
+      ),
+    ),
+    'module' => 'menu',
+    'hidden' => '0',
+    'external' => '0',
+    'has_children' => '0',
+    'expanded' => '0',
+    'weight' => '0',
+  );
+  // Exported menu link: menu-top-menu:<front>
+  $menu_links['menu-top-menu:<front>'] = array(
+    'menu_name' => 'menu-top-menu',
+    'link_path' => '<front>',
+    'router_path' => '',
+    'link_title' => 'Andre sites',
+    'options' => array(
+      'minipanel' => 'andre_kommunale_websites',
+      'menu_minipanels_hover' => array(
+        'position' => array(
+          'target' => 'custom',
+          'target_custom' => '#zone-user',
+          'type' => 'absolute',
+          'corner' => array(
+            'target' => 'topLeft',
+            'tooltip' => 'topLeft',
+          ),
+        ),
+        'show' => array(
+          'delay' => '0',
+          'when' => array(
+            'event' => 'click',
+          ),
+          'effect' => array(
+            'type' => 'slide',
+            'length' => '0',
+          ),
+        ),
+        'hide' => array(
+          'delay' => '0',
+          'effect' => array(
+            'type' => 'slide',
+            'length' => '0',
+          ),
+        ),
+        'style' => array(
+          'name' => 'light',
+          'width' => array(
+            'min' => '0',
+            'max' => '250',
+          ),
+          'border' => array(
+            'width' => '3',
+            'color' => '#d3d3d3',
+            'radius' => '0',
+          ),
+          'tip' => 'none',
+        ),
+        'mlid' => '1608',
+      ),
+      'attributes' => array(
+        'title' => '',
+      ),
+    ),
+    'module' => 'menu',
+    'hidden' => '0',
+    'external' => '1',
+    'has_children' => '0',
+    'expanded' => '0',
+    'weight' => '-48',
+  );
   // Exported menu link: menu-top-menu:http://www.adgangforalle.dk/
   $menu_links['menu-top-menu:http://www.adgangforalle.dk/'] = array(
     'menu_name' => 'menu-top-menu',
@@ -448,7 +547,26 @@ function os2web_sovs_menu_default_menu_links() {
     'external' => '1',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '0',
+    'weight' => '-49',
+  );
+  // Exported menu link: user-menu:admin/workbench
+  $menu_links['user-menu:admin/workbench'] = array(
+    'menu_name' => 'user-menu',
+    'link_path' => 'admin/workbench',
+    'router_path' => 'admin/workbench',
+    'link_title' => 'Workbench',
+    'options' => array(
+      'minipanel' => '',
+      'attributes' => array(
+        'title' => '',
+      ),
+    ),
+    'module' => 'menu',
+    'hidden' => '0',
+    'external' => '0',
+    'has_children' => '0',
+    'expanded' => '0',
+    'weight' => '-48',
   );
   // Exported menu link: user-menu:node/add/contentpage
   $menu_links['user-menu:node/add/contentpage'] = array(
@@ -561,6 +679,25 @@ function os2web_sovs_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-47',
   );
+  // Exported menu link: user-menu:node/add/rotating-image
+  $menu_links['user-menu:node/add/rotating-image'] = array(
+    'menu_name' => 'user-menu',
+    'link_path' => 'node/add/rotating-image',
+    'router_path' => 'node/add/rotating-image',
+    'link_title' => 'Opret billedkarrusel',
+    'options' => array(
+      'minipanel' => '',
+      'attributes' => array(
+        'title' => '',
+      ),
+    ),
+    'module' => 'menu',
+    'hidden' => '0',
+    'external' => '0',
+    'has_children' => '0',
+    'expanded' => '0',
+    'weight' => '-47',
+  );
   // Exported menu link: user-menu:user
   $menu_links['user-menu:user'] = array(
     'menu_name' => 'user-menu',
@@ -571,11 +708,11 @@ function os2web_sovs_menu_default_menu_links() {
       'alter' => TRUE,
     ),
     'module' => 'system',
-    'hidden' => '1',
+    'hidden' => '0',
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-50',
+    'weight' => '-10',
   );
   // Exported menu link: user-menu:user/logout
   $menu_links['user-menu:user/logout'] = array(
@@ -589,25 +726,29 @@ function os2web_sovs_menu_default_menu_links() {
     'external' => '0',
     'has_children' => '0',
     'expanded' => '0',
-    'weight' => '-49',
+    'weight' => '10',
   );
   // Translatables
   // Included for use with string extractors like potx.
+  t('Andre sites');
   t('Arbejde');
   t('Arbejdskraft');
   t('Borger');
+  t('Borgere');
   t('Erhverv');
   t('Kontakt');
   t('Log out');
   t('Læs højt');
   t('Opret ESDH dokument');
   t('Opret ESDH sag');
+  t('Opret billedkarrusel');
   t('Opret galleri');
   t('Opret iframe/selvbetjeningsløsning m.m.');
   t('Opret indhold');
   t('Opret nyhed');
   t('Politik og planer');
   t('User account');
+  t('Workbench');
 
 
   return $menu_links;

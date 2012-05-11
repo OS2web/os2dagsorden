@@ -175,7 +175,7 @@ function os2web_indholdstyper_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'os2web_doc_field',
           'settings' => array(),
           'type' => 'doc_ident_formatter',
@@ -257,15 +257,9 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '7',
+          'weight' => '11',
         ),
         'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -293,11 +287,110 @@ function os2web_indholdstyper_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-contentpage-field_indholdsside_spotboxe'
+  $fields['node-contentpage-field_indholdsside_spotboxe'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_indholdsside_spotboxe',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'borger_dk_permalink' => 0,
+          'contentpage' => 0,
+          'esdh_dokument' => 0,
+          'esdh_sag' => 0,
+          'files' => 0,
+          'galleri' => 0,
+          'iframe_selvbetjeningsl_sning_mm' => 0,
+          'institution' => 0,
+          'knactivity' => 0,
+          'kontaktblok' => 0,
+          'local_plan' => 0,
+          'media' => 0,
+          'news' => 0,
+          'ofir_job' => 0,
+          'panel' => 0,
+          'person' => 0,
+          'politician' => 0,
+          'referat' => 0,
+          'right_column' => 0,
+          'rotating_image' => 0,
+          'selvbetjeningslinks' => 0,
+          'spotbox' => 'spotbox',
+          'tema' => 0,
+          'webform' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'contentpage',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'node_reference',
+          'settings' => array(),
+          'type' => 'node_reference_default',
+          'weight' => 15,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_indholdsside_spotboxe',
+      'label' => 'Spotboxe',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '32',
+      ),
+    ),
+  );
+
   // Exported field: 'node-contentpage-field_lead_image'
   $fields['node-contentpage-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -329,12 +422,34 @@ function os2web_indholdstyper_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'hidden',
-          'module' => 'image',
+          'module' => 'field_slideshow',
           'settings' => array(
-            'image_link' => '',
-            'image_style' => 'medium-content',
+            'slideshow_caption' => '',
+            'slideshow_caption_link' => '',
+            'slideshow_carousel_circular' => 0,
+            'slideshow_carousel_image_style' => '',
+            'slideshow_carousel_scroll' => '1',
+            'slideshow_carousel_speed' => '500',
+            'slideshow_carousel_vertical' => 0,
+            'slideshow_carousel_visible' => '3',
+            'slideshow_colorbox_image_style' => '',
+            'slideshow_colorbox_slideshow' => '',
+            'slideshow_colorbox_slideshow_speed' => '4000',
+            'slideshow_colorbox_speed' => '350',
+            'slideshow_colorbox_transition' => 'elastic',
+            'slideshow_controls' => 0,
+            'slideshow_field_collection_image' => '',
+            'slideshow_fx' => 'fade',
+            'slideshow_image_style' => 'medium-content',
+            'slideshow_link' => '',
+            'slideshow_order' => '',
+            'slideshow_pager' => '',
+            'slideshow_pager_image_style' => '',
+            'slideshow_pause' => 0,
+            'slideshow_speed' => '9000',
+            'slideshow_timeout' => '4000',
           ),
-          'type' => 'image',
+          'type' => 'slideshow',
           'weight' => '1',
         ),
         'related_block' => array(
@@ -383,6 +498,7 @@ function os2web_indholdstyper_field_default_fields() {
             'image' => 'image',
             'video' => 'video',
           ),
+          'browser_plugins' => array(),
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',
@@ -454,7 +570,7 @@ function os2web_indholdstyper_field_default_fields() {
         'description_field' => 0,
         'file_directory' => 'PDF',
         'file_extensions' => 'pdf swf',
-        'max_filesize' => '10 MB',
+        'max_filesize' => '50 MB',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -471,10 +587,109 @@ function os2web_indholdstyper_field_default_fields() {
             'image' => 0,
             'video' => 0,
           ),
+          'browser_plugins' => array(),
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',
         'weight' => '-1',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-contentpage-field_node_reference_kontaktblok'
+  $fields['node-contentpage-field_node_reference_kontaktblok'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_node_reference_kontaktblok',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'borger_dk_permalink' => 0,
+          'contentpage' => 0,
+          'esdh_dokument' => 0,
+          'esdh_sag' => 0,
+          'files' => 0,
+          'galleri' => 0,
+          'iframe_selvbetjeningsl_sning_mm' => 0,
+          'institution' => 0,
+          'knactivity' => 0,
+          'kontaktblok' => 'kontaktblok',
+          'local_plan' => 0,
+          'media' => 0,
+          'news' => 0,
+          'ofir_job' => 0,
+          'panel' => 0,
+          'person' => 0,
+          'politician' => 0,
+          'referat' => 0,
+          'right_column' => 0,
+          'rotating_image' => 0,
+          'selvbetjeningslinks' => 0,
+          'spotbox' => 0,
+          'tema' => 0,
+          'webform' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'contentpage',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '8',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_node_reference_kontaktblok',
+      'label' => 'Kontaktblok',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '35',
       ),
     ),
   );
@@ -525,15 +740,9 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '10',
+          'weight' => '13',
         ),
         'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -608,15 +817,9 @@ function os2web_indholdstyper_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 14,
+          'weight' => '7',
         ),
         'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -763,15 +966,9 @@ function os2web_indholdstyper_field_default_fields() {
             'multiple_to' => '',
           ),
           'type' => 'date_default',
-          'weight' => 13,
+          'weight' => '6',
         ),
         'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -801,7 +998,78 @@ function os2web_indholdstyper_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '32',
+        'weight' => '36',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-contentpage-field_site_structure'
+  $fields['node-contentpage-field_site_structure'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_site_structure',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'site_struktur',
+            'parent' => '0',
+            'depth' => '',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'contentpage',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '9',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_site_structure',
+      'label' => 'Portalkategori',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '2',
       ),
     ),
   );
@@ -831,7 +1099,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '12',
+          'weight' => '14',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -862,7 +1130,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '28',
+        'weight' => '1',
       ),
     ),
   );
@@ -913,15 +1181,9 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '6',
+          'weight' => '10',
         ),
         'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -995,15 +1257,9 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '8',
+          'weight' => '12',
         ),
         'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -1319,11 +1575,92 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '4',
+        'weight' => '5',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-esdh_dokument-field_politics'
+  $fields['node-esdh_dokument-field_politics'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_politics',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'politik',
+            'parent' => '0',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'esdh_dokument',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 8,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_politics',
+      'label' => 'Politik',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '6',
       ),
     ),
   );
@@ -1355,6 +1692,7 @@ function os2web_indholdstyper_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -1465,8 +1803,8 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_termref_kle',
-      'label' => 'KLE',
-      'required' => 0,
+      'label' => 'KL Emneord',
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -1475,7 +1813,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
@@ -1555,11 +1893,11 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '5',
+        'weight' => '4',
       ),
     ),
   );
@@ -1617,7 +1955,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'os2web_case_field',
         'settings' => array(),
         'type' => 'case_ident_widget',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );
@@ -1697,7 +2035,7 @@ function os2web_indholdstyper_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '7',
+        'weight' => '9',
       ),
     ),
   );
@@ -1773,11 +2111,92 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '4',
+        'weight' => '7',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-esdh_sag-field_politics'
+  $fields['node-esdh_sag-field_politics'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_politics',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'politik',
+            'parent' => '0',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'esdh_sag',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 7,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_politics',
+      'label' => 'Politik',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '8',
       ),
     ),
   );
@@ -1809,6 +2228,7 @@ function os2web_indholdstyper_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -1857,7 +2277,7 @@ function os2web_indholdstyper_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -1923,8 +2343,8 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_termref_kle',
-      'label' => 'KLE',
-      'required' => 0,
+      'label' => 'KL Emneord',
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -1933,91 +2353,11 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '3',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_sag-field_termref_sofd'
-  $fields['node-esdh_sag-field_termref_sofd'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_termref_sofd',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 's_egeord_sofd',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_sag',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '1',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_termref_sofd',
-      'label' => 'Søgeord SOFD',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '6',
+        'weight' => '5',
       ),
     ),
   );
@@ -2093,11 +2433,11 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -2136,7 +2476,7 @@ function os2web_indholdstyper_field_default_fields() {
         0 => array(
           'summary' => '',
           'value' => '',
-          'format' => 'filtered_html',
+          'format' => 'ckeditor_test',
         ),
       ),
       'deleted' => '0',
@@ -2167,7 +2507,7 @@ function os2web_indholdstyper_field_default_fields() {
       'label' => 'Indhold',
       'required' => 0,
       'settings' => array(
-        'display_summary' => 1,
+        'display_summary' => 0,
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
@@ -2222,7 +2562,9 @@ function os2web_indholdstyper_field_default_fields() {
       'bundle' => 'galleri',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Opmærk dit indhold med dine egne stikord. 
+<br>Dette giver mulighed for at sammenkoble relateret indhold i listevisninger mv.
+<br>Adskil flere opmærkninger med komma.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -2463,7 +2805,7 @@ function os2web_indholdstyper_field_default_fields() {
   $fields['node-galleri-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -2591,7 +2933,9 @@ function os2web_indholdstyper_field_default_fields() {
       'bundle' => 'galleri',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Opmærk dit indhold med kommunens organisation. 
+<br>Dette giver mulighed for at sammenkoble relateret indhold i listevisninger mv.
+<br>Adskil flere opmærkninger med komma.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -2624,11 +2968,11 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '8',
+        'weight' => '9',
       ),
     ),
   );
@@ -2735,6 +3079,89 @@ function os2web_indholdstyper_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-galleri-field_politics'
+  $fields['node-galleri-field_politics'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_politics',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'politik',
+            'parent' => '0',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'galleri',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Opmærk dit indhold med politisk parti, råd, nævn eller udvalg.
+<br>Dette giver mulighed for at sammenkoble relateret indhold i listevisninger mv.
+<br>Adskil flere opmærkninger med komma.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 11,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_politics',
+      'label' => 'Politik',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '10',
+      ),
+    ),
+  );
+
   // Exported field: 'node-galleri-field_site_structure'
   $fields['node-galleri-field_site_structure'] = array(
     'field_config' => array(
@@ -2762,6 +3189,7 @@ function os2web_indholdstyper_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -2849,7 +3277,9 @@ function os2web_indholdstyper_field_default_fields() {
       'bundle' => 'galleri',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Opmærk dit indhold med KLs Emneord.
+<br>Se fuld oversigt på <a target="_blank" href="http://www.kle-online.dk">KLE-Online</a>.
+<br>Adskil flere opmærkninger med komma.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -2872,8 +3302,8 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_termref_kle',
-      'label' => 'KLE',
-      'required' => 0,
+      'label' => 'KL Emneord',
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -2882,7 +3312,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
@@ -2929,7 +3359,9 @@ function os2web_indholdstyper_field_default_fields() {
       'bundle' => 'galleri',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Opmærk dit indhold med steder fra kommunens GIS system. 
+<br>Dette giver mulighed for kortvisning.
+<br>Adskil flere opmærkninger med komma.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -2962,11 +3394,11 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '9',
+        'weight' => '8',
       ),
     ),
   );
@@ -3001,7 +3433,13 @@ function os2web_indholdstyper_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'news',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'summary' => '',
+          'value' => '',
+          'format' => 'filtered_html',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -3214,7 +3652,7 @@ function os2web_indholdstyper_field_default_fields() {
   $fields['node-news-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -3327,6 +3765,7 @@ function os2web_indholdstyper_field_default_fields() {
             'image' => 'image',
             'video' => 0,
           ),
+          'browser_plugins' => array(),
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',
@@ -3406,11 +3845,92 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '40',
+        'weight' => '41',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-news-field_politics'
+  $fields['node-news-field_politics'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_politics',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'politik',
+            'parent' => '0',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'news',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 14,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_politics',
+      'label' => 'Politik',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '42',
       ),
     ),
   );
@@ -3442,6 +3962,7 @@ function os2web_indholdstyper_field_default_fields() {
           0 => array(
             'vocabulary' => 'forfrem_til',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -3807,6 +4328,7 @@ function os2web_indholdstyper_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -3984,7 +4506,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_termref_kle',
-      'label' => 'KLE',
+      'label' => 'KL Emneord',
       'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -3994,91 +4516,11 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
         'weight' => '39',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-news-field_termref_sofd'
-  $fields['node-news-field_termref_sofd'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_termref_sofd',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 's_egeord_sofd',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'news',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '5',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_termref_sofd',
-      'label' => 'Søgeord SOFD',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '42',
       ),
     ),
   );
@@ -4154,11 +4596,11 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '41',
+        'weight' => '40',
       ),
     ),
   );
@@ -4269,6 +4711,7 @@ function os2web_indholdstyper_field_default_fields() {
           0 => array(
             'vocabulary' => 'forfrem_til',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -4622,6 +5065,7 @@ function os2web_indholdstyper_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -4668,6 +5112,88 @@ function os2web_indholdstyper_field_default_fields() {
         'settings' => array(),
         'type' => 'options_select',
         'weight' => '1',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-spotbox-body'
+  $fields['node-spotbox-body'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(
+        0 => 'node',
+      ),
+      'field_name' => 'body',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '1',
+      'type' => 'text_with_summary',
+    ),
+    'field_instance' => array(
+      'bundle' => 'spotbox',
+      'default_value' => array(
+        0 => array(
+          'summary' => '',
+          'value' => '',
+          'format' => 'filtered_html',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 13,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'body',
+      'label' => 'Tekst',
+      'required' => 0,
+      'settings' => array(
+        'display_summary' => 0,
+        'text_processing' => '1',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '10',
+          'summary_rows' => 5,
+        ),
+        'type' => 'text_textarea_with_summary',
+        'weight' => '15',
       ),
     ),
   );
@@ -4748,7 +5274,7 @@ function os2web_indholdstyper_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '8',
+        'weight' => '20',
       ),
     ),
   );
@@ -4757,7 +5283,7 @@ function os2web_indholdstyper_field_default_fields() {
   $fields['node-spotbox-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -4837,7 +5363,7 @@ function os2web_indholdstyper_field_default_fields() {
           'resolution' => '230x115',
         ),
         'type' => 'imagefield_crop_widget',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -4914,42 +5440,48 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '6',
+        'weight' => '18',
       ),
     ),
   );
 
-  // Exported field: 'node-spotbox-field_short_description'
-  $fields['node-spotbox-field_short_description'] = array(
+  // Exported field: 'node-spotbox-field_politics'
+  $fields['node-spotbox-field_politics'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_short_description',
+      'field_name' => 'field_politics',
       'foreign keys' => array(
-        'format' => array(
+        'tid' => array(
           'columns' => array(
-            'format' => 'format',
+            'tid' => 'tid',
           ),
-          'table' => 'filter_format',
+          'table' => 'taxonomy_term_data',
         ),
       ),
       'indexes' => array(
-        'format' => array(
-          0 => 'format',
+        'tid' => array(
+          0 => 'tid',
         ),
       ),
-      'module' => 'text',
+      'module' => 'taxonomy',
       'settings' => array(
-        'max_length' => '140',
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'politik',
+            'parent' => '0',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
       ),
-      'translatable' => '1',
-      'type' => 'text',
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
     ),
     'field_instance' => array(
       'bundle' => 'spotbox',
@@ -4959,10 +5491,10 @@ function os2web_indholdstyper_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'text',
+          'module' => 'taxonomy',
           'settings' => array(),
-          'type' => 'text_default',
-          'weight' => 3,
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 10,
         ),
         'related_block' => array(
           'label' => 'above',
@@ -4978,21 +5510,100 @@ function os2web_indholdstyper_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_short_description',
-      'label' => 'Tekst',
+      'field_name' => 'field_politics',
+      'label' => 'Politik',
       'required' => 0,
       'settings' => array(
-        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '19',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-spotbox-field_promoteto'
+  $fields['node-spotbox-field_promoteto'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_promoteto',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'forfrem_til',
+            'parent' => '0',
+            'depth' => '',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'spotbox',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 12,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_promoteto',
+      'label' => 'Forfrem til',
+      'required' => 0,
+      'settings' => array(
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'text',
-        'settings' => array(
-          'size' => '60',
-        ),
-        'type' => 'text_textfield',
-        'weight' => '1',
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '21',
       ),
     ),
   );
@@ -5024,6 +5635,7 @@ function os2web_indholdstyper_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -5069,7 +5681,96 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '3',
+        'weight' => '1',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-spotbox-field_spotbox_image_tall'
+  $fields['node-spotbox-field_spotbox_image_tall'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_spotbox_image_tall',
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'image',
+      'settings' => array(
+        'default_image' => 0,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '0',
+      'type' => 'image',
+    ),
+    'field_instance' => array(
+      'bundle' => 'spotbox',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'image',
+          'settings' => array(
+            'image_link' => '',
+            'image_style' => '',
+          ),
+          'type' => 'image',
+          'weight' => 14,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_spotbox_image_tall',
+      'label' => 'Højt billede',
+      'required' => 0,
+      'settings' => array(
+        'alt_field' => 0,
+        'file_directory' => '',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize' => '',
+        'max_resolution' => '',
+        'min_resolution' => '230x312',
+        'title_field' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'imagefield_crop',
+        'settings' => array(
+          'collapsible' => '3',
+          'croparea' => '500x500',
+          'enforce_minimum' => 1,
+          'enforce_ratio' => 1,
+          'preview_image_style' => 'thumbnail',
+          'progress_indicator' => 'throbber',
+          'resolution' => '230x312',
+        ),
+        'type' => 'imagefield_crop_widget',
+        'weight' => '4',
       ),
     ),
   );
@@ -5136,8 +5837,8 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_termref_kle',
-      'label' => 'KLE',
-      'required' => 0,
+      'label' => 'KL Emneord',
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -5146,92 +5847,11 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '4',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-spotbox-field_termref_sofd'
-  $fields['node-spotbox-field_termref_sofd'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_termref_sofd',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 's_egeord_sofd',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'spotbox',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'taxonomy',
-          'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
-          'weight' => 5,
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_termref_sofd',
-      'label' => 'Søgeord SOFD',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '7',
+        'weight' => '2',
       ),
     ),
   );
@@ -5308,11 +5928,83 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '5',
+        'weight' => '17',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-spotbox-field_text'
+  $fields['node-spotbox-field_text'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_text',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'spotbox',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 11,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_text',
+      'label' => 'Link tekst',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '2',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '12',
       ),
     ),
   );
@@ -5386,7 +6078,7 @@ function os2web_indholdstyper_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '6',
+        'weight' => '13',
       ),
     ),
   );
@@ -5408,12 +6100,14 @@ function os2web_indholdstyper_field_default_fields() {
   t('Forfrem til');
   t('Forældre-menupunkt');
   t('Hvis du har yderligere information, links eller fakta som er unikke for denne side, kan det tilføjes i dette felt. Indholdet vises i højre kolonne sammen med siden.');
+  t('Højt billede');
   t('Indhold');
   t('Indløb / Udløb');
   t('Intro / Resume (maks 2 linier!)');
   t('KL Emneord');
-  t('KLE');
+  t('Kontaktblok');
   t('Link');
+  t('Link tekst');
   t('Nedarv højrespalte');
   t('Opmærk dit indhold med KLs Emneord.
 <br>Se fuld oversigt på <a target="_blank" href="http://www.kle-online.dk">KLE-Online</a>.
@@ -5441,8 +6135,8 @@ function os2web_indholdstyper_field_default_fields() {
   t('Sag');
   t('Sags id');
   t('Source ID');
+  t('Spotboxe');
   t('Stikord');
-  t('Søgeord SOFD');
   t('Tekst');
   t('URL');
   t('Unikke relaterede links');

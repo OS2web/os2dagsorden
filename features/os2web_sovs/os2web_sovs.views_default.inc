@@ -1033,6 +1033,92 @@ function os2web_sovs_views_default_views() {
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Felt: Indhold: Primære billede */
+  $handler->display->display_options['fields']['field_lead_image']['id'] = 'field_lead_image';
+  $handler->display->display_options['fields']['field_lead_image']['table'] = 'field_data_field_lead_image';
+  $handler->display->display_options['fields']['field_lead_image']['field'] = 'field_lead_image';
+  $handler->display->display_options['fields']['field_lead_image']['label'] = '';
+  $handler->display->display_options['fields']['field_lead_image']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_lead_image']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['field_lead_image']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['field_lead_image']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['field_lead_image']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['field_lead_image']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['field_lead_image']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['field_lead_image']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['field_lead_image']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['field_lead_image']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['field_lead_image']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['field_lead_image']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['field_lead_image']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['field_lead_image']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['field_lead_image']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_lead_image']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['field_lead_image']['hide_empty'] = 1;
+  $handler->display->display_options['fields']['field_lead_image']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['field_lead_image']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['field_lead_image']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_lead_image']['settings'] = array(
+    'image_style' => '',
+    'image_link' => '',
+  );
+  $handler->display->display_options['fields']['field_lead_image']['field_api_classes'] = 0;
+  /* Felt: Indhold: Titel */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['alter_text'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['text'] = '[field_lead_image]<br />
+[title]';
+  $handler->display->display_options['fields']['title']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['strip_tags'] = 1;
+  $handler->display->display_options['fields']['title']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['title']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['title']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['title']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['title']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['title']['link_to_node'] = 0;
+  /* Felt: Indhold: Titel */
+  $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
+  $handler->display->display_options['fields']['title_1']['table'] = 'node';
+  $handler->display->display_options['fields']['title_1']['field'] = 'title';
+  $handler->display->display_options['fields']['title_1']['label'] = '';
+  $handler->display->display_options['fields']['title_1']['alter']['alter_text'] = 1;
+  $handler->display->display_options['fields']['title_1']['alter']['text'] = '<div class="spotImage">[field_lead_image]</div>
+<div class="spotTitle">
+[title]
+</div>';
+  $handler->display->display_options['fields']['title_1']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['title_1']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['title_1']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['title_1']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['title_1']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['title_1']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['title_1']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['title_1']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['title_1']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['title_1']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['title_1']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['title_1']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title_1']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['title_1']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['title_1']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['title_1']['hide_alter_empty'] = 1;
+  $handler->display->display_options['fields']['title_1']['link_to_node'] = 1;
 
   /* Display: Spotbox */
   $handler = $view->new_display('block', 'Spotbox', 'block_1');
