@@ -35,8 +35,9 @@ function ballerup_content_types_field_default_fields() {
       'settings' => array(
         'allowed_values' => array(
           0 => array(
-            'vocabulary' => 'billeder_og_filer',
+            'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -109,7 +110,7 @@ function ballerup_content_types_field_default_fields() {
       'entity_type' => 'file',
       'field_name' => 'field_image_files',
       'label' => 'Kategorier',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -300,7 +301,7 @@ function ballerup_content_types_field_default_fields() {
   $fields['node-files-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -564,7 +565,7 @@ function ballerup_content_types_field_default_fields() {
         0 => array(
           'summary' => '',
           'value' => '',
-          'format' => 'filtered_html',
+          'format' => 'full_html',
         ),
       ),
       'deleted' => '0',
@@ -610,7 +611,7 @@ function ballerup_content_types_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '2',
+        'weight' => '4',
       ),
     ),
   );
@@ -653,7 +654,9 @@ function ballerup_content_types_field_default_fields() {
       'bundle' => 'iframe_selvbetjeningsl_sning_mm',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Opmærk dit indhold med dine egne stikord. 
+<br>Dette giver mulighed for at sammenkoble relateret indhold i listevisninger mv.
+<br>Adskil flere opmærkninger med komma.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -690,7 +693,7 @@ function ballerup_content_types_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '9',
+        'weight' => '10',
       ),
     ),
   );
@@ -755,7 +758,7 @@ function ballerup_content_types_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_iframe_url',
       'label' => 'iFrame URL',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'text_processing' => '0',
         'user_register_form' => FALSE,
@@ -767,7 +770,7 @@ function ballerup_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '3',
+        'weight' => '5',
       ),
     ),
   );
@@ -810,7 +813,9 @@ function ballerup_content_types_field_default_fields() {
       'bundle' => 'iframe_selvbetjeningsl_sning_mm',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Opmærk dit indhold med kommunens organisation. 
+<br>Dette giver mulighed for at sammenkoble relateret indhold i listevisninger mv.
+<br>Adskil flere opmærkninger med komma.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -843,87 +848,11 @@ function ballerup_content_types_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '7',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_site_structure'
-  $fields['node-iframe_selvbetjeningsl_sning_mm-field_site_structure'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_site_structure',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'site_struktur',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '3',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_site_structure',
-      'label' => 'Portalkategori',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => '5',
+        'weight' => '8',
       ),
     ),
   );
@@ -984,7 +913,7 @@ function ballerup_content_types_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '4',
+        'weight' => '6',
       ),
     ),
   );
@@ -1027,7 +956,9 @@ function ballerup_content_types_field_default_fields() {
       'bundle' => 'iframe_selvbetjeningsl_sning_mm',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Opmærk dit indhold med KLs Emneord.
+<br>Se fuld oversigt på <a target="_blank" href="http://www.kle-online.dk">KLE-Online</a>.
+<br>Adskil flere opmærkninger med komma.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -1050,8 +981,8 @@ function ballerup_content_types_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_termref_kle',
-      'label' => 'KLE',
-      'required' => 0,
+      'label' => 'KL Emneord',
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -1060,91 +991,11 @@ function ballerup_content_types_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
         'weight' => '6',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_termref_sofd'
-  $fields['node-iframe_selvbetjeningsl_sning_mm-field_termref_sofd'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_termref_sofd',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 's_egeord_sofd',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '4',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_termref_sofd',
-      'label' => 'Søgeord SOFD',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '8',
       ),
     ),
   );
@@ -1216,7 +1067,7 @@ function ballerup_content_types_field_default_fields() {
           'rows' => '2',
         ),
         'type' => 'text_textarea',
-        'weight' => '1',
+        'weight' => '3',
       ),
     ),
   );
@@ -1452,7 +1303,7 @@ function ballerup_content_types_field_default_fields() {
   $fields['node-institution-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -1877,6 +1728,7 @@ function ballerup_content_types_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -2389,7 +2241,7 @@ function ballerup_content_types_field_default_fields() {
   $fields['node-local_plan-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -2849,6 +2701,7 @@ function ballerup_content_types_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -3115,7 +2968,7 @@ function ballerup_content_types_field_default_fields() {
   $fields['node-media-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -3506,6 +3359,7 @@ function ballerup_content_types_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -3925,7 +3779,7 @@ function ballerup_content_types_field_default_fields() {
   $fields['node-person-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -5007,7 +4861,7 @@ function ballerup_content_types_field_default_fields() {
   $fields['node-politician-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -7340,6 +7194,7 @@ function ballerup_content_types_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -7633,15 +7488,16 @@ function ballerup_content_types_field_default_fields() {
       'module' => 'node_reference',
       'settings' => array(
         'referenceable_types' => array(
-          'borger_dk_permalink' => 'borger_dk_permalink',
+          'borger_dk_permalink' => 0,
           'contentpage' => 'contentpage',
           'esdh_dokument' => 0,
           'esdh_sag' => 0,
-          'files' => 'files',
+          'files' => 0,
           'galleri' => 0,
           'iframe_selvbetjeningsl_sning_mm' => 'iframe_selvbetjeningsl_sning_mm',
           'institution' => 0,
           'knactivity' => 0,
+          'kontaktblok' => 0,
           'local_plan' => 0,
           'media' => 0,
           'news' => 0,
@@ -7894,7 +7750,7 @@ function ballerup_content_types_field_default_fields() {
   $fields['node-tema-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -8114,6 +7970,7 @@ function ballerup_content_types_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -8269,7 +8126,13 @@ function ballerup_content_types_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'webform',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'summary' => '',
+          'value' => '',
+          'format' => 'filtered_html',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -8575,6 +8438,7 @@ function ballerup_content_types_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -8953,6 +8817,7 @@ function ballerup_content_types_field_default_fields() {
   t('Indhold');
   t('Indhold inden formularen');
   t('Intro');
+  t('KL Emneord');
   t('KLE');
   t('Kategorier');
   t('Kolofon');
@@ -8965,6 +8830,15 @@ function ballerup_content_types_field_default_fields() {
   t('Navn og stilling');
   t('Nedarv højrespalte');
   t('Nedarv højrespalte ');
+  t('Opmærk dit indhold med KLs Emneord.
+<br>Se fuld oversigt på <a target="_blank" href="http://www.kle-online.dk">KLE-Online</a>.
+<br>Adskil flere opmærkninger med komma.');
+  t('Opmærk dit indhold med dine egne stikord. 
+<br>Dette giver mulighed for at sammenkoble relateret indhold i listevisninger mv.
+<br>Adskil flere opmærkninger med komma.');
+  t('Opmærk dit indhold med kommunens organisation. 
+<br>Dette giver mulighed for at sammenkoble relateret indhold i listevisninger mv.
+<br>Adskil flere opmærkninger med komma.');
   t('Organisation');
   t('Overordnet placering');
   t('PDF');
