@@ -24,7 +24,7 @@ function kulturnaut_events_views_api() {
 function kulturnaut_events_node_info() {
   $items = array(
     'knactivity' => array(
-      'name' => t('Kulturnaut begivenheder'),
+      'name' => t('Kultunaut begivenhed'),
       'base' => 'node_content',
       'description' => t('Præsentere importeret kulturnaut begivenheder fra Kulturnaut.'),
       'has_title' => '1',

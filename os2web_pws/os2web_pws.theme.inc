@@ -32,12 +32,12 @@ function theme_esdh_case($vars) {
   $header = array(t('Id'), t('Title'), t('Contents'), t('Date'));
   $rows = array();
   $rows[] = array($case->CaseFileNumberIdentifier, $case->CaseFileTitleText, $case->CustomFields->df1, format_date(strtotime($case->CreationDate), 'custom', 'd-m-Y'));
-  $html = theme('table', array('header' => $header, 'rows' => $rows));
+//  $html = theme('table', array('header' => $header, 'rows' => $rows));
   $docids = array();
   foreach ($docs as $doc) {
     $docids[] = (int) $doc->Document->DocumentIdentifier;
   }
-  $html .= theme('esdh_document', array('id' => $docids, 'iscase' => true));
+  $html = theme('esdh_document', array('id' => $docids, 'iscase' => true));
   return $html;
 }
 
@@ -53,7 +53,7 @@ function theme_esdh_document($vars) {
   $header = array(
       t('Title'),
 //      t('Description'),
-      t('Date')
+//      t('Date')
   );
 
   foreach ($id as $docid) {
@@ -73,9 +73,8 @@ function theme_esdh_document($vars) {
       //FIXME: Check publication status
       if (isset($doc->Document)) {
         $rows[] = array(
-            l($doc->Document->DocumentTitleText, $pws->getDocData($doc->Document->DocumentIdentifier)),
+            l($doc->Document->DocumentTitleText, $pws->getDocData($doc->Document->DocumentIdentifier)) . '<span class="documentdate">'. $doc->Record->DocumentDate.'</span>',
 //            $doc->Record->DescriptionText,
-            $doc->Record->DocumentDate,
         );
       }
     }
@@ -86,10 +85,12 @@ function theme_esdh_document($vars) {
     }
     return $html;
   }
-  if ($vars['iscase']) {
+  /* Hack and slash
+  if (isset($vars['iscase'])&&$vars['iscase']) {
     $html .= '<p>' . t('This case contains @docs public documents', array('@docs' => count($rows))) . '</p>';
-  }
-  $html .= theme('table', array('header' => $header, 'rows' => $rows));
+  } 
+  $html .= theme('table', array('header' => $header, 'rows' => $rows)); */
+  $html .= theme('table', array('rows' => $rows));
   return $html;
 }
 
