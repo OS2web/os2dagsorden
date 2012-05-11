@@ -53,3 +53,14 @@ function mymodule_search_api_ajax_settings() {
   return $settings;
 }
 ?>
+
+<?php
+/* Ekstra til søge-felt */
+
+
+function menu_style_menu_minipanels_style($menu_config) {
+  // Load the custom styles in the footer but after other things have loaded.
+  drupal_add_js(drupal_get_path('module', 'menu_style') . '/search.js', array('scope' => 'header', 'weight' => 100));
+}
+
+?>
