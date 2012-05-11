@@ -43,6 +43,11 @@ libraries[qtip][download][url] = "https://raw.github.com/bellcom/qTip1/master/1.
 libraries[qtip][directory_name] = "qtip"
 libraries[qtip][destination] = "libraries"
 
+libraries[poshytip][download][type] = "get"
+libraries[poshytip][download][url] = "http://vadikom.com/files/?file=poshytip/poshytip-1.1.zip"
+libraries[poshytip][directory_name] = "poshy_tip"
+libraries[poshytip][destination] = "libraries"
+
 ; Contrib modules
 projects[features][subdir] = "contrib"
 projects[features][version] = "1.0-rc1"
