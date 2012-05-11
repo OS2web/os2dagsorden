@@ -118,7 +118,7 @@ function os2web_kontaktblok_views_default_views() {
   $handler->display->display_options['fields']['field_email']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_email']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_email']['field_api_classes'] = 0;
-  /* Felt: Indhold: Sted Adresse */
+  /* Felt: Indhold: Adresse */
   $handler->display->display_options['fields']['field_stedadresse']['id'] = 'field_stedadresse';
   $handler->display->display_options['fields']['field_stedadresse']['table'] = 'field_data_field_stedadresse';
   $handler->display->display_options['fields']['field_stedadresse']['field'] = 'field_stedadresse';
@@ -142,7 +142,7 @@ function os2web_kontaktblok_views_default_views() {
   $handler->display->display_options['fields']['field_stedadresse']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_stedadresse']['hide_alter_empty'] = 1;
   $handler->display->display_options['fields']['field_stedadresse']['field_api_classes'] = 0;
-  /* Felt: Indhold: Sted Postnr */
+  /* Felt: Indhold: Postnummer */
   $handler->display->display_options['fields']['field_stedpostnr']['id'] = 'field_stedpostnr';
   $handler->display->display_options['fields']['field_stedpostnr']['table'] = 'field_data_field_stedpostnr';
   $handler->display->display_options['fields']['field_stedpostnr']['field'] = 'field_stedpostnr';

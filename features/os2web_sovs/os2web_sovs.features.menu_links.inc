@@ -549,6 +549,25 @@ function os2web_sovs_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '-49',
   );
+  // Exported menu link: menu-top-menu:user/logout
+  $menu_links['menu-top-menu:user/logout'] = array(
+    'menu_name' => 'menu-top-menu',
+    'link_path' => 'user/logout',
+    'router_path' => 'user/logout',
+    'link_title' => 'Log ud',
+    'options' => array(
+      'minipanel' => '',
+      'attributes' => array(
+        'title' => '',
+      ),
+    ),
+    'module' => 'menu',
+    'hidden' => '0',
+    'external' => '0',
+    'has_children' => '0',
+    'expanded' => '0',
+    'weight' => '-50',
+  );
   // Exported menu link: user-menu:admin/workbench
   $menu_links['user-menu:admin/workbench'] = array(
     'menu_name' => 'user-menu',
@@ -738,6 +757,7 @@ function os2web_sovs_menu_default_menu_links() {
   t('Erhverv');
   t('Kontakt');
   t('Log out');
+  t('Log ud');
   t('Læs højt');
   t('Opret ESDH dokument');
   t('Opret ESDH sag');
