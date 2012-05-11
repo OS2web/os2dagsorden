@@ -53,7 +53,7 @@ function theme_esdh_document($vars) {
   $header = array(
       t('Title'),
 //      t('Description'),
-      t('Date')
+//      t('Date')
   );
 
   foreach ($id as $docid) {
@@ -73,9 +73,8 @@ function theme_esdh_document($vars) {
       //FIXME: Check publication status
       if (isset($doc->Document)) {
         $rows[] = array(
-            l($doc->Document->DocumentTitleText, $pws->getDocData($doc->Document->DocumentIdentifier)),
+            l($doc->Document->DocumentTitleText, $pws->getDocData($doc->Document->DocumentIdentifier)) . '<span class="documentdate">'. $doc->Record->DocumentDate.'</span>',
 //            $doc->Record->DescriptionText,
-            $doc->Record->DocumentDate,
         );
       }
     }
@@ -86,7 +85,7 @@ function theme_esdh_document($vars) {
     }
     return $html;
   }
-  if ($vars['iscase']) {
+  if (isset($vars['iscase'])&&$vars['iscase']) {
     $html .= '<p>' . t('This case contains @docs public documents', array('@docs' => count($rows))) . '</p>';
   }
   $html .= theme('table', array('header' => $header, 'rows' => $rows));

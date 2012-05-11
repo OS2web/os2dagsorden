@@ -1,0 +1,89 @@
+<?php
+
+/*
+ *
+ * @author Jesper Mathiassen <jm@bellcom.dk>
+ * @copyright Bellcom Open Source aps.
+ */
+
+/**
+ * Implementation of hook_menu()
+ *
+ */
+function os2web_qbrick_menu() {
+  $items['os2web/test/qbrick'] = array(
+      'title' => t('QBrick test page title'),
+//    'title arguments' => array(),
+//    'title callback' => 't',
+      'description' => t('Your description goes here.'),
+      'access callback' => TRUE,
+//    'access callback' => 'object_check_access',
+//    'access arguments' => array(1),
+      'page arguments' => array(1),
+      'page callback' => 'os2web_qbrick_page',
+//    'block callback' => '',
+//    'menu_name' => NULL,
+//    'tab_parent' => NULL,
+//    'tab_root' => NULL,
+//    'file' => 'name_of_file.inc',
+//    'file path' => drupal_get_path('module', 'os2web_qbrick'),
+//    'weight' => 0,
+      'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+function os2web_qbrick_page($args) {
+//Test
+  $test_nid = 2984;
+  $html = '<pre>';
+//Config
+  $player_id = 'AC80F5D9';
+  $search_url = 'http://vms.api.qbrick.com/rest/v3/Search/444777D8/';
+  $embed_script = '
+    <div data-qbrick-as="0" data-qbrick-fs="1" data-qbrick-rp="0" data-qbrick-cb="1" data-qbrick-il="1" data-qbrick-sp="1" data-qbrick-width="320" data-qbrick-height="180" data-qbrick-mcid="!movieid!playerid">&nbsp;</div>
+    <script type="text/javascript" src="http://professional.player.qbrick.com/playerembed.js"></script>
+    <script type="text/javascript">
+      function play(amount) {
+        var pro = document.getElementById("qbrick_professional_qbrick1");
+        if (pro) {
+              pro.qbProSeekMedia(amount);
+          }
+        }
+        setTimeout("play(!seek);", 5000);
+    </script>
+  ';
+
+
+//Code
+  $node = node_load($test_nid);
+  $committee = taxonomy_term_load($node->field_committee[$node->language][0]['tid']);
+  $committee = _os2web_qbrick_safedk($committee->name);
+  $date = format_date(strtotime($node->field_date[$node->language][0]['value']), 'custom', 'dmY', $node->field_date[$node->language][0]['timezone']);
+//  $html.=$committee . ' ' . $date;
+//  $html.='
+//    ' . print_r($node, 1);
+  $url = $search_url.rawurlencode($committee.' '.$date);
+  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $url = ' . print_r($url, 1));
+  $xml = simplexml_load_file($url);
+  $movie_id = (string)($xml->media->item['id']);
+  $tmp_chapters = $xml->xpath('//media/item/playlist/stream/chapterlist/chapter');
+  $chapters = array();
+  foreach ($tmp_chapters as $chapter) {
+    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $chapter = ' . print_r($chapter, 1));
+    $chapters[(int) $chapter['time']] = (string)$chapter;
+//    error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: ".(string)$chapter);
+  }
+  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $chapters = ' . print_r($chapters, 1));
+  $html .= format_string($embed_script,array('!playerid' => $player_id, '!movieid' => $movie_id, '!seek' => 10710000));
+  $html.='<p>';
+  foreach ($chapters as $key => $value) {
+    $html.='<a href="#" onclick="javascript:play('. $key.');">'.$value.'</a><br>';
+  }
+  $html.='</p>';
+  return $html;
+}
+
+function _os2web_qbrick_safedk($str) {
+  return str_replace('å', 'aa', str_replace('æ', 'ae', str_replace('ø', 'oe', strtolower($str))));
+}
