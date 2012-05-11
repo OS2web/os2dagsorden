@@ -1,8 +1,9 @@
 <?php
 /**
- * Implements hook_menu_minipanels_styles().
+ * Implements hook_menu_minipanels_styles();
+ * Adds extra style selection for minipanel
  */
-function menu_style_menu_minipanels_styles() {
+function os2web_special_menu_minipanels_styles() {
   $styles = array(
     'cmstheme' => t('CMSTheme'),
   );
@@ -11,19 +12,19 @@ function menu_style_menu_minipanels_styles() {
 
 
 /**
- * Implements hook_menu_minipanels_style().
+ * Implements javascript
  */
-function menu_style_menu_minipanels_style($menu_config) {
-  // Load the custom styles in the footer but after other things have loaded.
-  drupal_add_js(drupal_get_path('module', 'menu_style') . '/menu_style.js', array('scope' => 'footer', 'weight' => 100));
-/* Ekstra til søge-felt */
-  drupal_add_js(drupal_get_path('module', 'menu_style') . '/search.js', array('scope' => 'header', 'weight' => 100));
+function os2web_special_menu_minipanels_style($menu_config) {
+  // 
+  drupal_add_js(drupal_get_path('module', 'os2web_special') . '/menu_style.js', array('scope' => 'footer', 'weight' => 100));
+  /* Ekstra til søge-felt */
+  drupal_add_js(drupal_get_path('module', 'os2web_special') . '/search.js', array('scope' => 'header', 'weight' => 100));
 }
 
 /**
  * Implements hook_search_api_ajax_settings().
  */
-function menu_style_search_api_ajax_settings() {
+function os2web_special_search_api_ajax_settings() {
   $settings = array(
   
     // required: CSS ID for the main content (search results html)

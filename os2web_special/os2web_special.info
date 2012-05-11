@@ -1,0 +1,3 @@
+name = OS2WEB Special
+description = "Tilføjelse diverse ekstra features: Styling til menu_minipanel, JS til søgefelt, SearchAPI"
+core = 7.x
