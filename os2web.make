@@ -43,6 +43,11 @@ libraries[qtip][download][url] = "https://raw.github.com/bellcom/qTip1/master/1.
 libraries[qtip][directory_name] = "qtip"
 libraries[qtip][destination] = "libraries"
 
+libraries[poshytip][download][type] = "get"
+libraries[poshytip][download][url] = "http://vadikom.com/files/?file=poshytip/poshytip-1.1.zip"
+libraries[poshytip][directory_name] = "poshy_tip"
+libraries[poshytip][destination] = "libraries"
+
 ; Contrib modules
 projects[features][subdir] = "contrib"
 projects[features][version] = "1.0-rc1"
@@ -159,18 +164,18 @@ projects[better_exposed_filters][subdir] = "contrib"
 projects[poshy_tip][subdir] = "contrib"
 projects[views_php][subdir] = "contrib"
 
+projects[search_log][subdir] = "contrib"
+
 ; Morten, Rolr
+projects[apachesolr][subdir] = "contrib"
 projects[apachesolr][version] = "1.0-beta19"
+projects[apachesolr_autocomplete][subdir] = "contrib"
 projects[apachesolr_autocomplete][version] = "1.2"
+projects[apachesolr_attachments][contrib] = "contrib"
 projects[apachesolr_attachments][version] = "1.0"
 
 ; Themes
 
 projects[rubik][version] = "4.0-beta8"
 projects[tao][version] = "3.0-beta4"
-
-; OS"Web Search
-
-projects[search_log][subdir] = "contrib"
-projects[search_log][version] = "1.0"
 
