@@ -203,12 +203,13 @@ function os2web_indholdstyper_field_group_info() {
       0 => 'field_rotate_publish',
       1 => 'field_node_reference_kontaktblok',
       2 => 'field_indholdsside_spotboxe',
-      3 => 'path',
-      4 => 'additional_settings',
-      5 => 'revision_information',
-      6 => 'author',
-      7 => 'options',
-      8 => 'group_hidden',
+      3 => 'field_noderef_selvbtjn',
+      4 => 'path',
+      5 => 'additional_settings',
+      6 => 'revision_information',
+      7 => 'author',
+      8 => 'options',
+      9 => 'group_hidden',
     ),
     'format_type' => 'multistep',
     'format_settings' => array(
@@ -229,7 +230,7 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->parent_name = 'group_gruppe3';
   $field_group->data = array(
     'label' => 'Skjult',
-    'weight' => '37',
+    'weight' => '38',
     'children' => array(
       0 => 'field_source_id',
       1 => 'field_site_structure',
