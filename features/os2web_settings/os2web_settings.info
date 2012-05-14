@@ -7,16 +7,9 @@ version = "dev"
 project = "os2web"
 dependencies[] = "ctools"
 dependencies[] = "strongarm"
-datestamp = "1334666157"
+datestamp = "1334828867"
 features[ctools][] = "strongarm:strongarm:1"
 features[variable][] = "multistep_show_step_numbers"
 features[variable][] = "multistep_status_publishing"
 features[variable][] = "multistep_status_revisions"
 features[variable][] = "multistep_workflow_mode"
-
-
-; Information added by drush on 2012-04-19
-version = "dev"
-project = "os2web"
-datestamp = "1334828867"
-
