@@ -7827,6 +7827,80 @@ function os2web_indholdstyper_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'node_reference_autocomplete',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-selvbetjeningslinks-field_selvbetjening_direkte'
+  $fields['node-selvbetjeningslinks-field_selvbetjening_direkte'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_selvbetjening_direkte',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '254',
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'selvbetjeningslinks',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Skal være inkl. <i>http://</i> hvis det er sider uden for sitet. Skal kun bruges til sider ser ikke kan indlejres som indhold via iframe.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 5,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_selvbetjening_direkte',
+      'label' => 'Direkte link',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
         'weight' => '4',
       ),
     ),
@@ -9037,6 +9111,7 @@ function os2web_indholdstyper_field_default_fields() {
   t('Body');
   t('Brødtekst der beskriver filerne og deres relevans.');
   t('Det der vises med sort');
+  t('Direkte link');
   t('Dokument');
   t('Dokument id');
   t('Egenavne / Stednavne');
@@ -9092,6 +9167,7 @@ function os2web_indholdstyper_field_default_fields() {
   t('Resume - lang overskrift');
   t('Sag');
   t('Sags id');
+  t('Skal være inkl. <i>http://</i> hvis det er sider uden for sitet. Skal kun bruges til sider ser ikke kan indlejres som indhold via iframe.');
   t('Source ID');
   t('Spotboxe');
   t('Stikord');

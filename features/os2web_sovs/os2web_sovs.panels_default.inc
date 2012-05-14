@@ -541,7 +541,7 @@ function os2web_sovs_default_panels_mini() {
     $pane->access = array();
     $pane->configuration = array(
       'arguments' => array(
-        'field_site_structure_tid' => 'politik og planer',
+        'field_site_structure_tid' => 'politik & planer',
       ),
     );
     $pane->cache = array();
