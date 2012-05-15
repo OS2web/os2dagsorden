@@ -947,9 +947,23 @@ function os2web_sovs_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'save_continue_kontaktblok';
+  $strongarm->value = 'Gem og tilføj felter';
+  $export['save_continue_kontaktblok'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'save_continue_rotating_image';
   $strongarm->value = 'Gem og tilføj felter';
   $export['save_continue_rotating_image'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'save_continue_selvbetjeningslinks';
+  $strongarm->value = 'Gem og tilføj felter';
+  $export['save_continue_selvbetjeningslinks'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */

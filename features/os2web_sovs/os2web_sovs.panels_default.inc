@@ -54,6 +54,27 @@ function os2web_sovs_default_panels_mini() {
     $pane->locks = array();
     $display->content['new-10'] = $pane;
     $display->panels['middle'][0] = 'new-10';
+    $pane = new stdClass();
+    $pane->pid = 'new-11';
+    $pane->panel = 'middle';
+    $pane->type = 'block';
+    $pane->subtype = 'block-10';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_title' => 1,
+      'override_title_text' => 'Bla bla bla 2',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $pane->locks = array();
+    $display->content['new-11'] = $pane;
+    $display->panels['middle'][1] = 'new-11';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-10';
   $mini->display = $display;
@@ -83,7 +104,7 @@ function os2web_sovs_default_panels_mini() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-11';
+    $pane->pid = 'new-12';
     $pane->panel = 'center';
     $pane->type = 'block';
     $pane->subtype = 'menu_block-8';
@@ -99,15 +120,15 @@ function os2web_sovs_default_panels_mini() {
     );
     $pane->css = array(
       'css_id' => '',
-      'css_class' => 'grid-2',
+      'css_class' => 'grid-2 alpha',
     );
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-11'] = $pane;
-    $display->panels['center'][0] = 'new-11';
+    $display->content['new-12'] = $pane;
+    $display->panels['center'][0] = 'new-12';
     $pane = new stdClass();
-    $pane->pid = 'new-12';
+    $pane->pid = 'new-13';
     $pane->panel = 'center';
     $pane->type = 'block';
     $pane->subtype = 'menu_block-9';
@@ -129,10 +150,10 @@ function os2web_sovs_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-12'] = $pane;
-    $display->panels['center'][1] = 'new-12';
+    $display->content['new-13'] = $pane;
+    $display->panels['center'][1] = 'new-13';
     $pane = new stdClass();
-    $pane->pid = 'new-13';
+    $pane->pid = 'new-14';
     $pane->panel = 'center';
     $pane->type = 'block';
     $pane->subtype = 'menu_block-10';
@@ -153,10 +174,46 @@ function os2web_sovs_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-13'] = $pane;
-    $display->panels['center'][2] = 'new-13';
+    $display->content['new-14'] = $pane;
+    $display->panels['center'][2] = 'new-14';
+    $pane = new stdClass();
+    $pane->pid = 'new-15';
+    $pane->panel = 'center';
+    $pane->type = 'views';
+    $pane->subtype = 'selvbetjening';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'override_pager_settings' => 0,
+      'use_pager' => 1,
+      'nodes_per_page' => '10',
+      'pager_id' => '0',
+      'offset' => '0',
+      'more_link' => 0,
+      'feed_icons' => 0,
+      'panel_args' => 0,
+      'link_to_view' => 0,
+      'args' => '',
+      'url' => '',
+      'display' => 'block_3',
+      'override_title' => 1,
+      'override_title_text' => 'SELVBETJENING',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'grid-2 omega',
+    );
+    $pane->extras = array();
+    $pane->position = 3;
+    $pane->locks = array();
+    $display->content['new-15'] = $pane;
+    $display->panels['center'][3] = 'new-15';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-12';
+  $display->title_pane = 'new-13';
   $mini->display = $display;
   $export['footer_menuer'] = $mini;
 
@@ -186,7 +243,7 @@ function os2web_sovs_default_panels_mini() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-14';
+    $pane->pid = 'new-16';
     $pane->panel = 'left';
     $pane->type = 'block';
     $pane->subtype = 'menu_block-8';
@@ -207,10 +264,10 @@ function os2web_sovs_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-14'] = $pane;
-    $display->panels['left'][0] = 'new-14';
+    $display->content['new-16'] = $pane;
+    $display->panels['left'][0] = 'new-16';
     $pane = new stdClass();
-    $pane->pid = 'new-15';
+    $pane->pid = 'new-17';
     $pane->panel = 'right';
     $pane->type = 'views_panes';
     $pane->subtype = 'megadd_news-panel_pane_1';
@@ -232,10 +289,10 @@ function os2web_sovs_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-15'] = $pane;
-    $display->panels['right'][0] = 'new-15';
+    $display->content['new-17'] = $pane;
+    $display->panels['right'][0] = 'new-17';
     $pane = new stdClass();
-    $pane->pid = 'new-16';
+    $pane->pid = 'new-18';
     $pane->panel = 'right';
     $pane->type = 'views';
     $pane->subtype = 'selvbetjening';
@@ -262,14 +319,14 @@ function os2web_sovs_default_panels_mini() {
       'settings' => NULL,
     );
     $pane->css = array(
-      'css_id' => '',
+      'css_id' => 'selvbetjening-borger',
       'css_class' => 'grid-3 alpha omega selvbetjening-mega-width',
     );
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-16'] = $pane;
-    $display->panels['right'][1] = 'new-16';
+    $display->content['new-18'] = $pane;
+    $display->panels['right'][1] = 'new-18';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $mini->display = $display;
@@ -301,7 +358,7 @@ function os2web_sovs_default_panels_mini() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-17';
+    $pane->pid = 'new-19';
     $pane->panel = 'left';
     $pane->type = 'block';
     $pane->subtype = 'menu_block-9';
@@ -319,8 +376,8 @@ function os2web_sovs_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-17'] = $pane;
-    $display->panels['left'][0] = 'new-17';
+    $display->content['new-19'] = $pane;
+    $display->panels['left'][0] = 'new-19';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $mini->display = $display;
@@ -352,7 +409,7 @@ function os2web_sovs_default_panels_mini() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-18';
+    $pane->pid = 'new-20';
     $pane->panel = 'left';
     $pane->type = 'block';
     $pane->subtype = 'menu_block-8';
@@ -373,10 +430,10 @@ function os2web_sovs_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-18'] = $pane;
-    $display->panels['left'][0] = 'new-18';
+    $display->content['new-20'] = $pane;
+    $display->panels['left'][0] = 'new-20';
     $pane = new stdClass();
-    $pane->pid = 'new-19';
+    $pane->pid = 'new-21';
     $pane->panel = 'left';
     $pane->type = 'block';
     $pane->subtype = 'menu_block-9';
@@ -394,10 +451,10 @@ function os2web_sovs_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-19'] = $pane;
-    $display->panels['left'][1] = 'new-19';
+    $display->content['new-21'] = $pane;
+    $display->panels['left'][1] = 'new-21';
     $pane = new stdClass();
-    $pane->pid = 'new-20';
+    $pane->pid = 'new-22';
     $pane->panel = 'right';
     $pane->type = 'views_panes';
     $pane->subtype = 'megadd_news-panel_pane_1';
@@ -419,10 +476,10 @@ function os2web_sovs_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-20'] = $pane;
-    $display->panels['right'][0] = 'new-20';
+    $display->content['new-22'] = $pane;
+    $display->panels['right'][0] = 'new-22';
     $pane = new stdClass();
-    $pane->pid = 'new-21';
+    $pane->pid = 'new-23';
     $pane->panel = 'right';
     $pane->type = 'views';
     $pane->subtype = 'selvbetjening';
@@ -449,14 +506,14 @@ function os2web_sovs_default_panels_mini() {
       'settings' => NULL,
     );
     $pane->css = array(
-      'css_id' => '',
+      'css_id' => 'selvbetjening-erhverv',
       'css_class' => 'grid-3 alpha omega selvbetjening-mega-width',
     );
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-21'] = $pane;
-    $display->panels['right'][1] = 'new-21';
+    $display->content['new-23'] = $pane;
+    $display->panels['right'][1] = 'new-23';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $mini->display = $display;
@@ -488,7 +545,7 @@ function os2web_sovs_default_panels_mini() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-22';
+    $pane->pid = 'new-24';
     $pane->panel = 'left';
     $pane->type = 'block';
     $pane->subtype = 'menu_block-8';
@@ -509,10 +566,10 @@ function os2web_sovs_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-22'] = $pane;
-    $display->panels['left'][0] = 'new-22';
+    $display->content['new-24'] = $pane;
+    $display->panels['left'][0] = 'new-24';
     $pane = new stdClass();
-    $pane->pid = 'new-23';
+    $pane->pid = 'new-25';
     $pane->panel = 'left';
     $pane->type = 'block';
     $pane->subtype = 'menu_block-10';
@@ -530,10 +587,10 @@ function os2web_sovs_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-23'] = $pane;
-    $display->panels['left'][1] = 'new-23';
+    $display->content['new-25'] = $pane;
+    $display->panels['left'][1] = 'new-25';
     $pane = new stdClass();
-    $pane->pid = 'new-24';
+    $pane->pid = 'new-26';
     $pane->panel = 'right';
     $pane->type = 'views_panes';
     $pane->subtype = 'megadd_news-panel_pane_1';
@@ -555,10 +612,10 @@ function os2web_sovs_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-24'] = $pane;
-    $display->panels['right'][0] = 'new-24';
+    $display->content['new-26'] = $pane;
+    $display->panels['right'][0] = 'new-26';
     $pane = new stdClass();
-    $pane->pid = 'new-25';
+    $pane->pid = 'new-27';
     $pane->panel = 'right';
     $pane->type = 'views';
     $pane->subtype = 'selvbetjening';
@@ -585,14 +642,14 @@ function os2web_sovs_default_panels_mini() {
       'settings' => NULL,
     );
     $pane->css = array(
-      'css_id' => '',
+      'css_id' => 'selvbetjening-politik',
       'css_class' => 'grid-3 alpha omega selvbetjening-mega-width',
     );
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-25'] = $pane;
-    $display->panels['right'][1] = 'new-25';
+    $display->content['new-27'] = $pane;
+    $display->panels['right'][1] = 'new-27';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $mini->display = $display;
@@ -624,7 +681,7 @@ function os2web_sovs_default_panels_mini() {
   $display->content = array();
   $display->panels = array();
     $pane = new stdClass();
-    $pane->pid = 'new-26';
+    $pane->pid = 'new-28';
     $pane->panel = 'left';
     $pane->type = 'block';
     $pane->subtype = 'menu_block-10';
@@ -642,8 +699,8 @@ function os2web_sovs_default_panels_mini() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-26'] = $pane;
-    $display->panels['left'][0] = 'new-26';
+    $display->content['new-28'] = $pane;
+    $display->panels['left'][0] = 'new-28';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $mini->display = $display;

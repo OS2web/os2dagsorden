@@ -490,7 +490,7 @@ function os2web_sovs_menu_default_menu_links() {
         'show' => array(
           'delay' => '0',
           'when' => array(
-            'event' => 'click',
+            'event' => 'mouseenter',
           ),
           'effect' => array(
             'type' => 'slide',
@@ -507,11 +507,11 @@ function os2web_sovs_menu_default_menu_links() {
         'style' => array(
           'name' => 'light',
           'width' => array(
-            'min' => '0',
-            'max' => '250',
+            'min' => '970px',
+            'max' => '970',
           ),
           'border' => array(
-            'width' => '3',
+            'width' => '0',
             'color' => '#d3d3d3',
             'radius' => '0',
           ),
