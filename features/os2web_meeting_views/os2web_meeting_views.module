@@ -1,7 +1,26 @@
 <?php
+
 /**
  * @file
  * Code for the OS2Web Meeting Views feature.
  */
-
 include_once 'os2web_meeting_views.features.inc';
+
+function os2web_meeting_views_form_views_exposed_form_alter(&$form, &$form_state) {
+  if ($form['#id'] === 'views-exposed-form-meetings-search-page') {
+    $form['committee']['#options']['http://norddjurs.dk/%C3%85bne-dagsordener.4803.aspx?doshow4803=1&filtercontrol48031=5488&filtercontrol48032=5462&filtercontrol48033=&filtercontrol48034=0&searchword4803'] = 'Djurs Mad I/S';
+    $form['committee']['#options']['http://www.norddjurs.dk/%C3%85bne-dagsordener.4803.aspx?doshow4803=1&filtercontrol48031=5473&filtercontrol48032=0&filtercontrol48033=&filtercontrol48034=0&searchword4803='] = 'Beredskabskommisionen';
+  }
+  // Set up a validate function to forward user.
+  // NOTE: Breaks Ajax form..
+  $form['#validate'] = array('os2web_meeting_views_views_exposed_form_meetings_search_page_validate');
+}
+
+function os2web_meeting_views_views_exposed_form_meetings_search_page_validate(&$form, &$form_state) {
+  if (is_numeric($form_state['values']['committee']) || $form_state['values']['committee'] === 'All') {
+
+  } else {
+    drupal_goto($form_state['values']['committee']);
+  }
+}
+
