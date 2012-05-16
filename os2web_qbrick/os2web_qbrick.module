@@ -38,8 +38,6 @@ function os2web_qbrick_page($args) {
   $test_nid = 2984;
   $html = '<pre>';
 //Config
-  $player_id = 'AC80F5D9';
-  $search_url = 'http://vms.api.qbrick.com/rest/v3/Search/444777D8/';
   $embed_script = '
     <div data-qbrick-as="0" data-qbrick-fs="1" data-qbrick-rp="0" data-qbrick-cb="1" data-qbrick-il="1" data-qbrick-sp="1" data-qbrick-width="320" data-qbrick-height="180" data-qbrick-mcid="!movieid!playerid">&nbsp;</div>
     <script type="text/javascript" src="http://professional.player.qbrick.com/playerembed.js"></script>
@@ -53,37 +51,152 @@ function os2web_qbrick_page($args) {
         setTimeout("play(!seek);", 5000);
     </script>
   ';
-
-
 //Code
-  $node = node_load($test_nid);
+  if ($movie_id = _os2web_qbrick_get_movie_id($test_nid)) {
+    $tmp_chapters = $xml->xpath('//media/item/playlist/stream/chapterlist/chapter');
+    $chapters = array();
+    foreach ($tmp_chapters as $chapter) {
+      error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $chapter = ' . print_r($chapter, 1));
+      $chapters[(int) $chapter['time']] = (string) $chapter;
+//    error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: ".(string)$chapter);
+    }
+    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $chapters = ' . print_r($chapters, 1));
+    $html .=
+        $html.='<p>';
+    foreach ($chapters as $key => $value) {
+      $html.='<a href="#" onclick="javascript:play(' . $key . ');">' . $value . '</a><br>';
+    }
+    $html.='</p>';
+    return $html;
+  } else {
+    return '<p>Node not found</p>';
+  }
+}
+
+function _os2web_qbrick_safedk($str) {
+  return str_replace('å', 'aa', str_replace('æ', 'ae', str_replace('ø', 'oe', strtolower($str))));
+}
+
+function _os2web_qbrick_get_movie_id($nid) {
+  $search_url = 'http://vms.api.qbrick.com/rest/v3/Search/444777D8/';
+  $node = node_load($nid);
+  if (!is_object($node)) {
+    return FALSE;
+  }
   $committee = taxonomy_term_load($node->field_committee[$node->language][0]['tid']);
   $committee = _os2web_qbrick_safedk($committee->name);
   $date = format_date(strtotime($node->field_date[$node->language][0]['value']), 'custom', 'dmY', $node->field_date[$node->language][0]['timezone']);
 //  $html.=$committee . ' ' . $date;
 //  $html.='
 //    ' . print_r($node, 1);
-  $url = $search_url.rawurlencode($committee.' '.$date);
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $url = ' . print_r($url, 1));
+  $url = $search_url . rawurlencode($committee . ' ' . $date);
   $xml = simplexml_load_file($url);
-  $movie_id = (string)($xml->media->item['id']);
-  $tmp_chapters = $xml->xpath('//media/item/playlist/stream/chapterlist/chapter');
-  $chapters = array();
-  foreach ($tmp_chapters as $chapter) {
-    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $chapter = ' . print_r($chapter, 1));
-    $chapters[(int) $chapter['time']] = (string)$chapter;
-//    error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: ".(string)$chapter);
+  $movie_id = (string) ($xml->media->item['id']);
+  if (preg_match('/{8}[A-Z,0-9]/', $movie_id)) {
+    return $movie_id;
+  } else {
+    return FALSE;
   }
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $chapters = ' . print_r($chapters, 1));
-  $html .= format_string($embed_script,array('!playerid' => $player_id, '!movieid' => $movie_id, '!seek' => 10710000));
-  $html.='<p>';
-  foreach ($chapters as $key => $value) {
-    $html.='<a href="#" onclick="javascript:play('. $key.');">'.$value.'</a><br>';
-  }
-  $html.='</p>';
-  return $html;
 }
 
-function _os2web_qbrick_safedk($str) {
-  return str_replace('å', 'aa', str_replace('æ', 'ae', str_replace('ø', 'oe', strtolower($str))));
+//-- QBrick movie field:
+//--- Info:
+function os2web_qbrick_field_info() {
+  $field['qbrick_movie'] = array(
+      'label' => t('QBrick movie'),
+      'description' => t('Add a QBrick movie to this field.'),
+      'default_widget' => 'qbrick_movie_simple',
+      'default_formatter' => 'qbrick_movie_simple',
+  );
+  return $field;
+}
+
+function os2web_qbrick_field_is_empty($item, $field) {
+  if ($item['seek'] === 0 && trim($item['id']) === '') {
+    return true;
+  }
+}
+
+//--- Widget:
+function os2web_qbrick_field_widget_info() {
+  $widgets['qbrick_movie_simple'] = array(
+      'label' => 'Qbrick Movie simple entry',
+      'field types' => array('qbrick_movie'),
+  );
+  $widgets['qbrick_movie_noedit'] = array(
+      'label' => 'Qbrick Movie deny edit',
+      'field types' => array('qbrick_movie'),
+  );
+  return $widgets;
+}
+
+function os2web_qbrick_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  $default = '';
+  if (isset($form_state['node']->{$field['field_name']}[$langcode][$delta])) {
+    $default = ($form_state['node']->{$field['field_name']}[$langcode][$delta])? : array('id' => '', 'seek' => 0);
+  }
+  switch ($instance['widget']['type']) {
+    case 'qbrick_movie_noedit':
+      break;
+    case 'qbrick_movie_simple':
+      $element += array(
+          '#type' => 'fieldset',
+          '#tree' => true,
+          'id' => array(
+              '#type' => 'textfield',
+              '#title' => t('Movie Id'),
+              '#description' => t('ID Of QBrick movie ie. 05C8A352'),
+              '#default_value' => $default['id'],
+              '#required' => FALSE,
+              '#weight' => 0,
+              '#delta' => $delta,
+          ),
+          'seek' => array(
+              '#type' => 'textfield',
+              '#title' => t('Seek time'),
+              '#description' => t('Chapter time to seek to.'),
+              '#default_value' => $default['seek'],
+              '#required' => FALSE,
+              '#weight' => 1,
+              '#delta' => $delta,
+          ),
+      );
+      break;
+  }
+  return $element;
+}
+
+//--- Formatter:
+function os2web_qbrick_field_formatter_info() {
+  $formatters['qbrick_movie_simple'] = array(
+      'label' => t('QBrick movie render'),
+      'field types' => array('qbrick_movie'),
+  );
+  return $formatters;
+}
+
+function os2web_qbrick_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $player_id = 'AC80F5D9';
+  $element = array();
+  switch ($display['type']) {
+    case 'qbrick_movie_simple':
+      foreach ($items as $delta => $item) {
+        if ($item['id']) {
+          $embed_script = '<div data-qbrick-as="0" data-qbrick-fs="1" data-qbrick-rp="0" data-qbrick-cb="1" data-qbrick-il="1" data-qbrick-sp="1" data-qbrick-width="320" data-qbrick-height="180" data-qbrick-mcid="!movieid!playerid">&nbsp;</div>
+    <script type="text/javascript" src="http://professional.player.qbrick.com/playerembed.js"></script>
+    <script type="text/javascript">
+      function play(amount) {
+        var pro = document.getElementById("qbrick_professional_qbrick1");
+        if (pro) {
+              pro.qbProSeekMedia(amount);
+          }
+        }
+        setTimeout("play(!seek);", 10000);
+    </script>';
+          $element[$delta]['#markup'] = format_string($embed_script, array('!playerid' => $player_id, '!movieid' => $item['id'], '!seek' => $item['seek']));
+        }
+      }
+      break;
+  }
+  return $element;
 }
