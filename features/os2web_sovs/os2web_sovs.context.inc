@@ -125,6 +125,12 @@ function os2web_sovs_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
+        'menu_block-12' => array(
+          'module' => 'menu_block',
+          'delta' => 12,
+          'region' => 'sidebar_first',
+          'weight' => '-10',
+        ),
         'block-1' => array(
           'module' => 'block',
           'delta' => 1,
@@ -192,6 +198,91 @@ function os2web_sovs_context_default_contexts() {
   // Included for use with string extractors like potx.
   t('Skjul højre kolonne på iframesider');
   $export['hide_second_sidebar'] = $context;
+
+  $context = new stdClass();
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'indholdsredigering';
+  $context->description = '';
+  $context->tag = '';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        'node/add/*' => 'node/add/*',
+        'node/*/edit' => 'node/*/edit',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'delta' => array(
+      'delta_template' => 'indholdsredigering',
+    ),
+  );
+  $context->condition_mode = 0;
+  $export['indholdsredigering'] = $context;
+
+  $context = new stdClass();
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'portalforside';
+  $context->description = '';
+  $context->tag = '';
+  $context->conditions = array(
+    'path' => array(
+      'values' => array(
+        'borger' => 'borger',
+        'erhverv' => 'erhverv',
+        'politik-og-planer' => 'politik-og-planer',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'block' => array(
+      'blocks' => array(
+        'views-sitestuktur-block_1' => array(
+          'module' => 'views',
+          'delta' => 'sitestuktur-block_1',
+          'region' => 'sidebar_first',
+          'weight' => '-10',
+        ),
+        'menu_block-11' => array(
+          'module' => 'menu_block',
+          'delta' => 11,
+          'region' => 'sidebar_first',
+          'weight' => '-9',
+        ),
+      ),
+    ),
+    'delta' => array(
+      'delta_template' => 'portalforside',
+    ),
+  );
+  $context->condition_mode = 1;
+  $export['portalforside'] = $context;
+
+  $context = new stdClass();
+  $context->disabled = FALSE; /* Edit this to true to make a default context disabled initially */
+  $context->api_version = 3;
+  $context->name = 'sidevisning';
+  $context->description = '';
+  $context->tag = '';
+  $context->conditions = array(
+    'node_taxonomy' => array(
+      'values' => array(
+        2 => 2,
+      ),
+      'options' => array(
+        'node_form' => '1',
+      ),
+    ),
+  );
+  $context->reactions = array(
+    'delta' => array(
+      'delta_template' => 'hide_second_sidebar',
+    ),
+  );
+  $context->condition_mode = 0;
+  $export['sidevisning'] = $context;
 
   return $export;
 }
