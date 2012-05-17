@@ -82,7 +82,6 @@ function _os2web_qbrick_get_chapters($movie_id) {
       $id = explode(' ', (string) $chapter);
       $chapters[$id[1]] = (int) $chapter['time'];
     }
-    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $chapters = ' . print_r($chapters, 1));
     return $chapters;
   } else {
     return FALSE;
@@ -90,16 +89,11 @@ function _os2web_qbrick_get_chapters($movie_id) {
 }
 
 function _os2web_qbrick_get_movie_id($nid) {
-
   $search_url = 'http://vms.api.qbrick.com/rest/v3/Search/444777D8/';
   if (is_numeric($nid)) {
     $node = node_load($nid);
   } else {
     $node = $nid;
-  }
-  $movie_id = &drupal_static(__FUNCTION__ . $node->nid, FALSE);
-  if ($movie_id != FALSE) {
-    return $movie_id;
   }
   if (!is_object($node)) {
     return FALSE;
@@ -152,9 +146,9 @@ function os2web_qbrick_field_widget_info() {
 }
 
 function os2web_qbrick_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
-  $default = '';
+  $default = array('id' => '', 'seek' => 0);
   if (isset($form_state['node']->{$field['field_name']}[$langcode][$delta])) {
-    $default = ($form_state['node']->{$field['field_name']}[$langcode][$delta])? : array('id' => '', 'seek' => 0);
+    $default = $form_state['node']->{$field['field_name']}[$langcode][$delta];
   }
   switch ($instance['widget']['type']) {
     case 'qbrick_movie_noedit':

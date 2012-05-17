@@ -12,20 +12,70 @@ function os2web_meetings_menu() {
   return $items;
 }
 
+/**
+ * Implementation of hook_form_alter()
+ */
+function os2web_meetings_form_os2web_settings_settings_form_alter(&$form, &$form_state) {
+  $form['meetings'] = array(
+      '#type' => 'fieldset',
+      '#title' => 'Referat import',
+      '#description' => 'Indstillinger der vedrører importen af Acadre referater og dagsordener.',
+      '#tree' => TRUE,
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+  );
+  $form['meetings']['os2web_meetings_path'] = array(
+      '#type' => 'textfield',
+      '#title' => 'Sti til acadre publish folder.',
+      '#description' => 'Dette er stien hvor Acadre publisere .XML filer til.',
+      '#default_value' => variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR),
+  );
+}
+
 function os2web_meetings_test_page() {
   global $debug_info;
-  $options = array(
-//      'callback' => '_os2web_meetings_process_manifest',
-      'recurse' => FALSE,
-  );
-  $manifest_list = file_scan_directory(DEFAULT_ACADRE_IMPORT_DIR, '/\.xml$/i', $options);
-  $result = array();
-  foreach ($manifest_list as $manifest) {
-    $result[] = _os2web_meetings_process_manifest($manifest->uri);
-  }
 
+  os2web_meetings_do_import();
+  os2web_meetings_order_addenums();
 
   return '<div><textarea cols="150" rows=50>' . print_r($debug_info, 1) . '</textarea>';
+}
+
+/**
+ * Import xml files from the defined folder
+ *
+ */
+function os2web_meetings_do_import() {
+  $options = array(
+      'callback' => '_os2web_meetings_process_manifest',
+      'recurse' => FALSE,
+  );
+  file_scan_directory(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), '/\.xml$/i', $options);
+}
+
+/**
+ * This function will set up the addenum connections for meetings.
+ *
+ */
+function os2web_meetings_order_addenums() {
+  // Find all meetings and gather meeting and agenda_ids
+  $nodes = entity_load('node', FALSE, array('type' => 'meeting'));
+  $meetings = array();
+  // meetings as: $meetings[<meeting_id>][<system_id>][<node_id>]
+  foreach ($nodes as $node) {
+    $meetings[$node->field_meeting_id[$node->language][0]['value']][$node->field_system_id[$node->language][0]['value']] = $node->nid;
+  }
+  foreach ($meetings as $meeting) {
+    ksort($meeting); // Lowest system id first
+    $primary = array_shift($meeting); // Lowest system id is primary
+    $addenums = array();
+    while ($next = array_shift($meeting)) {
+      // Set up references for addenum agendas
+      $node = $nodes[$next];
+      $node->field_addenum_to[$node->language][0]['nid'] = $primary;
+      node_save($node);
+    }
+  }
 }
 
 /**
@@ -67,7 +117,7 @@ function _os2web_meetings_process_agenda($agendainfo_xml) {
       'endDate' => (string) array_shift($agendainfo_xml->xpath('field/@endDate'))
   );
   if ($agendainfo['publish'] === 1) {
-    $agenda_uri = implode('/', array(DEFAULT_ACADRE_IMPORT_DIR, $agendainfo['filesfolder'], $agendainfo['xmlfilename']));
+    $agenda_uri = implode('/', array(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), $agendainfo['filesfolder'], $agendainfo['xmlfilename']));
     if (($agenda_uri = _os2web_meetings_similar_file_exists(drupal_realpath($agenda_uri))) !== FALSE) {
       $agenda_xml = simplexml_load_file(drupal_realpath($agenda_uri));
       _os2web_meetings_publish_meeting($agendainfo, $agenda_xml);
@@ -123,12 +173,12 @@ function _os2web_meetings_publish_meeting($info, $xml) {
       'committee' => (string) array_shift($xml->xpath("//table[@name='committee']/fields/field[@name='name']")),
       'description' => (string) array_shift($xml->xpath("//table[@name='agenda']/fields/field[@name='description']")),
       'cdate' => strtotime((string) array_shift($xml->xpath("//table[@name='agenda']/fields/field[@name='producedate']"))),
+      'meeting_id' => (string) array_shift($xml->xpath("//table[@name='meeting']/fields/field[@name='sysid']")),
       'id' => $info['sysid'],
   );
   if (in_array($options['committee'], $no_publish_committee)) {
     return;
   }
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $options = ' . print_r($options, 1));
 
 
   //FIXME: Refactor dupe-check to seperate function.
@@ -160,6 +210,9 @@ function _os2web_meetings_publish_meeting($info, $xml) {
   $node->field_date[$node->language][0]['timezone'] = 'Europe/Berlin';
   $node->field_date[$node->language][0]['timezone_db'] = 'UTC';
   $node->field_date[$node->language][0]['date_type'] = 'datetime';
+  // Proper id tagging
+  $node->field_meeting_id[$node->language][0]['value'] = $options['meeting_id'];
+  $node->field_system_id[$node->language][0]['value'] = $options['id'];
   // Make sure the committee term is created and get the term.
   $committee_term = _os2web_meetings_import_committee(array_shift($xml->xpath("//table[@name='committee']")));
   $node->field_committee[LANGUAGE_NONE][0]['tid'] = $committee_term->tid;
@@ -173,11 +226,12 @@ function _os2web_meetings_publish_meeting($info, $xml) {
     $info['movie_chapters'] = _os2web_qbrick_get_chapters($movie_id);
     $node->field_qbrick_ref[$node->language][0]['id'] = $movie_id;
     $node->field_qbrick_ref[$node->language][0]['seek'] = 0;
+  } else {
+    $node->field_qbrick_ref = array();
   }
 
-  //TODO: Add nodes for each bullet
-  error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Meeting");
 
+  //Add nodes for each bullet
 //  $items = $xml->xpath("//table[@name='agendaitem']");
   $items = $xml->xpath("//table[@name='agendaitemparents']");
   $item_nids = array();
@@ -187,7 +241,6 @@ function _os2web_meetings_publish_meeting($info, $xml) {
     $item_nids[] = _os2web_meetings_add_item($info, $xml, $id);
     // add node for each items
   }
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item_nids = ' . print_r($item_nids, 1));
 
   foreach ($item_nids as $nid) {
     $node->field_ref_bullet_points[$node->language][]['target_id'] = $nid;
@@ -206,12 +259,10 @@ function _os2web_meetings_publish_meeting($info, $xml) {
 }
 
 function _os2web_meetings_add_item($info, $xml, $id) {
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $id = ' . print_r($id, 1));
   $options = array(
       'sysid' => (int) array_shift($xml->xpath("fields/field[@name='sysid']")),
       'name' => (string) array_shift($xml->xpath("fields/field[@name='name']")),
   );
-  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $options = ' . print_r($options, 1));
 
 
   // Gather the bullets for the item
@@ -229,7 +280,7 @@ function _os2web_meetings_add_item($info, $xml, $id) {
   $node->title = 'Punkt ' . $id . ' ' . $options['name'];
   node_object_prepare($node); // Set some default values.
 
-  if (isset($info['movie_id']) && isset($info['movie_chapters'][$id])) {
+  if (isset($info['movie_id']) && is_numeric($info['movie_chapters'][$id])) {
     $node->field_qbrick_ref[$node->language][0]['id'] = $info['movie_id'];
     $node->field_qbrick_ref[$node->language][0]['seek'] = $info['movie_chapters'][$id];
   }
@@ -242,8 +293,7 @@ function _os2web_meetings_add_item($info, $xml, $id) {
   $enclosures = $xml->xpath("table[@name='enclosure']");
   foreach ($enclosures as $enclosure) {
     $filename = (string) array_shift($enclosure->xpath("fields/field[@name='filename']"));
-    $uri = implode('/', array(DEFAULT_ACADRE_IMPORT_DIR, $info['filesfolder'], $filename));
-    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $filename = ' . print_r($uri, 1));
+    $uri = implode('/', array(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), $info['filesfolder'], $filename));
 
     $fid = db_select('file_managed', 'fm')
             ->fields('fm', array('fid'))
@@ -407,11 +457,15 @@ function os2web_meetings_node_delete($node) {
   }
   if ($node->type === 'bullet_point') {
     //TODO: Delete bullet attachments from meeting.
-    foreach ($node->field_ref_attachment[$node->language] as $nids) {
-      node_delete($nids['target_id']);
+    if (isset($node->field_ref_attachment[$node->language])) {
+      foreach ($node->field_ref_attachment[$node->language] as $nids) {
+        node_delete($nids['target_id']);
+      }
     }
-    foreach ($node->field_enclosures[$node->language] as $file) {
+    if (isset($node->field_enclosures[$node->language])) {
+      foreach ($node->field_enclosures[$node->language] as $file) {
 //      file_delete((object) $file, true);
+      }
     }
   }
 }
