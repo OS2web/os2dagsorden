@@ -35,7 +35,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '0',
+      'translatable' => '1',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -83,7 +83,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );
@@ -128,7 +128,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_default',
-          'weight' => 2,
+          'weight' => '2',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -177,7 +177,64 @@ function os2web_content_types_and_user_fields_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '3',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-bullet_point-field_qbrick_ref'
+  $fields['node-bullet_point-field_qbrick_ref'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_qbrick_ref',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'os2web_qbrick',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'qbrick_movie',
+    ),
+    'field_instance' => array(
+      'bundle' => 'bullet_point',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'os2web_qbrick',
+          'settings' => array(),
+          'type' => 'qbrick_movie_seek',
+          'weight' => '3',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_qbrick_ref',
+      'label' => 'Qbrick ref',
+      'required' => FALSE,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'module' => 'os2web_qbrick',
+        'settings' => array(),
+        'type' => 'qbrick_movie_noedit',
+        'weight' => '1',
       ),
     ),
   );
@@ -272,7 +329,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -421,7 +478,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '4',
+        'weight' => '6',
       ),
     ),
   );
@@ -509,7 +566,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
           'year_range' => '-0:+1',
         ),
         'type' => 'date_popup',
-        'weight' => '2',
+        'weight' => '4',
       ),
     ),
   );
@@ -589,7 +646,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'options_buttons',
-        'weight' => '3',
+        'weight' => '5',
       ),
     ),
   );
@@ -663,7 +720,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '1',
+        'weight' => '3',
       ),
     ),
   );
@@ -736,7 +793,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
           'display_label' => 0,
         ),
         'type' => 'options_buttons',
-        'weight' => '6',
+        'weight' => '8',
       ),
     ),
   );
@@ -825,7 +882,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '8',
+        'weight' => '9',
       ),
     ),
   );
@@ -901,7 +958,70 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '5',
+        'weight' => '7',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-meeting-field_qbrick_ref'
+  $fields['node-meeting-field_qbrick_ref'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_qbrick_ref',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'os2web_qbrick',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'qbrick_movie',
+    ),
+    'field_instance' => array(
+      'bundle' => 'meeting',
+      'default_value' => array(
+        0 => array(
+          'id' => '',
+          'seek' => '',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'os2web_qbrick',
+          'settings' => array(),
+          'type' => 'qbrick_movie_simple',
+          'weight' => 8,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_qbrick_ref',
+      'label' => 'Qbrick ref',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'os2web_qbrick',
+        'settings' => array(),
+        'type' => 'qbrick_movie_simple',
+        'weight' => '2',
       ),
     ),
   );
@@ -996,7 +1116,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
           'size' => 60,
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '9',
+        'weight' => '10',
       ),
     ),
   );
@@ -1026,7 +1146,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '0',
+      'translatable' => '1',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -1436,6 +1556,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
   t('Is part of Committee');
   t('Location');
   t('Position');
+  t('Qbrick ref');
   t('Ref Attachment');
   t('Ref Bullet points');
   t('Regular');

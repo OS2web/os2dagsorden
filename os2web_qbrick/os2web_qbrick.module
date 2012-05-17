@@ -34,8 +34,9 @@ function os2web_qbrick_menu() {
 }
 
 function os2web_qbrick_page($args) {
+  $player_id = 'AC80F5D9';
 //Test
-  $test_nid = 2984;
+  $test_nid = 3695;
   $html = '<pre>';
 //Config
   $embed_script = '
@@ -53,20 +54,14 @@ function os2web_qbrick_page($args) {
   ';
 //Code
   if ($movie_id = _os2web_qbrick_get_movie_id($test_nid)) {
-    $tmp_chapters = $xml->xpath('//media/item/playlist/stream/chapterlist/chapter');
-    $chapters = array();
-    foreach ($tmp_chapters as $chapter) {
-      error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $chapter = ' . print_r($chapter, 1));
-      $chapters[(int) $chapter['time']] = (string) $chapter;
-//    error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: ".(string)$chapter);
-    }
-    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $chapters = ' . print_r($chapters, 1));
-    $html .=
-        $html.='<p>';
+    $html .= format_string($embed_script, array('!playerid' => $player_id, '!movieid' => $movie_id, '!seek' => 100000));
+    $chapters = _os2web_qbrick_get_chapters($movie_id);
+    $html.='<p>';
     foreach ($chapters as $key => $value) {
       $html.='<a href="#" onclick="javascript:play(' . $key . ');">' . $value . '</a><br>';
     }
     $html.='</p>';
+
     return $html;
   } else {
     return '<p>Node not found</p>';
@@ -77,9 +72,35 @@ function _os2web_qbrick_safedk($str) {
   return str_replace('å', 'aa', str_replace('æ', 'ae', str_replace('ø', 'oe', strtolower($str))));
 }
 
+function _os2web_qbrick_get_chapters($movie_id) {
+  $getmedia = 'http://vms.api.qbrick.com/rest/v3/GetMedia/' . $movie_id;
+  $xml = simplexml_load_file($getmedia);
+  if (is_object($xml)) {
+    $tmp_chapters = $xml->xpath('//media/item/playlist/stream/chapterlist/chapter');
+    $chapters = array();
+    foreach ($tmp_chapters as $chapter) {
+      $id = explode(' ', (string) $chapter);
+      $chapters[$id[1]] = (int) $chapter['time'];
+    }
+    error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $chapters = ' . print_r($chapters, 1));
+    return $chapters;
+  } else {
+    return FALSE;
+  }
+}
+
 function _os2web_qbrick_get_movie_id($nid) {
+
   $search_url = 'http://vms.api.qbrick.com/rest/v3/Search/444777D8/';
-  $node = node_load($nid);
+  if (is_numeric($nid)) {
+    $node = node_load($nid);
+  } else {
+    $node = $nid;
+  }
+  $movie_id = &drupal_static(__FUNCTION__ . $node->nid, FALSE);
+  if ($movie_id != FALSE) {
+    return $movie_id;
+  }
   if (!is_object($node)) {
     return FALSE;
   }
@@ -92,7 +113,7 @@ function _os2web_qbrick_get_movie_id($nid) {
   $url = $search_url . rawurlencode($committee . ' ' . $date);
   $xml = simplexml_load_file($url);
   $movie_id = (string) ($xml->media->item['id']);
-  if (preg_match('/{8}[A-Z,0-9]/', $movie_id)) {
+  if (strlen($movie_id) == 8) {
     return $movie_id;
   } else {
     return FALSE;
@@ -172,6 +193,10 @@ function os2web_qbrick_field_formatter_info() {
       'label' => t('QBrick movie render'),
       'field types' => array('qbrick_movie'),
   );
+  $formatters['qbrick_movie_seek'] = array(
+      'label' => t('QBrick movie seek-only'),
+      'field types' => array('qbrick_movie'),
+  );
   return $formatters;
 }
 
@@ -179,6 +204,15 @@ function os2web_qbrick_field_formatter_view($entity_type, $entity, $field, $inst
   $player_id = 'AC80F5D9';
   $element = array();
   switch ($display['type']) {
+    case 'qbrick_movie_seek':
+      $icon = drupal_get_path('module', 'os2web_qbrick') . '/images/video.jpg';
+      foreach ($items as $delta => $item) {
+        if ($item['seek']) {
+          $seek_link = '<a href="#qbrick_professional_qbrick1" onclick="javascript:play(' . $item['seek'] . ');"><img src="/' . $icon . '" alt="Show video"/></a>';
+          $element[$delta]['#markup'] = $seek_link;
+        }
+      }
+      break;
     case 'qbrick_movie_simple':
       foreach ($items as $delta => $item) {
         if ($item['id']) {
@@ -191,7 +225,6 @@ function os2web_qbrick_field_formatter_view($entity_type, $entity, $field, $inst
               pro.qbProSeekMedia(amount);
           }
         }
-        setTimeout("play(!seek);", 10000);
     </script>';
           $element[$delta]['#markup'] = format_string($embed_script, array('!playerid' => $player_id, '!movieid' => $item['id'], '!seek' => $item['seek']));
         }

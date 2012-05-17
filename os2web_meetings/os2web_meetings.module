@@ -167,13 +167,24 @@ function _os2web_meetings_publish_meeting($info, $xml) {
   $node->field_location[LANGUAGE_NONE][0]['tid'] = $location_term->tid;
 
 
+  $movie_id = _os2web_qbrick_get_movie_id($node);
+  if ($movie_id != FALSE) {
+    $info['movie_id'] = $movie_id;
+    $info['movie_chapters'] = _os2web_qbrick_get_chapters($movie_id);
+    $node->field_qbrick_ref[$node->language][0]['id'] = $movie_id;
+    $node->field_qbrick_ref[$node->language][0]['seek'] = 0;
+  }
+
   //TODO: Add nodes for each bullet
   error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Meeting");
 
-  $items = $xml->xpath("//table[@name='agendaitem']");
+//  $items = $xml->xpath("//table[@name='agendaitem']");
+  $items = $xml->xpath("//table[@name='agendaitemparents']");
   $item_nids = array();
   foreach ($items as $item) {
-    $item_nids[] = _os2web_meetings_add_item($info, $item);
+    $xml = array_shift($item->xpath("table[@name='agendaitem']"));
+    $id = (int) array_shift($item->xpath("fields/field[@name='sort']"));
+    $item_nids[] = _os2web_meetings_add_item($info, $xml, $id);
     // add node for each items
   }
   error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $item_nids = ' . print_r($item_nids, 1));
@@ -194,8 +205,8 @@ function _os2web_meetings_publish_meeting($info, $xml) {
   drupal_write_record('os2web_meetings_imported', $record);
 }
 
-function _os2web_meetings_add_item($info, $xml) {
-
+function _os2web_meetings_add_item($info, $xml, $id) {
+  error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $id = ' . print_r($id, 1));
   $options = array(
       'sysid' => (int) array_shift($xml->xpath("fields/field[@name='sysid']")),
       'name' => (string) array_shift($xml->xpath("fields/field[@name='name']")),
@@ -215,8 +226,13 @@ function _os2web_meetings_add_item($info, $xml) {
   $node->type = "bullet_point"; // Or any other content type you want
   $node->language = LANGUAGE_NONE; // Or any language code if Locale module is enabled. More on this below *
   $node->uid = 1; // Or any id you wish
-  $node->title = $options['name'];
+  $node->title = 'Punkt ' . $id . ' ' . $options['name'];
   node_object_prepare($node); // Set some default values.
+
+  if (isset($info['movie_id']) && isset($info['movie_chapters'][$id])) {
+    $node->field_qbrick_ref[$node->language][0]['id'] = $info['movie_id'];
+    $node->field_qbrick_ref[$node->language][0]['seek'] = $info['movie_chapters'][$id];
+  }
 
   foreach ($nids as $nid) {
     $node->field_ref_attachment[LANGUAGE_NONE][]['target_id'] = $nid;
@@ -231,9 +247,9 @@ function _os2web_meetings_add_item($info, $xml) {
     error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $filename = ' . print_r($uri, 1));
 
     $fid = db_select('file_managed', 'fm')
-          ->fields('fm', array('fid'))
-          ->condition('uri', $uri)
-          ->execute()->fetchField();
+            ->fields('fm', array('fid'))
+            ->condition('uri', $uri)
+            ->execute()->fetchField();
 
     $file = new stdClass();
     if ($fid) {
@@ -247,9 +263,8 @@ function _os2web_meetings_add_item($info, $xml) {
     $file->status = FILE_STATUS_PERMANENT;
     $file = file_save($file);
 
-    $node->field_enclosures[$node->language][]= (array)$file;
+    $node->field_enclosures[$node->language][] = (array) $file;
   }
-
   node_submit($node);
   node_save($node);
 
@@ -397,7 +412,7 @@ function os2web_meetings_node_delete($node) {
       node_delete($nids['target_id']);
     }
     foreach ($node->field_enclosures[$node->language] as $file) {
-      file_delete($file, true);
+      file_delete((object) $file, true);
     }
   }
 }
