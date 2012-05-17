@@ -218,7 +218,7 @@ function _os2web_meetings_add_item($info, $xml, $id) {
   $bullets = $xml->xpath("table[@name='bullet']");
   $nids = array();
   foreach ($bullets as $bullet) {
-    $bullet_id = (int) array_shift($bullet->xpath("fields/field[@name='sysid']"));
+//    $bullet_id = (int) array_shift($bullet->xpath("fields/field[@name='sysid']"));
     // Add node for each bullet
     $nids[] = _os2web_meetings_add_bullet($bullet);
   }
@@ -240,7 +240,6 @@ function _os2web_meetings_add_item($info, $xml, $id) {
 
   //TODO: Gather enclosures
   $enclosures = $xml->xpath("table[@name='enclosure']");
-  $fids = array();
   foreach ($enclosures as $enclosure) {
     $filename = (string) array_shift($enclosure->xpath("fields/field[@name='filename']"));
     $uri = implode('/', array(DEFAULT_ACADRE_IMPORT_DIR, $info['filesfolder'], $filename));
@@ -412,7 +411,7 @@ function os2web_meetings_node_delete($node) {
       node_delete($nids['target_id']);
     }
     foreach ($node->field_enclosures[$node->language] as $file) {
-      file_delete((object) $file, true);
+//      file_delete((object) $file, true);
     }
   }
 }
