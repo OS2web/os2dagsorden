@@ -228,6 +228,110 @@ function os2web_sovs_rel_build_info() {
 
   $rel = new stdClass();
   $rel->api_version = 1;
+  $rel->build_id = 'file_entity_edit';
+  $rel->label = 'file_entity_edit';
+  $rel->entity_type = 'file';
+  $rel->bundle = 'image';
+  $rel->view_mode = 'form';
+  $rel->context = 'form';
+  $rel->path = 'admin/config/media/file-types/manage/image/fields';
+  $rel->elements = array(
+    'field_folder' => array(
+      'owner' => 'rel',
+      'label' => 'Field folder',
+      'parent' => '',
+      'group_info' => FALSE,
+      'weight' => -1,
+      'element_type' => '',
+    ),
+  );
+  $rel->duplicate = array();
+  $export['file_entity_edit'] = $rel;
+
+  $rel = new stdClass();
+  $rel->api_version = 1;
+  $rel->build_id = 'linkit_dashboard_form';
+  $rel->label = 'linkit_dashboard_form';
+  $rel->entity_type = 'rel_build';
+  $rel->bundle = 'linkit_dashboard_form';
+  $rel->view_mode = 'form';
+  $rel->context = 'form';
+  $rel->path = 'admin/structure/rel/manage/linkit_dashboard_form';
+  $rel->elements = array(
+    'linkit_search' => array(
+      'owner' => 'rel',
+      'label' => 'Søg indhold',
+      'parent' => '',
+      'group_info' => FALSE,
+      'weight' => -10,
+      'element_type' => 'textfield',
+    ),
+    'linkit_path' => array(
+      'owner' => 'rel',
+      'label' => 'Target path',
+      'parent' => '',
+      'group_info' => FALSE,
+      'weight' => -1,
+      'element_type' => 'textfield',
+    ),
+    'linkit_insert' => array(
+      'owner' => 'rel',
+      'label' => 'Insert link',
+      'parent' => '',
+      'group_info' => FALSE,
+      'weight' => 100,
+      'element_type' => 'button',
+    ),
+  );
+  $rel->duplicate = array();
+  $export['linkit_dashboard_form'] = $rel;
+
+  $rel = new stdClass();
+  $rel->api_version = 1;
+  $rel->build_id = 'media_add_upload';
+  $rel->label = 'media_add_upload';
+  $rel->entity_type = 'rel_build';
+  $rel->bundle = 'media_add_upload';
+  $rel->view_mode = 'form';
+  $rel->context = 'form';
+  $rel->path = 'admin/structure/rel/manage/media_add_upload';
+  $rel->elements = array(
+    'submit' => array(
+      'owner' => 'rel',
+      'label' => 'Indsend',
+      'parent' => '',
+      'group_info' => FALSE,
+      'weight' => 1,
+      'element_type' => 'submit',
+    ),
+  );
+  $rel->duplicate = array();
+  $export['media_add_upload'] = $rel;
+
+  $rel = new stdClass();
+  $rel->api_version = 1;
+  $rel->build_id = 'media_internet_add';
+  $rel->label = 'media_internet_add';
+  $rel->entity_type = 'rel_build';
+  $rel->bundle = 'media_internet_add';
+  $rel->view_mode = 'form';
+  $rel->context = 'form';
+  $rel->path = 'admin/structure/rel/manage/media_internet_add';
+  $rel->elements = array(
+    'embed_code' => array(
+      'owner' => 'rel',
+      'label' => 'URL eller embed-kode',
+      'parent' => '',
+      'group_info' => FALSE,
+      'weight' => 0,
+      'element_type' => 'textfield',
+    ),
+  );
+  $rel->duplicate = array();
+  $export['media_internet_add'] = $rel;
+
+  $rel = new stdClass();
+  $rel->api_version = 1;
   $rel->build_id = 'news_node_form';
   $rel->label = 'news_node_form';
   $rel->entity_type = 'node';
