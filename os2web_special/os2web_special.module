@@ -19,6 +19,11 @@ function os2web_special_menu_minipanels_style($menu_config) {
   drupal_add_js(drupal_get_path('module', 'os2web_special') . '/menu_style.js', array('scope' => 'footer', 'weight' => 100));
   /* Ekstra til søge-felt */
   drupal_add_js(drupal_get_path('module', 'os2web_special') . '/search.js', array('scope' => 'header', 'weight' => 100));
+  /* Tilføjelse til styling af SELECT der bruges "yaselect"  */
+  drupal_add_js(drupal_get_path('module', 'os2web_special') . '/yaselect.min.js', array('scope' => 'header', 'weight' => 80));
+  /* For at gøre det bare en smule mere "overskueligt" her vælges hvad yaselect skal ramme */
+  drupal_add_js(drupal_get_path('module', 'os2web_special') . '/yaselect-id.js', array('scope' => 'header', 'weight' => 90));
+
 }
 
 /**
