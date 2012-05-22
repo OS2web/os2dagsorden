@@ -48,6 +48,11 @@ libraries[poshytip][download][url] = "http://vadikom.com/files/?file=poshytip/po
 libraries[poshytip][directory_name] = "poshy_tip"
 libraries[poshytip][destination] = "libraries"
 
+libraries[solr-php-client][download][type] = "get"
+libraries[solr-php-client][download][url] = "http://solr-php-client.googlecode.com/files/SolrPhpClient.r60.2011-05-04.zip"
+libraries[solr-php-client][directory_name] = "SolrPhpCient"
+libraries[solr-php-client][destination] = "libraries"
+
 ; Contrib modules
 projects[features][subdir] = "contrib"
 projects[features][version] = "1.0-rc1"
@@ -164,9 +169,14 @@ projects[better_exposed_filters][subdir] = "contrib"
 projects[poshy_tip][subdir] = "contrib"
 projects[views_php][subdir] = "contrib"
 
+projects[search_log][subdir] = "contrib"
+
 ; Morten, Rolr
+projects[apachesolr][subdir] = "contrib"
 projects[apachesolr][version] = "1.0-beta19"
+projects[apachesolr_autocomplete][subdir] = "contrib"
 projects[apachesolr_autocomplete][version] = "1.2"
+projects[apachesolr_attachments][contrib] = "contrib"
 projects[apachesolr_attachments][version] = "1.0"
 
 ; Themes
