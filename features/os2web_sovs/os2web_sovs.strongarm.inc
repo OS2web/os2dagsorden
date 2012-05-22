@@ -782,6 +782,7 @@ function os2web_sovs_strongarm() {
     8 => 10,
     9 => 11,
     10 => 12,
+    11 => 13,
   );
   $export['menu_block_ids'] = $strongarm;
 
@@ -887,13 +888,6 @@ function os2web_sovs_strongarm() {
   $strongarm->name = 'menu_minipanels_overordnet-sitemenu_enabled';
   $strongarm->value = TRUE;
   $export['menu_minipanels_overordnet-sitemenu_enabled'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
-  $strongarm->name = 'menu_minipanels_show_admin';
-  $strongarm->value = 0;
-  $export['menu_minipanels_show_admin'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */

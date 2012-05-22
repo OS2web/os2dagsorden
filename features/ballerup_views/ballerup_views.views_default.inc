@@ -2495,25 +2495,6 @@ function ballerup_views_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'news' => 'news',
   );
-  /* Filterkriterie: Handler mangler eller er i stykker */
-  $handler->display->display_options['filters']['field_news_category_tid']['id'] = 'field_news_category_tid';
-  $handler->display->display_options['filters']['field_news_category_tid']['table'] = 'field_data_field_news_category';
-  $handler->display->display_options['filters']['field_news_category_tid']['field'] = 'field_news_category_tid';
-  $handler->display->display_options['filters']['field_news_category_tid']['ui_name'] = 'Feed: Om Ballerup';
-  $handler->display->display_options['filters']['field_news_category_tid']['value'] = array(
-    35 => '35',
-    36 => '36',
-    37 => '37',
-    38 => '38',
-    39 => '39',
-    40 => '40',
-    41 => '41',
-    42 => '42',
-    43 => '43',
-    44 => '44',
-    45 => '45',
-    46 => '46',
-  );
 
   /* Display: Block: Ballerup nyt */
   $handler = $view->new_display('block', 'Block: Ballerup nyt', 'block');
@@ -2710,29 +2691,6 @@ function ballerup_views_views_default_views() {
     'image_link' => 'content',
   );
   $handler->display->display_options['fields']['field_lead_image']['field_api_classes'] = 0;
-  /* Felt: Handler mangler eller er i stykker */
-  $handler->display->display_options['fields']['field_news_category']['id'] = 'field_news_category';
-  $handler->display->display_options['fields']['field_news_category']['table'] = 'field_data_field_news_category';
-  $handler->display->display_options['fields']['field_news_category']['field'] = 'field_news_category';
-  $handler->display->display_options['fields']['field_news_category']['label'] = '';
-  $handler->display->display_options['fields']['field_news_category']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_news_category']['alter']['alter_text'] = 0;
-  $handler->display->display_options['fields']['field_news_category']['alter']['make_link'] = 0;
-  $handler->display->display_options['fields']['field_news_category']['alter']['absolute'] = 0;
-  $handler->display->display_options['fields']['field_news_category']['alter']['external'] = 0;
-  $handler->display->display_options['fields']['field_news_category']['alter']['replace_spaces'] = 0;
-  $handler->display->display_options['fields']['field_news_category']['alter']['trim_whitespace'] = 0;
-  $handler->display->display_options['fields']['field_news_category']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['field_news_category']['alter']['word_boundary'] = 1;
-  $handler->display->display_options['fields']['field_news_category']['alter']['ellipsis'] = 1;
-  $handler->display->display_options['fields']['field_news_category']['alter']['strip_tags'] = 0;
-  $handler->display->display_options['fields']['field_news_category']['alter']['trim'] = 0;
-  $handler->display->display_options['fields']['field_news_category']['alter']['html'] = 0;
-  $handler->display->display_options['fields']['field_news_category']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_news_category']['element_default_classes'] = 1;
-  $handler->display->display_options['fields']['field_news_category']['hide_empty'] = 0;
-  $handler->display->display_options['fields']['field_news_category']['empty_zero'] = 0;
-  $handler->display->display_options['fields']['field_news_category']['hide_alter_empty'] = 0;
   /* Felt: Indhold: Oprettelsesdato */
   $handler->display->display_options['fields']['created']['id'] = 'created';
   $handler->display->display_options['fields']['created']['table'] = 'node';
@@ -3335,16 +3293,15 @@ function ballerup_views_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'news' => 'news',
   );
-  /* Filterkriterie: Handler mangler eller er i stykker */
-  $handler->display->display_options['filters']['field_news_category_tid']['id'] = 'field_news_category_tid';
-  $handler->display->display_options['filters']['field_news_category_tid']['table'] = 'field_data_field_news_category';
-  $handler->display->display_options['filters']['field_news_category_tid']['field'] = 'field_news_category_tid';
-  $handler->display->display_options['filters']['field_news_category_tid']['ui_name'] = 'Feed: Om Ballerup';
-  $handler->display->display_options['filters']['field_news_category_tid']['value'] = array(
-    42 => '42',
-  );
   $handler->display->display_options['path'] = 'nyheder/feed/natur-miljo';
   $handler->display->display_options['sitename_title'] = 0;
+
+  /* Display: News syddjurs feed */
+  $handler = $view->new_display('feed', 'News syddjurs feed', 'feed_14');
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['style_plugin'] = 'rss';
+  $handler->display->display_options['row_plugin'] = 'node_rss';
+  $handler->display->display_options['path'] = 'feed/rss';
   $translatables['news'] = array(
     t('Master'),
     t('Nyheder'),
@@ -3387,6 +3344,7 @@ function ballerup_views_views_default_views() {
     t('Handikap & Psykiatri'),
     t('Feed: Natur & Miljø'),
     t('Natur & Mijø'),
+    t('News syddjurs feed'),
   );
   $export['news'] = $view;
 

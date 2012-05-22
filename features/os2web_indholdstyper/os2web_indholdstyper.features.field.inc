@@ -621,6 +621,7 @@ function os2web_indholdstyper_field_default_fields() {
       'settings' => array(
         'referenceable_types' => array(
           'borger_dk_permalink' => 0,
+          'borgerservices' => 0,
           'contentpage' => 0,
           'esdh_dokument' => 0,
           'esdh_sag' => 0,
@@ -719,6 +720,7 @@ function os2web_indholdstyper_field_default_fields() {
       'settings' => array(
         'referenceable_types' => array(
           'borger_dk_permalink' => 0,
+          'borgerservices' => 0,
           'contentpage' => 0,
           'esdh_dokument' => 0,
           'esdh_sag' => 0,
@@ -1168,7 +1170,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '2',
+        'weight' => '38',
       ),
     ),
   );
@@ -8022,7 +8024,7 @@ function os2web_indholdstyper_field_default_fields() {
       'module' => 'list',
       'settings' => array(
         'allowed_values' => array(
-          'handling' => 'Handling',
+          'handling' => 'Hvis du skal',
           'emne' => 'Emne',
           'liste' => 'Liste',
         ),
@@ -8033,7 +8035,11 @@ function os2web_indholdstyper_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'selvbetjeningslinks',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => 'liste',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -8456,7 +8462,7 @@ function os2web_indholdstyper_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_lead_image',
       'label' => 'Billede',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'alt_field' => 0,
         'file_directory' => '',

@@ -127,3 +127,20 @@ function os2web_spotbokse_image_default_styles() {
 
   return $styles;
 }
+
+/**
+ * Implements hook_node_info().
+ */
+function os2web_spotbokse_node_info() {
+  $items = array(
+    'spotbox' => array(
+      'name' => t('Spotbox'),
+      'base' => 'node_content',
+      'description' => '',
+      'has_title' => '1',
+      'title_label' => t('Overskrift'),
+      'help' => '',
+    ),
+  );
+  return $items;
+}
