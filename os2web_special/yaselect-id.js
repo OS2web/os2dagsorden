@@ -1,2 +1,0 @@
-jQuery('#edit-form').yaselect();
-

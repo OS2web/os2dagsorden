@@ -171,6 +171,8 @@ projects[views_php][subdir] = "contrib"
 
 projects[search_log][subdir] = "contrib"
 
+projects[fontyourface][subdir] = "contrib"
+
 ; Morten, Rolr
 projects[apachesolr][subdir] = "contrib"
 projects[apachesolr][version] = "1.0-beta19"
