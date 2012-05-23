@@ -8,7 +8,7 @@
  * Implements hook_ctools_plugin_api().
  */
 function os2web_design_ctools_plugin_api() {
-  return array("version" => "3");
+  return array("version" => "1");
 }
 
 /**
