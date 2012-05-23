@@ -12,6 +12,13 @@ function os2web_design_ctools_plugin_api() {
 }
 
 /**
+ * Implements hook_views_api().
+ */
+function os2web_design_views_api() {
+  return array("version" => "3.0");
+}
+
+/**
  * Implements hook_fontyourface_features_default_font().
  */
 function os2web_design_fontyourface_features_default_font() {
