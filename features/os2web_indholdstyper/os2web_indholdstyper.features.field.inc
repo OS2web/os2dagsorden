@@ -35,7 +35,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '1',
+      'translatable' => '0',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -257,7 +257,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '11',
+          'weight' => '13',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -353,10 +353,9 @@ function os2web_indholdstyper_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => 15,
+          'type' => 'hidden',
+          'weight' => '9',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -665,7 +664,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '8',
+          'weight' => '10',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -762,10 +761,9 @@ function os2web_indholdstyper_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'node_reference_default',
-          'weight' => 16,
+          'type' => 'hidden',
+          'weight' => '8',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -841,7 +839,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '13',
+          'weight' => '15',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -915,9 +913,8 @@ function os2web_indholdstyper_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'taxonomy',
           'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
+          'type' => 'hidden',
           'weight' => '7',
         ),
         'related_block' => array(
@@ -1058,15 +1055,8 @@ function os2web_indholdstyper_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'date',
-          'settings' => array(
-            'format_type' => 'long',
-            'fromto' => 'both',
-            'multiple_from' => '',
-            'multiple_number' => '',
-            'multiple_to' => '',
-          ),
-          'type' => 'date_default',
+          'settings' => array(),
+          'type' => 'hidden',
           'weight' => '6',
         ),
         'related_block' => array(
@@ -1149,7 +1139,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '9',
+          'weight' => '11',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -1200,7 +1190,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '14',
+          'weight' => '16',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -1282,7 +1272,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '10',
+          'weight' => '12',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -1358,7 +1348,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '12',
+          'weight' => '14',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -1413,7 +1403,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '1',
+      'translatable' => '0',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -2568,7 +2558,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '1',
+      'translatable' => '0',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -3529,7 +3519,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '1',
+      'translatable' => '0',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -4236,7 +4226,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '1',
+      'translatable' => '0',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -5078,7 +5068,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '1',
+      'translatable' => '0',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -5736,7 +5726,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '1',
+      'translatable' => '0',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -7342,7 +7332,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '1',
+      'translatable' => '0',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -8264,7 +8254,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '1',
+      'translatable' => '0',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
