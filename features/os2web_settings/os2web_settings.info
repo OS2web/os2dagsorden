@@ -13,3 +13,10 @@ features[variable][] = "multistep_show_step_numbers"
 features[variable][] = "multistep_status_publishing"
 features[variable][] = "multistep_status_revisions"
 features[variable][] = "multistep_workflow_mode"
+
+
+; Information added by drush on 2012-05-18
+version = "dev"
+project = "os2web"
+datestamp = "1337330067"
+

@@ -202,14 +202,15 @@ function os2web_indholdstyper_field_group_info() {
     'children' => array(
       0 => 'field_rotate_publish',
       1 => 'field_node_reference_kontaktblok',
-      2 => 'field_indholdsside_spotboxe',
-      3 => 'field_noderef_selvbtjn',
-      4 => 'path',
-      5 => 'additional_settings',
-      6 => 'revision_information',
-      7 => 'author',
-      8 => 'options',
-      9 => 'group_hidden',
+      2 => 'field_site_structure',
+      3 => 'field_indholdsside_spotboxe',
+      4 => 'field_noderef_selvbtjn',
+      5 => 'path',
+      6 => 'additional_settings',
+      7 => 'revision_information',
+      8 => 'author',
+      9 => 'options',
+      10 => 'group_hidden',
     ),
     'format_type' => 'multistep',
     'format_settings' => array(
@@ -230,11 +231,10 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->parent_name = 'group_gruppe3';
   $field_group->data = array(
     'label' => 'Skjult',
-    'weight' => '38',
+    'weight' => '39',
     'children' => array(
       0 => 'field_source_id',
-      1 => 'field_site_structure',
-      2 => 'workbench_access',
+      1 => 'workbench_access',
     ),
     'format_type' => 'fieldset',
     'format_settings' => array(
@@ -670,19 +670,21 @@ function os2web_indholdstyper_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = 'group_spotbox';
   $field_group->data = array(
-    'label' => 'Tekst',
+    'label' => 'Tekst og video',
     'weight' => '2',
     'children' => array(
       0 => 'body',
+      1 => 'field_spotbox_video',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Tekst og video',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
         'required_fields' => 1,
+        'classes' => '',
+        'description' => '',
       ),
+      'formatter' => 'closed',
     ),
   );
   $export['group_tekst|node|spotbox|form'] = $field_group;

@@ -22,3 +22,10 @@ features[variable][] = "date_format_month_only"
 features[variable][] = "date_format_short"
 features[variable][] = "date_format_time_only"
 features[views_view][] = "events"
+
+
+; Information added by drush on 2012-05-18
+version = "dev"
+project = "os2web"
+datestamp = "1337330067"
+

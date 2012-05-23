@@ -10,3 +10,10 @@ description = This generates links for agenda items. NOTE: Module requires namin
 
 package = OS2Web
 core = 7.x
+
+
+; Information added by drush on 2012-05-18
+version = "dev"
+project = "os2web"
+datestamp = "1337330067"
+

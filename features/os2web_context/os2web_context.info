@@ -20,3 +20,10 @@ features[context][] = "hide_second_sidebar_indholdssider"
 features[context][] = "portalforside"
 features[context][] = "sektionsforside"
 features[ctools][] = "context:context:3"
+
+
+; Information added by drush on 2012-05-18
+version = "dev"
+project = "os2web"
+datestamp = "1337330067"
+

@@ -240,14 +240,6 @@ function os2web_indholdstyper_node_info() {
       'title_label' => t('Overskrift'),
       'help' => '',
     ),
-    'spotbox' => array(
-      'name' => t('Spotbox'),
-      'base' => 'node_content',
-      'description' => '',
-      'has_title' => '1',
-      'title_label' => t('Overskrift'),
-      'help' => '',
-    ),
   );
   return $items;
 }
