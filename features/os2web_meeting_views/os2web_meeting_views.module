@@ -20,7 +20,12 @@ function os2web_meeting_views_views_exposed_form_meetings_search_page_validate(&
   if (is_numeric($form_state['values']['committee']) || $form_state['values']['committee'] === 'All') {
 
   } else {
-    drupal_goto($form_state['values']['committee']);
+    $options = array(
+      'external' => TRUE,
+      'absolute' => TRUE,
+    );
+    drupal_goto($form_state['values']['committee'],$options);
   }
+  views_exposed_form_validate($form,$form_state);
 }
 
