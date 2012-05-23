@@ -160,22 +160,6 @@ function os2web_indholdstyper_node_info() {
       'title_label' => t('Overskrift'),
       'help' => '',
     ),
-    'esdh_dokument' => array(
-      'name' => t('ESDH Dokument'),
-      'base' => 'node_content',
-      'description' => t('En side der præsentere en eller flere filer fra ESDH systemet.'),
-      'has_title' => '1',
-      'title_label' => t('Overskrift'),
-      'help' => '',
-    ),
-    'esdh_sag' => array(
-      'name' => t('ESDH Sag'),
-      'base' => 'node_content',
-      'description' => t('Viser en sag fra ESDH systemet.'),
-      'has_title' => '1',
-      'title_label' => t('Overskrift'),
-      'help' => '',
-    ),
     'galleri' => array(
       'name' => t('Galleri'),
       'base' => 'node_content',
@@ -192,14 +176,6 @@ function os2web_indholdstyper_node_info() {
       'title_label' => t('Overskrift'),
       'help' => '',
     ),
-    'institution' => array(
-      'name' => t('Institution'),
-      'base' => 'node_content',
-      'description' => t('Kommunal institution, bibliotek, svømmehal etc.'),
-      'has_title' => '1',
-      'title_label' => t('Titel'),
-      'help' => '',
-    ),
     'media' => array(
       'name' => t('Medier'),
       'base' => 'node_content',
@@ -214,14 +190,6 @@ function os2web_indholdstyper_node_info() {
       'description' => '',
       'has_title' => '1',
       'title_label' => t('Overskrift'),
-      'help' => '',
-    ),
-    'right_column' => array(
-      'name' => t('Højrespalte-afsnit'),
-      'base' => 'node_content',
-      'description' => t('Information som bruges flere steder i højre spalte knyttet til sider, artikler, nyheder eller andet.'),
-      'has_title' => '1',
-      'title_label' => t('Kort overskrift'),
       'help' => '',
     ),
     'rotating_image' => array(
