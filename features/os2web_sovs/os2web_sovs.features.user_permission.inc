@@ -107,16 +107,6 @@ function os2web_sovs_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: create spotbox content
-  $permissions['create spotbox content'] = array(
-    'name' => 'create spotbox content',
-    'roles' => array(
-      0 => 'Editor',
-      1 => 'Kommunikation',
-    ),
-    'module' => 'node',
-  );
-
   // Exported permission: delete any contentpage content
   $permissions['delete any contentpage content'] = array(
     'name' => 'delete any contentpage content',
@@ -177,17 +167,6 @@ function os2web_sovs_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: delete any spotbox content
-  $permissions['delete any spotbox content'] = array(
-    'name' => 'delete any spotbox content',
-    'roles' => array(
-      0 => 'Administrator',
-      1 => 'Kommunikation',
-      2 => 'Webmaster',
-    ),
-    'module' => 'node',
-  );
-
   // Exported permission: delete own contentpage content
   $permissions['delete own contentpage content'] = array(
     'name' => 'delete own contentpage content',
@@ -242,16 +221,6 @@ function os2web_sovs_user_default_permissions() {
   // Exported permission: delete own rotating_image content
   $permissions['delete own rotating_image content'] = array(
     'name' => 'delete own rotating_image content',
-    'roles' => array(
-      0 => 'Editor',
-      1 => 'Kommunikation',
-    ),
-    'module' => 'node',
-  );
-
-  // Exported permission: delete own spotbox content
-  $permissions['delete own spotbox content'] = array(
-    'name' => 'delete own spotbox content',
     'roles' => array(
       0 => 'Editor',
       1 => 'Kommunikation',
@@ -333,18 +302,6 @@ function os2web_sovs_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: edit any spotbox content
-  $permissions['edit any spotbox content'] = array(
-    'name' => 'edit any spotbox content',
-    'roles' => array(
-      0 => 'Administrator',
-      1 => 'Editor',
-      2 => 'Kommunikation',
-      3 => 'Webmaster',
-    ),
-    'module' => 'node',
-  );
-
   // Exported permission: edit own contentpage content
   $permissions['edit own contentpage content'] = array(
     'name' => 'edit own contentpage content',
@@ -393,16 +350,6 @@ function os2web_sovs_user_default_permissions() {
   // Exported permission: edit own rotating_image content
   $permissions['edit own rotating_image content'] = array(
     'name' => 'edit own rotating_image content',
-    'roles' => array(
-      0 => 'Editor',
-      1 => 'Kommunikation',
-    ),
-    'module' => 'node',
-  );
-
-  // Exported permission: edit own spotbox content
-  $permissions['edit own spotbox content'] = array(
-    'name' => 'edit own spotbox content',
     'roles' => array(
       0 => 'Editor',
       1 => 'Kommunikation',
