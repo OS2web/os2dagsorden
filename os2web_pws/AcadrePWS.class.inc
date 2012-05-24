@@ -283,11 +283,11 @@ XML;
     $query = db_select('os2web_pws_doc_files', 'df')->fields('df', array('fid'))->condition('did', $ref);
     $fid = $query->execute()->fetchField();
     if ($fid > 0) {
-      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File cached.");
+//      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File cached.");
       $result = file_load($fid);
       $result = file_create_url($result->uri);
     } else {
-      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Fetching file from WS.");
+//      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Fetching file from WS.");
       if ($this->client) {
         $request = <<< XML
 <?xml version="1.0" encoding="utf-8"?>

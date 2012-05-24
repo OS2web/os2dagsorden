@@ -12,6 +12,7 @@ function os2web_pws_config_form($form, &$form_state) {
   $form['os2web_pws_config_group'] = array(
       '#type' => 'fieldset',
       '#title' => t('PWS Endpoint configuration'),
+      '#collapsible' => TRUE,
   );
   $form['os2web_pws_config_group']['os2web_pws_url'] = array(
       '#type' => 'textfield',
