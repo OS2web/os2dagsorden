@@ -1,5 +1,6 @@
 <?php
-
+define('ACADRE_CM_ACCESS_OPEN_DOCUMENT', '3');
+define('ACADRE_CM_ACCESS_OPEN_CASE', '1');
 // $Id$
 /*
  * 
@@ -15,24 +16,12 @@ function theme_esdh_case($vars) {
   if (FALSE === $case) {
     return FALSE;
   }
-  $access_grant = array(
-      'accesscode' => 'KK',
-//        'publication' => '3',
-  );
-  $access = array(
-      'accesscode' => $case->AccessCode,
-//        'publication' => $doc->Record->PublicationIndicator,
-  );
-  $valid = _os2web_pws_array_compare($access, $access_grant);
+  $valid = _os2web_pws_case_access($id);
   if (!$valid) {
     $html .= '<p id="casenotpublic">This case is not publicly available.</p>';
     return $html;
   }
   $docs = $pws->getCaseDocs($id);
-  $header = array(t('Id'), t('Title'), t('Contents'), t('Date'));
-  $rows = array();
-  $rows[] = array($case->CaseFileNumberIdentifier, $case->CaseFileTitleText, $case->CustomFields->df1, format_date(strtotime($case->CreationDate), 'custom', 'd-m-Y'));
-//  $html = theme('table', array('header' => $header, 'rows' => $rows));
   $docids = array();
   foreach ($docs as $doc) {
     $docids[] = (int) $doc->Document->DocumentIdentifier;
@@ -50,31 +39,12 @@ function theme_esdh_document($vars) {
   }
   $html = '';
   $rows = array();
-  $header = array(
-      t('Title'),
-//      t('Description'),
-//      t('Date')
-  );
-
   foreach ($id as $docid) {
     $doc = $pws->getDocument($docid);
-    $access_grant = array(
-        'accesscode' => 'KK',
-        'publication' => '3',
-        'lockstatus' => true,
-    );
-    $access = array(
-        'accesscode' => $doc->Record->AccessCode,
-        'publication' => $doc->Record->PublicationIndicator,
-        'lockstatus' => $pws->getDocLock($docid),
-    );
-    $public_valid = _os2web_pws_array_compare($access, $access_grant);
-    if ($public_valid) { // Only show public documents
-      //FIXME: Check publication status
-      if (isset($doc->Document)) {
+    if (_os2web_pws_doc_access($docid)) { // Only show public documents
+      if (isset($doc->Document) && _os2web_pws_case_access($doc->Record->CaseFileReference)) {
         $rows[] = array(
-            l($doc->Document->DocumentTitleText, $pws->getDocData($doc->Document->DocumentIdentifier)) . '<span class="documentdate">'. $doc->Record->DocumentDate.'</span>',
-//            $doc->Record->DescriptionText,
+            l($doc->Document->DocumentTitleText, $pws->getDocData($doc->Document->DocumentIdentifier)) . '<span class="documentdate">' . format_date(strtotime($doc->Record->RecordLatestUpdateDate), 'custom', 'd/m/Y') . '</span>',
         );
       }
     }
@@ -86,10 +56,10 @@ function theme_esdh_document($vars) {
     return $html;
   }
   /* Hack and slash
-  if (isset($vars['iscase'])&&$vars['iscase']) {
+    if (isset($vars['iscase'])&&$vars['iscase']) {
     $html .= '<p>' . t('This case contains @docs public documents', array('@docs' => count($rows))) . '</p>';
-  } 
-  $html .= theme('table', array('header' => $header, 'rows' => $rows)); */
+    }
+    $html .= theme('table', array('header' => $header, 'rows' => $rows)); */
   $html .= theme('table', array('rows' => $rows));
   return $html;
 }
@@ -104,4 +74,37 @@ function _os2web_pws_array_compare(array $a1, array $a2) {
     }
   }
   return $result;
+}
+
+function _os2web_pws_case_access($caseid) {
+  $pws = _os2web_pws_get_instance();
+  $case = $pws->fetchCase($caseid);
+  if (FALSE === $case) {
+    return FALSE;
+  }
+  $access_grant = array(
+      'accesscode' => 'KK',
+      'restricted' => ACADRE_CM_ACCESS_OPEN_CASE,
+  );
+  $access = array(
+      'accesscode' => $case->AccessCode,
+      'restricted' => $case->RestrictedFromPublicText,
+  );
+  return _os2web_pws_array_compare($access, $access_grant);
+}
+
+function _os2web_pws_doc_access($docid) {
+  $pws = _os2web_pws_get_instance();
+  $doc = $pws->getDocument($docid);
+  $access_grant = array(
+      'accesscode' => 'KK',
+      'publication' => ACADRE_CM_ACCESS_OPEN_DOCUMENT,
+      'lockstatus' => true,
+  );
+  $access = array(
+      'accesscode' => $doc->Record->AccessCode,
+      'publication' => $doc->Record->PublicationIndicator,
+      'lockstatus' => $pws->getDocLock($docid),
+  );
+  return _os2web_pws_array_compare($access, $access_grant);
 }
