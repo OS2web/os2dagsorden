@@ -30,3 +30,45 @@ function os2web_meeting_views_views_exposed_form_meetings_search_page_validate(&
   views_exposed_form_validate($form,$form_state);
 }
 
+function os2web_meeting_views_block_info() {
+  $blocks['meeting-search-block'] = array(
+    'info' => 'Dagsordens søgning',
+  );
+  return $blocks;
+}
+
+function os2web_meeting_views_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'meeting-search-block':
+      $block['subject'] = t('Search Agendas');
+      $block['content'] = _os2web_meeting_views_get_exposed_filter();
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Code that extracts the exposed filter for use in block
+ * Adopted from: http://www.butlerraines.com/node/4
+ */
+function _os2web_meeting_views_get_exposed_filter() {
+  //create a view object first, e. g. $view = views_get_view('myViewName');
+  //then set the demanded display_id, e. g. $display_id = 'page_1';
+  $view = views_get_view('meetings_search');
+  $display_id = 'page';
+  $view->set_display($display_id);
+  $view->init_handlers(); //initialize display handlers
+  $form_state = array(
+      'view' => $view,
+      'display' => $view->display_handler->display,
+      'exposed_form_plugin' => $view->display_handler->get_plugin('exposed_form'), //exposed form plugins are used in Views 3
+      'method' => 'get',
+      'rerender' => TRUE,
+      'no_redirect' => TRUE,
+      );
+  $form = drupal_build_form('views_exposed_form', $form_state); //create the filter form
+  //you now have a form array which can be themed or further altered...
+  $he = drupal_render($form);
+  return $he;
+}
