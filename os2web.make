@@ -50,7 +50,7 @@ libraries[poshytip][destination] = "libraries"
 
 libraries[solr-php-client][download][type] = "get"
 libraries[solr-php-client][download][url] = "http://solr-php-client.googlecode.com/files/SolrPhpClient.r60.2011-05-04.zip"
-libraries[solr-php-client][directory_name] = "SolrPhpCient"
+libraries[solr-php-client][directory_name] = "SolrPhpClient"
 libraries[solr-php-client][destination] = "libraries"
 
 ; Contrib modules
