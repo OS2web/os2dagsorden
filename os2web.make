@@ -172,6 +172,7 @@ projects[views_php][subdir] = "contrib"
 projects[search_log][subdir] = "contrib"
 
 projects[fontyourface][subdir] = "contrib"
+projects[special_menu_items][subdir] = "contrib"
 
 ; Morten, Rolr
 projects[apachesolr][subdir] = "contrib"
