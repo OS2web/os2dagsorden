@@ -28,3 +28,10 @@ features[variable][] = "linkchecker_ignore_response_codes"
 features[variable][] = "linkchecker_scan_blocks"
 features[variable][] = "linkchecker_scan_comments"
 features[variable][] = "linkchecker_scan_nodetypes"
+
+
+; Information added by drush on 2012-05-25
+version = "dev"
+project = "os2web"
+datestamp = "1337937347"
+

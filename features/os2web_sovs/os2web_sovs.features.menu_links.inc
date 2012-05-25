@@ -469,67 +469,6 @@ function os2web_sovs_menu_default_menu_links() {
     'expanded' => '0',
     'weight' => '0',
   );
-  // Exported menu link: menu-top-menu:<front>
-  $menu_links['menu-top-menu:<front>'] = array(
-    'menu_name' => 'menu-top-menu',
-    'link_path' => '<front>',
-    'router_path' => '',
-    'link_title' => 'Andre sites',
-    'options' => array(
-      'minipanel' => 'andre_kommunale_websites',
-      'menu_minipanels_hover' => array(
-        'position' => array(
-          'target' => 'custom',
-          'target_custom' => '#zone-user',
-          'type' => 'absolute',
-          'corner' => array(
-            'target' => 'topLeft',
-            'tooltip' => 'topLeft',
-          ),
-        ),
-        'show' => array(
-          'delay' => '0',
-          'when' => array(
-            'event' => 'mouseenter',
-          ),
-          'effect' => array(
-            'type' => 'slide',
-            'length' => '0',
-          ),
-        ),
-        'hide' => array(
-          'delay' => '0',
-          'effect' => array(
-            'type' => 'slide',
-            'length' => '0',
-          ),
-        ),
-        'style' => array(
-          'name' => 'light',
-          'width' => array(
-            'min' => '970px',
-            'max' => '970',
-          ),
-          'border' => array(
-            'width' => '0',
-            'color' => '#d3d3d3',
-            'radius' => '0',
-          ),
-          'tip' => 'none',
-        ),
-        'mlid' => '1608',
-      ),
-      'attributes' => array(
-        'title' => '',
-      ),
-    ),
-    'module' => 'menu',
-    'hidden' => '0',
-    'external' => '1',
-    'has_children' => '0',
-    'expanded' => '0',
-    'weight' => '-48',
-  );
   // Exported menu link: menu-top-menu:http://www.adgangforalle.dk/
   $menu_links['menu-top-menu:http://www.adgangforalle.dk/'] = array(
     'menu_name' => 'menu-top-menu',
@@ -749,7 +688,6 @@ function os2web_sovs_menu_default_menu_links() {
   );
   // Translatables
   // Included for use with string extractors like potx.
-  t('Andre sites');
   t('Arbejde');
   t('Arbejdskraft');
   t('Borger');

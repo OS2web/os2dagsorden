@@ -19,11 +19,10 @@ function os2web_special_menu_minipanels_style($menu_config) {
   drupal_add_js(drupal_get_path('module', 'os2web_special') . '/menu_style.js', array('scope' => 'footer', 'weight' => 100));
   /* Ekstra til søge-felt */
   drupal_add_js(drupal_get_path('module', 'os2web_special') . '/search.js', array('scope' => 'header', 'weight' => 100));
-/* Styling af select's bruges måske senere
+/* Styling af select's bruges måske senere */
   drupal_add_js(drupal_get_path('module', 'os2web_special') . '/jquery.yaselect.min.js', array('scope' => 'header', 'weight' => 102));
+  drupal_add_js(drupal_get_path('module', 'os2web_special') . '/yaselect.js', array('scope' => 'footer', 'weight' => 102));
 
-  drupal_add_js('jQuery(#edit-jump--2).yaselect();', array('type' => 'inline', 'scope' => 'footer', 'weight' => 5));
-*/
 }
 
 

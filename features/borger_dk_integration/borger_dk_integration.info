@@ -38,3 +38,10 @@ features[variable][] = "menu_parent_borger_dk_permalink"
 features[variable][] = "node_options_borger_dk_permalink"
 features[variable][] = "node_preview_borger_dk_permalink"
 features[variable][] = "node_submitted_borger_dk_permalink"
+
+
+; Information added by drush on 2012-05-25
+version = "dev"
+project = "os2web"
+datestamp = "1337937347"
+

@@ -165,10 +165,16 @@ function os2web_context_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'block-13' => array(
-          'module' => 'block',
-          'delta' => 13,
-          'region' => 'content',
+        'menu-menu-top-menu' => array(
+          'module' => 'menu',
+          'delta' => 'menu-top-menu',
+          'region' => 'user_second',
+          'weight' => '-10',
+        ),
+        'delta_blocks-action-links' => array(
+          'module' => 'delta_blocks',
+          'delta' => 'action-links',
+          'region' => 'user_second',
           'weight' => '-10',
         ),
         'menu_block-12' => array(
@@ -200,6 +206,12 @@ function os2web_context_context_default_contexts() {
           'delta' => 'kle_lonks_boks-kle_links_boks',
           'region' => 'sidebar_second',
           'weight' => '-6',
+        ),
+        'menu-menu-erhverv-genveje' => array(
+          'module' => 'menu',
+          'delta' => 'menu-erhverv-genveje',
+          'region' => 'header_second',
+          'weight' => '-10',
         ),
       ),
     ),

@@ -18,7 +18,7 @@ function os2web_content_types_and_user_fields_taxonomy_default_vocabularies() {
       'weight' => '0',
     ),
     'lokation' => array(
-      'name' => 'Location',
+      'name' => 'Lokation',
       'machine_name' => 'lokation',
       'description' => '',
       'hierarchy' => '0',

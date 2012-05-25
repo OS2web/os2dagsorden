@@ -14,3 +14,10 @@ features[context][] = "os2web_diverse"
 features[ctools][] = "context:context:3"
 features[ctools][] = "views:views_default:3.0"
 features[views_view][] = "os2web_diverse"
+
+
+; Information added by drush on 2012-05-25
+version = "dev"
+project = "os2web"
+datestamp = "1337937347"
+

@@ -141,6 +141,24 @@ function os2web_sovs_user_default_permissions() {
     'module' => 'node',
   );
 
+  // Exported permission: delete own esdh_dokument content
+  $permissions['delete own esdh_dokument content'] = array(
+    'name' => 'delete own esdh_dokument content',
+    'roles' => array(
+      0 => 'authenticated user',
+    ),
+    'module' => 'node',
+  );
+
+  // Exported permission: delete own esdh_sag content
+  $permissions['delete own esdh_sag content'] = array(
+    'name' => 'delete own esdh_sag content',
+    'roles' => array(
+      0 => 'authenticated user',
+    ),
+    'module' => 'node',
+  );
+
   // Exported permission: delete own galleri content
   $permissions['delete own galleri content'] = array(
     'name' => 'delete own galleri content',
@@ -227,6 +245,24 @@ function os2web_sovs_user_default_permissions() {
   // Exported permission: edit own contentpage content
   $permissions['edit own contentpage content'] = array(
     'name' => 'edit own contentpage content',
+    'roles' => array(
+      0 => 'authenticated user',
+    ),
+    'module' => 'node',
+  );
+
+  // Exported permission: edit own esdh_dokument content
+  $permissions['edit own esdh_dokument content'] = array(
+    'name' => 'edit own esdh_dokument content',
+    'roles' => array(
+      0 => 'authenticated user',
+    ),
+    'module' => 'node',
+  );
+
+  // Exported permission: edit own esdh_sag content
+  $permissions['edit own esdh_sag content'] = array(
+    'name' => 'edit own esdh_sag content',
     'roles' => array(
       0 => 'authenticated user',
     ),
@@ -357,7 +393,8 @@ function os2web_sovs_user_default_permissions() {
   $permissions['view own unpublished content'] = array(
     'name' => 'view own unpublished content',
     'roles' => array(
-      0 => 'authenticated user',
+      0 => 'anonymous user',
+      1 => 'authenticated user',
     ),
     'module' => 'node',
   );
