@@ -35,7 +35,7 @@ function os2web_context_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '0',
+      'translatable' => '1',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
