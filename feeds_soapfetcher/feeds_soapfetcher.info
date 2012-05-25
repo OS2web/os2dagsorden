@@ -1,0 +1,6 @@
+name = Feeds SOAP Fetcher
+description = Fetches a simple SOAP message
+package = Feeds
+dependencies[] = feeds
+files[] = plugins/FeedsSOAPFetcher.inc
+core = 7.x
