@@ -475,6 +475,7 @@ function os2web_indholdstyper_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'alt_field' => 0,
+        'default_image' => 0,
         'file_directory' => '',
         'file_extensions' => 'png gif jpg jpeg swf',
         'max_filesize' => '',
@@ -1627,6 +1628,7 @@ function os2web_indholdstyper_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'alt_field' => 1,
+        'default_image' => 0,
         'file_directory' => 'gallery_images',
         'file_extensions' => 'png gif jpg jpeg',
         'max_filesize' => '',
@@ -1796,6 +1798,7 @@ function os2web_indholdstyper_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'alt_field' => 1,
+        'default_image' => 0,
         'file_directory' => '',
         'file_extensions' => 'png gif jpg jpeg',
         'imagecrop' => array(
@@ -3261,6 +3264,7 @@ function os2web_indholdstyper_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'alt_field' => 0,
+        'default_image' => 0,
         'file_directory' => '',
         'file_extensions' => 'png gif jpg jpeg',
         'max_filesize' => '10 MB',
@@ -4044,6 +4048,7 @@ function os2web_indholdstyper_field_default_fields() {
       'required' => 1,
       'settings' => array(
         'alt_field' => 0,
+        'default_image' => 0,
         'file_directory' => '',
         'file_extensions' => 'png gif jpg jpeg',
         'max_filesize' => '10 MB',
@@ -5126,6 +5131,7 @@ function os2web_indholdstyper_field_default_fields() {
       'required' => 1,
       'settings' => array(
         'alt_field' => 0,
+        'default_image' => 0,
         'file_directory' => '',
         'file_extensions' => 'png gif jpg jpeg',
         'max_filesize' => '',
