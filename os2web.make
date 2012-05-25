@@ -180,7 +180,7 @@ projects[apachesolr][subdir] = "contrib"
 projects[apachesolr][version] = "1.0-beta19"
 projects[apachesolr_autocomplete][subdir] = "contrib"
 projects[apachesolr_autocomplete][version] = "1.2"
-projects[apachesolr_attachments][contrib] = "contrib"
+projects[apachesolr_attachments][subdir] = "contrib"
 projects[apachesolr_attachments][version] = "1.0"
 
 ; Themes
