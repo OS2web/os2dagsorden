@@ -55,7 +55,7 @@ libraries[solr-php-client][destination] = "libraries"
 
 ; Contrib modules
 projects[features][subdir] = "contrib"
-projects[features][version] = "1.0-rc1"
+;projects[features][version] = "1.0-rc1"
 
 projects[strongarm][subdir] = "contrib"
 projects[strongarm][version] = "2.0-rc1"
@@ -85,7 +85,7 @@ projects[forward][subdir] = "contrib"
 projects[webform][subdir] = "contrib"
 
 projects[media][subdir] = "contrib"
-projects[media][version] = "2.0-unstable3"
+;projects[media][version] = "2.0-unstable3"
 projects[media_browser_plus][subdir] = "contrib"
 projects[media_browser_plus][version] = "1.0-beta3"
 
@@ -125,7 +125,7 @@ projects[context][subdir] = "contrib"
 projects[rel][subdir] = "contrib"
 
 projects[job_scheduler][subdir] = "contrib"
-projects[job_scheduler][version] = "2.0-alpha2"
+;projects[job_scheduler][version] = "2.0-alpha2"
 
 projects[admin][subdir] = "contrib"
 projects[context_menu_block][subdir] = "contrib"
