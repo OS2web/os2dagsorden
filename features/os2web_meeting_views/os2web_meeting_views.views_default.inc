@@ -176,11 +176,10 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Felt: Indhold: Location */
+  /* Felt: Indhold: Lokation */
   $handler->display->display_options['fields']['field_location']['id'] = 'field_location';
   $handler->display->display_options['fields']['field_location']['table'] = 'field_data_field_location';
   $handler->display->display_options['fields']['field_location']['field'] = 'field_location';
-  $handler->display->display_options['fields']['field_location']['label'] = 'Lokation';
   $handler->display->display_options['fields']['field_location']['alter']['path'] = 'meeting/[nid]';
   $handler->display->display_options['fields']['field_location']['type'] = 'taxonomy_term_reference_plain';
   /* Felt: Indhold: Committee */
@@ -432,7 +431,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  /* Felt: Indhold: Qbrick ref */
+  /* Felt: Handler mangler eller er i stykker */
   $handler->display->display_options['fields']['field_qbrick_ref']['id'] = 'field_qbrick_ref';
   $handler->display->display_options['fields']['field_qbrick_ref']['table'] = 'field_data_field_qbrick_ref';
   $handler->display->display_options['fields']['field_qbrick_ref']['field'] = 'field_qbrick_ref';
@@ -455,8 +454,6 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_qbrick_ref']['hide_empty'] = 1;
   $handler->display->display_options['fields']['field_qbrick_ref']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_qbrick_ref']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_qbrick_ref']['click_sort_column'] = 'seek';
-  $handler->display->display_options['fields']['field_qbrick_ref']['field_api_classes'] = 0;
   /* Sorteringskriterie: Indhold: Oprettelsesdato */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -495,7 +492,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['filters']['type']['value'] = array(
     'meeting' => 'meeting',
   );
-  /* Filterkriterie: Indhold: Qbrick ref (field_qbrick_ref:id) */
+  /* Filterkriterie: Handler mangler eller er i stykker */
   $handler->display->display_options['filters']['field_qbrick_ref_id']['id'] = 'field_qbrick_ref_id';
   $handler->display->display_options['filters']['field_qbrick_ref_id']['table'] = 'field_data_field_qbrick_ref';
   $handler->display->display_options['filters']['field_qbrick_ref_id']['field'] = 'field_qbrick_ref_id';
@@ -566,11 +563,10 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_committee']['field'] = 'field_committee';
   $handler->display->display_options['fields']['field_committee']['label'] = 'Udvalg';
   $handler->display->display_options['fields']['field_committee']['type'] = 'taxonomy_term_reference_plain';
-  /* Felt: Indhold: Location */
+  /* Felt: Indhold: Lokation */
   $handler->display->display_options['fields']['field_location']['id'] = 'field_location';
   $handler->display->display_options['fields']['field_location']['table'] = 'field_data_field_location';
   $handler->display->display_options['fields']['field_location']['field'] = 'field_location';
-  $handler->display->display_options['fields']['field_location']['label'] = 'Lokation';
   $handler->display->display_options['fields']['field_location']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filterkriterie: Indhold: Udgivet */
@@ -595,7 +591,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Felt: Indhold: Qbrick ref */
+  /* Felt: Handler mangler eller er i stykker */
   $handler->display->display_options['fields']['field_qbrick_ref']['id'] = 'field_qbrick_ref';
   $handler->display->display_options['fields']['field_qbrick_ref']['table'] = 'field_data_field_qbrick_ref';
   $handler->display->display_options['fields']['field_qbrick_ref']['field'] = 'field_qbrick_ref';
@@ -618,8 +614,6 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_qbrick_ref']['hide_empty'] = 1;
   $handler->display->display_options['fields']['field_qbrick_ref']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_qbrick_ref']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_qbrick_ref']['click_sort_column'] = 'seek';
-  $handler->display->display_options['fields']['field_qbrick_ref']['field_api_classes'] = 0;
   $handler->display->display_options['displays'] = array(
     'page' => 'page',
     'default' => 0,
@@ -832,7 +826,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['nothing_1']['hide_empty'] = 0;
   $handler->display->display_options['fields']['nothing_1']['empty_zero'] = 0;
   $handler->display->display_options['fields']['nothing_1']['hide_alter_empty'] = 0;
-  /* Felt: Indhold: Qbrick ref */
+  /* Felt: Handler mangler eller er i stykker */
   $handler->display->display_options['fields']['field_qbrick_ref']['id'] = 'field_qbrick_ref';
   $handler->display->display_options['fields']['field_qbrick_ref']['table'] = 'field_data_field_qbrick_ref';
   $handler->display->display_options['fields']['field_qbrick_ref']['field'] = 'field_qbrick_ref';
@@ -856,9 +850,6 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_qbrick_ref']['hide_empty'] = 0;
   $handler->display->display_options['fields']['field_qbrick_ref']['empty_zero'] = 0;
   $handler->display->display_options['fields']['field_qbrick_ref']['hide_alter_empty'] = 1;
-  $handler->display->display_options['fields']['field_qbrick_ref']['click_sort_column'] = 'seek';
-  $handler->display->display_options['fields']['field_qbrick_ref']['type'] = 'qbrick_movie_seek';
-  $handler->display->display_options['fields']['field_qbrick_ref']['field_api_classes'] = 0;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filterkriterie: Indhold: Udgivet */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -884,7 +875,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler = $view->new_display('attachment', 'Tillæg', 'attachment_3');
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Forbindelse: Indhold: Tillæg til (field_addenum_to) - reverse */
+  /* Forbindelse: Handler mangler eller er i stykker */
   $handler->display->display_options['relationships']['reverse_field_addenum_to_node']['id'] = 'reverse_field_addenum_to_node';
   $handler->display->display_options['relationships']['reverse_field_addenum_to_node']['table'] = 'node';
   $handler->display->display_options['relationships']['reverse_field_addenum_to_node']['field'] = 'reverse_field_addenum_to_node';
@@ -994,7 +985,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     t('<div id="[field_ref_attachment-target_id]" class="indicator-has-no-notes"></div>'),
     t('<div class="indicator-has-speaker-paper"></div>Talepapir'),
     t('Tillæg'),
-    t('field_addenum_to'),
+    t('reverse_field_addenum_to_node'),
     t('meeting/[nid]'),
   );
   $export['meeting_details'] = $view;
@@ -1182,11 +1173,10 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Felt: Indhold: Location */
+  /* Felt: Indhold: Lokation */
   $handler->display->display_options['fields']['field_location']['id'] = 'field_location';
   $handler->display->display_options['fields']['field_location']['table'] = 'field_data_field_location';
   $handler->display->display_options['fields']['field_location']['field'] = 'field_location';
-  $handler->display->display_options['fields']['field_location']['label'] = 'Lokation';
   $handler->display->display_options['fields']['field_location']['type'] = 'taxonomy_term_reference_plain';
   /* Felt: Indhold: Committee */
   $handler->display->display_options['fields']['field_committee']['id'] = 'field_committee';
@@ -1298,7 +1288,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['filters']['field_date_value2']['form_type'] = 'date_popup';
   $handler->display->display_options['filters']['field_date_value2']['default_date'] = 'now + 30 day';
   $handler->display->display_options['filters']['field_date_value2']['year_range'] = '-5:+5';
-  /* Filterkriterie: Indhold: Tillæg til (field_addenum_to) */
+  /* Filterkriterie: Handler mangler eller er i stykker */
   $handler->display->display_options['filters']['field_addenum_to_nid']['id'] = 'field_addenum_to_nid';
   $handler->display->display_options['filters']['field_addenum_to_nid']['table'] = 'field_data_field_addenum_to';
   $handler->display->display_options['filters']['field_addenum_to_nid']['field'] = 'field_addenum_to_nid';
@@ -1483,11 +1473,10 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Felt: Indhold: Location */
+  /* Felt: Indhold: Lokation */
   $handler->display->display_options['fields']['field_location']['id'] = 'field_location';
   $handler->display->display_options['fields']['field_location']['table'] = 'field_data_field_location';
   $handler->display->display_options['fields']['field_location']['field'] = 'field_location';
-  $handler->display->display_options['fields']['field_location']['label'] = 'Lokation';
   $handler->display->display_options['fields']['field_location']['type'] = 'taxonomy_term_reference_plain';
   /* Felt: Indhold: Committee */
   $handler->display->display_options['fields']['field_committee']['id'] = 'field_committee';
@@ -1514,7 +1503,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['filters']['type']['value'] = array(
     'meeting' => 'meeting',
   );
-  /* Filterkriterie: Indhold: Regular (field_meeting_is_regular) */
+  /* Filterkriterie: Handler mangler eller er i stykker */
   $handler->display->display_options['filters']['field_meeting_is_regular_value']['id'] = 'field_meeting_is_regular_value';
   $handler->display->display_options['filters']['field_meeting_is_regular_value']['table'] = 'field_data_field_meeting_is_regular';
   $handler->display->display_options['filters']['field_meeting_is_regular_value']['field'] = 'field_meeting_is_regular_value';
