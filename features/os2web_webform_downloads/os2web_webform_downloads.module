@@ -6,9 +6,9 @@
 
 include_once 'os2web_webform_downloads.features.inc';
 
-function os2web_webform_confirm_menu() {
+function os2web_webform_downloads_menu() {
   $items['os2web/dlrequest/%/%'] = array(
-      'page callback' => 'os2web_webform_confirm_download_request_page',
+      'page callback' => 'os2web_webform_downloads_download_request_page',
       'page arguments' => array(2, 3),
       'access arguments' => array("access content"),
       'type' => MENU_CALLBACK,
@@ -18,7 +18,7 @@ function os2web_webform_confirm_menu() {
   return $items;
 }
 
-function os2web_webform_confirm_theme($existing, $type, $theme, $path) {
+function os2web_webform_downloads_theme($existing, $type, $theme, $path) {
   return array(
     'confirmation_page' => array(
       'variables' => array('name' => NULL, 'last_name' => NULL, 'email' => NULL, 'node' => NULL, 'nid' => NULL, 'filename' => NULL, 'fileurl' => NULL),
@@ -27,12 +27,12 @@ function os2web_webform_confirm_theme($existing, $type, $theme, $path) {
     );
 }
 
-function os2web_webform_confirm_download_request_page($nid, $sid) {
+function os2web_webform_downloads_download_request_page($nid, $sid) {
   // Get the submission array
   $submission = webform_menu_submission_load($sid, $nid);
 
   // Process the submission
-  $data = os2web_webform_confirm_process_submission($submission,node_load($nid));
+  $data = os2web_webform_downloads_process_submission($submission,node_load($nid));
 
   // Process the data throught the theme layer
   $output = theme("confirmation_page", $data);
@@ -43,7 +43,7 @@ function os2web_webform_confirm_download_request_page($nid, $sid) {
   return $output;
 }
 
-function os2web_webform_confirm_process_submission(&$submission,$node) {
+function os2web_webform_downloads_process_submission(&$submission,$node) {
   if($submission) {
     $file = array_pop(field_get_items('node',$node,'field_webform_attachment'));
     $data = array(
@@ -61,7 +61,7 @@ function os2web_webform_confirm_process_submission(&$submission,$node) {
   }
 }
 
-function os2web_webform_confirm_form_alter(&$form, &$form_state, $form_id) {
+function os2web_webform_downloads_form_alter(&$form, &$form_state, $form_id) {
   switch ($form_id) {
     case 'webform_configure_form':
       // Deny acces to redirection setup
@@ -70,7 +70,7 @@ function os2web_webform_confirm_form_alter(&$form, &$form_state, $form_id) {
   }
 }
 
-function os2web_webform_confirm_node_presave($node) {
+function os2web_webform_downloads_node_presave($node) {
   if (($node->type === 'webform') && ($node->webform['redirect_url'] === "<confirmation>")) {
     $node->webform['redirect_url'] = 'os2web/dlrequest/%nid/%sid';
   }
