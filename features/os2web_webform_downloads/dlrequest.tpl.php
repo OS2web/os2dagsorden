@@ -18,5 +18,10 @@ Fulde navn: <?=$name?> <?=$last_name?></li>
 <li>E-mail: <?=$email?></li>
 </ul>
 
-<p>Den ønskede fil kan downloades her:</p>
-<a href=<?=$fileurl?> alt="Download fil"><?=$filename?></a>
+<p>De ønskede filer kan downloades her:</p>
+<?=$files?>
+<ul>
+<?php foreach ($files as $file):?>
+<li><?=$file?></li>
+<?php endforeach;?>
+</ul>

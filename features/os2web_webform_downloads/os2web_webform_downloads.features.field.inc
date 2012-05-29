@@ -14,7 +14,7 @@ function os2web_webform_downloads_field_default_fields() {
   $fields['node-webform-field_webform_attachment'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_webform_attachment',
@@ -67,7 +67,7 @@ function os2web_webform_downloads_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_webform_attachment',
       'label' => 'Webform attachment',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'description_field' => 0,
         'file_directory' => '',

@@ -21,7 +21,7 @@ function os2web_webform_downloads_menu() {
 function os2web_webform_downloads_theme($existing, $type, $theme, $path) {
   return array(
     'confirmation_page' => array(
-      'variables' => array('name' => NULL, 'last_name' => NULL, 'email' => NULL, 'node' => NULL, 'nid' => NULL, 'filename' => NULL, 'fileurl' => NULL),
+      'variables' => array('name' => NULL, 'last_name' => NULL, 'email' => NULL, 'node' => NULL, 'nid' => NULL, 'files' => NULL ),
       'template' => 'dlrequest',
       )
     );
@@ -45,7 +45,6 @@ function os2web_webform_downloads_download_request_page($nid, $sid) {
 
 function os2web_webform_downloads_process_submission(&$submission,$node) {
   if($submission) {
-    $file = array_pop(field_get_items('node',$node,'field_webform_attachment'));
     $data = array(
         'sid' => $submission->sid,
         'name' => $submission->data[1]['value'][0],
@@ -53,8 +52,7 @@ function os2web_webform_downloads_process_submission(&$submission,$node) {
         'email' => $submission->data[3]['value'][0],
         'nid' => $node->nid,
         'node' => $node,
-        'filename' => $file['filename'],
-        'fileurl' => file_create_url($file['uri']),
+        'files' => render(field_view_field('node',$node,'field_webform_attachment')),
         );
 
     return $data;
@@ -64,6 +62,7 @@ function os2web_webform_downloads_process_submission(&$submission,$node) {
 function os2web_webform_downloads_form_alter(&$form, &$form_state, $form_id) {
   switch ($form_id) {
     case 'webform_configure_form':
+    error_log("Var: \$form = " . print_r($form, 1));
       // Deny acces to redirection setup
       $form['submission']['redirection']['#access'] = false;
       break;

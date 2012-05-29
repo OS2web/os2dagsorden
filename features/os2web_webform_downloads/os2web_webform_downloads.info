@@ -2,6 +2,7 @@ name = OS2Web Webform downloads
 description = Download af filer vha. webforms
 core = 7.x
 package = Features
+php = 5.2.4
 version = 7.x-0.3
 project = os2web_webform_downloads
 dependencies[] = features
