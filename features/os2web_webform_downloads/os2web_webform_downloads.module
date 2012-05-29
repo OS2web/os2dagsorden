@@ -1,5 +1,10 @@
 <?php
+/**
+ * @file
+ * Code for the OS2Web Webform downloads feature.
+ */
 
+include_once 'os2web_webform_downloads.features.inc';
 
 function os2web_webform_confirm_menu() {
   $items['os2web/dlrequest/%/%'] = array(
@@ -32,7 +37,7 @@ function os2web_webform_confirm_download_request_page($nid, $sid) {
   // Process the data throught the theme layer
   $output = theme("confirmation_page", $data);
 
-  // Send the mail
+  //TODO: Send the mail
 //  reg_send_email("confirmation", $data);
 
   return $output;
@@ -53,5 +58,20 @@ function os2web_webform_confirm_process_submission(&$submission,$node) {
         );
 
     return $data;
+  }
+}
+
+function os2web_webform_confirm_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'webform_configure_form':
+      // Deny acces to redirection setup
+      $form['submission']['redirection']['#access'] = false;
+      break;
+  }
+}
+
+function os2web_webform_confirm_node_presave($node) {
+  if (($node->type === 'webform') && ($node->webform['redirect_url'] === "<confirmation>")) {
+    $node->webform['redirect_url'] = 'os2web/dlrequest/%nid/%sid';
   }
 }
