@@ -991,7 +991,7 @@ function os2web_spotbokse_views_default_views() {
   $handler->display->display_options['fields']['title']['alter']['replace_spaces'] = 0;
   $handler->display->display_options['fields']['title']['alter']['trim_whitespace'] = 0;
   $handler->display->display_options['fields']['title']['alter']['nl2br'] = 0;
-  $handler->display->display_options['fields']['title']['alter']['max_length'] = '25';
+  $handler->display->display_options['fields']['title']['alter']['max_length'] = '50';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = 0;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = 1;
   $handler->display->display_options['fields']['title']['alter']['more_link'] = 0;
@@ -2486,7 +2486,7 @@ function os2web_spotbokse_views_default_views() {
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['alter_text'] = 1;
-  $handler->display->display_options['fields']['title']['alter']['text'] = '[title] 
+  $handler->display->display_options['fields']['title']['alter']['text'] = '[title]
 <div class="video-text">[body_1]</div>';
   $handler->display->display_options['fields']['title']['alter']['make_link'] = 1;
   $handler->display->display_options['fields']['title']['alter']['path'] = '[field_url]';
@@ -4940,7 +4940,7 @@ function os2web_spotbokse_views_default_views() {
     t('[body]'),
     t('Spotboxe / forside - Video'),
     t('[body_1-value]'),
-    t('[title] 
+    t('[title]
 <div class="video-text">[body_1]</div>'),
     t('<img src="[field_lead_image]" alt="[title_1]" />
 <span class="zoom-icon-video"></span>'),
