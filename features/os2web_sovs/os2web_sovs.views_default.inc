@@ -687,17 +687,30 @@ function os2web_sovs_views_default_views() {
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block');
   $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Overskrift: Titel og RSS ikon */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['ui_name'] = 'Titel og RSS ikon';
-  $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<div class="rss-ikon"><a href="/nyheder/feed/alle-nyheder" class="rssikon">RSS Feed</a></div>
-<h2 class="overskrift">Aktuelt</h2>';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
-  $handler->display->display_options['header']['area']['tokenize'] = 0;
   $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Felt: Global: Tilpasset tekst */
+  $handler->display->display_options['fields']['nothing']['id'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['table'] = 'views';
+  $handler->display->display_options['fields']['nothing']['field'] = 'nothing';
+  $handler->display->display_options['fields']['nothing']['label'] = '';
+  $handler->display->display_options['fields']['nothing']['alter']['text'] = '<div class="rss-ikon"><a href="/nyheder/feed/alle-nyheder" class="rssikon">RSS Feed</a></div>';
+  $handler->display->display_options['fields']['nothing']['alter']['make_link'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['absolute'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['external'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['replace_spaces'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['trim_whitespace'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['nl2br'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['word_boundary'] = 1;
+  $handler->display->display_options['fields']['nothing']['alter']['ellipsis'] = 1;
+  $handler->display->display_options['fields']['nothing']['alter']['more_link'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['strip_tags'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['trim'] = 0;
+  $handler->display->display_options['fields']['nothing']['alter']['html'] = 0;
+  $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['nothing']['element_default_classes'] = 1;
+  $handler->display->display_options['fields']['nothing']['hide_empty'] = 0;
+  $handler->display->display_options['fields']['nothing']['empty_zero'] = 0;
+  $handler->display->display_options['fields']['nothing']['hide_alter_empty'] = 0;
   /* Felt: Indhold: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
   $handler->display->display_options['fields']['nid']['table'] = 'node';
@@ -1038,16 +1051,6 @@ function os2web_sovs_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['header'] = FALSE;
-  /* Overskrift: Titel og RSS ikon */
-  $handler->display->display_options['header']['area']['id'] = 'area';
-  $handler->display->display_options['header']['area']['table'] = 'views';
-  $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['ui_name'] = 'Titel og RSS ikon';
-  $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<div class="rss-ikon"><a href="">RSS Feed</a></div>
-<h2 class="pane-title">Aktuelt</h2>';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
-  $handler->display->display_options['header']['area']['tokenize'] = 0;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Felt: Indhold: Nid */
   $handler->display->display_options['fields']['nid']['id'] = 'nid';
@@ -1537,12 +1540,9 @@ function os2web_sovs_views_default_views() {
 <div class="news-list-next"></div>'),
     t('Alle'),
     t('Block'),
-    t('<div class="rss-ikon"><a href="/nyheder/feed/alle-nyheder" class="rssikon">RSS Feed</a></div>
-<h2 class="overskrift">Aktuelt</h2>'),
+    t('<div class="rss-ikon"><a href="/nyheder/feed/alle-nyheder" class="rssikon">RSS Feed</a></div>'),
     t('Page'),
     t('Newslist'),
-    t('<div class="rss-ikon"><a href="">RSS Feed</a></div>
-<h2 class="pane-title">Aktuelt</h2>'),
     t('View panes'),
     t('Portalnews'),
     t('Portalnews-big'),
