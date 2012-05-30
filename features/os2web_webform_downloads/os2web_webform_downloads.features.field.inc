@@ -49,7 +49,7 @@ function os2web_webform_downloads_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '2',
+          'weight' => '3',
         ),
         'related_block' => array(
           'label' => 'above',

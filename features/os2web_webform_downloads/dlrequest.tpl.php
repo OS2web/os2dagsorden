@@ -11,11 +11,13 @@
 <h2>Tak for din registrering!</h2>
 
 <p>Dine registrerede informaiton er:</p>
-<ul>
-<li>Virksomhed: <?=$company?></li>
-<li>Fulde navn: <?=$name?></li>
-<li>E-mail: <?=$email?></li>
-</ul>
+<?php if (count($fields)>1): ?>
+<p><ul class="webform-fields">
+<?php foreach ($fields as $field): ?>
+<li><?=$field['label']?>: <?=$field['value']?></li>
+<?php endforeach; ?> 
+</ul></p>
+<?php endif; ?>
 
 <p>De ønskede filer kan downloades her:</p>
 <?=$files?>

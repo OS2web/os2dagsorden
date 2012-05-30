@@ -67,7 +67,7 @@ function os2web_webform_downloads_strongarm() {
       'display' => array(
         'webform' => array(
           'default' => array(
-            'weight' => '1',
+            'weight' => '2',
             'visible' => TRUE,
           ),
         ),

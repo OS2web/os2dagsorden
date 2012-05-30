@@ -7,21 +7,21 @@
 include_once 'os2web_webform_downloads.features.inc';
 
 function os2web_webform_downloads_menu() {
-  $items['os2web/dlrequest/%/%'] = array(
+  $items['node/%/submission/%/download'] = array(
       'page callback' => 'os2web_webform_downloads_download_request_page',
-      'page arguments' => array(2, 3),
+      'page arguments' => array(1, 3),
       'access arguments' => array("access content"),
-      'type' => MENU_CALLBACK,
+      'type' => MENU_LOCAL_TASK,
+      'weight' => 10,
       'title' => 'Download',
       );
-
   return $items;
 }
 
 function os2web_webform_downloads_theme($existing, $type, $theme, $path) {
   return array(
     'confirmation_page' => array(
-      'variables' => array('name' => NULL, 'company' => NULL, 'email' => NULL, 'node' => NULL, 'nid' => NULL, 'files' => NULL ),
+      'variables' => array('fields' => NULL, 'node' => NULL, 'nid' => NULL, 'files' => NULL ),
       'template' => 'dlrequest',
       )
     );
@@ -30,6 +30,7 @@ function os2web_webform_downloads_theme($existing, $type, $theme, $path) {
 function os2web_webform_downloads_download_request_page($nid, $sid) {
   // Get the submission array
   $submission = webform_menu_submission_load($sid, $nid);
+  error_log("Var: \$submission = " . print_r($submission, 1));
 
   // Process the submission
   $data = os2web_webform_downloads_process_submission($submission,node_load($nid));
@@ -45,14 +46,19 @@ function os2web_webform_downloads_download_request_page($nid, $sid) {
 
 function os2web_webform_downloads_process_submission(&$submission,$node) {
   if($submission) {
+    $fields = array();
+    foreach (array_keys($submission->data) as $key) {
+      $fields[$key] = array(
+        'value' => $submission->data[$key]['value'][0],
+        'label' => $node->webform['components'][$key]['name'],
+      );
+    }
     $data = array(
         'sid' => $submission->sid,
-        'company' => $submission->data[1]['value'][0],
-        'name' => $submission->data[2]['value'][0],
-        'email' => $submission->data[3]['value'][0],
         'nid' => $node->nid,
         'node' => $node,
-        'files' => render(field_view_field('node',$node,'field_webform_attachment')),
+        'files' => render(field_view_field('node',$node,'field_webform_attachment',array('label' => 'hidden'))),
+        'fields' => $fields,
         );
 
     return $data;
@@ -62,7 +68,6 @@ function os2web_webform_downloads_process_submission(&$submission,$node) {
 function os2web_webform_downloads_form_alter(&$form, &$form_state, $form_id) {
   switch ($form_id) {
     case 'webform_configure_form':
-    error_log("Var: \$form = " . print_r($form, 1));
       // Deny acces to redirection setup
       $form['submission']['redirection']['#access'] = false;
       break;
@@ -70,7 +75,11 @@ function os2web_webform_downloads_form_alter(&$form, &$form_state, $form_id) {
 }
 
 function os2web_webform_downloads_node_presave($node) {
-  if (($node->type === 'webform') && ($node->webform['redirect_url'] === "<confirmation>")) {
-    $node->webform['redirect_url'] = 'os2web/dlrequest/%nid/%sid';
+//  if ($node->type === 'webform') {
+//  error_log("Var: \$node = " . print_r($node, 1));
+//  }
+//  if (($node->type === 'webform') && ($node->webform['redirect_url'] === "<confirmation>")) {
+  if (($node->type === 'webform')) {
+    $node->webform['redirect_url'] = 'node/%nid/submission/%sid/download';
   }
 }
