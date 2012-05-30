@@ -1,10 +1,10 @@
-name = os2web context
-description = alle contexts for sitet
+name = OS2Web context
+description = Alle contexts for sitet
 core = 7.x
-package = Features
+package = OS2Web
 php = 5.2.4
-version = dev
-project = os2web
+version = 7.x-1.x-dev
+project = os2web_context
 dependencies[] = block
 dependencies[] = context
 dependencies[] = ctools
