@@ -10,56 +10,87 @@
 function os2web_workbench_setup_user_default_permissions() {
   $permissions = array();
 
-  // Exported permission: access workbench
+  // Exported permission: access workbench.
   $permissions['access workbench'] = array(
     'name' => 'access workbench',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'authenticated user',
+    ),
+    'module' => 'workbench',
   );
 
-  // Exported permission: access workbench access by role
+  // Exported permission: access workbench access by role.
   $permissions['access workbench access by role'] = array(
     'name' => 'access workbench access by role',
     'roles' => array(
-      0 => 'Editor',
+      0 => 'Administrator',
       1 => 'Webmaster',
     ),
     'module' => 'workbench_access',
   );
 
-  // Exported permission: administer workbench
+  // Exported permission: administer workbench.
   $permissions['administer workbench'] = array(
     'name' => 'administer workbench',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Webmaster',
+    ),
+    'module' => 'workbench',
   );
 
-  // Exported permission: administer workbench access
+  // Exported permission: administer workbench access.
   $permissions['administer workbench access'] = array(
     'name' => 'administer workbench access',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Webmaster',
+    ),
+    'module' => 'workbench_access',
   );
 
-  // Exported permission: assign workbench access
+  // Exported permission: assign workbench access.
   $permissions['assign workbench access'] = array(
     'name' => 'assign workbench access',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Webmaster',
+    ),
+    'module' => 'workbench_access',
   );
 
-  // Exported permission: batch update workbench access
+  // Exported permission: batch update workbench access.
   $permissions['batch update workbench access'] = array(
     'name' => 'batch update workbench access',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Webmaster',
+    ),
+    'module' => 'workbench_access',
   );
 
-  // Exported permission: view workbench access information
+  // Exported permission: view workbench access information.
   $permissions['view workbench access information'] = array(
     'name' => 'view workbench access information',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Editor',
+      2 => 'Kommunikation',
+      3 => 'Webmaster',
+    ),
+    'module' => 'workbench_access',
   );
 
-  // Exported permission: view workbench taxonomy pages
+  // Exported permission: view workbench taxonomy pages.
   $permissions['view workbench taxonomy pages'] = array(
     'name' => 'view workbench taxonomy pages',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'Administrator',
+      1 => 'Editor',
+      2 => 'Kommunikation',
+      3 => 'Webmaster',
+    ),
+    'module' => 'workbench_access',
   );
 
   return $permissions;

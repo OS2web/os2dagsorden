@@ -1,82 +1,29 @@
-name = "OS2Web Workbench setup"
-description = "Sets up workbench and related permissions for OS2Web"
-core = "7.x"
-package = "OS2Web"
-version = "7.x-0.1"
-project = "os2web_workbench_setup"
-dependencies[] = "ctools"
-dependencies[] = "features"
-dependencies[] = "strongarm"
-dependencies[] = "workbench"
-dependencies[] = "workbench_files"
-dependencies[] = "workbench_access"
-features[ctools][] = "strongarm:strongarm:1"
-features[user_permission][] = "access workbench"
-features[user_permission][] = "access workbench access by role"
-features[user_permission][] = "administer workbench"
-features[user_permission][] = "administer workbench access"
-features[user_permission][] = "assign workbench access"
-features[user_permission][] = "batch update workbench access"
-features[user_permission][] = "view workbench access information"
-features[user_permission][] = "view workbench taxonomy pages"
-features[variable][] = "workbench_access"
-features[variable][] = "workbench_access_allow_multiple"
-features[variable][] = "workbench_access_auto_assign"
-features[variable][] = "workbench_access_label"
-features[variable][] = "workbench_access_menu"
-features[variable][] = "workbench_access_node_type_borger_dk_permalink"
-features[variable][] = "workbench_access_node_type_contentpage"
-features[variable][] = "workbench_access_node_type_esdh_dokument"
-features[variable][] = "workbench_access_node_type_esdh_sag"
-features[variable][] = "workbench_access_node_type_files"
-features[variable][] = "workbench_access_node_type_galleri"
-features[variable][] = "workbench_access_node_type_iframe_selvbetjeningsl_sning_mm"
-features[variable][] = "workbench_access_node_type_institution"
-features[variable][] = "workbench_access_node_type_knactivity"
-features[variable][] = "workbench_access_node_type_local_plan"
-features[variable][] = "workbench_access_node_type_media"
-features[variable][] = "workbench_access_node_type_news"
-features[variable][] = "workbench_access_node_type_ofir_job"
-features[variable][] = "workbench_access_node_type_panel"
-features[variable][] = "workbench_access_node_type_person"
-features[variable][] = "workbench_access_node_type_politician"
-features[variable][] = "workbench_access_node_type_referat"
-features[variable][] = "workbench_access_node_type_right_column"
-features[variable][] = "workbench_access_node_type_tema"
-features[variable][] = "workbench_access_node_type_webform"
-features[variable][] = "workbench_access_taxonomy"
-
-
-; Information added by drush on 2012-04-17
-version = "dev"
-project = "os2web"
-datestamp = "1334666157"
-
-
-
-; Information added by drush on 2012-04-19
-version = "dev"
-project = "os2web"
-datestamp = "1334828867"
-
-
-
-; Information added by drush on 2012-05-18
-version = "dev"
-project = "os2web"
-datestamp = "1337330067"
-
-
-
-; Information added by drush on 2012-05-25
-version = "dev"
-project = "os2web"
-datestamp = "1337937347"
-
-
-
-; Information added by drush on 2012-05-27
-version = "dev"
-project = "os2web"
-datestamp = "1338117520"
-
+name = OS2Web Workbench setup
+description = Sets up workbench and related permissions for OS2Web
+core = 7.x
+package = OS2Web
+php = 5.2.4
+version = 7.x-0.3
+project = os2web_workbench_setup
+dependencies[] = ctools
+dependencies[] = features
+dependencies[] = strongarm
+dependencies[] = workbench
+dependencies[] = workbench_access
+dependencies[] = workbench_files
+datestamp = 1338117520
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:1
+features[user_permission][] = access workbench
+features[user_permission][] = access workbench access by role
+features[user_permission][] = administer workbench
+features[user_permission][] = administer workbench access
+features[user_permission][] = assign workbench access
+features[user_permission][] = batch update workbench access
+features[user_permission][] = view workbench access information
+features[user_permission][] = view workbench taxonomy pages
+features[variable][] = workbench_access_node_type_contentpage
+features[variable][] = workbench_access_node_type_galleri
+features[variable][] = workbench_access_node_type_iframe_selvbetjeningsl_sning_mm
+features[variable][] = workbench_access_node_type_knactivity
+features[variable][] = workbench_access_node_type_news
