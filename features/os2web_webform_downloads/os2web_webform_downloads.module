@@ -21,7 +21,7 @@ function os2web_webform_downloads_menu() {
 function os2web_webform_downloads_theme($existing, $type, $theme, $path) {
   return array(
     'confirmation_page' => array(
-      'variables' => array('name' => NULL, 'last_name' => NULL, 'email' => NULL, 'node' => NULL, 'nid' => NULL, 'files' => NULL ),
+      'variables' => array('name' => NULL, 'company' => NULL, 'email' => NULL, 'node' => NULL, 'nid' => NULL, 'files' => NULL ),
       'template' => 'dlrequest',
       )
     );
@@ -47,8 +47,8 @@ function os2web_webform_downloads_process_submission(&$submission,$node) {
   if($submission) {
     $data = array(
         'sid' => $submission->sid,
-        'name' => $submission->data[1]['value'][0],
-        'last_name' => $submission->data[2]['value'][0],
+        'company' => $submission->data[1]['value'][0],
+        'name' => $submission->data[2]['value'][0],
         'email' => $submission->data[3]['value'][0],
         'nid' => $node->nid,
         'node' => $node,

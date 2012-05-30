@@ -194,7 +194,7 @@ function os2web_test_page() {
 //  $call = $pws->getCaseDocs($pws->lookupCase('11/14293'));
 //  $call = $pws->fetchCase($pws->lookupCase('12/6202'));
 //  $call = $pws->getCaseDocs(373830);
-  $call = $pws->fetchCase(73334);
+  $call = $pws->fetchCase(73335);
 //  return _os2web_get_rendered_doc(array(1420175,1369822));
 //  $call = $pws->getDocument(1565429);
 //  $call = $pws->getCaseDocs($pws->lookupCase('07/4408'));

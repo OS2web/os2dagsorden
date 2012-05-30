@@ -25,3 +25,10 @@ features[fontyourface][] = "Myriad Pro Light"
 features[fontyourface][] = "Myriad Pro Regular"
 features[user_permission][] = "administer delta"
 features[variable][] = "typekit_api_token"
+
+
+; Information added by drush on 2012-05-27
+version = "dev"
+project = "os2web"
+datestamp = "1338117520"
+

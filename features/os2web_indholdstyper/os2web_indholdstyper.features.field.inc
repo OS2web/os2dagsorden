@@ -121,7 +121,7 @@ function os2web_indholdstyper_field_default_fields() {
           'module' => 'os2web_case_field',
           'settings' => array(),
           'type' => 'case_ident_formatter',
-          'weight' => '3',
+          'weight' => '4',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -148,7 +148,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'os2web_case_field',
         'settings' => array(),
         'type' => 'case_ident_widget',
-        'weight' => '2',
+        'weight' => '51',
       ),
     ),
   );
@@ -179,7 +179,7 @@ function os2web_indholdstyper_field_default_fields() {
           'module' => 'os2web_doc_field',
           'settings' => array(),
           'type' => 'doc_ident_formatter',
-          'weight' => '4',
+          'weight' => '5',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -206,7 +206,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'os2web_doc_field',
         'settings' => array(),
         'type' => 'doc_ident_widget',
-        'weight' => '3',
+        'weight' => '52',
       ),
     ),
   );
@@ -257,7 +257,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '13',
+          'weight' => '14',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -355,7 +355,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '9',
+          'weight' => '10',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -547,7 +547,7 @@ function os2web_indholdstyper_field_default_fields() {
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_table',
-          'weight' => '5',
+          'weight' => '6',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -665,7 +665,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '10',
+          'weight' => '11',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -764,7 +764,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '8',
+          'weight' => '9',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -840,7 +840,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '15',
+          'weight' => '16',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -916,7 +916,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '7',
+          'weight' => '8',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -1058,7 +1058,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '6',
+          'weight' => '7',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -1140,7 +1140,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '11',
+          'weight' => '12',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -1191,7 +1191,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '16',
+          'weight' => '17',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -1273,7 +1273,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '12',
+          'weight' => '13',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -1349,7 +1349,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '14',
+          'weight' => '15',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -4071,7 +4071,6 @@ function os2web_indholdstyper_field_default_fields() {
             'image' => 'image',
             'video' => 0,
           ),
-          'browser_plugins' => array(),
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',

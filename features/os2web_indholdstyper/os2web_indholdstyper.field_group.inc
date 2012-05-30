@@ -84,6 +84,34 @@ function os2web_indholdstyper_field_group_info() {
   $field_group = new stdClass();
   $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
   $field_group->api_version = 1;
+  $field_group->identifier = 'group_document|node|contentpage|default';
+  $field_group->group_name = 'group_document';
+  $field_group->entity_type = 'node';
+  $field_group->bundle = 'contentpage';
+  $field_group->mode = 'default';
+  $field_group->parent_name = '';
+  $field_group->data = array(
+    'label' => 'Hentet fra kommunens sagssystem',
+    'weight' => '3',
+    'children' => array(
+      0 => 'field_case',
+      1 => 'field_doc',
+    ),
+    'format_type' => 'fieldset',
+    'format_settings' => array(
+      'label' => 'Hentet fra kommunens sagssystem',
+      'instance_settings' => array(
+        'classes' => 'attached-documents',
+        'description' => '',
+      ),
+      'formatter' => 'open',
+    ),
+  );
+  $export['group_document|node|contentpage|default'] = $field_group;
+
+  $field_group = new stdClass();
+  $field_group->disabled = FALSE; /* Edit this to true to make a default field_group disabled initially */
+  $field_group->api_version = 1;
   $field_group->identifier = 'group_esdh|node|contentpage|form';
   $field_group->group_name = 'group_esdh';
   $field_group->entity_type = 'node';
@@ -99,7 +127,8 @@ function os2web_indholdstyper_field_group_info() {
     ),
     'format_type' => 'multistep',
     'format_settings' => array(
-      'label' => 'Acadre sager og dokumenter',
+      'formatter' => '',
+      'instance_settings' => NULL,
     ),
   );
   $export['group_esdh|node|contentpage|form'] = $field_group;

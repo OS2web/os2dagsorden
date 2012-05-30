@@ -144,18 +144,14 @@ function os2web_sovs_user_default_permissions() {
   // Exported permission: delete own esdh_dokument content.
   $permissions['delete own esdh_dokument content'] = array(
     'name' => 'delete own esdh_dokument content',
-    'roles' => array(
-      0 => 'authenticated user',
-    ),
+    'roles' => array(),
     'module' => 'node',
   );
 
   // Exported permission: delete own esdh_sag content.
   $permissions['delete own esdh_sag content'] = array(
     'name' => 'delete own esdh_sag content',
-    'roles' => array(
-      0 => 'authenticated user',
-    ),
+    'roles' => array(),
     'module' => 'node',
   );
 
@@ -254,18 +250,14 @@ function os2web_sovs_user_default_permissions() {
   // Exported permission: edit own esdh_dokument content.
   $permissions['edit own esdh_dokument content'] = array(
     'name' => 'edit own esdh_dokument content',
-    'roles' => array(
-      0 => 'authenticated user',
-    ),
+    'roles' => array(),
     'module' => 'node',
   );
 
   // Exported permission: edit own esdh_sag content.
   $permissions['edit own esdh_sag content'] = array(
     'name' => 'edit own esdh_sag content',
-    'roles' => array(
-      0 => 'authenticated user',
-    ),
+    'roles' => array(),
     'module' => 'node',
   );
 

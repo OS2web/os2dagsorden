@@ -24,3 +24,10 @@ version = "dev"
 project = "os2web"
 datestamp = "1337937347"
 
+
+
+; Information added by drush on 2012-05-27
+version = "dev"
+project = "os2web"
+datestamp = "1338117520"
+
