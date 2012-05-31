@@ -272,7 +272,7 @@ projects[multistep][version] = "1.x-dev"
 projects[multistep][patch][] = "http://drupal.org/files/multistep_limit_validations2.patch"
 
 projects[feeds][subdir] = "contrib"
-projects[feeds][version] = "2.0-alpha5"
+projects[feeds][version] = "2.0-alpha4"
 ; Patch to support import of hierarchical taxonomy terms
 projects[feeds][patch][] = "http://drupal.org/files/issues/feeds_hierarchical_term_processor-1152940-23.patch"
 ; Patch to support text format (eg. html) when importing to custom taxonomy term fields
