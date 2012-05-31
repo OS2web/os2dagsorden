@@ -263,6 +263,12 @@ projects[imagefield_crop][version] = "7.x-1.0"
 projects[linkit][subdir] = "contrib"
 projects[linkit][version] = "7.x-2.5"
 
+projects[hierarchical_select][subdir] = "contrib"
+projects[hierarchical_select][version] = "3.0-alpha5"
+
+projects[subdomain][subdir] = "contrib"
+projects[subdomain][version] = "2.0-beta2"
+
 projects[multistep][subdir] = "contrib"
 projects[multistep][version] = "1.x-dev"
 ; patch from fix in http://drupal.org/node/1065458
@@ -306,7 +312,9 @@ projects[special_menu_items][version] = "7.x-1.0"
 projects[cookiecontrol][subdir] = "contrib"
 projects[cookiecontrol][version] = "7.x-1.5"
 
-; Solr
+
+
+; Solr and search
 projects[apachesolr][subdir] = "contrib"
 projects[apachesolr][version] = "1.0-beta19"
 projects[apachesolr_views][subdir] = "contrib"
@@ -315,6 +323,39 @@ projects[apachesolr_autocomplete][subdir] = "contrib"
 projects[apachesolr_autocomplete][version] = "1.2"
 projects[apachesolr_attachments][subdir] = "contrib"
 projects[apachesolr_attachments][version] = "1.0"
+
+projects[facetapi][subdir] = "contrib"
+projects[facetapi][version] = "1.0-rc4"
+
+projects[facetapi_pretty_paths][subdir] = "contrib"
+projects[facetapi_pretty_paths][version] = "1.0-alpha3"
+
+projects[facetapi_slider][subdir] = "contrib"
+projects[facetapi_slider][version] = "1.x-dev"
+
+projects[inline_ajax_search][subdir] = "contrib"
+projects[inline_ajax_search][version] = "1.x-dev"
+
+projects[search_api_autocomplete][subdir] = "contrib"
+projects[search_api_autocomplete][version] = "1.x-dev"
+
+projects[search_api_live_results][subdir] = "contrib"
+projects[search_api_live_results][version] = "1.x-dev"
+
+projects[search_api_page][subdir] = "contrib"
+projects[search_api_page][version] = "1.0-beta2"
+
+projects[search_api_solr][subdir] = "contrib"
+projects[search_api_solr][version] = "1.0-rc1+6-dev"
+
+projects[search_facetapi][subdir] = "contrib"
+projects[search_facetapi][version] = "1.0-beta1"
+
+projects[custom_search][subdir] = "contrib"
+projects[custom_search][version] = "1.9"
+
+projects[chart][subdir] = "contrib"
+projects[chart][version] = "1.1"
 
 ; Themes
 
