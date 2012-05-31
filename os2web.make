@@ -91,7 +91,10 @@ projects[media][subdir] = "contrib"
 projects[media][version] = "1.1"
 
 projects[media_browser_plus][subdir] = "contrib"
-projects[media_browser_plus][version] = "1.0-beta3"
+projects[media_browser_plus][version] = "1.x-dev"
+
+projects[multiform][subdir] = "contrib"
+projects[multiform][version] = "1.0"
 
 projects[media_youtube][subdir] = "contrib"
 projects[media_youtube][version] = "1.0-beta3"
