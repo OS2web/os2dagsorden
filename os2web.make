@@ -91,13 +91,10 @@ projects[media][subdir] = "contrib"
 projects[media][version] = "1.1"
 
 projects[media_browser_plus][subdir] = "contrib"
-projects[media_browser_plus][version] = "1.0-beta3+15-dev"
+projects[media_browser_plus][version] = "1.0-beta3"
 
 projects[media_youtube][subdir] = "contrib"
 projects[media_youtube][version] = "1.0-beta3"
-
-projects[media_internet][subdir] = "contrib"
-projects[media_internet][version] = "1.1"
 
 ; Files
 projects[filefield_sources][subdir] = "contrib"
@@ -107,7 +104,7 @@ projects[filefield_sources_plupload][subdir] = "contrib"
 projects[filefield_sources_plupload][version] = "1.x-dev"
 
 projects[file_entity][subdir] = "contrib"
-projects[file_entity][version] = "1.1"
+projects[file_entity][version] = "2.0-unstable5"
 
 ; Workbench
 projects[workbench][subdir] = "contrib"
@@ -317,10 +314,13 @@ projects[cookiecontrol][version] = "1.5"
 ; Solr and search
 projects[apachesolr][subdir] = "contrib"
 projects[apachesolr][version] = "1.0-beta19"
+
 projects[apachesolr_views][subdir] = "contrib"
 projects[apachesolr_views][version] = "1.0-beta1"
+
 projects[apachesolr_autocomplete][subdir] = "contrib"
 projects[apachesolr_autocomplete][version] = "1.2"
+
 projects[apachesolr_attachments][subdir] = "contrib"
 projects[apachesolr_attachments][version] = "1.0"
 
@@ -346,7 +346,7 @@ projects[search_api_page][subdir] = "contrib"
 projects[search_api_page][version] = "1.0-beta2"
 
 projects[search_api_solr][subdir] = "contrib"
-projects[search_api_solr][version] = "1.0-rc1+6-dev"
+projects[search_api_solr][version] = "1.0-rc1"
 
 projects[search_facetapi][subdir] = "contrib"
 projects[search_facetapi][version] = "1.0-beta1"
