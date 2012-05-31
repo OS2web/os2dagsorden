@@ -85,9 +85,8 @@ projects[forward][subdir] = "contrib"
 projects[webform][subdir] = "contrib"
 
 projects[media][subdir] = "contrib"
-;projects[media][version] = "2.0-unstable3"
 projects[media_browser_plus][subdir] = "contrib"
-projects[media_browser_plus][version] = "1.0-beta3"
+projects[media_browser_plus][version] = "1.x-dev"
 
 projects[media_youtube][subdir] = "contrib"
 
