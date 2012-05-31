@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * os2web_content_types_and_user_fields.features.taxonomy.inc
+ * os2web_meeting_views.features.taxonomy.inc
  */
 
 /**
  * Implements hook_taxonomy_default_vocabularies().
  */
-function os2web_content_types_and_user_fields_taxonomy_default_vocabularies() {
+function os2web_meeting_views_taxonomy_default_vocabularies() {
   return array(
     'committee' => array(
       'name' => 'Committee',

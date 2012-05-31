@@ -5535,30 +5535,38 @@ function os2web_indholdstyper_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_gruppe_id',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'module' => 'number',
-      'settings' => array(),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+      ),
       'translatable' => '0',
-      'type' => 'number_integer',
+      'type' => 'text',
     ),
     'field_instance' => array(
       'bundle' => 'selvbetjeningslinks',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Gruppe ID er fra Dafolo',
+      'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_integer',
-          'weight' => 6,
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 8,
         ),
         'related_block' => array(
           'label' => 'above',
@@ -5576,20 +5584,18 @@ function os2web_indholdstyper_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_gruppe_id',
       'label' => 'Gruppe ID',
-      'required' => 0,
+      'required' => FALSE,
       'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '',
+        'text_processing' => 0,
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '8',
+        'module' => 'text',
+        'settings' => array(
+          'size' => 60,
+        ),
+        'type' => 'text_textfield',
+        'weight' => '10',
       ),
     ),
   );
@@ -5766,6 +5772,7 @@ function os2web_indholdstyper_field_default_fields() {
           'handling' => 'Hvis du skal',
           'emne' => 'Emne',
           'liste' => 'Liste',
+          'megamenu' => 'Megamenu',
         ),
         'allowed_values_function' => '',
       ),
@@ -5991,7 +5998,6 @@ function os2web_indholdstyper_field_default_fields() {
   t('Forfrem til');
   t('Forældre-menupunkt');
   t('Gruppe ID');
-  t('Gruppe ID er fra Dafolo');
   t('Hvis du har yderligere information, links eller fakta som er unikke for denne side, kan det tilføjes i dette felt. Indholdet vises i højre kolonne sammen med siden.');
   t('Indhold');
   t('Indløb / Udløb');
