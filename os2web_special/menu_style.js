@@ -3,7 +3,7 @@
    jQuery.fn.qtip.styles.cmstheme = {
 	  	
   padding: '0px 0px', 
-  background: 'none',
+  background: 'none'
   };
 	
  })(jQuery);
