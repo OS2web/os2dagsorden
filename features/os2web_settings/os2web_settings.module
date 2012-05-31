@@ -47,6 +47,13 @@ function os2web_settings_menu() {
       'access arguments' => array('administer os2web'),
       'type' => MENU_NORMAL_ITEM | MENU_LOCAL_TASK,
   );
+  $items['os2web/settings/test'] = array(
+      'title' => 'OS2web Test',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('os2web_settings_start_form'),
+      'access callback' => true,
+      'type' => MENU_NORMAL_ITEM,
+  );
   return $items;
 }
 
@@ -67,5 +74,79 @@ function os2web_settings_settings_form($form, $form_state) {
       '#type' => 'markup',
       '#value' => 'Placeholder until more settings are needed.',
   );
+  $form['themesettings'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => FALSE,
+  );
+  $form['themesettings']['os2web_default_menu'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2web_default_menu','navigation'),
+      '#title' => t('Default menu for first sidebar'),
+      '#description' => t('Machine name for the menu to be inserted in blank left sidebars'),
+  );
   return system_settings_form($form);
+}
+
+// ---- batch update code
+function os2web_settings_start_form() {
+  $form['start'] = array(
+      '#type' => 'submit',
+      '#value' => 'Start update',
+  );
+  return $form;
+}
+
+function os2web_settings_start_form_submit(&$form, &$form_state) {
+  $batch = array(
+      'operations' => array(
+          array('os2web_settings_langfix_process', array()),
+      ),
+  );
+  batch_set($batch);
+}
+
+function os2web_settings_langfix_process(&$context) {
+  // First run init
+  if (!isset($context['sandbox']['progress'])) {
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['current_nid'] = 0;
+    $context['sandbox']['max'] = db_select('node', 'n')->fields('n', array('nid'))->condition('nid', $context['sandbox']['current_nid'], '>')->execute()->rowCount();
+  }
+
+  $nids = db_select('node', 'n')
+      ->fields('n', array('nid'))
+      ->condition('nid', $context['sandbox']['current_nid'], '>')
+      ->orderBy('nid')
+      ->range(0, 25)
+      ->execute()
+      ->fetchCol();
+  foreach ($nids as $nid) {
+    $node = node_load($nid);
+    if (isset($node->body)) {
+      $lang_f = array_pop(array_keys($node->body));
+      $lang_n = $node->language;
+      if (strcmp($lang_f, $lang_n) <> 0) {
+        error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $node->nid = ' . print_r($node->nid, 1));
+        error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $lang_n = ' . print_r($lang_n, 1));
+        error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $lang_f = ' . print_r($lang_f, 1));
+        if ($lang_f === 'und') {
+          $node->language = 'und';
+          node_save($node);
+        } elseif ($lang_f === 'da') {
+          $node->language = 'da';
+          node_save($node);          
+        } else {
+          error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $node->body = ' . print_r($node->body, 1));
+        }
+      }
+    }
+    $context['sandbox']['progress']++;
+    $context['sandbox']['current_nid'] = $node->nid;
+  }
+  $context['message'] = t('Processing node %nid of %total', array('%nid' => $context['sandbox']['progress'] + 1, '%total' => $context['sandbox']['max']));
+
+  // End condition
+  if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
 }

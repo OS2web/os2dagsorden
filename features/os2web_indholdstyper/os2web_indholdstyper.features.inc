@@ -8,7 +8,14 @@
  * Implements hook_ctools_plugin_api().
  */
 function os2web_indholdstyper_ctools_plugin_api() {
-  return array("version" => "1");
+  list($module, $api) = func_get_args();
+  if ($module == "field_group" && $api == "field_group") {
+    return array("version" => "1");
+  }
+  list($module, $api) = func_get_args();
+  if ($module == "strongarm" && $api == "strongarm") {
+    return array("version" => "1");
+  }
 }
 
 /**
@@ -115,7 +122,7 @@ function os2web_indholdstyper_image_default_styles() {
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => '460',
-          'height' => '261',
+          'height' => '260',
         ),
         'weight' => '1',
       ),
@@ -157,22 +164,6 @@ function os2web_indholdstyper_node_info() {
       'base' => 'node_content',
       'description' => t('Almindelig webside til generel brug på sitet.'),
       'has_title' => '1',
-      'title_label' => t('Titel'),
-      'help' => '',
-    ),
-    'esdh_dokument' => array(
-      'name' => t('ESDH Dokument'),
-      'base' => 'node_content',
-      'description' => t('En side der præsentere en eller flere filer fra ESDH systemet.'),
-      'has_title' => '1',
-      'title_label' => t('Overskrift'),
-      'help' => '',
-    ),
-    'esdh_sag' => array(
-      'name' => t('ESDH Sag'),
-      'base' => 'node_content',
-      'description' => t('Viser en sag fra ESDH systemet.'),
-      'has_title' => '1',
       'title_label' => t('Overskrift'),
       'help' => '',
     ),
@@ -180,6 +171,22 @@ function os2web_indholdstyper_node_info() {
       'name' => t('Galleri'),
       'base' => 'node_content',
       'description' => '',
+      'has_title' => '1',
+      'title_label' => t('Overskrift'),
+      'help' => '',
+    ),
+    'iframe_selvbetjeningsl_sning_mm' => array(
+      'name' => t('iFrame, Selvbetjeningsløsning mm.'),
+      'base' => 'node_content',
+      'description' => '',
+      'has_title' => '1',
+      'title_label' => t('Overskrift'),
+      'help' => '',
+    ),
+    'media' => array(
+      'name' => t('Medier'),
+      'base' => 'node_content',
+      'description' => t('Video og audio.'),
       'has_title' => '1',
       'title_label' => t('Titel'),
       'help' => '',
@@ -189,7 +196,7 @@ function os2web_indholdstyper_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Titel'),
+      'title_label' => t('Overskrift'),
       'help' => '',
     ),
     'rotating_image' => array(
@@ -197,15 +204,15 @@ function os2web_indholdstyper_node_info() {
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Titel'),
+      'title_label' => t('Overskrift'),
       'help' => '',
     ),
-    'spotbox' => array(
-      'name' => t('Spotbox'),
+    'selvbetjeningslinks' => array(
+      'name' => t('Selvbetjeningslinks'),
       'base' => 'node_content',
       'description' => '',
       'has_title' => '1',
-      'title_label' => t('Titel'),
+      'title_label' => t('Overskrift'),
       'help' => '',
     ),
   );

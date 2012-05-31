@@ -3,12 +3,12 @@ description = "Diverse views som brugt på ballerup"
 core = "7.x"
 package = "Features"
 php = "5.2.4"
-version = "dev"
-project = "os2web"
+version = "7.x-0.9-dev"
+project = "ballerup_views"
 dependencies[] = "ctools"
 dependencies[] = "views"
 dependencies[] = "views_bulk_operations"
-datestamp = "1334666157"
+datestamp = "1337330067"
 features[ctools][] = "views:views_default:3.0"
 features[views_view][] = "ballerup_taxonomy_term"
 features[views_view][] = "campaigns"
@@ -24,8 +24,15 @@ features[views_view][] = "referat"
 features[views_view][] = "sektion"
 
 
-; Information added by drush on 2012-04-19
+; Information added by drush on 2012-05-25
 version = "dev"
 project = "os2web"
-datestamp = "1334828867"
+datestamp = "1337937347"
+
+
+
+; Information added by drush on 2012-05-27
+version = "dev"
+project = "os2web"
+datestamp = "1338117520"
 

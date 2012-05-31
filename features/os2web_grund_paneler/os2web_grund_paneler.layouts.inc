@@ -52,7 +52,7 @@ function os2web_grund_paneler_default_panels_layout() {
         'width' => 100,
         'width_type' => '%',
         'parent' => 'main-row',
-        'class' => '',
+        'class' => 'grid-12 alpha omega',
       ),
       1 => array(
         'type' => 'row',
@@ -89,7 +89,7 @@ function os2web_grund_paneler_default_panels_layout() {
         'width' => 50,
         'width_type' => '%',
         'parent' => '3',
-        'class' => 'grid-8 omega',
+        'class' => 'grid-4 omega alpha',
       ),
       'left' => array(
         'type' => 'region',
@@ -97,7 +97,7 @@ function os2web_grund_paneler_default_panels_layout() {
         'width' => 50,
         'width_type' => '%',
         'parent' => '3',
-        'class' => 'grid-16 alpha',
+        'class' => 'grid-8 alpha omega',
       ),
     ),
   );

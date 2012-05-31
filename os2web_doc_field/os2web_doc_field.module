@@ -6,7 +6,7 @@ function os2web_doc_field_field_info() {
   return array(
       'doc_ident' => array(
           'label' => t('ESDH Document'),
-          'description' => t('Document identifer, Use either numeric id\'s, of journaling nr. ie. 79339/11. For multiple documents, separate with , (comma). '),
+          'description' => 'Dokument-id skal være på formen nummer/år eller nummer-år. Flere dokumenter skal være adskildt af , (komma).',
           'default_widget' => 'doc_ident_widget',
           'default_formatter' => 'doc_ident_formatter',
       ),
@@ -66,6 +66,22 @@ function os2web_doc_field_field_is_empty($item, $field) {
   }
 }
 
+function os2web_doc_field_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
+  foreach ($items as $delta => $item) {
+    $docids = explode(',', $item['doc_ident']);
+    foreach ($docids as $docid) {
+      $docid = trim($docid);
+      $valid = preg_match('/^\d{1,20}[-,\/]\d{2}$/', $docid); // Adopt this for further testing
+      if (!$valid && ($docid!='')) {
+        $errors[$field['field_name']][$langcode][$delta][] = array(
+            'error' => 'Ugyldig fremstilling af dokument-id. Dokument-id skal være på formen nummer/år eller nummer-år. Flere dokumenter skal være adskildt af , (komma).',
+            'message' => t('%name: illegal value.', array('%name' => $instance['label'])),
+        );
+      }
+    }
+  }
+}
+
 /**
  * Field formatter hook
  *
@@ -78,16 +94,14 @@ function os2web_doc_field_field_formatter_view($entity_type, $entity, $field, $i
         if ($item['doc_ident']) {
           $docs = array();
           $ids = explode(',', $item['doc_ident']);
-          error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $ids = ' . print_r($ids, 1));
           foreach ($ids as $id) {
             if (!is_numeric($id)) {
               $pws = _os2web_pws_get_instance();
-              $docs[] = $pws->lookupDoc($id);
+              $docs[] = $pws->lookupDoc(trim($id));
             } else {
               $docs[] = trim($id);
             }
           }
-          error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $docs = ' . print_r($docs, 1));
           $element[$delta]['#markup'] = '<div class="documenttable">' . theme('esdh_document', array('id' => $docs)) . '</div>';
         }
       }

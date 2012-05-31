@@ -1,0 +1,23 @@
+name = Annotator
+description = A module allowing to add notes documents. <b>Requires php5-curl to be installed</b>
+core = 7.x
+
+; Information added by drush on 2012-05-18
+version = "dev"
+project = "os2web"
+datestamp = "1337330067"
+
+
+
+; Information added by drush on 2012-05-25
+version = "dev"
+project = "os2web"
+datestamp = "1337937347"
+
+
+
+; Information added by drush on 2012-05-27
+version = "dev"
+project = "os2web"
+datestamp = "1338117520"
+

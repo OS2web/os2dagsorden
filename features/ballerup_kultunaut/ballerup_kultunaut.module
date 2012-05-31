@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Ballerup kultunaut feature.
- */
-
-include_once('ballerup_kultunaut.features.inc');

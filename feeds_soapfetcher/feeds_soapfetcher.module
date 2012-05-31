@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * Implements hook_feeds_plugins().
+ */
+function feeds_soapfetcher_feeds_plugins() {
+  return array(
+    'FeedsSOAPFetcher' => array(
+      'name' => t('SOAP fetcher'),
+      'description' => t('Fetch xml from SOAP web service.'),
+      'handler' => array(
+        'parent' => 'FeedsFetcher',
+        'class'  => 'FeedsSOAPFetcher',
+      ),
+    ),
+  );
+}

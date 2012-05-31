@@ -1,0 +1,24 @@
+name = OS2WEB Special
+description = "Tilføjelse diverse ekstra features: Styling til menu_minipanel, JS til søgefelt, SearchAPI"
+core = 7.x
+
+
+; Information added by drush on 2012-05-18
+version = "dev"
+project = "os2web"
+datestamp = "1337330067"
+
+
+
+; Information added by drush on 2012-05-25
+version = "dev"
+project = "os2web"
+datestamp = "1337937347"
+
+
+
+; Information added by drush on 2012-05-27
+version = "dev"
+project = "os2web"
+datestamp = "1338117520"
+

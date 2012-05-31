@@ -6,7 +6,7 @@ function os2web_case_field_field_info() {
   return array(
       'case_ident' => array(
           'label' => t('ESDH Case'),
-          'description' => t('Case identifer.'),
+          'description' => 'Sags-id skal være på formen år/nummer eller år-nummer. Kun én værdi er tilladte.',
           'default_widget' => 'case_ident_widget',
           'default_formatter' => 'case_ident_formatter',
       ),
@@ -66,6 +66,19 @@ function os2web_case_field_field_is_empty($item, $field) {
   }
 }
 
+function os2web_case_field_field_validate($entity_type, $entity, $field, $instance, $langcode, $items, &$errors) {
+  foreach ($items as $delta => $item) {
+    $value = trim($item['case_ident']);
+    $valid = preg_match('/^\d{2}[-,\/]\d{1,20}$/', $value); // Adopt this for further testing
+    if (!$valid && ($value!='')) {
+      $errors[$field['field_name']][$langcode][$delta][] = array(
+          'error' => 'Ugyldig fremstilling af sags-id. Sags-id skal være på formen år/nummer eller år-nummer. Kun én værdi er tilladte.',
+          'message' => t('%name: illegal value.', array('%name' => $instance['label'])),
+      );
+    }
+  }
+}
+
 /**
  * Field formatter hook
  *
@@ -81,7 +94,7 @@ function os2web_case_field_field_formatter_view($entity_type, $entity, $field, $
             $pws = _os2web_pws_get_instance();
             $id = $pws->lookupCase($id);
           }
-          $element[$delta]['#markup'] = '<div class="fullcaserender">' . theme('esdh_case',array('id' => $id)) . '</div>';
+          $element[$delta]['#markup'] = '<div class="fullcaserender">' . theme('esdh_case', array('id' => $id)) . '</div>';
         }
       }
       break;

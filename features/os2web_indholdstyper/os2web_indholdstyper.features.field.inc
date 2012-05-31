@@ -35,7 +35,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '1',
+      'translatable' => '0',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -121,7 +121,7 @@ function os2web_indholdstyper_field_default_fields() {
           'module' => 'os2web_case_field',
           'settings' => array(),
           'type' => 'case_ident_formatter',
-          'weight' => '3',
+          'weight' => '4',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -148,7 +148,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'os2web_case_field',
         'settings' => array(),
         'type' => 'case_ident_widget',
-        'weight' => '2',
+        'weight' => '51',
       ),
     ),
   );
@@ -175,11 +175,11 @@ function os2web_indholdstyper_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
+          'label' => 'hidden',
           'module' => 'os2web_doc_field',
           'settings' => array(),
           'type' => 'doc_ident_formatter',
-          'weight' => '4',
+          'weight' => '5',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -206,7 +206,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'os2web_doc_field',
         'settings' => array(),
         'type' => 'doc_ident_widget',
-        'weight' => '3',
+        'weight' => '52',
       ),
     ),
   );
@@ -257,15 +257,9 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '7',
+          'weight' => '14',
         ),
         'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -293,11 +287,109 @@ function os2web_indholdstyper_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-contentpage-field_indholdsside_spotboxe'
+  $fields['node-contentpage-field_indholdsside_spotboxe'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_indholdsside_spotboxe',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'borger_dk_permalink' => 0,
+          'contentpage' => 0,
+          'esdh_dokument' => 0,
+          'esdh_sag' => 0,
+          'files' => 0,
+          'galleri' => 0,
+          'iframe_selvbetjeningsl_sning_mm' => 0,
+          'institution' => 0,
+          'knactivity' => 0,
+          'kontaktblok' => 0,
+          'local_plan' => 0,
+          'media' => 0,
+          'news' => 0,
+          'ofir_job' => 0,
+          'panel' => 0,
+          'person' => 0,
+          'politician' => 0,
+          'referat' => 0,
+          'right_column' => 0,
+          'rotating_image' => 0,
+          'selvbetjeningslinks' => 0,
+          'spotbox' => 'spotbox',
+          'tema' => 0,
+          'webform' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'contentpage',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '10',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_indholdsside_spotboxe',
+      'label' => 'Spotboxe',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '32',
+      ),
+    ),
+  );
+
   // Exported field: 'node-contentpage-field_lead_image'
   $fields['node-contentpage-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -329,12 +421,34 @@ function os2web_indholdstyper_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'hidden',
-          'module' => 'image',
+          'module' => 'field_slideshow',
           'settings' => array(
-            'image_link' => '',
-            'image_style' => 'medium-content',
+            'slideshow_caption' => '',
+            'slideshow_caption_link' => '',
+            'slideshow_carousel_circular' => 0,
+            'slideshow_carousel_image_style' => '',
+            'slideshow_carousel_scroll' => '1',
+            'slideshow_carousel_speed' => '500',
+            'slideshow_carousel_vertical' => 0,
+            'slideshow_carousel_visible' => '3',
+            'slideshow_colorbox_image_style' => '',
+            'slideshow_colorbox_slideshow' => '',
+            'slideshow_colorbox_slideshow_speed' => '4000',
+            'slideshow_colorbox_speed' => '350',
+            'slideshow_colorbox_transition' => 'elastic',
+            'slideshow_controls' => 0,
+            'slideshow_field_collection_image' => '',
+            'slideshow_fx' => 'fade',
+            'slideshow_image_style' => 'medium-content',
+            'slideshow_link' => '',
+            'slideshow_order' => '',
+            'slideshow_pager' => '',
+            'slideshow_pager_image_style' => '',
+            'slideshow_pause' => 0,
+            'slideshow_speed' => '9000',
+            'slideshow_timeout' => '4000',
           ),
-          'type' => 'image',
+          'type' => 'slideshow',
           'weight' => '1',
         ),
         'related_block' => array(
@@ -361,6 +475,7 @@ function os2web_indholdstyper_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'alt_field' => 0,
+        'default_image' => 0,
         'file_directory' => '',
         'file_extensions' => 'png gif jpg jpeg swf',
         'max_filesize' => '',
@@ -383,6 +498,7 @@ function os2web_indholdstyper_field_default_fields() {
             'image' => 'image',
             'video' => 'video',
           ),
+          'browser_plugins' => array(),
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',
@@ -431,7 +547,7 @@ function os2web_indholdstyper_field_default_fields() {
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_table',
-          'weight' => '5',
+          'weight' => '6',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -454,7 +570,7 @@ function os2web_indholdstyper_field_default_fields() {
         'description_field' => 0,
         'file_directory' => 'PDF',
         'file_extensions' => 'pdf swf',
-        'max_filesize' => '10 MB',
+        'max_filesize' => '50 MB',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -471,10 +587,209 @@ function os2web_indholdstyper_field_default_fields() {
             'image' => 0,
             'video' => 0,
           ),
+          'browser_plugins' => array(),
           'progress_indicator' => 'throbber',
         ),
         'type' => 'media_generic',
         'weight' => '-1',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-contentpage-field_node_reference_kontaktblok'
+  $fields['node-contentpage-field_node_reference_kontaktblok'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_node_reference_kontaktblok',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'borger_dk_permalink' => 0,
+          'borgerservices' => 0,
+          'contentpage' => 0,
+          'esdh_dokument' => 0,
+          'esdh_sag' => 0,
+          'files' => 0,
+          'galleri' => 0,
+          'iframe_selvbetjeningsl_sning_mm' => 0,
+          'institution' => 0,
+          'knactivity' => 0,
+          'kontaktblok' => 'kontaktblok',
+          'local_plan' => 0,
+          'media' => 0,
+          'news' => 0,
+          'ofir_job' => 0,
+          'panel' => 0,
+          'person' => 0,
+          'politician' => 0,
+          'referat' => 0,
+          'right_column' => 0,
+          'rotating_image' => 0,
+          'selvbetjeningslinks' => 0,
+          'spotbox' => 0,
+          'tema' => 0,
+          'webform' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'contentpage',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '11',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_node_reference_kontaktblok',
+      'label' => 'Kontaktblok',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '34',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-contentpage-field_noderef_selvbtjn'
+  $fields['node-contentpage-field_noderef_selvbtjn'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_noderef_selvbtjn',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'borger_dk_permalink' => 0,
+          'borgerservices' => 0,
+          'contentpage' => 0,
+          'esdh_dokument' => 0,
+          'esdh_sag' => 0,
+          'files' => 0,
+          'galleri' => 0,
+          'iframe_selvbetjeningsl_sning_mm' => 0,
+          'institution' => 0,
+          'knactivity' => 0,
+          'kontaktblok' => 0,
+          'local_plan' => 0,
+          'media' => 0,
+          'news' => 0,
+          'ofir_job' => 0,
+          'panel' => 0,
+          'person' => 0,
+          'politician' => 0,
+          'referat' => 0,
+          'right_column' => 0,
+          'rotating_image' => 0,
+          'selvbetjeningslinks' => 'selvbetjeningslinks',
+          'spotbox' => 0,
+          'tema' => 0,
+          'webform' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'contentpage',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '9',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_noderef_selvbtjn',
+      'label' => 'Selvbetjeningslinks',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '33',
       ),
     ),
   );
@@ -525,15 +840,9 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '10',
+          'weight' => '16',
         ),
         'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -605,18 +914,11 @@ function os2web_indholdstyper_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'taxonomy',
-          'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
-          'weight' => 14,
-        ),
-        'related_block' => array(
-          'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 0,
+          'weight' => '8',
         ),
-        'teaser' => array(
+        'related_block' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -754,24 +1056,11 @@ function os2web_indholdstyper_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'date',
-          'settings' => array(
-            'format_type' => 'long',
-            'fromto' => 'both',
-            'multiple_from' => '',
-            'multiple_number' => '',
-            'multiple_to' => '',
-          ),
-          'type' => 'date_default',
-          'weight' => 13,
-        ),
-        'related_block' => array(
-          'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => 0,
+          'weight' => '7',
         ),
-        'teaser' => array(
+        'related_block' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -801,7 +1090,78 @@ function os2web_indholdstyper_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '32',
+        'weight' => '37',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-contentpage-field_site_structure'
+  $fields['node-contentpage-field_site_structure'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_site_structure',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'site_struktur',
+            'parent' => '0',
+            'depth' => '',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'contentpage',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '12',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_site_structure',
+      'label' => 'Portalkategori',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '38',
       ),
     ),
   );
@@ -831,7 +1191,7 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '12',
+          'weight' => '17',
         ),
         'related_block' => array(
           'label' => 'above',
@@ -862,7 +1222,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '28',
+        'weight' => '1',
       ),
     ),
   );
@@ -913,15 +1273,9 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'inline',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '6',
+          'weight' => '13',
         ),
         'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -995,15 +1349,9 @@ function os2web_indholdstyper_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '8',
+          'weight' => '15',
         ),
         'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
@@ -1027,1077 +1375,6 @@ function os2web_indholdstyper_field_default_fields() {
         ),
         'type' => 'taxonomy_autocomplete',
         'weight' => '28',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_dokument-body'
-  $fields['node-esdh_dokument-body'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(
-        0 => 'node',
-      ),
-      'field_name' => 'body',
-      'foreign keys' => array(
-        'format' => array(
-          'columns' => array(
-            'format' => 'format',
-          ),
-          'table' => 'filter_format',
-        ),
-      ),
-      'indexes' => array(
-        'format' => array(
-          0 => 'format',
-        ),
-      ),
-      'module' => 'text',
-      'settings' => array(),
-      'translatable' => '1',
-      'type' => 'text_with_summary',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_dokument',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => 'Brødtekst der beskriver filerne og deres relevans.',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => '0',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '0',
-        ),
-        'teaser' => array(
-          'label' => 'hidden',
-          'module' => 'text',
-          'settings' => array(
-            'trim_length' => 600,
-          ),
-          'type' => 'text_summary_or_trimmed',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'body',
-      'label' => 'Beskrivelse',
-      'required' => 0,
-      'settings' => array(
-        'display_summary' => 1,
-        'text_processing' => '1',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'text',
-        'settings' => array(
-          'rows' => '20',
-          'summary_rows' => 5,
-        ),
-        'type' => 'text_textarea_with_summary',
-        'weight' => '2',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_dokument-field_doc'
-  $fields['node-esdh_dokument-field_doc'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_doc',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'module' => 'os2web_doc_field',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'doc_ident',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_dokument',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'hidden',
-          'module' => 'os2web_doc_field',
-          'settings' => array(),
-          'type' => 'doc_ident_formatter',
-          'weight' => '1',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '6',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_doc',
-      'label' => 'Dokument id',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'os2web_doc_field',
-        'settings' => array(),
-        'type' => 'doc_ident_widget',
-        'weight' => '1',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_dokument-field_editortags'
-  $fields['node-esdh_dokument-field_editortags'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_editortags',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'redaktoertags',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_dokument',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '5',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '1',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_editortags',
-      'label' => 'Stikord',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '7',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_dokument-field_organization'
-  $fields['node-esdh_dokument-field_organization'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_organization',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'organisation',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_dokument',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '7',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '3',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_organization',
-      'label' => 'Organisation',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '4',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_dokument-field_site_structure'
-  $fields['node-esdh_dokument-field_site_structure'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_site_structure',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'site_struktur',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_dokument',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '6',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '2',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_site_structure',
-      'label' => 'Portalkategori',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_select',
-        'weight' => '3',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_dokument-field_termref_kle'
-  $fields['node-esdh_dokument-field_termref_kle'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_termref_kle',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'kle',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_dokument',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '2',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '5',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_termref_kle',
-      'label' => 'KLE',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '3',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_dokument-field_termref_sted'
-  $fields['node-esdh_dokument-field_termref_sted'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_termref_sted',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'egennavne_stednavne',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_dokument',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '4',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '4',
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_termref_sted',
-      'label' => 'Egenavne / stednavne',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '5',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_sag-field_case'
-  $fields['node-esdh_sag-field_case'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_case',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'module' => 'os2web_case_field',
-      'settings' => array(),
-      'translatable' => '0',
-      'type' => 'case_ident',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_sag',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => 'Et sags nr. på formen år/nummer f.eks. 11/123456',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'os2web_case_field',
-          'settings' => array(),
-          'type' => 'case_ident_formatter',
-          'weight' => '0',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_case',
-      'label' => 'Sags id',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'os2web_case_field',
-        'settings' => array(),
-        'type' => 'case_ident_widget',
-        'weight' => '1',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_sag-field_editortags'
-  $fields['node-esdh_sag-field_editortags'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_editortags',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'redaktoertags',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_sag',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '3',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_editortags',
-      'label' => 'Stikord',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '7',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_sag-field_organization'
-  $fields['node-esdh_sag-field_organization'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_organization',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'organisation',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_sag',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '4',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_organization',
-      'label' => 'Organisation',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '4',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_sag-field_site_structure'
-  $fields['node-esdh_sag-field_site_structure'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_site_structure',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'site_struktur',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_sag',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '2',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_site_structure',
-      'label' => 'Portalkategori',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '2',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_sag-field_termref_kle'
-  $fields['node-esdh_sag-field_termref_kle'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_termref_kle',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'kle',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_sag',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '5',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_termref_kle',
-      'label' => 'KLE',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '3',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_sag-field_termref_sofd'
-  $fields['node-esdh_sag-field_termref_sofd'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_termref_sofd',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 's_egeord_sofd',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_sag',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '1',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_termref_sofd',
-      'label' => 'Søgeord SOFD',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '6',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-esdh_sag-field_termref_sted'
-  $fields['node-esdh_sag-field_termref_sted'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_termref_sted',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'egennavne_stednavne',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'esdh_sag',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '6',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_termref_sted',
-      'label' => 'Egenavne / stednavne',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '5',
       ),
     ),
   );
@@ -2127,7 +1404,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '1',
+      'translatable' => '0',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -2136,7 +1413,7 @@ function os2web_indholdstyper_field_default_fields() {
         0 => array(
           'summary' => '',
           'value' => '',
-          'format' => 'filtered_html',
+          'format' => 'ckeditor_test',
         ),
       ),
       'deleted' => '0',
@@ -2167,7 +1444,7 @@ function os2web_indholdstyper_field_default_fields() {
       'label' => 'Indhold',
       'required' => 0,
       'settings' => array(
-        'display_summary' => 1,
+        'display_summary' => 0,
         'text_processing' => '1',
         'user_register_form' => FALSE,
       ),
@@ -2222,7 +1499,9 @@ function os2web_indholdstyper_field_default_fields() {
       'bundle' => 'galleri',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Opmærk dit indhold med dine egne stikord. 
+<br>Dette giver mulighed for at sammenkoble relateret indhold i listevisninger mv.
+<br>Adskil flere opmærkninger med komma.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -2349,6 +1628,7 @@ function os2web_indholdstyper_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'alt_field' => 1,
+        'default_image' => 0,
         'file_directory' => 'gallery_images',
         'file_extensions' => 'png gif jpg jpeg',
         'max_filesize' => '',
@@ -2463,7 +1743,7 @@ function os2web_indholdstyper_field_default_fields() {
   $fields['node-galleri-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -2518,6 +1798,7 @@ function os2web_indholdstyper_field_default_fields() {
       'required' => 0,
       'settings' => array(
         'alt_field' => 1,
+        'default_image' => 0,
         'file_directory' => '',
         'file_extensions' => 'png gif jpg jpeg',
         'imagecrop' => array(
@@ -2591,7 +1872,9 @@ function os2web_indholdstyper_field_default_fields() {
       'bundle' => 'galleri',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Opmærk dit indhold med kommunens organisation. 
+<br>Dette giver mulighed for at sammenkoble relateret indhold i listevisninger mv.
+<br>Adskil flere opmærkninger med komma.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -2624,11 +1907,11 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '8',
+        'weight' => '9',
       ),
     ),
   );
@@ -2735,6 +2018,89 @@ function os2web_indholdstyper_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-galleri-field_politics'
+  $fields['node-galleri-field_politics'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_politics',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'politik',
+            'parent' => '0',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'galleri',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Opmærk dit indhold med politisk parti, råd, nævn eller udvalg.
+<br>Dette giver mulighed for at sammenkoble relateret indhold i listevisninger mv.
+<br>Adskil flere opmærkninger med komma.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 11,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_politics',
+      'label' => 'Politik',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '10',
+      ),
+    ),
+  );
+
   // Exported field: 'node-galleri-field_site_structure'
   $fields['node-galleri-field_site_structure'] = array(
     'field_config' => array(
@@ -2762,6 +2128,7 @@ function os2web_indholdstyper_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -2849,7 +2216,9 @@ function os2web_indholdstyper_field_default_fields() {
       'bundle' => 'galleri',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Opmærk dit indhold med KLs Emneord.
+<br>Se fuld oversigt på <a target="_blank" href="http://www.kle-online.dk">KLE-Online</a>.
+<br>Adskil flere opmærkninger med komma.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -2872,8 +2241,8 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_termref_kle',
-      'label' => 'KLE',
-      'required' => 0,
+      'label' => 'KL Emneord',
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -2882,7 +2251,7 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
@@ -2929,7 +2298,9 @@ function os2web_indholdstyper_field_default_fields() {
       'bundle' => 'galleri',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'Opmærk dit indhold med steder fra kommunens GIS system. 
+<br>Dette giver mulighed for kortvisning.
+<br>Adskil flere opmærkninger med komma.',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -2962,10 +2333,1376 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '8',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-body'
+  $fields['node-iframe_selvbetjeningsl_sning_mm-body'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(
+        0 => 'node',
+      ),
+      'field_name' => 'body',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_with_summary',
+    ),
+    'field_instance' => array(
+      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
+      'default_value' => array(
+        0 => array(
+          'summary' => '',
+          'value' => '',
+          'format' => 'full_html',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => 'Vises før indholdet af iframe',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '0',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(
+            'trim_length' => 600,
+          ),
+          'type' => 'text_summary_or_trimmed',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'body',
+      'label' => 'Indhold',
+      'required' => 0,
+      'settings' => array(
+        'display_summary' => 0,
+        'text_processing' => '1',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '20',
+          'summary_rows' => 5,
+        ),
+        'type' => 'text_textarea_with_summary',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_editortags'
+  $fields['node-iframe_selvbetjeningsl_sning_mm-field_editortags'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_editortags',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'redaktoertags',
+            'parent' => '0',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Opmærk dit indhold med dine egne stikord. 
+<br>Dette giver mulighed for at sammenkoble relateret indhold i listevisninger mv.
+<br>Adskil flere opmærkninger med komma.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '6',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_editortags',
+      'label' => 'Stikord',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
           'content_taxonomy_autocomplete_new_terms' => 'allow',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
+        'weight' => '10',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_iframe_url'
+  $fields['node-iframe_selvbetjeningsl_sning_mm-field_iframe_url'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_iframe_url',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'balk_custom',
+          'settings' => array(
+            'height' => '1200',
+            'width' => '700',
+          ),
+          'type' => 'balk_custom_iframe',
+          'weight' => '2',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_iframe_url',
+      'label' => 'iFrame URL',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '5',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_organization'
+  $fields['node-iframe_selvbetjeningsl_sning_mm-field_organization'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_organization',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'organisation',
+            'parent' => '0',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Opmærk dit indhold med kommunens organisation. 
+<br>Dette giver mulighed for at sammenkoble relateret indhold i listevisninger mv.
+<br>Adskil flere opmærkninger med komma.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '7',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_organization',
+      'label' => 'Organisation',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '8',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_politics'
+  $fields['node-iframe_selvbetjeningsl_sning_mm-field_politics'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_politics',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'politik',
+            'parent' => '0',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Opmærk dit indhold med politisk parti, råd, nævn eller udvalg.
+<br>Dette giver mulighed for at sammenkoble relateret indhold i listevisninger mv.
+<br>Adskil flere opmærkninger med komma.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 11,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_politics',
+      'label' => 'Politik',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '9',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_source_id'
+  $fields['node-iframe_selvbetjeningsl_sning_mm-field_source_id'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_source_id',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'number',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'number_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '8',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_source_id',
+      'label' => 'Source ID',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '6',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_termref_kle'
+  $fields['node-iframe_selvbetjeningsl_sning_mm-field_termref_kle'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_termref_kle',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'kle',
+            'parent' => '0',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Opmærk dit indhold med KLs Emneord.
+<br>Se fuld oversigt på <a target="_blank" href="http://www.kle-online.dk">KLE-Online</a>.
+<br>Adskil flere opmærkninger med komma.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '5',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_termref_kle',
+      'label' => 'KL Emneord',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '6',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_termref_sted'
+  $fields['node-iframe_selvbetjeningsl_sning_mm-field_termref_sted'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_termref_sted',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'egennavne_stednavne',
+            'parent' => '0',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Opmærk dit indhold med steder fra kommunens GIS system. 
+<br>Dette giver mulighed for kortvisning.
+<br>Adskil flere opmærkninger med komma.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 10,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_termref_sted',
+      'label' => 'Egenavne / stednavne',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '7',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-iframe_selvbetjeningsl_sning_mm-field_text'
+  $fields['node-iframe_selvbetjeningsl_sning_mm-field_text'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_text',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_long',
+    ),
+    'field_instance' => array(
+      'bundle' => 'iframe_selvbetjeningsl_sning_mm',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 9,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_text',
+      'label' => 'Intro',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '2',
+        ),
+        'type' => 'text_textarea',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-media-body'
+  $fields['node-media-body'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(
+        0 => 'node',
+      ),
+      'field_name' => 'body',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_with_summary',
+    ),
+    'field_instance' => array(
+      'bundle' => 'media',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '2',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'hidden',
+          'module' => 'text',
+          'settings' => array(
+            'trim_length' => 600,
+          ),
+          'type' => 'text_summary_or_trimmed',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'body',
+      'label' => 'Indhold',
+      'required' => 0,
+      'settings' => array(
+        'display_summary' => 0,
+        'text_processing' => '1',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '20',
+          'summary_rows' => 5,
+        ),
+        'type' => 'text_textarea_with_summary',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-media-field_inherit_right_column'
+  $fields['node-media-field_inherit_right_column'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_inherit_right_column',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => '0',
+          1 => '1',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'media',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '6',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_inherit_right_column',
+      'label' => 'Nedarv højrespalte',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 1,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '13',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-media-field_lead_image'
+  $fields['node-media-field_lead_image'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_lead_image',
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'image',
+      'settings' => array(
+        'default_image' => 0,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '1',
+      'type' => 'image',
+    ),
+    'field_instance' => array(
+      'bundle' => 'media',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'image',
+          'settings' => array(
+            'image_link' => '',
+            'image_style' => 'medium',
+          ),
+          'type' => 'image',
+          'weight' => '0',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_lead_image',
+      'label' => 'Primære billede',
+      'required' => 0,
+      'settings' => array(
+        'alt_field' => 0,
+        'default_image' => 0,
+        'file_directory' => '',
+        'file_extensions' => 'png gif jpg jpeg',
+        'max_filesize' => '10 MB',
+        'max_resolution' => '',
+        'min_resolution' => '',
+        'title_field' => 0,
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'media',
+        'settings' => array(
+          'allowed_schemes' => array(
+            'public' => 'public',
+            'youtube' => 0,
+          ),
+          'allowed_types' => array(
+            'audio' => 0,
+            'default' => 0,
+            'image' => 'image',
+            'video' => 0,
+          ),
+          'browser_plugins' => array(
+            'library' => 0,
+            'media_default--media_browser_1' => 'media_default--media_browser_1',
+            'media_internet' => 'media_internet',
+            'upload' => 'upload',
+          ),
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'media_generic',
+        'weight' => '2',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-media-field_mediafile'
+  $fields['node-media-field_mediafile'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_mediafile',
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'file',
+      'settings' => array(
+        'display_default' => 0,
+        'display_field' => 0,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '0',
+      'type' => 'file',
+    ),
+    'field_instance' => array(
+      'bundle' => 'media',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'module' => 'file',
+          'settings' => array(),
+          'type' => 'file_default',
+          'weight' => '1',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_mediafile',
+      'label' => 'Tilføj medie',
+      'required' => 0,
+      'settings' => array(
+        'description_field' => 0,
+        'file_directory' => '',
+        'file_extensions' => 'jpg jpeg mp3 pdf',
+        'max_filesize' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'media',
+        'settings' => array(
+          'allowed_schemes' => array(
+            'public' => 'public',
+            'youtube' => 'youtube',
+          ),
+          'allowed_types' => array(
+            'audio' => 'audio',
+            'default' => 'default',
+            'image' => 'image',
+            'video' => 'video',
+          ),
+          'browser_plugins' => array(
+            'library' => 0,
+            'media_default--media_browser_1' => 'media_default--media_browser_1',
+            'media_internet' => 'media_internet',
+            'upload' => 'upload',
+          ),
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'media_generic',
+        'weight' => '6',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-media-field_parent_node'
+  $fields['node-media-field_parent_node'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_parent_node',
+      'foreign keys' => array(
+        'nid' => array(
+          'columns' => array(
+            'nid' => 'nid',
+          ),
+          'table' => 'node',
+        ),
+      ),
+      'indexes' => array(
+        'nid' => array(
+          0 => 'nid',
+        ),
+      ),
+      'module' => 'node_reference',
+      'settings' => array(
+        'referenceable_types' => array(
+          'borger_dk_permalink' => 0,
+          'contentpage' => 'contentpage',
+          'esdh_dokument' => 0,
+          'esdh_sag' => 0,
+          'files' => 0,
+          'galleri' => 0,
+          'iframe_selvbetjeningsl_sning_mm' => 0,
+          'institution' => 0,
+          'knactivity' => 0,
+          'local_plan' => 0,
+          'media' => 0,
+          'news' => 0,
+          'ofir_job' => 0,
+          'panel' => 0,
+          'person' => 0,
+          'politician' => 0,
+          'referat' => 0,
+          'right_column' => 0,
+          'rotating_image' => 0,
+          'spotbox' => 0,
+          'tema' => 0,
+          'webform' => 0,
+        ),
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'node_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'media',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '7',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_parent_node',
+      'label' => 'Forældre-menupunkt',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'node_reference',
+        'settings' => array(
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
+        ),
+        'type' => 'node_reference_autocomplete',
+        'weight' => '15',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-media-field_resume_long'
+  $fields['node-media-field_resume_long'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_resume_long',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_with_summary',
+    ),
+    'field_instance' => array(
+      'bundle' => 'media',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '3',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_resume_long',
+      'label' => 'Resume - lang overskrift',
+      'required' => 0,
+      'settings' => array(
+        'display_summary' => 0,
+        'text_processing' => '1',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '4',
+          'summary_rows' => 5,
+        ),
+        'type' => 'text_textarea_with_summary',
+        'weight' => '1',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-media-field_site_structure'
+  $fields['node-media-field_site_structure'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_site_structure',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'site_struktur',
+            'parent' => '0',
+            'depth' => '',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'media',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'hidden',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '5',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_site_structure',
+      'label' => 'Overordnet placering',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '11',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-media-field_source_id'
+  $fields['node-media-field_source_id'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_source_id',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'number',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'number_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'media',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '4',
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_source_id',
+      'label' => 'Source ID',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
         'weight' => '9',
       ),
     ),
@@ -2996,12 +3733,18 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '1',
+      'translatable' => '0',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
       'bundle' => 'news',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'summary' => '',
+          'value' => '',
+          'format' => 'filtered_html',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -3214,7 +3957,7 @@ function os2web_indholdstyper_field_default_fields() {
   $fields['node-news-field_lead_image'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_lead_image',
@@ -3305,6 +4048,7 @@ function os2web_indholdstyper_field_default_fields() {
       'required' => 1,
       'settings' => array(
         'alt_field' => 0,
+        'default_image' => 0,
         'file_directory' => '',
         'file_extensions' => 'png gif jpg jpeg',
         'max_filesize' => '10 MB',
@@ -3406,11 +4150,92 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '40',
+        'weight' => '41',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-news-field_politics'
+  $fields['node-news-field_politics'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '-1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_politics',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'politik',
+            'parent' => '0',
+          ),
+        ),
+        'options_list_callback' => 'content_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'news',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => 14,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_politics',
+      'label' => 'Politik',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '42',
       ),
     ),
   );
@@ -3442,6 +4267,7 @@ function os2web_indholdstyper_field_default_fields() {
           0 => array(
             'vocabulary' => 'forfrem_til',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -3807,6 +4633,7 @@ function os2web_indholdstyper_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -3984,7 +4811,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_termref_kle',
-      'label' => 'KLE',
+      'label' => 'KL Emneord',
       'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
@@ -3994,91 +4821,11 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
         'weight' => '39',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-news-field_termref_sofd'
-  $fields['node-news-field_termref_sofd'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_termref_sofd',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 's_egeord_sofd',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'news',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '5',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_termref_sofd',
-      'label' => 'Søgeord SOFD',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '42',
       ),
     ),
   );
@@ -4154,11 +4901,11 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '41',
+        'weight' => '40',
       ),
     ),
   );
@@ -4188,7 +4935,7 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(),
-      'translatable' => '1',
+      'translatable' => '0',
       'type' => 'text_with_summary',
     ),
     'field_instance' => array(
@@ -4269,6 +5016,7 @@ function os2web_indholdstyper_field_default_fields() {
           0 => array(
             'vocabulary' => 'forfrem_til',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -4382,6 +5130,7 @@ function os2web_indholdstyper_field_default_fields() {
       'required' => 1,
       'settings' => array(
         'alt_field' => 0,
+        'default_image' => 0,
         'file_directory' => '',
         'file_extensions' => 'png gif jpg jpeg',
         'max_filesize' => '',
@@ -4622,6 +5371,7 @@ function os2web_indholdstyper_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -4672,52 +5422,76 @@ function os2web_indholdstyper_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-spotbox-field_editortags'
-  $fields['node-spotbox-field_editortags'] = array(
+  // Exported field: 'node-selvbetjeningslinks-field_attached_node'
+  $fields['node-selvbetjeningslinks-field_attached_node'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_editortags',
+      'field_name' => 'field_attached_node',
       'foreign keys' => array(
-        'tid' => array(
+        'nid' => array(
           'columns' => array(
-            'tid' => 'tid',
+            'nid' => 'nid',
           ),
-          'table' => 'taxonomy_term_data',
+          'table' => 'node',
         ),
       ),
       'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
+        'nid' => array(
+          0 => 'nid',
         ),
       ),
-      'module' => 'taxonomy',
+      'module' => 'node_reference',
       'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'redaktoertags',
-            'parent' => '0',
-          ),
+        'referenceable_types' => array(
+          'borger_dk_permalink' => 0,
+          'contentpage' => 'contentpage',
+          'esdh_dokument' => 0,
+          'esdh_sag' => 0,
+          'files' => 0,
+          'galleri' => 0,
+          'iframe_selvbetjeningsl_sning_mm' => 'iframe_selvbetjeningsl_sning_mm',
+          'institution' => 0,
+          'knactivity' => 0,
+          'kontaktblok' => 0,
+          'local_plan' => 0,
+          'media' => 0,
+          'news' => 0,
+          'ofir_job' => 0,
+          'panel' => 0,
+          'person' => 0,
+          'politician' => 0,
+          'referat' => 0,
+          'right_column' => 0,
+          'rotating_image' => 0,
+          'selvbetjeningslinks' => 0,
+          'spotbox' => 0,
+          'tema' => 0,
+          'webform' => 0,
         ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
+        'view' => array(
+          'args' => array(),
+          'display_name' => '',
+          'view_name' => '',
+        ),
       ),
       'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
+      'type' => 'node_reference',
     ),
     'field_instance' => array(
-      'bundle' => 'spotbox',
+      'bundle' => 'selvbetjeningslinks',
       'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'taxonomy',
+          'module' => 'node_reference',
           'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
-          'weight' => 9,
+          'type' => 'node_reference_default',
+          'weight' => 2,
         ),
         'related_block' => array(
           'label' => 'above',
@@ -4733,160 +5507,65 @@ function os2web_indholdstyper_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_editortags',
-      'label' => 'Stikord',
+      'field_name' => 'field_attached_node',
+      'label' => 'Link til side',
       'required' => 0,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '8',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-spotbox-field_lead_image'
-  $fields['node-spotbox-field_lead_image'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_lead_image',
-      'foreign keys' => array(
-        'fid' => array(
-          'columns' => array(
-            'fid' => 'fid',
-          ),
-          'table' => 'file_managed',
-        ),
-      ),
-      'indexes' => array(
-        'fid' => array(
-          0 => 'fid',
-        ),
-      ),
-      'module' => 'image',
-      'settings' => array(
-        'default_image' => 0,
-        'uri_scheme' => 'public',
-      ),
-      'translatable' => '1',
-      'type' => 'image',
-    ),
-    'field_instance' => array(
-      'bundle' => 'spotbox',
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'image',
-          'settings' => array(
-            'image_link' => '',
-            'image_style' => '',
-          ),
-          'type' => 'image',
-          'weight' => 1,
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_lead_image',
-      'label' => 'Billede',
-      'required' => 1,
-      'settings' => array(
-        'alt_field' => 0,
-        'file_directory' => '',
-        'file_extensions' => 'png gif jpg jpeg',
-        'max_filesize' => '',
-        'max_resolution' => '',
-        'min_resolution' => '230x115',
-        'title_field' => 0,
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
         'active' => 1,
-        'module' => 'imagefield_crop',
+        'module' => 'node_reference',
         'settings' => array(
-          'collapsible' => '2',
-          'croparea' => '450x450',
-          'enforce_minimum' => 1,
-          'enforce_ratio' => 1,
-          'preview_image_style' => 'thumbnail',
-          'progress_indicator' => 'throbber',
-          'resolution' => '230x115',
+          'autocomplete_match' => 'contains',
+          'autocomplete_path' => 'node_reference/autocomplete',
+          'size' => '60',
         ),
-        'type' => 'imagefield_crop_widget',
-        'weight' => '2',
+        'type' => 'node_reference_autocomplete',
+        'weight' => '3',
       ),
     ),
   );
 
-  // Exported field: 'node-spotbox-field_organization'
-  $fields['node-spotbox-field_organization'] = array(
+  // Exported field: 'node-selvbetjeningslinks-field_gruppe_id'
+  $fields['node-selvbetjeningslinks-field_gruppe_id'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '-1',
+      'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_organization',
+      'field_name' => 'field_gruppe_id',
       'foreign keys' => array(
-        'tid' => array(
+        'format' => array(
           'columns' => array(
-            'tid' => 'tid',
+            'format' => 'format',
           ),
-          'table' => 'taxonomy_term_data',
+          'table' => 'filter_format',
         ),
       ),
       'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
+        'format' => array(
+          0 => 'format',
         ),
       ),
-      'module' => 'taxonomy',
+      'module' => 'text',
       'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'organisation',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
+        'max_length' => '255',
       ),
       'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
+      'type' => 'text',
     ),
     'field_instance' => array(
-      'bundle' => 'spotbox',
+      'bundle' => 'selvbetjeningslinks',
       'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'taxonomy',
+          'module' => 'text',
           'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
+          'type' => 'text_default',
           'weight' => 8,
         ),
         'related_block' => array(
@@ -4903,34 +5582,32 @@ function os2web_indholdstyper_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_organization',
-      'label' => 'Organisation',
-      'required' => 0,
+      'field_name' => 'field_gruppe_id',
+      'label' => 'Gruppe ID',
+      'required' => FALSE,
       'settings' => array(
+        'text_processing' => 0,
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
+        'module' => 'text',
         'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
           'size' => 60,
         ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '6',
+        'type' => 'text_textfield',
+        'weight' => '10',
       ),
     ),
   );
 
-  // Exported field: 'node-spotbox-field_short_description'
-  $fields['node-spotbox-field_short_description'] = array(
+  // Exported field: 'node-selvbetjeningslinks-field_kilde'
+  $fields['node-selvbetjeningslinks-field_kilde'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_short_description',
+      'field_name' => 'field_kilde',
       'foreign keys' => array(
         'format' => array(
           'columns' => array(
@@ -4946,13 +5623,13 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'module' => 'text',
       'settings' => array(
-        'max_length' => '140',
+        'max_length' => '255',
       ),
-      'translatable' => '1',
+      'translatable' => '0',
       'type' => 'text',
     ),
     'field_instance' => array(
-      'bundle' => 'spotbox',
+      'bundle' => 'selvbetjeningslinks',
       'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
@@ -4962,7 +5639,7 @@ function os2web_indholdstyper_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 3,
+          'weight' => 7,
         ),
         'related_block' => array(
           'label' => 'above',
@@ -4978,8 +5655,86 @@ function os2web_indholdstyper_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_short_description',
-      'label' => 'Tekst',
+      'field_name' => 'field_kilde',
+      'label' => 'Kilde',
+      'required' => 0,
+      'settings' => array(
+        'linkit' => array(
+          'enable' => 0,
+          'insert_plugin' => '',
+        ),
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '9',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-selvbetjeningslinks-field_selvbetjening_direkte'
+  $fields['node-selvbetjeningslinks-field_selvbetjening_direkte'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_selvbetjening_direkte',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '254',
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'selvbetjeningslinks',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => 'Skal være inkl. <i>http://</i> hvis det er sider uden for sitet. Skal kun bruges til sider ser ikke kan indlejres som indhold via iframe.',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 5,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_selvbetjening_direkte',
+      'label' => 'Direkte link',
       'required' => 0,
       'settings' => array(
         'text_processing' => '0',
@@ -4992,13 +5747,87 @@ function os2web_indholdstyper_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-selvbetjeningslinks-field_selvbetjeningslink_type'
+  $fields['node-selvbetjeningslinks-field_selvbetjeningslink_type'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_selvbetjeningslink_type',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'handling' => 'Hvis du skal',
+          'emne' => 'Emne',
+          'liste' => 'Liste',
+          'megamenu' => 'Megamenu',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'selvbetjeningslinks',
+      'default_value' => array(
+        0 => array(
+          'value' => 'liste',
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 4,
+        ),
+        'related_block' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_selvbetjeningslink_type',
+      'label' => 'Type',
+      'required' => 1,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
         'weight' => '1',
       ),
     ),
   );
 
-  // Exported field: 'node-spotbox-field_site_structure'
-  $fields['node-spotbox-field_site_structure'] = array(
+  // Exported field: 'node-selvbetjeningslinks-field_site_structure'
+  $fields['node-selvbetjeningslinks-field_site_structure'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '1',
@@ -5024,6 +5853,7 @@ function os2web_indholdstyper_field_default_fields() {
           0 => array(
             'vocabulary' => 'site_struktur',
             'parent' => '0',
+            'depth' => '',
           ),
         ),
         'options_list_callback' => 'content_taxonomy_allowed_values',
@@ -5032,7 +5862,7 @@ function os2web_indholdstyper_field_default_fields() {
       'type' => 'taxonomy_term_reference',
     ),
     'field_instance' => array(
-      'bundle' => 'spotbox',
+      'bundle' => 'selvbetjeningslinks',
       'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
@@ -5042,7 +5872,7 @@ function os2web_indholdstyper_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 7,
+          'weight' => 1,
         ),
         'related_block' => array(
           'label' => 'above',
@@ -5060,7 +5890,7 @@ function os2web_indholdstyper_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_site_structure',
       'label' => 'Portalkategori',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -5069,13 +5899,13 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '3',
+        'weight' => '5',
       ),
     ),
   );
 
-  // Exported field: 'node-spotbox-field_termref_kle'
-  $fields['node-spotbox-field_termref_kle'] = array(
+  // Exported field: 'node-selvbetjeningslinks-field_termref_kle'
+  $fields['node-selvbetjeningslinks-field_termref_kle'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '-1',
@@ -5109,7 +5939,7 @@ function os2web_indholdstyper_field_default_fields() {
       'type' => 'taxonomy_term_reference',
     ),
     'field_instance' => array(
-      'bundle' => 'spotbox',
+      'bundle' => 'selvbetjeningslinks',
       'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
@@ -5119,7 +5949,7 @@ function os2web_indholdstyper_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 2,
+          'weight' => 0,
         ),
         'related_block' => array(
           'label' => 'above',
@@ -5136,8 +5966,8 @@ function os2web_indholdstyper_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_termref_kle',
-      'label' => 'KLE',
-      'required' => 0,
+      'label' => 'KL Emneord',
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -5146,246 +5976,10 @@ function os2web_indholdstyper_field_default_fields() {
         'module' => 'taxonomy',
         'settings' => array(
           'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
+          'content_taxonomy_autocomplete_new_terms' => 'deny',
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '4',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-spotbox-field_termref_sofd'
-  $fields['node-spotbox-field_termref_sofd'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_termref_sofd',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 's_egeord_sofd',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'spotbox',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'taxonomy',
-          'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
-          'weight' => 5,
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_termref_sofd',
-      'label' => 'Søgeord SOFD',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '7',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-spotbox-field_termref_sted'
-  $fields['node-spotbox-field_termref_sted'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '-1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_termref_sted',
-      'foreign keys' => array(
-        'tid' => array(
-          'columns' => array(
-            'tid' => 'tid',
-          ),
-          'table' => 'taxonomy_term_data',
-        ),
-      ),
-      'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
-        ),
-      ),
-      'module' => 'taxonomy',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'egennavne_stednavne',
-            'parent' => '0',
-          ),
-        ),
-        'options_list_callback' => 'content_taxonomy_allowed_values',
-      ),
-      'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
-    ),
-    'field_instance' => array(
-      'bundle' => 'spotbox',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'taxonomy',
-          'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
-          'weight' => 6,
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_termref_sted',
-      'label' => 'Egenavne / Stednavne',
-      'required' => 0,
-      'settings' => array(
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 0,
-        'module' => 'taxonomy',
-        'settings' => array(
-          'autocomplete_path' => 'taxonomy/autocomplete',
-          'content_taxonomy_autocomplete_new_terms' => 'allow',
-          'size' => 60,
-        ),
-        'type' => 'taxonomy_autocomplete',
-        'weight' => '5',
-      ),
-    ),
-  );
-
-  // Exported field: 'node-spotbox-field_url'
-  $fields['node-spotbox-field_url'] = array(
-    'field_config' => array(
-      'active' => '1',
-      'cardinality' => '1',
-      'deleted' => '0',
-      'entity_types' => array(),
-      'field_name' => 'field_url',
-      'foreign keys' => array(
-        'format' => array(
-          'columns' => array(
-            'format' => 'format',
-          ),
-          'table' => 'filter_format',
-        ),
-      ),
-      'indexes' => array(
-        'format' => array(
-          0 => 'format',
-        ),
-      ),
-      'module' => 'text',
-      'settings' => array(
-        'max_length' => '100',
-      ),
-      'translatable' => '1',
-      'type' => 'text',
-    ),
-    'field_instance' => array(
-      'bundle' => 'spotbox',
-      'default_value' => NULL,
-      'deleted' => '0',
-      'description' => '',
-      'display' => array(
-        'default' => array(
-          'label' => 'above',
-          'module' => 'text',
-          'settings' => array(),
-          'type' => 'text_default',
-          'weight' => 4,
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-        'teaser' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
-        ),
-      ),
-      'entity_type' => 'node',
-      'field_name' => 'field_url',
-      'label' => 'URL',
-      'required' => 0,
-      'settings' => array(
-        'text_processing' => '0',
-        'user_register_form' => FALSE,
-      ),
-      'widget' => array(
-        'active' => 1,
-        'module' => 'text',
-        'settings' => array(
-          'size' => '60',
-        ),
-        'type' => 'text_textfield',
         'weight' => '6',
       ),
     ),
@@ -5393,27 +5987,27 @@ function os2web_indholdstyper_field_default_fields() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t('Beskrivelse');
   t('Billede');
   t('Billeder');
   t('Billeder og video');
-  t('Brødtekst der beskriver filerne og deres relevans.');
   t('Det der vises med sort');
+  t('Direkte link');
   t('Dokument');
-  t('Dokument id');
-  t('Egenavne / Stednavne');
   t('Egenavne / stednavne');
   t('Egennavne/stednavne');
-  t('Et sags nr. på formen år/nummer f.eks. 11/123456');
   t('Forfrem til');
   t('Forældre-menupunkt');
+  t('Gruppe ID');
   t('Hvis du har yderligere information, links eller fakta som er unikke for denne side, kan det tilføjes i dette felt. Indholdet vises i højre kolonne sammen med siden.');
   t('Indhold');
   t('Indløb / Udløb');
+  t('Intro');
   t('Intro / Resume (maks 2 linier!)');
   t('KL Emneord');
-  t('KLE');
+  t('Kilde');
+  t('Kontaktblok');
   t('Link');
+  t('Link til side');
   t('Nedarv højrespalte');
   t('Opmærk dit indhold med KLs Emneord.
 <br>Se fuld oversigt på <a target="_blank" href="http://www.kle-online.dk">KLE-Online</a>.
@@ -5438,17 +6032,21 @@ function os2web_indholdstyper_field_default_fields() {
   t('Portalkategori');
   t('Primære billede');
   t('Resume (maks 2 linier!)');
+  t('Resume - lang overskrift');
   t('Sag');
-  t('Sags id');
+  t('Selvbetjeningslinks');
+  t('Skal være inkl. <i>http://</i> hvis det er sider uden for sitet. Skal kun bruges til sider ser ikke kan indlejres som indhold via iframe.');
   t('Source ID');
+  t('Spotboxe');
   t('Stikord');
-  t('Søgeord SOFD');
-  t('Tekst');
-  t('URL');
+  t('Tilføj medie');
+  t('Type');
   t('Unikke relaterede links');
   t('Unikke relaterede temaer');
   t('Unikt indhold');
+  t('Vises før indholdet af iframe');
   t('Vælg billede');
+  t('iFrame URL');
 
   return $fields;
 }

@@ -30,6 +30,7 @@ class AcadrePWS extends CaseService {
     $proxy_host = variable_get('os2web_pws_proxy_host');
     $proxy_port = variable_get('os2web_pws_proxy_port');
     $options['trace'] = TRUE; // For debugging purposes. Remove on prod.
+    $options['exceptions'] = TRUE;
     $options['login'] = $user;
     $options['cache_wsdl'] = WSDL_CACHE_DISK;
     $options['password'] = $password;
@@ -64,7 +65,7 @@ class AcadrePWS extends CaseService {
         unset($options['uri']);
         try {
           $this->client6 = new SoapClient($url . '?WSDL', $options);
-        } catch (SoapFault $sf) {
+        } catch (Exception $sf) {
           drupal_set_message('Error connecting to PWSv6 endpoint', 'error');
         }
       }
@@ -100,6 +101,7 @@ class AcadrePWS extends CaseService {
       return $result;
     }
     if ($this->client_search) {
+      $query = str_replace('-','/',$query);
       $query = explode('/', $query);
       if (is_numeric($query[0]) && is_numeric($query[1])) {
         try {
@@ -126,6 +128,7 @@ class AcadrePWS extends CaseService {
       return $result;
     }
     if ($this->client_search) {
+      $query = str_replace('-','/',$query);
       $query = explode('/', $query);
       if (is_numeric($query[0]) && is_numeric($query[1])) {
         try {
@@ -176,6 +179,37 @@ XML;
         $result = simplexml_load_string($result)->xpath('//soap:Body[1]/*/*');
       } catch (SoapFault $sf) {
 
+      }
+    }
+    return $result;
+  }
+
+  public function getDocLock($id) {
+    $result = &drupal_static(__FUNCTION__ . $id, FALSE);
+    if ($result != FALSE) {
+      return $result;
+    }
+    if ($this->client) {
+      $request = <<< XML
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+  <soap:Body>
+    <GetLockStatusDocumentId xmlns="http://www.traen.com/2007/09/06/schema">[DocID]</GetLockStatusDocumentId>
+  </soap:Body>
+</soap:Envelope>
+XML;
+      try {
+        $result = $this->client->__doRequest(t($request, array('[DocID]' => $id)), $this->client->location, $this->client->uri . 'GetLockStatus', SOAP_1_1);
+        $result = simplexml_load_string($result);
+        if ('' !== (string)array_pop($result->xpath('//soap:Fault/faultcode'))) { // This will indicate fault
+          $result = false;
+
+        } else {
+        $result = $result->xpath('//soap:Body');
+        $result = ('true' === (string)$result[0]->DocumentLockStatus)?true:false;
+//        $result = (string)array_pop($result->xpath('//soap:Fault/faultcode')); // This will indicate fault
+        }
+      } catch (SoapFault $sf) {
       }
     }
     return $result;
@@ -249,11 +283,11 @@ XML;
     $query = db_select('os2web_pws_doc_files', 'df')->fields('df', array('fid'))->condition('did', $ref);
     $fid = $query->execute()->fetchField();
     if ($fid > 0) {
-      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File cached.");
+//      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File cached.");
       $result = file_load($fid);
       $result = file_create_url($result->uri);
     } else {
-      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Fetching file from WS.");
+//      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Fetching file from WS.");
       if ($this->client) {
         $request = <<< XML
 <?xml version="1.0" encoding="utf-8"?>

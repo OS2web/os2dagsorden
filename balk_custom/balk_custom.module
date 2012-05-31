@@ -413,7 +413,7 @@ function _balk_custom_media_wysiwyg_allowed_view_modes() {
  * Adds our custom .js that removes width and height settings from CKEditor.
  */
 function balk_custom_form_node_form_alter(&$form, $form_state) {
-  $form['#attached']['js'][] = drupal_get_path('module', 'balk_custom') . '/balk_custom.js';
+//  $form['#attached']['js'][] = drupal_get_path('module', 'balk_custom') . '/balk_custom.js';
 }
 
 function balk_custom_menu() {
