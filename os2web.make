@@ -281,13 +281,6 @@ projects[feeds][patch][] = "http://drupal.org/files/feeds-taxonomy-text-format-1
 projects[feeds_xpathparser][subdir] = "contrib"
 projects[feeds_xpathparser][version] = "1.0-beta3"
 
-<<<<<<< HEAD
-; Morten, Solr
-projects[apachesolr][version] = "1.0-beta19"
-projects[apachesolr_autocomplete][version] = "1.2"
-projects[apachesolr_attachments][version] = "1.0"
-
-=======
 projects[entityreference][subdir] = "contrib"
 projects[entityreference][version] = "1.0-rc1"
 
@@ -363,7 +356,6 @@ projects[custom_search][version] = "1.9"
 
 projects[chart][subdir] = "contrib"
 projects[chart][version] = "1.1"
->>>>>>> dev
 
 ; Themes
 
