@@ -74,6 +74,16 @@ function os2web_settings_settings_form($form, $form_state) {
       '#type' => 'markup',
       '#value' => 'Placeholder until more settings are needed.',
   );
+  $form['themesettings'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => FALSE,
+  );
+  $form['themesettings']['os2web_default_menu'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2web_default_menu','navigation'),
+      '#title' => t('Default menu for first sidebar'),
+      '#description' => t('Machine name for the menu to be inserted in blank left sidebars'),
+  );
   return system_settings_form($form);
 }
 
