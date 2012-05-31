@@ -26,23 +26,23 @@ function os2web_search_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
+        'apachesolr_search-sort' => array(
+          'module' => 'apachesolr_search',
+          'delta' => 'sort',
+          'region' => 'content',
+          'weight' => '-10',
+        ),
         'system-main' => array(
           'module' => 'system',
           'delta' => 'main',
           'region' => 'content',
-          'weight' => '-70',
+          'weight' => '-9',
         ),
         'facetapi-Q7IEPePqqGeMRym706M15bmvrqPKy501' => array(
           'module' => 'facetapi',
           'delta' => 'Q7IEPePqqGeMRym706M15bmvrqPKy501',
           'region' => 'sidebar_first',
           'weight' => '-9',
-        ),
-        'apachesolr_search-sort' => array(
-          'module' => 'apachesolr_search',
-          'delta' => 'sort',
-          'region' => 'header_first',
-          'weight' => '-10',
         ),
       ),
     ),
