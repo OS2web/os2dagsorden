@@ -118,4 +118,3 @@ function _annotator_append_note($note, $index){
 }
 
 ?>
-
