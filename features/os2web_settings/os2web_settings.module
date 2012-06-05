@@ -146,7 +146,7 @@ function os2web_settings_ahahdebug() {
 function os2web_settings_start_form_submit(&$form, &$form_state) {
   $fields = db_select('field_config','fc')->fields('fc',array('field_name'))->execute()->fetchCol();
   $batch = array(
-    'operations' => array('os2web_settings_langfix_disable_translation',array()),
+    'operations' => array(array('os2web_settings_langfix_disable_translation',array())),
     'finished' => 'os2web_settings_langfix_finished',
     );
   foreach ($fields as $field) {
