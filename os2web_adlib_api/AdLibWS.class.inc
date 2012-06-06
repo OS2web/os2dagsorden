@@ -19,6 +19,7 @@ class AdLibWS {
 
   public function __construct() {
     if (!isset($this->client)) {
+      $this->client = true;
       $options = array(
           'soapversion' => SOAP_1_2,
           'trace' => TRUE,

@@ -280,7 +280,7 @@ XML;
       $ref = $info['ref'];
       $ver = $info['ver'];
     }
-    $query = db_select('os2web_pws_doc_files', 'df')->fields('df', array('fid'))->condition('did', $ref);
+    $query = db_select('os2web_adlib_api_doc_files', 'df')->fields('df', array('fid'))->condition('did', $ref);
     $fid = $query->execute()->fetchField();
     if ($fid > 0) {
 //      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File cached.");
@@ -310,7 +310,7 @@ XML;
 //              $rec = array('fid' => $result->fid, 'did' => $ref);
 //              drupal_write_record('os2web_pws_doc_files', $rec);
               drupal_load('module','os2web_adlib_api');
-              os2web_adlib_api_convert_to_pdf($result->fid);
+              os2web_adlib_api_convert_to_pdf($result->fid,$ref);
               $result = file_create_url($result->uri);
             }
           } else {
