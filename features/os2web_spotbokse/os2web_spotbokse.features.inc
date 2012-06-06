@@ -35,6 +35,28 @@ function os2web_spotbokse_views_api() {
 function os2web_spotbokse_image_default_styles() {
   $styles = array();
 
+  // Exported image style: spotbox-300
+  $styles['spotbox-300'] = array(
+    'name' => 'spotbox-300',
+    'effects' => array(
+      16 => array(
+        'label' => 'Skalér og beskær',
+        'help' => 'Skalering og beskæring bevarer billedets højde-bredde-forhold og beskærer derefter den største dimension. Det er nyttigt til at generere kvadratiske thumbnails uden at forvrænge billedet.',
+        'effect callback' => 'image_scale_and_crop_effect',
+        'dimensions callback' => 'image_resize_dimensions',
+        'form callback' => 'image_resize_form',
+        'summary theme' => 'image_resize_summary',
+        'module' => 'image',
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => '300',
+          'height' => '261',
+        ),
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Exported image style: spotbox-tall
   $styles['spotbox-tall'] = array(
     'name' => 'spotbox-tall',
