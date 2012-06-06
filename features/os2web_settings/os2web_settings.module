@@ -38,6 +38,7 @@ function os2web_settings_menu() {
       'page arguments' => array('os2web_settings_settings_form'),
       'access arguments' => array('administer os2web'),
       'type' => MENU_NORMAL_ITEM | MENU_DEFAULT_LOCAL_TASK,
+      'file' => 'os2web_settings.admin.inc',
   );
   $items['admin/config/os2web/import'] = array(
       'title' => 'OS2web Imports',
@@ -81,23 +82,6 @@ function os2web_settings_import_form($form, $form_state) {
   return $form;
 }
 
-function os2web_settings_settings_form($form, $form_state) {
-  $form['dummy'] = array(
-      '#type' => 'markup',
-      '#value' => 'Placeholder until more settings are needed.',
-  );
-  $form['themesettings'] = array(
-      '#type' => 'fieldset',
-      '#collapsible' => FALSE,
-  );
-  $form['themesettings']['os2web_default_menu'] = array(
-      '#type' => 'textfield',
-      '#default_value' => variable_get('os2web_default_menu','navigation'),
-      '#title' => t('Default menu for first sidebar'),
-      '#description' => t('Machine name for the menu to be inserted in blank left sidebars'),
-  );
-  return system_settings_form($form);
-}
 
 function os2web_settings_nodedump($nid) {
    $node = node_load($nid);
