@@ -23,7 +23,7 @@ function os2web_adlib_api_menu() {
 
 function os2web_adlib_api_page() {
 //  os2web_adlib_api_convert_to_pdf(285);
-  _os2web_adlib_api_process_pdf(1);
+  _os2web_adlib_api_process_pdf();
   $call = 'Hello, World.';
   return '<textarea rows=50>' . print_r($call, 1) . '</textarea>';
 }
@@ -168,10 +168,10 @@ function _os2web_adlib_api_process_pdf($limit = FALSE) {
   if ($limit !== FALSE) {
     $files->range(0, $limit);
   }
-  $files = $files->execute();
+  $files = $files->execute()->fetchCol();
   if (count($files) > 0) {
     $adlib = _os2web_adlib_api_get_instance();
-    $pdfs = _os2web_adlib_api_is_file_pdf($files->fetchAll(PDO::FETCH_COLUMN, 0));
+    $pdfs = _os2web_adlib_api_is_file_pdf($files);
 
     foreach ($pdfs as $file) {
       if ($file['is_pdf'] === FALSE && is_file(drupal_realpath($file['file']->uri))) {

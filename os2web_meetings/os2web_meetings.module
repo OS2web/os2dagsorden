@@ -68,7 +68,6 @@ function os2web_meetings_order_addenums() {
   foreach ($meetings as $meeting) {
     ksort($meeting); // Lowest system id first
     $primary = array_shift($meeting); // Lowest system id is primary
-    $addenums = array();
     while ($next = array_shift($meeting)) {
       // Set up references for addenum agendas
       $node = $nodes[$next];
@@ -155,7 +154,7 @@ function _os2web_meetings_publish_meeting($info, $xml) {
 
   //FIXME: Verify this list!
   $no_publish_committee = array(
-      'Direktionsmøde',
+//      'Direktionsmøde',
       'Direktions og afdelingschef møde',
       'Rådhusmad',
       'Testudvalg',
@@ -188,7 +187,8 @@ function _os2web_meetings_publish_meeting($info, $xml) {
       ->execute()
       ->fetchObject();
   if (isset($nid->nid) && $nid->nid > 0) {
-    node_delete($nid->nid);
+//    return; // No reimports
+//    node_delete($nid->nid);
   }
 
   $node = new stdClass(); // We create a new node object
@@ -311,6 +311,10 @@ function _os2web_meetings_add_item($info, $xml, $id) {
     $file->uid = 1;
     $file->status = FILE_STATUS_PERMANENT;
     $file = file_save($file);
+
+    // Schedule for PDF conversion
+    drupal_load('module','os2web_adlib_api');
+    os2web_adlib_api_convert_to_pdf($file->fid);
 
     $node->field_enclosures[$node->language][] = (array) $file;
   }
@@ -464,7 +468,7 @@ function os2web_meetings_node_delete($node) {
     }
     if (isset($node->field_enclosures[$node->language])) {
       foreach ($node->field_enclosures[$node->language] as $file) {
-//      file_delete((object) $file, true);
+      file_delete((object) $file, true);
       }
     }
   }
