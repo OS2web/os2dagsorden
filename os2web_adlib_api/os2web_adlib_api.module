@@ -22,7 +22,7 @@ function os2web_adlib_api_menu() {
 }
 
 function os2web_adlib_api_page() {
-//  os2web_adlib_api_convert_to_pdf(253);
+//  os2web_adlib_api_convert_to_pdf(285);
 //  _os2web_adlib_api_process_pdf(1);
   $call = 'Hello, World.';
   return '<textarea rows=50>' . print_r($call, 1) . '</textarea>';
@@ -55,14 +55,14 @@ function os2web_adlib_api_convert_to_pdf($fid, $docref = NULL) {
           'did' => $docref,
       );
       drupal_write_record('os2web_adlib_api_doc_files', $record);
-      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File queued for processing.");
+      //error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File queued for processing.");
       return TRUE;
     } else {
-      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File already in queue, aborting.");
+      //error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File already in queue, aborting.");
       return FALSE;
     }
   } else {
-    error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File already PDF.");
+    //error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File already PDF.");
     return FALSE;
   }
 }
@@ -99,38 +99,33 @@ function _os2web_adlib_api_process_pdf($limit = FALSE) {
             'job_info' => null,
         );
         drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid'));
-        error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Job failed and reset: " . $file->fid);
+        //error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Job failed and reset: " . $file->fid);
       } else if (in_array($jobinfo->status, array('Complete'))) {
         $record = array(
             'fid' => $file->fid,
             'job_id' => 'Complete',
         );
         $jobfileinfo = unserialize($file->job_info);
-        error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Job complete. Fetching file");
+        //error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Job complete. Fetching file");
         $file_url = $jobfileinfo['out_url'] . rawurlencode($jobfileinfo['out_filename']);
         $download = curl_init($file_url);
         if (variable_get('os2web_pws_proxy')) {
           curl_setopt($download, CURLOPT_PROXY, variable_get('os2web_pws_proxy_host'));
           curl_setopt($download, CURLOPT_PROXYPORT, variable_get('os2web_pws_proxy_port'));
           curl_setopt($download, CURLOPT_HTTPPROXYTUNNEL, TRUE);
-//          error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Using proxy.");
-//          error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: proxy:".variable_get('os2web_pws_proxy_host'));
-//          error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: proxy port:".variable_get('os2web_pws_proxy_port'));
         }
         curl_setopt($download, CURLOPT_RETURNTRANSFER, TRUE);
-//        $fp = fopen(drupal_realpath('temporary://test.pdf'),'w');
-//        curl_setopt($download, CURLOPT_FILE, $fp);
-//        curl_setopt($download, CURLOPT_HEADER, 0);
         $data = curl_exec($download);
-//        fclose($fp);
+
+        //error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: curl_getinfo($download) = ' . print_r(curl_getinfo($download), 1));
+
         //FIXME: Replace with proper returncode check
         if (!in_array(substr($data, 0, 20), array('<h1>Bad Request</h1>', '<!DOCTYPE HTML PUBLI'))) {
 
           $upd_file = file_load($file->fid);
-          error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File recieved successfully, Saving.");
-          $uri = file_unmanaged_save_data($data, dirname(drupal_realpath($upd_file->uri)) . '/' . $jobfileinfo['out_filename'], FILE_EXISTS_REPLACE);
-          $uri = file_build_uri($uri);
-          error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $uri = ' . print_r($uri, 1));
+          //error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File recieved successfully, Saving.");
+          $uri = file_unmanaged_save_data($data, dirname($upd_file->uri) . '/' . $jobfileinfo['out_filename'], FILE_EXISTS_REPLACE);
+          //error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $uri = ' . print_r($uri, 1));
           if (filesize(drupal_realpath($uri)) > 0) {
             file_unmanaged_delete($upd_file->uri);
             $upd_file->uri = $uri;
@@ -138,12 +133,12 @@ function _os2web_adlib_api_process_pdf($limit = FALSE) {
             $upd_file->filemime = file_get_mimetype($upd_file->uri);
             $upd_file->filesize = filesize(drupal_realpath($upd_file->uri));
             $upd_file->timestamp = time();
-//          error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $upd_file = ' . print_r($upd_file, 1));
             drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid'));
+//            drupal_write_record('file_managed', $upd_file, array('fid'));
             file_save($upd_file);
-            error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File saved, file record updated.");
+            //error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File saved, file record updated.");
           } else {
-            error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Filesize was 0. Aborting update.");
+            //error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Filesize was 0. Aborting update.");
           }
         }
       }
@@ -185,7 +180,7 @@ function _os2web_adlib_api_cleanup_files() {
     if (count($file) === 0) {
       // File is not linked in the drupal database
 //        file_unmanaged_delete($uri);
-//        error_log(basename(__FILE__) . ':' . __LINE__ . ' Deleted: ' . print_r($uri, 1));
+//        //error_log(basename(__FILE__) . ':' . __LINE__ . ' Deleted: ' . print_r($uri, 1));
     }
   }
 }
