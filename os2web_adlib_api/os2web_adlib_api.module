@@ -14,7 +14,7 @@ function os2web_adlib_api_menu() {
   $items['os2web/adlib/test'] = array(
       'title' => t('AdLib test page'),
 //    'description' => t('Your description goes here.'),
-      'access callback' => TRUE,
+      'access callback' => FALSE,
       'page callback' => 'os2web_adlib_api_page',
       'type' => MENU_CALLBACK,
   );
@@ -22,10 +22,24 @@ function os2web_adlib_api_menu() {
 }
 
 function os2web_adlib_api_page() {
-  os2web_adlib_api_convert_to_pdf(253);
-  _os2web_adlib_api_process_pdf(1);
+//  os2web_adlib_api_convert_to_pdf(253);
+//  _os2web_adlib_api_process_pdf(1);
   $call = 'Hello, World.';
   return '<textarea rows=50>' . print_r($call, 1) . '</textarea>';
+}
+
+/**
+ * Implementation of hook_cron()
+ */
+function os2web_adlib_api_cron() {
+  _os2web_adlib_api_process_pdf();
+}
+
+/**
+ * Implementation of hook_init()
+ */
+function os2web_adlib_api_init() {
+  _os2web_adlib_api_process_pdf(1);
 }
 
 /**
