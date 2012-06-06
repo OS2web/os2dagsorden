@@ -307,8 +307,10 @@ XML;
           if (file_prepare_directory($dest, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
             $result = file_save_data(base64_decode($result), $dest . (string) $ref . '-' . (string) $ver . '-' . $this->getDocFileName($ref, $ver), FILE_EXISTS_REPLACE);
             if (FALSE != $result) {
-              $rec = array('fid' => $result->fid, 'did' => $ref);
-              drupal_write_record('os2web_pws_doc_files', $rec);
+//              $rec = array('fid' => $result->fid, 'did' => $ref);
+//              drupal_write_record('os2web_pws_doc_files', $rec);
+              drupal_load('module','os2web_adlib_api');
+              os2web_adlib_api_convert_to_pdf($result->fid);
               $result = file_create_url($result->uri);
             }
           } else {
