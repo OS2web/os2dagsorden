@@ -38,19 +38,6 @@ function os2web_pws_menu() {
   return $items;
 }
 
-function os2web_pws_theme() {
-  return array(
-      'esdh_document' => array(
-          'variables' => array('id' => FALSE),
-          'file' => 'os2web_pws.theme.inc',
-      ),
-      'esdh_case' => array(
-          'variables' => array('id' => FALSE),
-          'file' => 'os2web_pws.theme.inc',
-      ),
-  );
-}
-
 /**
  * Add configuration to the settings form
  *
@@ -164,7 +151,7 @@ function os2web_pws_case_listing($id, $id2 = false) {
 function os2web_test_page() {
   error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
   $pws = _os2web_pws_get_instance();
-  $adlib = _os2web_adlib_get_instance();
+//  $adlib = _os2web_adlib_get_instance();
 //  $call = $pws->lookupCase('11/14293');
 //  $call = $pws->fetchCase($pws->lookupCase('11/4949'));
 //  $call = $pws->getCaseDocs($pws->lookupCase('11/4949'));
@@ -223,126 +210,4 @@ function os2web_test_page() {
 
   return '<div><textarea cols="150" rows=50>' . print_r($call, 1) . '</textarea>
     <textarea cols="150" rows=20>' . print_r($pws->getTrace(), 1) . '</textarea></div>';
-}
-
-/**
- * Implementation of hook_init()
- */
-function os2web_pws_init() {
-  _os2web_pws_process_pdf(1);
-  _os2web_pws_cleanup_files();
-}
-
-function _os2web_pws_process_pdf($limit = FALSE) {
-// Locate any finished jobs
-  $files = db_select('os2web_pws_doc_files', 'f')->fields('f')->isNotNull('job_id')->condition('job_id', array('Complete'), 'NOT IN');
-  if ($limit !== FALSE) {
-    $files->range(0, $limit);
-  }
-  $files = $files->execute();
-  if (count($files) > 0) {
-    $adlib = _os2web_adlib_get_instance();
-    foreach ($files as $file) {
-      $jobinfo = $adlib->getJobStatus($file->job_id);
-      if (in_array($jobinfo->status, array('Not found', 'Failed'))) {
-        $record = array(
-            'fid' => $file->fid,
-            'job_id' => null,
-            'job_info' => null,
-        );
-        drupal_write_record('os2web_pws_doc_files', $record, array('fid'));
-      } else if (in_array($jobinfo->status, array('Complete'))) {
-        $record = array(
-            'fid' => $file->fid,
-            'job_id' => 'Complete',
-        );
-        $jobfileinfo = unserialize($file->job_info);
-
-        $file_url = $jobfileinfo['out_url'] . rawurlencode($jobfileinfo['out_filename']);
-        $download = curl_init($file_url);
-        if (variable_get('os2web_pws_proxy')) {
-          curl_setopt($download, CURLOPT_PROXY, variable_get('os2web_pws_host'));
-          curl_setopt($download, CURLOPT_PROXYPORT, variable_get('os2web_pws_port'));
-          curl_setopt($download, CURLOPT_HTTPPROXYTUNNEL, TRUE);
-        }
-        curl_setopt($download, CURLOPT_RETURNTRANSFER, TRUE);
-        $data = curl_exec($download);
-
-        //FIXME: Replace with proper returncode check
-        if (!in_array(substr($data, 0, 20), array('<h1>Bad Request</h1>', '<!DOCTYPE HTML PUBLI'))) {
-
-          $uri = file_unmanaged_save_data($data, DEFAULT_DOC_CACHE_PATH . $jobfileinfo['out_filename'], FILE_EXISTS_REPLACE);
-
-          $upd_file = file_load($file->fid);
-          $upd_file->uri = $uri;
-          $upd_file->filename = basename($uri);
-          $upd_file->filemime = file_get_mimetype($upd_file->uri);
-          $upd_file->filesize = filesize(drupal_realpath($upd_file->uri));
-          $upd_file->timestamp = time();
-//          error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $upd_file = ' . print_r($upd_file, 1));
-          drupal_write_record('os2web_pws_doc_files', $record, array('fid'));
-          file_save($upd_file);
-        }
-      }
-    }
-  }
-
-  function _os2web_pws_cleanup_files() {
-    $dir = preg_replace('/\/$/', '', DEFAULT_DOC_CACHE_PATH); // Remove trailing /
-    $filelist = file_scan_directory($dir, '/.*/');
-    foreach ($filelist as $uri => $file) {
-      $file = db_select('file_managed', 'f')->fields('f')->condition('uri', $uri)->execute()->fetchAll();
-      if (count($file) === 0) {
-        // File is not linked in the drupal database
-        file_unmanaged_delete($uri);
-//        error_log(basename(__FILE__) . ':' . __LINE__ . ' Deleted: ' . print_r($uri, 1));
-      }
-    }
-  }
-
-// Start new job if needed
-  $files = db_select('os2web_pws_doc_files', 'f')->fields('f')->isNull('job_id');
-  if ($limit !== FALSE) {
-    $files->range(0, $limit);
-  }
-  $files = $files->execute();
-  if (count($files) > 0) {
-    $adlib = _os2web_adlib_get_instance();
-    $pdfs = _os2web_pws_is_file_pdf($files->fetchAll(PDO::FETCH_COLUMN, 0));
-
-    foreach ($pdfs as $file) {
-      if ($file['is_pdf'] === FALSE && is_file(drupal_realpath($file['file']->uri))) {
-        $upload = $adlib->uploadData($file['file']->filename, file_get_contents(drupal_realpath($file['file']->uri)));
-        $job = $adlib->addJob($upload);
-        if ($job !== FALSE) {
-          $jobinfo = array(
-              'fid' => $file['file']->fid,
-              'job_id' => (string) $job->JobSettings['JobID'],
-              'job_info' => $upload,
-          );
-          drupal_write_record('os2web_pws_doc_files', $jobinfo, array('fid'));
-        }
-      }
-    }
-  }
-}
-
-/**
- * Implementation of hook_node_validate()
- */
-function os2web_pws_node_validate($node, $form, &$form_state) {
-}
-
-function _os2web_pws_is_file_pdf($fid) {
-  if (is_array($fid)) {
-    $result = array();
-    $files = file_load_multiple($fid);
-    foreach ($files as $file) {
-      $result[$file->fid]['is_pdf'] = strcasecmp(pathinfo($file->filename, PATHINFO_EXTENSION), 'pdf') === 0;
-      $result[$file->fid]['file'] = $file;
-    }
-    return $result;
-  } else {
-    return strcasecmp(pathinfo(file_load($fid)->filename, PATHINFO_EXTENSION), 'pdf') === 0;
-  }
 }

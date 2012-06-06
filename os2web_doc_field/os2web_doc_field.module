@@ -1,4 +1,5 @@
 <?php
+define('ACADRE_CM_ACCESS_OPEN_DOCUMENT', '1');
 
 /* Field information hooks */
 
@@ -72,7 +73,7 @@ function os2web_doc_field_field_validate($entity_type, $entity, $field, $instanc
     foreach ($docids as $docid) {
       $docid = trim($docid);
       $valid = preg_match('/^\d{1,20}[-,\/]\d{2}$/', $docid); // Adopt this for further testing
-      if (!$valid && ($docid!='')) {
+      if (!$valid && ($docid != '')) {
         $errors[$field['field_name']][$langcode][$delta][] = array(
             'error' => 'Ugyldig fremstilling af dokument-id. Dokument-id skal være på formen nummer/år eller nummer-år. Flere dokumenter skal være adskildt af , (komma).',
             'message' => t('%name: illegal value.', array('%name' => $instance['label'])),
@@ -110,3 +111,74 @@ function os2web_doc_field_field_formatter_view($entity_type, $entity, $field, $i
   return $element;
 }
 
+function os2web_doc_field_theme() {
+  return array(
+      'esdh_document' => array(
+          'variables' => array('id' => FALSE),
+      ),
+  );
+}
+
+function theme_esdh_document($vars) {
+  $id = $vars['id'];
+  drupal_load('module', 'os2web_pws');
+  drupal_load('module', 'os2web_case_field');
+  $pws = _os2web_pws_get_instance();
+  if (!is_array($id)) {
+    $id = array($id);
+  }
+  $html = '';
+  $rows = array();
+  foreach ($id as $docid) {
+    $doc = $pws->getDocument($docid);
+    if (_os2web_doc_field_doc_access($docid)) { // Only show public documents
+      if (isset($doc->Document) && _os2web_case_field_case_access($doc->Record->CaseFileReference)) {
+        $rows[] = array(
+            l($doc->Document->DocumentTitleText, $pws->getDocData($doc->Document->DocumentIdentifier)) . '<span class="documentdate">' . format_date(strtotime($doc->Record->RecordLatestUpdateDate), 'custom', 'd/m/Y') . '</span>',
+        );
+      }
+    }
+  }
+  if (count($rows) == 0) {
+    if ($vars['iscase']) {
+      $html .= '<p>' . t('This case contains no public documents.') . '</p>';
+    }
+    return $html;
+  }
+  /* Hack and slash
+    if (isset($vars['iscase'])&&$vars['iscase']) {
+    $html .= '<p>' . t('This case contains @docs public documents', array('@docs' => count($rows))) . '</p>';
+    }
+    $html .= theme('table', array('header' => $header, 'rows' => $rows)); */
+  $html .= theme('table', array('rows' => $rows));
+  return $html;
+}
+
+function _os2web_doc_field_doc_access($docid) {
+  drupal_load('module', 'os2web_pws');
+  $pws = _os2web_pws_get_instance();
+  $doc = $pws->getDocument($docid);
+  $access_grant = array(
+      'accesscode' => 'KK',
+      'publication' => ACADRE_CM_ACCESS_OPEN_DOCUMENT,
+      'lockstatus' => true,
+  );
+  $access = array(
+      'accesscode' => $doc->Record->AccessCode,
+      'publication' => $doc->Record->PublicationIndicator,
+      'lockstatus' => $pws->getDocLock($docid),
+  );
+  return _os2web_doc_field_array_compare($access, $access_grant);
+}
+
+function _os2web_doc_field_array_compare(array $a1, array $a2) {
+  $result = true;
+  foreach ($a1 as $key => $value) {
+    if (isset($a2[$key]) && $a2[$key] === $value) {
+      $result = $result && true;
+    } else {
+      $result = $result && false;
+    }
+  }
+  return $result;
+}

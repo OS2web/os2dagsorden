@@ -1,4 +1,5 @@
 <?php
+define('ACADRE_CM_ACCESS_OPEN_CASE', '1');
 
 /* Field information hooks */
 
@@ -102,3 +103,63 @@ function os2web_case_field_field_formatter_view($entity_type, $entity, $field, $
   return $element;
 }
 
+function os2web_case_field_theme() {
+  return array(
+      'esdh_case' => array(
+          'variables' => array('id' => FALSE),
+      ),
+  );
+}
+
+function theme_esdh_case($vars) {
+  $id = $vars['id'];
+  drupal_load('module', 'os2web_pws');
+  $pws = _os2web_pws_get_instance();
+  $case = $pws->fetchCase($id);
+  $html = '';
+  if (FALSE === $case) {
+    return FALSE;
+  }
+  $valid = _os2web_case_field_case_access($id);
+  if (!$valid) {
+    $html .= '<p id="casenotpublic">This case is not publicly available.</p>';
+    return $html;
+  }
+  $docs = $pws->getCaseDocs($id);
+  $docids = array();
+  foreach ($docs as $doc) {
+    $docids[] = (int) $doc->Document->DocumentIdentifier;
+  }
+  $html = theme('esdh_document', array('id' => $docids, 'iscase' => true));
+  return $html;
+}
+
+function _os2web_case_field_case_access($caseid) {
+  drupal_load('module', 'os2web_pws');
+  $pws = _os2web_pws_get_instance();
+  $case = $pws->fetchCase($caseid);
+  if (FALSE === $case) {
+    return FALSE;
+  }
+  $access_grant = array(
+      'accesscode' => 'KK',
+      'restricted' => ACADRE_CM_ACCESS_OPEN_CASE,
+  );
+  $access = array(
+      'accesscode' => $case->AccessCode,
+      'restricted' => $case->RestrictedFromPublicText,
+  );
+  return _os2web_case_field_array_compare($access, $access_grant);
+}
+
+function _os2web_case_field_array_compare(array $a1, array $a2) {
+  $result = true;
+  foreach ($a1 as $key => $value) {
+    if (isset($a2[$key]) && $a2[$key] === $value) {
+      $result = $result && true;
+    } else {
+      $result = $result && false;
+    }
+  }
+  return $result;
+}
