@@ -280,8 +280,8 @@ XML;
       $ref = $info['ref'];
       $ver = $info['ver'];
     }
-    $query = db_select('os2web_adlib_api_doc_files', 'df')->fields('df', array('fid'))->condition('did', $ref);
-    $fid = $query->execute()->fetchField();
+    drupal_load('module','os2web_adlib_api');
+    $fid = os2web_adlib_api_get_fid($ref);
     if ($fid > 0) {
 //      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File cached.");
       $result = file_load($fid);
@@ -307,8 +307,6 @@ XML;
           if (file_prepare_directory($dest, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
             $result = file_save_data(base64_decode($result), $dest . (string) $ref . '-' . (string) $ver . '-' . $this->getDocFileName($ref, $ver), FILE_EXISTS_REPLACE);
             if (FALSE != $result) {
-//              $rec = array('fid' => $result->fid, 'did' => $ref);
-//              drupal_write_record('os2web_pws_doc_files', $rec);
               drupal_load('module','os2web_adlib_api');
               os2web_adlib_api_convert_to_pdf($result->fid,$ref);
               $result = file_create_url($result->uri);

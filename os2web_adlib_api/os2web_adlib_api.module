@@ -45,7 +45,9 @@ function os2web_adlib_api_init() {
 /**
  * Main call to queue file for converting.
  *
- *
+ * @param int $fid - fid of a managed file
+ * @param int $docref - arbitrary identifier for later reference (ie. Doc id)
+ * @return boolean
  */
 function os2web_adlib_api_convert_to_pdf($fid, $docref = NULL) {
   if (!_os2web_adlib_api_is_file_pdf($fid)) {
@@ -65,6 +67,16 @@ function os2web_adlib_api_convert_to_pdf($fid, $docref = NULL) {
     error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File already PDF.");
     return FALSE;
   }
+}
+
+/**
+ * Return the fid of a file saved with a reference
+ *
+ * @param int $ref Reference for the file
+ * @return int
+ */
+function os2web_adlib_api_get_fid($ref) {
+    return (int)db_query('SELECT fid FROM {os2web_adlib_api_doc_files} WHERE did=:did',array(':did' => $ref))->fetchField();
 }
 
 /**
