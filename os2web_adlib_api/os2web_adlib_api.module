@@ -32,14 +32,14 @@ function os2web_adlib_api_page() {
  * Implementation of hook_cron()
  */
 function os2web_adlib_api_cron() {
-//  _os2web_adlib_api_process_pdf();
+  _os2web_adlib_api_process_pdf();
 }
 
 /**
  * Implementation of hook_init()
  */
 function os2web_adlib_api_init() {
-//  _os2web_adlib_api_process_pdf(1);
+  _os2web_adlib_api_process_pdf(1);
 }
 
 /**
