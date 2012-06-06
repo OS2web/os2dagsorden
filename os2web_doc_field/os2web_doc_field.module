@@ -1,5 +1,5 @@
 <?php
-define('ACADRE_CM_ACCESS_OPEN_DOCUMENT', '1');
+define('ACADRE_CM_ACCESS_OPEN_DOCUMENT', '3');
 
 /* Field information hooks */
 

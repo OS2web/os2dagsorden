@@ -20,7 +20,6 @@ function os2web_adlib_api_schema() {
               'description' => 'The document identifier from PWS.',
               'type' => 'int',
               'unsigned' => TRUE,
-              'not null' => TRUE,
           ),
           'job_id' => array(
               'description' => 'ID used for the pdf conversion job.',

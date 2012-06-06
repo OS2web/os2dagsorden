@@ -32,7 +32,8 @@ class AdLibWS {
       preg_match('%http://.+?/%', $url, $matches);
       self::$base_url = array_shift($matches);
       try {
-//        $this->client = new SoapClient($url, $options);
+        $this->client = new SoapClient($url, $options);
+        error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Created SOAP client.");
       } catch (Exception $exc) {
         error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $exc = ' . print_r($exc, 1));
       }
@@ -73,6 +74,7 @@ class AdLibWS {
             </JOB:SETTINGS>
           </JOB>
         </JOBS>';
+    error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Added job for file: ".$fileInfo['filename']);
     return simplexml_load_string($this->client->addJob(array('jobInfo' => $jobInfo, 'jobTicket' => $jobTicket))->AddJobResult);
   }
 
@@ -91,15 +93,17 @@ class AdLibWS {
         $return->result = $result;
       }
     } else {
-      $result->status = 'Not found';
+      $return->status = 'Not found';
     }
-    return $result;
+    error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Looked up status for job: ".$id." Status: ".$return->status);
+    return $return;
   }
 
   public function addJobFolder() {
     if ($this->client) {
       $folder_info = simplexml_load_string($this->client->addJobFolder()->AddJobFolderResult);
       $result = 'ExponentJobs\\' . ((string) $folder_info['FolderID']);
+      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Added folder: ".$result);
       return $result;
     }
   }
@@ -129,6 +133,7 @@ class AdLibWS {
         ))->AddJobFilesAsStreamResult;
     $status = (string) simplexml_load_string($status)->System['Status'];
     if (strcmp($status, 'Success') == 0) {
+      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Uploaded file: ".$filename);
       return array(
           'basefolder' => $folder,
           'in_folder' => $folder . '\\Input',
@@ -138,6 +143,7 @@ class AdLibWS {
           'out_filename' => pathinfo($filename, PATHINFO_FILENAME) . '.pdf',
       );
     } else {
+      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Failed to upload: ".$filename);
       return false;
     }
   }

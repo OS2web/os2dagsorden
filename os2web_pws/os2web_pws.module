@@ -104,19 +104,6 @@ function _os2web_pws_get_instance() {
 //  return new AcadrePWSMock();
 }
 
-/**
- * Factory for class instances. This allows easy changing between api classes.
- * TODO: Make this proper plugin-able.
- *
- * @return AdLibWS object
- */
-function _os2web_adlib_get_instance() {
-  module_load_include('inc', 'os2web_pws', 'AdLibWS.class');
-  return new AdLibWS();
-//  module_load_include('inc', 'os2web_pws', 'AcadrePWSMock.class');
-//  return new AcadrePWSMock();
-}
-
 function os2web_pws_case_listing_title($id, $id2 = false) {
   $case = &drupal_static('os2web_pws_case', FALSE);
   if (FALSE === $case) {
