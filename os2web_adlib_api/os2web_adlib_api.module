@@ -78,14 +78,6 @@ function _os2web_adlib_api_get_instance() {
   return new AdLibWS();
 }
 
-/**
- * Implementation of hook_init()
- */
-function os2web_adlib_api_init() {
-//  _os2web_adlib_api_process_pdf(1);
-//  _os2web_adlib_api_cleanup_files();
-}
-
 function _os2web_adlib_api_process_pdf($limit = FALSE) {
 // Locate any finished jobs
   $files = db_select('os2web_adlib_api_doc_files', 'f')
