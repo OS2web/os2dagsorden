@@ -91,7 +91,10 @@ projects[media][subdir] = "contrib"
 projects[media][version] = "1.1"
 
 projects[media_browser_plus][subdir] = "contrib"
-projects[media_browser_plus][version] = "1.0-beta3"
+projects[media_browser_plus][version] = "1.x-dev"
+
+projects[multiform][subdir] = "contrib"
+projects[multiform][version] = "1.0"
 
 projects[media_youtube][subdir] = "contrib"
 projects[media_youtube][version] = "1.0-beta3"
@@ -102,9 +105,6 @@ projects[filefield_sources][version] = "1.4"
 
 projects[filefield_sources_plupload][subdir] = "contrib"
 projects[filefield_sources_plupload][version] = "1.x-dev"
-
-projects[file_entity][subdir] = "contrib"
-projects[file_entity][version] = "2.0-unstable5"
 
 ; Workbench
 projects[workbench][subdir] = "contrib"
@@ -176,8 +176,8 @@ projects[field_slideshow][version] = "1.6"
 projects[libraries][subdir] = "contrib"
 projects[libraries][version] = "1.0"
 
-projects[forward][subdir] = "contrib"
-projects[forward][version] = "1.3"
+; projects[forward][subdir] = "contrib"
+; projects[forward][version] = "1.3"
 
 projects[webform][subdir] = "contrib"
 projects[webform][version] = "3.17"
@@ -203,8 +203,8 @@ projects[menuux][version] = "1.0-beta2"
 projects[wysiwyg][subdir] = "contrib"
 projects[wysiwyg][version] = "2.1"
 
-projects[skinr][subdir] = "contrib"
-projects[skinr][version] = "2.0-beta1"
+; projects[skinr][subdir] = "contrib"
+; projects[skinr][version] = "2.0-beta1"
 
 projects[menu_block][subdir] = "contrib"
 projects[menu_block][version] = "2.3"
@@ -218,8 +218,8 @@ projects[float_filter][version] = "1.0"
 projects[omega_tools][subdir] = "contrib"
 projects[omega_tools][version] = "3.0-rc4"
 
-projects[megamenu][subdir] = "contrib"
-projects[megamenu][version] = "1.x-dev"
+; projects[megamenu][subdir] = "contrib"
+; projects[megamenu][version] = "1.x-dev"
 
 projects[rel][subdir] = "contrib"
 projects[rel][version] = "1.0-alpha1"
@@ -260,11 +260,11 @@ projects[imagefield_crop][version] = "1.0"
 projects[linkit][subdir] = "contrib"
 projects[linkit][version] = "2.5"
 
-projects[hierarchical_select][subdir] = "contrib"
-projects[hierarchical_select][version] = "3.0-alpha5"
+; projects[hierarchical_select][subdir] = "contrib"
+; projects[hierarchical_select][version] = "3.0-alpha5"
 
-projects[subdomain][subdir] = "contrib"
-projects[subdomain][version] = "2.0-beta2"
+; projects[subdomain][subdir] = "contrib"
+; projects[subdomain][version] = "2.0-beta2"
 
 projects[multistep][subdir] = "contrib"
 projects[multistep][version] = "1.x-dev"
@@ -281,13 +281,6 @@ projects[feeds][patch][] = "http://drupal.org/files/feeds-taxonomy-text-format-1
 projects[feeds_xpathparser][subdir] = "contrib"
 projects[feeds_xpathparser][version] = "1.0-beta3"
 
-<<<<<<< HEAD
-; Morten, Solr
-projects[apachesolr][version] = "1.0-beta19"
-projects[apachesolr_autocomplete][version] = "1.2"
-projects[apachesolr_attachments][version] = "1.0"
-
-=======
 projects[entityreference][subdir] = "contrib"
 projects[entityreference][version] = "1.0-rc1"
 
@@ -325,8 +318,8 @@ projects[apachesolr][version] = "1.0-beta19"
 projects[apachesolr_views][subdir] = "contrib"
 projects[apachesolr_views][version] = "1.0-beta1"
 
-projects[apachesolr_autocomplete][subdir] = "contrib"
-projects[apachesolr_autocomplete][version] = "1.2"
+; projects[apachesolr_autocomplete][subdir] = "contrib"
+; projects[apachesolr_autocomplete][version] = "1.2"
 
 projects[apachesolr_attachments][subdir] = "contrib"
 projects[apachesolr_attachments][version] = "1.0"
@@ -363,7 +356,6 @@ projects[custom_search][version] = "1.9"
 
 projects[chart][subdir] = "contrib"
 projects[chart][version] = "1.1"
->>>>>>> dev
 
 ; Themes
 
