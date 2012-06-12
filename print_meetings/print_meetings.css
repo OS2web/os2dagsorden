@@ -23,6 +23,10 @@ width: 100%;
 font-size:10px;
 }
 
+table.print-meetings-form{
+margin-bottom:10px;
+}
+
 .valign_top {
 vertical-align: top;
 }
@@ -39,3 +43,5 @@ background-color: #cdc9c9 !important;
 div.print-meetings-content{
     margin: 0px 5px 0px 5px;
 }
+
+

@@ -5,7 +5,7 @@ core = 7.x
 configure = admin/config/os2web/meetings
 tags[] = os2web
 
-dependencies[]=os2web_settings
+;dependencies[]=os2web_settings
 
 ; Information added by drush on 2012-04-17
 version = "dev"

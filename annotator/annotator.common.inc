@@ -1,6 +1,6 @@
 <?php
   //globals
-  $GLOBALS['IP_ADDRESS'] = '192.168.1.102';
+  $GLOBALS['IP_ADDRESS'] = '192.168.1.109';
   $GLOBALS['PORT_NR'] = '5000';
 
 function annotator_get_notes_by_attachment_id($bilag_id){

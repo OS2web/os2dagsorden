@@ -12,9 +12,15 @@ function print_meetings_menu() {
     return $items;
 }
 
-function _print_meetings_callback() {        
+function _print_meetings_callback() {
+    global $base_url;
+    $breadcrumb[] = l('Hjem', $base_url);
+    $breadcrumb[] .= '<span class="breadcrumb-active">Print mødekalendar</span>';
+    drupal_set_breadcrumb($breadcrumb);
+
     drupal_add_css(drupal_get_path('module', 'print_meetings') . '/print_meetings.css');
-  
+    drupal_add_css(drupal_get_path('theme', 'syddjurs_omega_subtheme') . '/css/global.css');
+
     return drupal_get_form('_print_meetings_form');      
 }
 
@@ -60,34 +66,6 @@ function _print_meetings_form($form, &$form_state){
         '#submit' => array('_print_meetings_form_submit_2_half'),
         '#value' => t('Hent tabelen for det sidste halv år'),
         );
-        
-        
-        //$form['from_month'] = array(
-        //   '#type' => 'select',
-        //   '#title' => t('Fra Måned'),
-        //   '#options' => print_meetings_get_months(),
-        //   '#default_value' => $from_month, 
-        //);
-        //$form[] = array(
-        //    '#markup' => '</td><td>'
-        //);
-        //
-        //$form['to_month'] = array(
-        //   '#type' => 'select',
-        //   '#title' => t('Til Måned'),
-        //   '#options' => print_meetings_get_months(),
-        //   '#default_value' => $to_month, 
-        //);
-        //
-        //$form[] = array(
-        //    '#markup' => '</td><td>'
-        //);
-        //
-        //$form['submit'] = array(
-        //'#type' => 'submit',
-        //'#submit' => array('_print_meetings_form_submit'),
-        //'#value' => t('Hent tabelen'),
-        //);
         
         $form[] = array(
             '#markup' => '</td><td>'
@@ -180,6 +158,7 @@ function print_meetings_generate_month_headers($from_month,$to_month){
 }
 
 function print_meetings_generate_month($from_month, $to_month, $meetings){
+    global $base_url;
     $html = "<tr>";
     for ($month = $from_month; $month <= $to_month; $month++){
         $html .= "<td width='16.6%' class='no-pad valign_top'>";
@@ -192,7 +171,15 @@ function print_meetings_generate_month($from_month, $to_month, $meetings){
           //filling with the content
           foreach ($meetings as $met){
               if (substr($met->field_date['und'][0]['value'], 0,10) === date('Y-m-d',mktime(0, 0, 0, $month, $i, date("Y")))){
-                  $html .= $met->field_meeting_abbr['und'][0]['value'].", ";
+		 $link = $base_url.'?q=meeting/'.$met->nid;
+
+		 $committee = taxonomy_term_load($met->field_committee['und'][0]['tid']);
+                 if (!empty($committee->field_committee_abbr['und'][0]['value']))
+	                  $html .= '<a href="'.$link.'"><span class="color_'.$met->field_hex['und'][0]['value'].'">'.$committee->field_committee_abbr['und'][0]['value'].'</span></a>, ';
+                 else if (!empty($met->field_title_short['und'][0]['value']))
+			  $html .= '<a href="'.$link.'"><span class="color_'.$met->field_hex['und'][0]['value'].'">'.$met->field_title_short['und'][0]['value'].'</span></a>, ';
+		 else
+			  $html .= '<a href="'.$link.'"><span class="color_'.$met->field_hex['und'][0]['value'].'">'.$met->title.'</span></a>, ';
               }
           }
           //end of content

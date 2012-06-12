@@ -36,6 +36,14 @@ function _annotator_check_permission($meeting_id, $bullet_point_id, $bilag_id){
 }
 
 function _annotator_view($meeting_id, $bullet_point_id, $bilag_id) {
+    global $base_url;
+    $q = explode('/',$_GET['q']);
+    $breadcrumb[] = l('Hjem', $base_url);
+    $breadcrumb[] .= l('Mødedetaljer', 'meeting/'.$q[1]);
+    $breadcrumb[] .= l('Dagsordensdetaljer', 'meeting/'.$q[1].'/bullet-point/'.$q[3]);
+    $breadcrumb[] .= '<span class="breadcrumb-active">Bilag</span>';
+    drupal_set_breadcrumb($breadcrumb);
+
     $bilag = node_load($bilag_id);
     if (strcmp($bilag->type, 'bullet_point_attachment') == 0){
       //drupal_add_js(drupal_get_path('module', 'annotator') . '/lib/jquery.min.js');
@@ -44,7 +52,8 @@ function _annotator_view($meeting_id, $bullet_point_id, $bilag_id) {
       drupal_add_js(drupal_get_path('module', 'annotator') . '/lib/json2.js');
 
       drupal_add_js(drupal_get_path('module', 'annotator') . '/annotator.js');
-      
+      //drupal_add_js(drupal_get_path('module', 'annotator') . '/annotator_secure.js');
+
       global $user;
       drupal_add_js('init("'.$user->name.'","'.$meeting_id.'","'.$bullet_point_id.'","'.$bilag_id.'");', 'inline');
 
@@ -52,7 +61,7 @@ function _annotator_view($meeting_id, $bullet_point_id, $bilag_id) {
       drupal_add_css(drupal_get_path('module', 'annotator') . '/lib/annotator-full.min.css');
     
       drupal_set_title('Bilag - '.$bilag->title);
-      $text = $bilag->field_bpa_body['und'][0]['value'];
+      $text = $bilag->field_bpa_body['und'][0]['safe_value'];
     }
     $link = $GLOBALS['base_path'].'?q=/print/meeting/'.$meeting_id.'/bullet-point/'.$bullet_point_id.'/bullet-point-attachment/'.$bilag_id.'/print';
     

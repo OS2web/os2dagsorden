@@ -68,6 +68,7 @@ function os2web_meetings_order_addenums() {
   foreach ($meetings as $meeting) {
     ksort($meeting); // Lowest system id first
     $primary = array_shift($meeting); // Lowest system id is primary
+    $addenums = array();
     while ($next = array_shift($meeting)) {
       // Set up references for addenum agendas
       $node = $nodes[$next];
@@ -154,11 +155,11 @@ function _os2web_meetings_publish_meeting($info, $xml) {
 
   //FIXME: Verify this list!
   $no_publish_committee = array(
-//      'Direktionsmøde',
-      'Direktions og afdelingschef møde',
-      'Rådhusmad',
-      'Testudvalg',
-      'Nedlagte udvalg',
+//       'Direktionsmøde',
+//       'Direktions og afdelingschef møde',
+//       'Rådhusmad',
+//       'Testudvalg',
+//       'Nedlagte udvalg',
   );
 
   //TODO: Look for previously imported version to update
@@ -187,8 +188,7 @@ function _os2web_meetings_publish_meeting($info, $xml) {
       ->execute()
       ->fetchObject();
   if (isset($nid->nid) && $nid->nid > 0) {
-//    return; // No reimports
-//    node_delete($nid->nid);
+    node_delete($nid->nid);
   }
 
   $node = new stdClass(); // We create a new node object
@@ -220,15 +220,15 @@ function _os2web_meetings_publish_meeting($info, $xml) {
   $node->field_location[LANGUAGE_NONE][0]['tid'] = $location_term->tid;
 
 
-  $movie_id = _os2web_qbrick_get_movie_id($node);
-  if ($movie_id != FALSE) {
-    $info['movie_id'] = $movie_id;
-    $info['movie_chapters'] = _os2web_qbrick_get_chapters($movie_id);
-    $node->field_qbrick_ref[$node->language][0]['id'] = $movie_id;
-    $node->field_qbrick_ref[$node->language][0]['seek'] = 0;
-  } else {
-    $node->field_qbrick_ref = array();
-  }
+//   $movie_id = _os2web_qbrick_get_movie_id($node);
+//   if ($movie_id != FALSE) {
+//     $info['movie_id'] = $movie_id;
+//     $info['movie_chapters'] = _os2web_qbrick_get_chapters($movie_id);
+//     $node->field_qbrick_ref[$node->language][0]['id'] = $movie_id;
+//     $node->field_qbrick_ref[$node->language][0]['seek'] = 0;
+//   } else {
+//     $node->field_qbrick_ref = array();
+//   }
 
 
   //Add nodes for each bullet
@@ -262,6 +262,7 @@ function _os2web_meetings_add_item($info, $xml, $id) {
   $options = array(
       'sysid' => (int) array_shift($xml->xpath("fields/field[@name='sysid']")),
       'name' => (string) array_shift($xml->xpath("fields/field[@name='name']")),
+      'accessname' => (string) array_shift($xml->xpath("fields/field[@name='accessname']")),
   );
 
 
@@ -278,19 +279,31 @@ function _os2web_meetings_add_item($info, $xml, $id) {
   $node->language = LANGUAGE_NONE; // Or any language code if Locale module is enabled. More on this below *
   $node->uid = 1; // Or any id you wish
   $node->title = 'Punkt ' . $id . ' ' . $options['name'];
+  
   node_object_prepare($node); // Set some default values.
 
-  if (isset($info['movie_id']) && is_numeric($info['movie_chapters'][$id])) {
-    $node->field_qbrick_ref[$node->language][0]['id'] = $info['movie_id'];
-    $node->field_qbrick_ref[$node->language][0]['seek'] = $info['movie_chapters'][$id];
+  //Stan added chech for closed bullet point
+  if (strcmp($options['accessname'],'Lukket') == 0){
+    $node->field_bul_point_closed[$node->language][0]['value'] = 1;
+    print_r($node);
+    print_r('<br/>');
   }
+  else {
+    $node->field_bul_point_closed[$node->language][0]['value'] = 0;
+  }
+  //
+
+//   if (isset($info['movie_id']) && is_numeric($info['movie_chapters'][$id])) {
+//     $node->field_qbrick_ref[$node->language][0]['id'] = $info['movie_id'];
+//     $node->field_qbrick_ref[$node->language][0]['seek'] = $info['movie_chapters'][$id];
+//   }
 
   foreach ($nids as $nid) {
     $node->field_ref_attachment[LANGUAGE_NONE][]['target_id'] = $nid;
   }
 
   //TODO: Gather enclosures
-  $enclosures = $xml->xpath("table[@name='enclosure']");
+/*  $enclosures = $xml->xpath("table[@name='enclosure']");
   foreach ($enclosures as $enclosure) {
     $filename = (string) array_shift($enclosure->xpath("fields/field[@name='filename']"));
     $uri = implode('/', array(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), $info['filesfolder'], $filename));
@@ -312,12 +325,8 @@ function _os2web_meetings_add_item($info, $xml, $id) {
     $file->status = FILE_STATUS_PERMANENT;
     $file = file_save($file);
 
-    // Schedule for PDF conversion
-    drupal_load('module','os2web_adlib_api');
-    os2web_adlib_api_convert_to_pdf($file->fid);
-
     $node->field_enclosures[$node->language][] = (array) $file;
-  }
+  }*/
   node_submit($node);
   node_save($node);
 
@@ -468,7 +477,7 @@ function os2web_meetings_node_delete($node) {
     }
     if (isset($node->field_enclosures[$node->language])) {
       foreach ($node->field_enclosures[$node->language] as $file) {
-      file_delete((object) $file, true);
+//      file_delete((object) $file, true);
       }
     }
   }
