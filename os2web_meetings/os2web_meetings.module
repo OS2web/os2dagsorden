@@ -68,7 +68,6 @@ function os2web_meetings_order_addenums() {
   foreach ($meetings as $meeting) {
     ksort($meeting); // Lowest system id first
     $primary = array_shift($meeting); // Lowest system id is primary
-    $addenums = array();
     while ($next = array_shift($meeting)) {
       // Set up references for addenum agendas
       $node = $nodes[$next];
@@ -155,11 +154,11 @@ function _os2web_meetings_publish_meeting($info, $xml) {
 
   //FIXME: Verify this list!
   $no_publish_committee = array(
-//       'Direktionsmøde',
-//       'Direktions og afdelingschef møde',
-//       'Rådhusmad',
-//       'Testudvalg',
-//       'Nedlagte udvalg',
+//      'Direktionsmøde',
+      'Direktions og afdelingschef møde',
+      'Rådhusmad',
+      'Testudvalg',
+      'Nedlagte udvalg',
   );
 
   //TODO: Look for previously imported version to update
@@ -188,18 +187,29 @@ function _os2web_meetings_publish_meeting($info, $xml) {
       ->execute()
       ->fetchObject();
   if (isset($nid->nid) && $nid->nid > 0) {
-    node_delete($nid->nid);
+//    return; // No reimports
+//    node_delete($nid->nid);
   }
 
-  $node = new stdClass(); // We create a new node object
-  $node->type = "meeting"; // Or any other content type you want
-  $node->language = LANGUAGE_NONE; // Or any language code if Locale module is enabled. More on this below *
-  $node->uid = 1; // Or any id you wish
+  $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+      ->fieldCondition('field_meeting_id', 'value', intval($options['meeting_id']), '=');
+
+  $result = $query->execute();
+  if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+    $node = reset(entity_load('node', $nids));
+  } else {
+    $node = new stdClass();
+    $node->type = "meeting";
+    $node->language = LANGUAGE_NONE;
+    
+    node_object_prepare($node);
+  }
 
   $node->title = $options['title'];
   $node->path = array('alias' => 'agenda/' . $options['id']); // Setting a node path
-  node_object_prepare($node); // Set some default values.
-
+  
   $node->created = $options['cdate'];
   // Let's add standard body field
   $node->field_meeting_abbr[$node->language][0]['value'] = $options['description'];
@@ -212,24 +222,25 @@ function _os2web_meetings_publish_meeting($info, $xml) {
   $node->field_date[$node->language][0]['date_type'] = 'datetime';
   // Proper id tagging
   $node->field_meeting_id[$node->language][0]['value'] = $options['meeting_id'];
-  $node->field_system_id[$node->language][0]['value'] = $options['id'];
   // Make sure the committee term is created and get the term.
   $committee_term = _os2web_meetings_import_committee(array_shift($xml->xpath("//table[@name='committee']")));
   $node->field_committee[LANGUAGE_NONE][0]['tid'] = $committee_term->tid;
   $location_term = _os2web_meetings_import_location(array_shift($xml->xpath("//table[@name='meeting']")));
   $node->field_location[LANGUAGE_NONE][0]['tid'] = $location_term->tid;
 
+  if (module_exists('os2web_qbrick')){
+    $movie_id = _os2web_qbrick_get_movie_id($node);
+    if ($movie_id != FALSE) {
+      $info['movie_id'] = $movie_id;
+      $info['movie_chapters'] = _os2web_qbrick_get_chapters($movie_id);
+      $node->field_qbrick_ref[$node->language][0]['id'] = $movie_id;
+      $node->field_qbrick_ref[$node->language][0]['seek'] = 0;
+    } else {
+      $node->field_qbrick_ref = array();
+    }
+  }
 
-//   $movie_id = _os2web_qbrick_get_movie_id($node);
-//   if ($movie_id != FALSE) {
-//     $info['movie_id'] = $movie_id;
-//     $info['movie_chapters'] = _os2web_qbrick_get_chapters($movie_id);
-//     $node->field_qbrick_ref[$node->language][0]['id'] = $movie_id;
-//     $node->field_qbrick_ref[$node->language][0]['seek'] = 0;
-//   } else {
-//     $node->field_qbrick_ref = array();
-//   }
-
+  
 
   //Add nodes for each bullet
 //  $items = $xml->xpath("//table[@name='agendaitem']");
@@ -245,11 +256,13 @@ function _os2web_meetings_publish_meeting($info, $xml) {
   foreach ($item_nids as $nid) {
     $node->field_ref_bullet_points[$node->language][]['target_id'] = $nid;
   }
-
+  
+    
   // Add items to meeting node.
   // Save the meeting node.
   node_submit($node);
   node_save($node);
+  
   //TODO: add reference to the os2web_meetings_import table
   $record = array(
       'nid' => $node->nid,
@@ -262,7 +275,6 @@ function _os2web_meetings_add_item($info, $xml, $id) {
   $options = array(
       'sysid' => (int) array_shift($xml->xpath("fields/field[@name='sysid']")),
       'name' => (string) array_shift($xml->xpath("fields/field[@name='name']")),
-      'accessname' => (string) array_shift($xml->xpath("fields/field[@name='accessname']")),
   );
 
 
@@ -274,36 +286,46 @@ function _os2web_meetings_add_item($info, $xml, $id) {
     // Add node for each bullet
     $nids[] = _os2web_meetings_add_bullet($bullet);
   }
-  $node = new stdClass();
-  $node->type = "bullet_point"; // Or any other content type you want
-  $node->language = LANGUAGE_NONE; // Or any language code if Locale module is enabled. More on this below *
-  $node->uid = 1; // Or any id you wish
-  $node->title = 'Punkt ' . $id . ' ' . $options['name'];
-  
-  node_object_prepare($node); // Set some default values.
 
-  //Stan added chech for closed bullet point
+  $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+      ->fieldCondition('field_bullet_point_id', 'value', intval($options['sysid']), '=');
+
+  $result = $query->execute();
+  if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+    $node = reset(entity_load('node', $nids));
+  } else {
+    $node = new stdClass();
+    $node->type = "bullet_point";
+    $node->language = LANGUAGE_NONE;
+    
+    node_object_prepare($node);
+
+    $node->field_bullet_point_id[$node->language][0]['value'] = $options['sysid'];
+  }
+
+
+  $node->title = 'Punkt ' . $id . ' ' . $options['name'];
+
   if (strcmp($options['accessname'],'Lukket') == 0){
     $node->field_bul_point_closed[$node->language][0]['value'] = 1;
-    print_r($node);
-    print_r('<br/>');
   }
   else {
     $node->field_bul_point_closed[$node->language][0]['value'] = 0;
   }
-  //
-
-//   if (isset($info['movie_id']) && is_numeric($info['movie_chapters'][$id])) {
-//     $node->field_qbrick_ref[$node->language][0]['id'] = $info['movie_id'];
-//     $node->field_qbrick_ref[$node->language][0]['seek'] = $info['movie_chapters'][$id];
-//   }
+  
+  if (isset($info['movie_id']) && is_numeric($info['movie_chapters'][$id])) {
+    $node->field_qbrick_ref[$node->language][0]['id'] = $info['movie_id'];
+    $node->field_qbrick_ref[$node->language][0]['seek'] = $info['movie_chapters'][$id];
+  }
 
   foreach ($nids as $nid) {
     $node->field_ref_attachment[LANGUAGE_NONE][]['target_id'] = $nid;
   }
 
   //TODO: Gather enclosures
-/*  $enclosures = $xml->xpath("table[@name='enclosure']");
+  $enclosures = $xml->xpath("table[@name='enclosure']");
   foreach ($enclosures as $enclosure) {
     $filename = (string) array_shift($enclosure->xpath("fields/field[@name='filename']"));
     $uri = implode('/', array(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), $info['filesfolder'], $filename));
@@ -325,8 +347,14 @@ function _os2web_meetings_add_item($info, $xml, $id) {
     $file->status = FILE_STATUS_PERMANENT;
     $file = file_save($file);
 
+    // Schedule for PDF conversion
+    if (module_exists('os2web_adlib_api')){
+      drupal_load('module','os2web_adlib_api');
+      os2web_adlib_api_convert_to_pdf($file->fid);
+    }
+
     $node->field_enclosures[$node->language][] = (array) $file;
-  }*/
+  }
   node_submit($node);
   node_save($node);
 
@@ -349,18 +377,30 @@ function _os2web_meetings_add_bullet(SimpleXMLElement $xml) {
       'weight' => (int) array_shift($xml->xpath("fields/field[@name='bulletsortorder']")),
       'lastbullet' => (int) array_shift($xml->xpath("fields/field[@name='lastbullet']")),
   );
-  $node = new stdClass();
-  $node->type = "bullet_point_attachment"; // Or any other content type you want
-  $node->language = LANGUAGE_NONE; // Or any language code if Locale module is enabled. More on this below *
-  $node->uid = 1; // Or any id you wish
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+      ->fieldCondition('field_bpa_id', 'value', intval($options['sysid']), '=');
+
+  $result = $query->execute();
+  if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+    $node = reset(entity_load('node', $nids));
+  } else {
+    $node = new stdClass();
+    $node->type = "bullet_point_attachment";
+    $node->language = LANGUAGE_NONE;
+    
+    node_object_prepare($node);
+    $node->field_bpa_id[$node->language][0]['value'] = $options['sysid'];
+  }
 
   $node->title = $options['name'];
 
-  node_object_prepare($node); // Set some default values.
   // Let's add standard body field
   $node->field_bpa_body[$node->language][0]['value'] = $options['content'];
   $node->field_bpa_body[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field
-//  $node->field_weight[LANGUAGE_NONE][0]['value'] = $options['weight'];
+  
 
   node_submit($node);
   node_save($node);
@@ -377,28 +417,42 @@ function _os2web_meetings_add_bullet(SimpleXMLElement $xml) {
 function _os2web_meetings_import_committee(SimpleXMLElement $xml) {
   //TODO: Process members of the committee.
   //FIXME: MAke vocab name configurable.
+
+  $options = array(
+    'name' => (string) array_shift($xml->xpath("fields/field[@name='name']")),
+    'description' => (string) array_shift($xml->xpath("fields/field[@name='description']")),
+    'dept_id' => (int) array_shift($xml->xpath("fields/field[@name='deptid']")),
+    'dept_name' => (string) array_shift($xml->xpath("fields/field[@name='departmentName']")),
+    'acadre_id' => (int) array_shift($xml->xpath("fields/field[@name='sysid']"))
+  );
+  
   $vid = db_select('taxonomy_vocabulary', 'tv')
       ->fields('tv', array('vid'))
       ->condition('machine_name', 'committee')
       ->execute()
       ->fetchField();
 
-  $term = new stdClass();
-  $term->vid = $vid;
-  $term->name = (string) array_shift($xml->xpath("fields/field[@name='name']"));
-  $term->description = (string) array_shift($xml->xpath("fields/field[@name='description']"));
-  $term->field_department_id[LANGUAGE_NONE][0]['value'] = (int) array_shift($xml->xpath("fields/field[@name='deptid']"));
-  $term->field_department_name[LANGUAGE_NONE][0]['value'] = (string) array_shift($xml->xpath("fields/field[@name='departmentName']"));
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'taxonomy_term')
+      ->propertyCondition('vid', $vid)
+      ->fieldCondition('field_committee_acadre_id', 'value', intval($options['acadre_id']), '=');
 
-  $tid = db_select('taxonomy_term_data', 'td')
-          ->fields('td', array('tid'))
-          ->condition('name', $term->name)
-          ->condition('vid', $term->vid)
-          ->execute()->fetchObject();
-
-  if (isset($tid->tid) && $tid->tid > 0) {
-    $term->tid = (int) $tid->tid;
+  $result = $query->execute();
+  if (isset($result['taxonomy_term'])) {
+    $tids = array_keys($result['taxonomy_term']);
+    $term = taxonomy_term_load($tids[0]);
+  } else {
+    $term = new stdClass();
+    $term->vid = $vid;
+    $term->language = LANGUAGE_NONE;
   }
+
+  $term->name = $options['name'];
+  $term->description = $options['description'];
+  //$term->field_department_id[LANGUAGE_NONE][0]['value'] = $options['dept_id'];
+  //$term->field_department_name[LANGUAGE_NONE][0]['value'] = $options['dept_name'];
+  $term->field_committee_acadre_id[LANGUAGE_NONE][0]['value'] = $options['acadre_id'];
+
   taxonomy_term_save($term);
 
   return $term;
@@ -477,7 +531,7 @@ function os2web_meetings_node_delete($node) {
     }
     if (isset($node->field_enclosures[$node->language])) {
       foreach ($node->field_enclosures[$node->language] as $file) {
-//      file_delete((object) $file, true);
+      file_delete((object) $file, true);
       }
     }
   }
