@@ -1,0 +1,465 @@
+<?php
+
+define('DEFAULT_ACADRE_VIEWS_IMPORT_DIR', 'public://acadre_views');
+
+function os2web_importer_menu() {
+  $items = array();
+  $items['os2web/test/import'] = array(
+      'page callback' => 'os2web_importer_test_page',
+      'access arguments' => array('administer os2web'),
+      'type' => MENU_CALLBACK,
+  );
+
+  $items['os2web/sync'] = array(
+      'page callback' => 'os2web_importer_sync',
+      'access arguments' => array('administer os2web'),
+      'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function os2web_importer_test_page() {
+  global $debug_info;
+  
+  $userCommittees = simplexml_load_file(drupal_realpath(DEFAULT_ACADRE_VIEWS_IMPORT_DIR.'/V_web_MeetingGroups.xml'));
+  _os2web_importer_process_user_committees($userCommittees);//TODO: handle removing the content, question
+
+  $acadreGroups = simplexml_load_file(drupal_realpath(DEFAULT_ACADRE_VIEWS_IMPORT_DIR.'/V_web_AcadreGroups.xml'));
+  _os2web_importer_process_committees($acadreGroups);//TODO: handle removing the content, question
+
+  $meetings = simplexml_load_file(drupal_realpath(DEFAULT_ACADRE_VIEWS_IMPORT_DIR.'/V_web_Meetings.xml'));
+  _os2web_importer_process_meetings($meetings);//TODO: handle removing the content, question
+
+  return '<div><textarea cols="150" rows=50>' . print_r($debug_info, 1) . '</textarea>';
+}
+
+function os2web_importer_sync(){
+  //os2web_importer_import_user_committees();
+  os2web_importer_import_committees();
+  //os2web_importer_import_meetings();
+}
+
+function os2web_importer_cron(){
+//   os2web_importer_import_user_committees();
+//   os2web_importer_import_committees();
+//   os2web_importer_import_meetings();
+}
+
+function os2web_importer_import_user_committees() {
+  $url = curl_init(variable_get('os2web_pws_v_meetinggroups_url'));
+  
+  if (variable_get('os2web_pws_proxy')) {
+          curl_setopt($url, CURLOPT_PROXY, variable_get('os2web_pws_proxy_host'));
+          curl_setopt($url, CURLOPT_PROXYPORT, variable_get('os2web_pws_proxy_port'));
+          curl_setopt($url, CURLOPT_HTTPPROXYTUNNEL, TRUE);
+  }
+
+  curl_setopt($url, CURLOPT_RETURNTRANSFER, TRUE);
+  $userCommittees_raw = curl_exec($url);
+  
+  $userCommittees = new SimpleXMLElement($userCommittees_raw);
+  _os2web_importer_process_user_committees($userCommittees);
+}
+
+function os2web_importer_import_committees() {
+  $url = curl_init(variable_get('os2web_pws_v_acadregroups_url'));
+ 
+  if (variable_get('os2web_pws_proxy')) {
+          curl_setopt($url, CURLOPT_PROXY, variable_get('os2web_pws_proxy_host'));
+          curl_setopt($url, CURLOPT_PROXYPORT, variable_get('os2web_pws_proxy_port'));
+          curl_setopt($url, CURLOPT_HTTPPROXYTUNNEL, TRUE);
+  }
+
+  curl_setopt($url, CURLOPT_RETURNTRANSFER, TRUE);
+  $acadreGroups_raw = curl_exec($url);
+  $acadreGroups = new SimpleXMLElement($acadreGroups_raw);
+  _os2web_importer_process_committees($acadreGroups);
+}
+
+function os2web_importer_import_meetings() {
+  $url = curl_init(variable_get('os2web_pws_v_meetings_url'));
+ 
+  if (variable_get('os2web_pws_proxy')) {
+          curl_setopt($url, CURLOPT_PROXY, variable_get('os2web_pws_proxy_host'));
+          curl_setopt($url, CURLOPT_PROXYPORT, variable_get('os2web_pws_proxy_port'));
+          curl_setopt($url, CURLOPT_HTTPPROXYTUNNEL, TRUE);
+  }
+  curl_setopt($url, CURLOPT_RETURNTRANSFER, TRUE);
+  $meetings_raw = curl_exec($url);
+  $meetings = new SimpleXMLElement($meetings_raw);
+  _os2web_importer_process_meetings($meetings);
+}
+
+function _os2web_importer_process_user_committees($xml_file){
+  $result = $xml_file->xpath('//Row');
+  
+  foreach ($result as $row){
+    $xml_data = array(
+	'user_pos_id' => (int) array_shift($row->xpath('SystemID')),
+	'committee_id' => (int) array_shift($row->xpath('GroupID')),
+	'committee_name' => (string) array_shift($row->xpath('GroupLongName')),
+	'follower_id' => (int) array_shift($row->xpath('FollowerID')),
+	'follower_plus_id' => (int) array_shift($row->xpath('FollowerPlusID')),
+	'member_id' => (int) array_shift($row->xpath('MemberID')),
+	'role' => (string) array_shift($row->xpath('Role')),
+	'role_priority' => (int) array_shift($row->xpath('RolePriority')),
+	'deactivated' => (int) array_shift($row->xpath('Deactivated')),
+    );
+ 
+    //getting user
+    $user = '';
+    if ($xml_data['member_id'] != 0){
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'user')
+      ->fieldCondition('field_user_id', 'value', intval($xml_data['member_id']), '=');
+
+      $result = $query->execute();
+      if (isset($result['user'])) {
+	$uids = array_keys($result['user']);
+	$user = reset(entity_load('user', $uids));
+      }
+    }
+    if ($xml_data['follower_id'] != 0){
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'user')
+      ->fieldCondition('field_user_id', 'value', intval($xml_data['follower_id']), '=');
+
+      $result = $query->execute();
+      if (isset($result['user'])) {
+	$uids = array_keys($result['user']);
+	$user = reset(entity_load('user', $uids));
+      }
+    }
+    if ($xml_data['follower_plus_id'] != 0){
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'user')
+      ->fieldCondition('field_user_id', 'value', intval($xml_data['follower_plus_id']), '=');
+
+      $result = $query->execute();
+      if (isset($result['user'])) {
+	$uids = array_keys($result['user']);
+	$user = reset(entity_load('user', $uids));
+      }
+    }
+    
+    if ($xml_data['deactivated'] == 0){
+      //create user role
+      if (isset($xml_data['role']) && !empty($user)){
+	$tid = _os2web_importer_create_user_role($xml_data);
+	//update user if needed
+	_os2web_importer_add_role_to_user($tid, $user);
+      }
+
+      //create committee
+      if ($xml_data['committee_id'] != 0){
+	$tid = _os2web_importer_create_committee($xml_data);
+	if ($xml_data['member_id'] != 0 && !empty($user)){
+	  //add committee to user
+	  _os2web_importer_add_committee_to_user($tid, $user);
+	}
+	if ($xml_data['follower_id'] != 0 && !empty($user)){
+	  //add user follows committee
+	  _os2web_importer_add_user_follows_committee($tid, $user);
+	}
+	if ($xml_data['follower_plus_id'] != 0 && !empty($user)){
+	  //add user follows committee PLUS
+	  _os2web_importer_add_user_follows_committee_plus($tid, $user);
+	}
+      }
+    } else {
+      //deleting role
+      _os2web_importer_delete_user_role($xml_data);
+    }
+    
+  }
+}
+
+function _os2web_importer_create_user_role($xml_data){
+  $vid = db_select('taxonomy_vocabulary', 'tv')
+      ->fields('tv', array('vid'))
+      ->condition('machine_name', 'user_position')
+      ->execute()
+      ->fetchField();
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'taxonomy_term')
+      ->propertyCondition('vid', $vid)
+      ->fieldCondition('field_user_pos_id', 'value', intval($xml_data['user_pos_id']), '=');
+
+  $result = $query->execute();
+  if (isset($result['taxonomy_term'])) {
+    $tids = array_keys($result['taxonomy_term']);
+    $tid = reset($tids);
+    $term = taxonomy_term_load($tid);    
+  } else {
+    $term = new stdClass();
+    $term->vid = $vid;
+    $term->field_user_pos_id['und'][0]['value'] = $xml_data['user_pos_id'];
+  }
+
+  $term->name = $xml_data['role'];
+  $term->field_priority['und'][0]['value'] = $xml_data['role_priority'];
+
+  taxonomy_term_save($term);
+  
+  return $term->tid;
+}
+
+function _os2web_importer_delete_user_role($xml_data){
+  $vid = db_select('taxonomy_vocabulary', 'tv')
+      ->fields('tv', array('vid'))
+      ->condition('machine_name', 'user_position')
+      ->execute()
+      ->fetchField();
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'taxonomy_term')
+      ->propertyCondition('vid', $vid)
+      ->fieldCondition('field_user_pos_id', 'value', intval($xml_data['user_pos_id']), '=');
+
+  $result = $query->execute();
+  if (isset($result['taxonomy_term'])) {
+    $tids = array_keys($result['taxonomy_term']);
+    $tid = reset($tids);
+    taxonomy_term_delete($tid);    
+  }
+
+}
+
+function _os2web_importer_add_role_to_user($tid, $user){
+  $user_has_this_role = false;
+  if (isset($user->field_user_positions['und'])){
+    foreach ($user->field_user_positions['und'] as $position_id){  
+      if (intval($tid) == $position_id['tid']){
+	$user_has_this_role = true;
+      }
+    }
+  }
+  
+  if (!$user_has_this_role){
+    $user_positions = $user->field_user_positions;
+    $user_positions['und'][]['tid'] = $tid;
+
+    $edit = array(
+      'field_user_positions' => $user_positions,
+    );
+
+    user_save($user, $edit);
+  }
+}
+
+function _os2web_importer_create_committee($xml_data){
+  $vid = db_select('taxonomy_vocabulary', 'tv')
+      ->fields('tv', array('vid'))
+      ->condition('machine_name', 'committee')
+      ->execute()
+      ->fetchField();
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'taxonomy_term')
+      ->propertyCondition('vid', $vid)
+      ->fieldCondition('field_id', 'value', intval($xml_data['committee_id']), '=');
+
+  $result = $query->execute();
+  if (isset($result['taxonomy_term'])) {
+    $tids = array_keys($result['taxonomy_term']);
+    $tid = reset($tids);
+    $term = taxonomy_term_load($tid);    
+  } else {
+    $term = new stdClass();
+    $term->vid = $vid;
+    $term->field_id['und'][0]['value'] = $xml_data['committee_id'];
+  }
+  
+  $term->name = $xml_data['committee_name'];
+  
+  if (!empty($xml_data['acadre_name']))
+    $term->field_acadre_name['und'][0]['value'] = $xml_data['acadre_name'];
+  if (!empty($xml_data['acadre_id']))
+    $term->field_committee_acadre_id['und'][0]['value'] = $xml_data['acadre_id'];
+
+  if (!empty($xml_data['committee_name_short']))
+    $term->field_name_short['und'][0]['value'] = $xml_data['committee_name_short'];
+  else 
+    $term->field_name_short['und'][0]['value'] = $xml_data['committee_name'];
+
+  if (!empty($xml_data['committee_abbr']))
+    $term->field_committee_abbr['und'][0]['value'] = $xml_data['committee_abbr'];
+  if (!empty($xml_data['start_date']))
+    $term->field_date_valid['und'][0]['value'] = $xml_data['com_start_date'];
+  if (!empty($xml_data['end_date']))
+    $term->field_date_valid['und'][0]['value2'] = $xml_data['com_end_date'];
+
+  taxonomy_term_save($term);
+  
+  return $term->tid;
+}
+
+function _os2web_importer_add_committee_to_user($tid, $user){
+  $user_is_part_of_committee = false;
+  if (isset($user->field_user_committee['und'])){
+    foreach ($user->field_user_committee['und'] as $committee_id){  
+      if ($tid == $committee_id['tid']){
+	$user_is_part_of_committee = true;
+      }
+    }
+  }
+  
+  if (!$user_is_part_of_committee){
+    $user_committees = $user->field_user_committee;
+    $user_committees['und'][]['tid'] = $tid;
+
+    $edit = array(
+      'field_user_committee' => $user_committees,
+    );
+
+    user_save($user, $edit);
+  }
+}
+
+
+function _os2web_importer_add_user_follows_committee($tid, $user){
+  $user_follows_committee = false;
+  if (isset($user->field_follows_committee['und'])){
+    foreach ($user->field_follows_committee['und'] as $committee_id){  
+      if ($tid == $committee_id['tid']){
+	$user_follows_committee = true;
+      }
+    }
+  }
+  
+  if (!$user_follows_committee){
+    $old_list = $user->field_follows_committee;
+    $old_list['und'][]['tid'] = $tid;
+
+    $edit = array(
+      'field_follows_committee' => $old_list,
+    );
+
+    user_save($user, $edit);
+  }
+}
+
+function _os2web_importer_add_user_follows_committee_plus($tid, $user){
+  $user_follows_committee_plus = false;
+  if (isset($user->field_follows_committee_plus['und'])){
+    foreach ($user->field_follows_committee_plus['und'] as $committee_id){  
+      if ($tid == $committee_id['tid']){
+	$user_follows_committee_plus = true;
+      }
+    }
+  }
+  
+  if (!$user_follows_committee_plus){
+    $old_list = $user->field_follows_committee_plus;
+    $old_list['und'][]['tid'] = $tid;
+
+    $edit = array(
+      'field_follows_committee_plus' => $old_list,
+    );
+
+    user_save($user, $edit);
+  }
+}
+
+function _os2web_importer_process_committees($xml_file){
+  $result = $xml_file->xpath('//Row');
+
+  foreach ($result as $row){
+    $xml_data = array(
+	'committee_id' => (int) array_shift($row->xpath('GroupId')),
+	'committee_name' => (string) array_shift($row->xpath('GroupLongName')),
+	'committee_name_short' => (string) array_shift($row->xpath('GroupShortName')),
+	'committee_abbr' => (string) array_shift($row->xpath('GroupAbbreviation')),
+	'acadre_name' => (string) array_shift($row->xpath('AcadreName')),
+	'acadre_id' => (int) array_shift($row->xpath('AcadreID')),
+	'com_start_date' => (string) array_shift($row->xpath('StartDate')),
+	'com_end_date' => (string) array_shift($row->xpath('EndDate')),
+    );
+    _os2web_importer_create_committee($xml_data);
+  }
+}
+
+function _os2web_importer_process_meetings($xml_file){
+  $result = $xml_file->xpath('//Row');
+
+  foreach ($result as $row){
+    $xml_data = array(
+	'meeting_id' => (int) array_shift($row->xpath('MeetingID')),
+	'title' => (string) array_shift($row->xpath('MeetingTitel')),
+	'title_short' => (string) array_shift($row->xpath('MeetingTitelShort')),
+	'committee_id' => (int) array_shift($row->xpath('GroupID')),
+	'committee_name' => (string) array_shift($row->xpath('GroupLongName')),
+	'committee_abbr' => (string) array_shift($row->xpath('GroupAbbreviation')),
+	'meeting_start_date' => (string) array_shift($row->xpath('MeetingDate')),
+	'meeting_start_time' => (string) array_shift($row->xpath('MeetingStartTime')),
+	'hex_color' => (string) array_shift($row->xpath('HEXColorCode')),
+	'deactivated' => (int) array_shift($row->xpath('Deactivated')),
+    );
+
+    if ($xml_data['deactivated'] == 0){	
+      if (!empty($xml_data['meeting_start_date']) && !empty($xml_data['meeting_start_time'])){
+	$xml_data['meeting_start_date'] = substr_replace($xml_data['meeting_start_date'], $xml_data['meeting_start_time'], 11);
+	
+	//converting the date into utc time zone, because Drupal adds the timezone offset itself
+	$offset = 1+date("I");
+	$xml_data['meeting_start_date'] = date ('Y-m-d H:i:s', strtotime ($xml_data['meeting_start_date']) - $offset*60*60);
+      }
+      
+      $tid = _os2web_importer_create_committee($xml_data);
+      _os2web_importer_create_meeting($xml_data, $tid);
+    } else {
+      _os2web_importer_unpublish_meeting($xml_data);
+    }
+  }
+}
+
+function _os2web_importer_create_meeting($xml_data, $tid){
+  $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+      ->fieldCondition('field_meeting_id', 'value', intval($xml_data['meeting_id']), '=');
+      
+  $result = $query->execute();
+  if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+    $node = reset(entity_load('node', $nids));
+  } else {
+    $node = new stdClass();
+    $node->type = "meeting";
+    $node->language = LANGUAGE_NONE;
+    
+    node_object_prepare($node);  
+  }
+  $node->title = $xml_data['title'];
+  $node->field_title_short[$node->language][0]['value'] = $xml_data['title_short'];
+  $node->field_meeting_id[$node->language][0]['value'] = $xml_data['meeting_id'];
+  
+  if (!empty($xml_data['meeting_start_date'])){
+    $node->field_date[$node->language][0]['value'] = $xml_data['meeting_start_date'];
+    $node->field_date[$node->language][0]['value2'] = $xml_data['meeting_start_date'];
+  }
+
+  $node->field_hex[$node->language][0]['value'] = strtolower($xml_data['hex_color']);
+  
+  $node->field_committee[$node->language][0]['tid'] = $tid;
+  
+  //TODO: handle end date
+  node_submit($node);
+  node_save($node);
+}
+
+function _os2web_importer_unpublish_meeting($xml_data){
+  $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+      ->fieldCondition('field_meeting_id', 'value', intval($xml_data['meeting_id']), '=');
+      
+  $result = $query->execute();
+  if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+    $node = reset(entity_load('node', $nids));
+    
+    node_unpublish_action($node);
+    node_save($node);
+  } 
+}
+?>

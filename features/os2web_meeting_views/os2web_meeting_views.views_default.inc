@@ -118,12 +118,13 @@ function os2web_meeting_views_views_default_views() {
       'empty_column' => 0,
     ),
   );
-  /* Header: Global: Text area */
+  /* Header: help text */
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['ui_name'] = 'help text';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title="Help text goes here"></div>';
+  $handler->display->display_options['header']['area']['content'] = '<div class=\'help-button\' title=\'Her vises de kommende 5 møder i "Mine udvag". Det vil sige udvalg som man enten er medlem af eller følger. Udvalgene kan ses i boksene "Medlem af" og "Jeg følger" i højremenuen. Der er ikke en dagsorden tilgængelig før status er angivet til publiceret.\'></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* Relationship: Content: Committee (field_committee) */
   $handler->display->display_options['relationships']['field_committee_tid']['id'] = 'field_committee_tid';
@@ -256,20 +257,10 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_committee']['alter']['path'] = 'meeting/[nid]';
   $handler->display->display_options['fields']['field_committee']['alter']['max_length'] = '20';
   $handler->display->display_options['fields']['field_committee']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['field_committee']['alter']['trim'] = TRUE;
   $handler->display->display_options['fields']['field_committee']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_committee']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_committee']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['field_committee']['type'] = 'taxonomy_term_reference_plain';
-  /* Field: Taxonomy term: Abbreviation */
-  $handler->display->display_options['fields']['field_committee_abbr']['id'] = 'field_committee_abbr';
-  $handler->display->display_options['fields']['field_committee_abbr']['table'] = 'field_data_field_committee_abbr';
-  $handler->display->display_options['fields']['field_committee_abbr']['field'] = 'field_committee_abbr';
-  $handler->display->display_options['fields']['field_committee_abbr']['relationship'] = 'field_committee_tid';
-  $handler->display->display_options['fields']['field_committee_abbr']['label'] = '';
-  $handler->display->display_options['fields']['field_committee_abbr']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_committee_abbr']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_committee_abbr']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['field_committee_abbr']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_committee_abbr']['empty'] = '[field_committee]';
   /* Field: Taxonomy term: Name Short */
   $handler->display->display_options['fields']['field_name_short']['id'] = 'field_name_short';
   $handler->display->display_options['fields']['field_name_short']['table'] = 'field_data_field_name_short';
@@ -279,7 +270,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_name_short']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['field_name_short']['alter']['path'] = 'meeting/[nid]';
   $handler->display->display_options['fields']['field_name_short']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_name_short']['empty'] = '[field_committee_abbr]';
+  $handler->display->display_options['fields']['field_name_short']['empty'] = '[field_committee]';
   $handler->display->display_options['fields']['field_name_short']['type'] = 'text_plain';
   /* Sort criterion: Content: Date -  start date (field_date) */
   $handler->display->display_options['sorts']['field_date_value']['id'] = 'field_date_value';
@@ -354,7 +345,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     t('Items per page'),
     t('- All -'),
     t('Offset'),
-    t('<div class="help-button" title="Help text goes here"></div>'),
+    t('<div class=\'help-button\' title=\'Her vises de kommende 5 møder i "Mine udvag". Det vil sige udvalg som man enten er medlem af eller følger. Udvalgene kan ses i boksene "Medlem af" og "Jeg følger" i højremenuen. Der er ikke en dagsorden tilgængelig før status er angivet til publiceret.\'></div>'),
     t('term from field_committee'),
     t('field_user_committee'),
     t('field_follows_committee'),
@@ -369,9 +360,8 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     t('Dato'),
     t('Lokation'),
     t('none'),
-    t('[field_committee]'),
     t('Udvalg'),
-    t('[field_committee_abbr]'),
+    t('[field_committee]'),
     t('Start dato'),
     t('Block'),
     t('coming_meetings_my_committee'),
@@ -736,22 +726,13 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_committee']['alter']['trim'] = TRUE;
   $handler->display->display_options['fields']['field_committee']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_committee']['type'] = 'taxonomy_term_reference_plain';
-  /* Field: Taxonomy term: Abbreviation */
-  $handler->display->display_options['fields']['field_committee_abbr']['id'] = 'field_committee_abbr';
-  $handler->display->display_options['fields']['field_committee_abbr']['table'] = 'field_data_field_committee_abbr';
-  $handler->display->display_options['fields']['field_committee_abbr']['field'] = 'field_committee_abbr';
-  $handler->display->display_options['fields']['field_committee_abbr']['relationship'] = 'field_committee_tid';
-  $handler->display->display_options['fields']['field_committee_abbr']['label'] = '';
-  $handler->display->display_options['fields']['field_committee_abbr']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_committee_abbr']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_committee_abbr']['empty'] = '[field_committee]';
   /* Field: Taxonomy term: Name Short */
   $handler->display->display_options['fields']['field_name_short']['id'] = 'field_name_short';
   $handler->display->display_options['fields']['field_name_short']['table'] = 'field_data_field_name_short';
   $handler->display->display_options['fields']['field_name_short']['field'] = 'field_name_short';
   $handler->display->display_options['fields']['field_name_short']['relationship'] = 'field_committee_tid';
   $handler->display->display_options['fields']['field_name_short']['label'] = 'Udvalg';
-  $handler->display->display_options['fields']['field_name_short']['empty'] = '[field_committee_abbr]';
+  $handler->display->display_options['fields']['field_name_short']['empty'] = '[field_committee]';
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -1119,7 +1100,10 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       //attachment text - if any
       if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
 	print \'<div class="attachment_text_container">\';
+	print \'<div class="attachment_text_trimmed_container">\';
 	print($attachment->field_bpa_body[\'und\'][0][\'safe_value\']);
+	print \'</div>\';
+        print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
 	print \'</div>\';
       }
       print \'</li>\';
@@ -1193,9 +1177,8 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
     t('Titel'),
     t('Startdato'),
     t('Slutdato'),
-    t('[field_committee]'),
     t('Udvalg'),
-    t('[field_committee_abbr]'),
+    t('[field_committee]'),
     t('Attachment'),
     t('Dagsorden'),
     t('<h3>Dagsorden:</h3>'),
@@ -1510,17 +1493,6 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_committee']['empty'] = '&nbsp;';
   $handler->display->display_options['fields']['field_committee']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['field_committee']['type'] = 'taxonomy_term_reference_plain';
-  /* Field: Taxonomy term: Abbreviation */
-  $handler->display->display_options['fields']['field_committee_abbr']['id'] = 'field_committee_abbr';
-  $handler->display->display_options['fields']['field_committee_abbr']['table'] = 'field_data_field_committee_abbr';
-  $handler->display->display_options['fields']['field_committee_abbr']['field'] = 'field_committee_abbr';
-  $handler->display->display_options['fields']['field_committee_abbr']['relationship'] = 'field_committee_tid';
-  $handler->display->display_options['fields']['field_committee_abbr']['label'] = '';
-  $handler->display->display_options['fields']['field_committee_abbr']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_committee_abbr']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_committee_abbr']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['field_committee_abbr']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_committee_abbr']['empty'] = '[field_committee]';
   /* Field: Taxonomy term: Name Short */
   $handler->display->display_options['fields']['field_name_short']['id'] = 'field_name_short';
   $handler->display->display_options['fields']['field_name_short']['table'] = 'field_data_field_name_short';
@@ -1530,7 +1502,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_name_short']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['field_name_short']['alter']['path'] = 'meeting/[nid]';
   $handler->display->display_options['fields']['field_name_short']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_name_short']['empty'] = '[field_committee_abbr]';
+  $handler->display->display_options['fields']['field_name_short']['empty'] = '[field_committee]';
   /* Sort criterion: Content: Date -  start date (field_date) */
   $handler->display->display_options['sorts']['field_date_value']['id'] = 'field_date_value';
   $handler->display->display_options['sorts']['field_date_value']['table'] = 'field_data_field_date';
@@ -1657,9 +1629,8 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     t('[title]'),
     t('Dato'),
     t('Lokation'),
-    t('[field_committee]'),
     t('Udvalg'),
-    t('[field_committee_abbr]'),
+    t('[field_committee]'),
     t('Date -  start date (field_date)'),
     t('Page'),
     t('Fra dato:'),
@@ -1903,17 +1874,6 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_committee']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_committee']['empty'] = '&nbsp;';
   $handler->display->display_options['fields']['field_committee']['type'] = 'taxonomy_term_reference_plain';
-  /* Field: Taxonomy term: Abbreviation */
-  $handler->display->display_options['fields']['field_committee_abbr']['id'] = 'field_committee_abbr';
-  $handler->display->display_options['fields']['field_committee_abbr']['table'] = 'field_data_field_committee_abbr';
-  $handler->display->display_options['fields']['field_committee_abbr']['field'] = 'field_committee_abbr';
-  $handler->display->display_options['fields']['field_committee_abbr']['relationship'] = 'field_committee_tid';
-  $handler->display->display_options['fields']['field_committee_abbr']['label'] = '';
-  $handler->display->display_options['fields']['field_committee_abbr']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['field_committee_abbr']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_committee_abbr']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['field_committee_abbr']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_committee_abbr']['empty'] = '[field_committee]';
   /* Field: Taxonomy term: Name Short */
   $handler->display->display_options['fields']['field_name_short']['id'] = 'field_name_short';
   $handler->display->display_options['fields']['field_name_short']['table'] = 'field_data_field_name_short';
@@ -1923,7 +1883,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_name_short']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['field_name_short']['alter']['path'] = 'meeting/[nid]';
   $handler->display->display_options['fields']['field_name_short']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_name_short']['empty'] = '[field_committee_abbr]';
+  $handler->display->display_options['fields']['field_name_short']['empty'] = '[field_committee]';
   $handler->display->display_options['fields']['field_name_short']['type'] = 'text_plain';
   $handler->display->display_options['fields']['field_name_short']['settings'] = array(
     'trim_length' => '600',
@@ -1976,9 +1936,8 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     t('[title]'),
     t('Dato'),
     t('Lokation'),
-    t('[field_committee]'),
     t('Udvalg'),
-    t('[field_committee_abbr]'),
+    t('[field_committee]'),
     t('Block'),
   );
   $export['seneste_8_m_der_i_de_st_ende_politiske_udvalg_'] = $view;
@@ -1995,7 +1954,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Dagsordensdetaljer';
+  $handler->display->display_options['title'] = 'Dagsordenspunkt';
   $handler->display->display_options['access']['type'] = 'php';
   $handler->display->display_options['access']['php_access'] = '$q = explode("/", $_GET[\'q\']);
 
@@ -2025,7 +1984,7 @@ global $base_url;
 $q = explode(\'/\',$_GET[\'q\']);
 $breadcrumb[] = l(\'Hjem\', $base_url);
 $breadcrumb[] .= l(\'Mødedetaljer\', \'meeting/\'.$q[1]);
-$breadcrumb[] .= \'<span class="breadcrumb-active">Dagsordensdetaljer</span>\';
+$breadcrumb[] .= \'<span class="breadcrumb-active">Dagsordenspunkt</span>\';
 drupal_set_breadcrumb($breadcrumb);
 ?>';
   /* No results behavior: Global: Text area */
@@ -2078,7 +2037,7 @@ print "<a href=\\"".$base_url."?q=node/add/speaker-paper&edit[field_ref_bullet_p
   $handler->display->display_options['fields']['title_1']['relationship'] = 'field_ref_speaker_paper_target_id';
   $handler->display->display_options['fields']['title_1']['label'] = '';
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
-  /* Field: Content: Body */
+  /* Field: Content: Indhold */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -2250,7 +2209,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
-  /* Field: Content: Body */
+  /* Field: Content: Indhold */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -2322,7 +2281,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['delete_node']['relationship'] = 'reverse_field_ref_bullet_point_node';
   $handler->display->display_options['fields']['delete_node']['label'] = '';
   $handler->display->display_options['fields']['delete_node']['element_label_colon'] = FALSE;
-  /* Field: Content: Body */
+  /* Field: Content: Indhold */
   $handler->display->display_options['fields']['body']['id'] = 'body';
   $handler->display->display_options['fields']['body']['table'] = 'field_data_body';
   $handler->display->display_options['fields']['body']['field'] = 'body';
@@ -2339,7 +2298,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['attachment_position'] = 'after';
   $translatables['speaking_paper'] = array(
     t('Master'),
-    t('Dagsordensdetaljer'),
+    t('Dagsordenspunkt'),
     t('more'),
     t('Apply'),
     t('Reset'),

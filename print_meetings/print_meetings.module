@@ -54,7 +54,7 @@ function _print_meetings_form($form, &$form_state){
         $form['submit_1_half'] = array(
         '#type' => 'submit',
         '#submit' => array('_print_meetings_form_submit_1_half'),
-        '#value' => t('Hent tabelen for det første halv år'),
+        '#value' => t('Hent tabellen for det første halvår'),
         );
         
         $form[] = array(
@@ -64,7 +64,7 @@ function _print_meetings_form($form, &$form_state){
         $form['submit_2_half'] = array(
         '#type' => 'submit',
         '#submit' => array('_print_meetings_form_submit_2_half'),
-        '#value' => t('Hent tabelen for det sidste halv år'),
+        '#value' => t('Hent tabellen for det sidste halvår'),
         );
         
         $form[] = array(

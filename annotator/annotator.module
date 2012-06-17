@@ -40,7 +40,7 @@ function _annotator_view($meeting_id, $bullet_point_id, $bilag_id) {
     $q = explode('/',$_GET['q']);
     $breadcrumb[] = l('Hjem', $base_url);
     $breadcrumb[] .= l('Mødedetaljer', 'meeting/'.$q[1]);
-    $breadcrumb[] .= l('Dagsordensdetaljer', 'meeting/'.$q[1].'/bullet-point/'.$q[3]);
+    $breadcrumb[] .= l('Dagsordenspunkt', 'meeting/'.$q[1].'/bullet-point/'.$q[3]);
     $breadcrumb[] .= '<span class="breadcrumb-active">Bilag</span>';
     drupal_set_breadcrumb($breadcrumb);
 

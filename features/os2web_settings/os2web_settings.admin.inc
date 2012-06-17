@@ -60,16 +60,19 @@ function os2web_settings_settings_form($form, $form_state) {
       '#type' => 'textfield',
       '#default_value' => variable_get('os2web_pws_v_meetings_url'),
       '#title' => t('Meeting (planned meetings) view url:'),
+      '#maxlength' => 128, 
   );
   $form['os2web_pws_sofd_group']['os2web_pws_v_meetinggroups_url'] = array(
       '#type' => 'textfield',
       '#default_value' => variable_get('os2web_pws_v_meetinggroups_url'),
       '#title' => t('Meeting groups (is member of/follows/follows+) view url:'),
+      '#maxlength' => 128, 
   );
   $form['os2web_pws_sofd_group']['os2web_pws_v_acadregroups_url'] = array(
       '#type' => 'textfield',
       '#default_value' => variable_get('os2web_pws_v_acadregroups_url'),
       '#title' => t('Acadre groups (committees) url:'),
+      '#maxlength' => 128, 
   );
   return system_settings_form($form);
 }
