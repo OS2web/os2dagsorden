@@ -290,22 +290,6 @@ function os2web_content_types_and_user_fields_field_default_fields() {
         'active' => 1,
         'module' => 'file',
         'settings' => array(
-          'filefield_sources' => array(
-            'filefield_sources' => array(
-              'attach' => 0,
-              'plupload' => 0,
-              'reference' => 0,
-              'remote' => 0,
-            ),
-            'source_attach' => array(
-              'absolute' => '0',
-              'attach_mode' => 'copy',
-              'path' => 'file_attach',
-            ),
-            'source_reference' => array(
-              'autocomplete' => '0',
-            ),
-          ),
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
@@ -481,6 +465,78 @@ function os2web_content_types_and_user_fields_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-bullet_point_attachment-field_bpa_file'
+  $fields['node-bullet_point_attachment-field_bpa_file'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_bpa_file',
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'file',
+      'settings' => array(
+        'display_default' => 1,
+        'display_field' => 1,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '0',
+      'type' => 'file',
+    ),
+    'field_instance' => array(
+      'bundle' => 'bullet_point_attachment',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'file',
+          'settings' => array(),
+          'type' => 'file_default',
+          'weight' => 3,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_bpa_file',
+      'label' => 'File',
+      'required' => 0,
+      'settings' => array(
+        'description_field' => 0,
+        'file_directory' => '',
+        'file_extensions' => 'pdf tif doc docx msg',
+        'max_filesize' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'file',
+        'settings' => array(
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'file_generic',
+        'weight' => '4',
+      ),
+    ),
+  );
+
   // Exported field: 'node-bullet_point_attachment-field_bpa_id'
   $fields['node-bullet_point_attachment-field_bpa_id'] = array(
     'field_config' => array(
@@ -607,7 +663,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '7',
+        'weight' => '6',
       ),
     ),
   );
@@ -634,9 +690,9 @@ function os2web_content_types_and_user_fields_field_default_fields() {
           'second' => 0,
           'year' => 'year',
         ),
-        'timezone_db' => 'UTC',
+        'timezone_db' => '',
         'todate' => 'optional',
-        'tz_handling' => 'site',
+        'tz_handling' => 'none',
       ),
       'translatable' => '0',
       'type' => 'datetime',
@@ -647,7 +703,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'inline',
+          'label' => 'above',
           'module' => 'date',
           'settings' => array(
             'format_type' => 'long',
@@ -657,13 +713,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
             'multiple_to' => '',
           ),
           'type' => 'date_default',
-          'weight' => '1',
-        ),
-        'related_block' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => 0,
+          'weight' => 16,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -675,12 +725,12 @@ function os2web_content_types_and_user_fields_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_date',
       'label' => 'Date',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'default_value' => 'now',
-        'default_value2' => 'strtotime',
+        'default_value2' => 'same',
         'default_value_code' => '',
-        'default_value_code2' => '+1 hour',
+        'default_value_code2' => '',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
@@ -692,10 +742,10 @@ function os2web_content_types_and_user_fields_field_default_fields() {
           'input_format_custom' => '',
           'label_position' => 'above',
           'text_parts' => array(),
-          'year_range' => '-0:+1',
+          'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '5',
+        'weight' => '10',
       ),
     ),
   );
@@ -763,7 +813,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '6',
+        'weight' => '5',
       ),
     ),
   );
@@ -833,7 +883,7 @@ function os2web_content_types_and_user_fields_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '8',
+        'weight' => '7',
       ),
     ),
   );
@@ -984,7 +1034,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '10',
+        'weight' => '9',
       ),
     ),
   );
@@ -1151,7 +1201,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '9',
+        'weight' => '8',
       ),
     ),
   );
@@ -1513,7 +1563,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
   $fields['taxonomy_term-committee-field_committee_acadre_id'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_committee_acadre_id',
@@ -1528,7 +1578,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
       'bundle' => 'committee',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'a list of all acadre id\'s, that are connected to that committee group',
       'display' => array(
         'default' => array(
           'label' => 'above',
@@ -1676,7 +1726,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
       ),
       'entity_type' => 'taxonomy_term',
       'field_name' => 'field_id',
-      'label' => 'ID',
+      'label' => 'Group ID',
       'required' => 1,
       'settings' => array(
         'max' => '',
@@ -1690,7 +1740,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '0',
+        'weight' => 0,
       ),
     ),
   );
@@ -2251,9 +2301,11 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
   t('Date');
   t('Date valid');
   t('Enclosures');
+  t('File');
   t('Follows committees');
   t('Follows committees+');
   t('Full name');
+  t('Group ID');
   t('HEXColor');
   t('ID');
   t('Indhold');
@@ -2269,6 +2321,7 @@ $entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
   t('Short title');
   t('Status');
   t('User positions');
+  t('a list of all acadre id\'s, that are connected to that committee group');
   t('represents the committees the user is a part of');
 
   return $fields;

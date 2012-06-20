@@ -1,3 +1,4 @@
+
 <?php
 
 define('DEFAULT_ACADRE_IMPORT_DIR', 'public://acadre');
@@ -115,6 +116,7 @@ function _os2web_meetings_process_agenda($agendainfo_xml) {
       'startDate' => (string) array_shift($agendainfo_xml->xpath('field/@startDate')),
       'endDate' => (string) array_shift($agendainfo_xml->xpath('field/@endDate'))
   );
+
   if ($agendainfo['publish'] === 1) {
     $agenda_uri = implode('/', array(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), $agendainfo['filesfolder'], $agendainfo['xmlfilename']));
     if (($agenda_uri = _os2web_meetings_similar_file_exists(drupal_realpath($agenda_uri))) !== FALSE) {
@@ -155,10 +157,10 @@ function _os2web_meetings_publish_meeting($info, $xml) {
   //FIXME: Verify this list!
   $no_publish_committee = array(
 //      'Direktionsmøde',
-      'Direktions og afdelingschef møde',
-      'Rådhusmad',
-      'Testudvalg',
-      'Nedlagte udvalg',
+//      'Direktions og afdelingschef møde',
+//     'Rådhusmad',
+//      'Testudvalg',
+//      'Nedlagte udvalg',
   );
 
   //TODO: Look for previously imported version to update
@@ -275,6 +277,7 @@ function _os2web_meetings_add_item($info, $xml, $id) {
   $options = array(
       'sysid' => (int) array_shift($xml->xpath("fields/field[@name='sysid']")),
       'name' => (string) array_shift($xml->xpath("fields/field[@name='name']")),
+      'accessname' => (string) array_shift($xml->xpath("fields/field[@name='accessname']")),
   );
 
 
@@ -353,7 +356,10 @@ function _os2web_meetings_add_item($info, $xml, $id) {
       os2web_adlib_api_convert_to_pdf($file->fid);
     }
 
-    $node->field_enclosures[$node->language][] = (array) $file;
+    //$node->field_enclosures[$node->language][] = (array) $file;
+    $enclosure_nid = _os2web_meetings_add_enclosure_bullet($enclosure, $file);
+
+    $node->field_ref_attachment[LANGUAGE_NONE][]['target_id'] = $enclosure_nid;
   }
   node_submit($node);
   node_save($node);
@@ -394,13 +400,57 @@ function _os2web_meetings_add_bullet(SimpleXMLElement $xml) {
     node_object_prepare($node);
     $node->field_bpa_id[$node->language][0]['value'] = $options['sysid'];
   }
-
+  
   $node->title = $options['name'];
 
   // Let's add standard body field
   $node->field_bpa_body[$node->language][0]['value'] = $options['content'];
   $node->field_bpa_body[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field
   
+
+  node_submit($node);
+  node_save($node);
+
+  return $node->nid;
+}
+
+/**
+ * Creates an empty bullet point attachment node with file reference.
+ * The file is eventually converted to HTML and the rendered output will be used as bullet point attachment body field.
+ * The file is then converted to PDF (is the file extension is not PDF already)
+ *
+ * @author Stanislav Kutasevits
+ * @param SimpleXMLElement $enclosure
+ * @param stdClass $file
+ * @return int - Node ID
+ */
+function _os2web_meetings_add_enclosure_bullet($enclosure, $file){
+  $options = array(
+      'sysid' => (int) array_shift($enclosure->xpath("fields/field[@name='sysid']")),
+      'name' => (string) array_shift($enclosure->xpath("fields/field[@name='name']")),
+  );
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+      ->fieldCondition('field_bpa_id', 'value', intval($options['sysid']), '=');
+
+  $result = $query->execute();
+  if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+    $node = reset(entity_load('node', $nids));
+  } else {
+    $node = new stdClass();
+    $node->type = "bullet_point_attachment";
+    $node->language = LANGUAGE_NONE;
+    
+    node_object_prepare($node);
+    $node->field_bpa_id[$node->language][0]['value'] = $options['sysid'];
+  }
+
+  $node->title = $options['name'];
+  //TODO: handle filling of body field with file content rendered to HTML
+  
+  $node->field_bpa_file[$node->language][] = (array) $file;
 
   node_submit($node);
   node_save($node);
@@ -444,13 +494,14 @@ function _os2web_meetings_import_committee(SimpleXMLElement $xml) {
   } else {
     $term = new stdClass();
     $term->vid = $vid;
+    $term->language = LANGUAGE_NONE;
   }
 
   $term->name = $options['name'];
   $term->description = $options['description'];
   //$term->field_department_id[LANGUAGE_NONE][0]['value'] = $options['dept_id'];
   //$term->field_department_name[LANGUAGE_NONE][0]['value'] = $options['dept_name'];
-  $term->field_committee_acadre_id[LANGUAGE_NONE][0]['value'] = $options['acadre_id'];
+  //$term->field_committee_acadre_id[LANGUAGE_NONE][0]['value'] = $options['acadre_id'];
 
   taxonomy_term_save($term);
 

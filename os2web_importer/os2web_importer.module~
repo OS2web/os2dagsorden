@@ -259,6 +259,11 @@ function _os2web_importer_create_committee($xml_data){
   $query->entityCondition('entity_type', 'taxonomy_term')
       ->propertyCondition('vid', $vid)
       ->fieldCondition('field_id', 'value', intval($xml_data['committee_id']), '=');
+  
+//   if (!empty($xml_data['acadare_id']))
+//       $query->fieldCondition('field_id', 'value', intval($xml_data['acadre_id']), '=');
+//   else
+//       $query->fieldCondition('field_id', 'value', intval($xml_data['committee_id']), '=');
 
   $result = $query->execute();
   if (isset($result['taxonomy_term'])) {
@@ -273,22 +278,34 @@ function _os2web_importer_create_committee($xml_data){
   
   $term->name = $xml_data['committee_name'];
   
-  if (!empty($xml_data['acadre_name']))
-    $term->field_acadre_name['und'][0]['value'] = $xml_data['acadre_name'];
-  if (!empty($xml_data['acadre_id']))
-    $term->field_committee_acadre_id['und'][0]['value'] = $xml_data['acadre_id'];
-
+//   if (!empty($xml_data['acadre_name']))
+//     $term->field_acadre_name['und'][0]['value'] = $xml_data['acadre_name'];
+//   if (!empty($xml_data['acadre_id']))
+//     $term->field_committee_acadre_id['und'][0]['value'] = $xml_data['acadre_id'];
   if (!empty($xml_data['committee_name_short']))
     $term->field_name_short['und'][0]['value'] = $xml_data['committee_name_short'];
-  else 
-    $term->field_name_short['und'][0]['value'] = $xml_data['committee_name'];
-
   if (!empty($xml_data['committee_abbr']))
     $term->field_committee_abbr['und'][0]['value'] = $xml_data['committee_abbr'];
-  if (!empty($xml_data['start_date']))
-    $term->field_date_valid['und'][0]['value'] = $xml_data['com_start_date'];
-  if (!empty($xml_data['end_date']))
-    $term->field_date_valid['und'][0]['value2'] = $xml_data['com_end_date'];
+
+  if (!empty($xml_data['acadre_id'])){
+    if (isset($term->field_committee_acadre_id['und'])){
+      foreach ($term->field_committee_acadre_id['und'] as $id_raw){
+	if (intval($id_raw['value']) == intval($xml_data['acadre_id'])){
+	  $contains = true;
+	  break;
+	}
+      }
+    }
+    if (!$contains){
+      $term->field_committee_acadre_id['und'][]['value'] = $xml_data['acadre_id'];
+    }
+  }
+
+
+//   if (!empty($xml_data['com_start_date']))
+//     $term->field_date_valid['und'][0]['value'] = $xml_data['com_start_date'];
+//   if (!empty($xml_data['com_end_date']))
+//     $term->field_date_valid['und'][0]['value2'] = $xml_data['com_end_date'];
 
   taxonomy_term_save($term);
   
@@ -376,6 +393,10 @@ function _os2web_importer_process_committees($xml_file){
 	'com_start_date' => (string) array_shift($row->xpath('StartDate')),
 	'com_end_date' => (string) array_shift($row->xpath('EndDate')),
     );
+    if (empty($xml_data['committee_name_short'])){
+      $xml_data['committee_name_short'] = $xml_data['committee_name'];
+    }
+
     _os2web_importer_create_committee($xml_data);
   }
 }
@@ -401,9 +422,10 @@ function _os2web_importer_process_meetings($xml_file){
       if (!empty($xml_data['meeting_start_date']) && !empty($xml_data['meeting_start_time'])){
 	$xml_data['meeting_start_date'] = substr_replace($xml_data['meeting_start_date'], $xml_data['meeting_start_time'], 11);
 	
+	//is handled in the field settings - field is set to be in UTC timezone
 	//converting the date into utc time zone, because Drupal adds the timezone offset itself
-	$offset = 1+date("I");
-	$xml_data['meeting_start_date'] = date ('Y-m-d H:i:s', strtotime ($xml_data['meeting_start_date']) - $offset*60*60);
+	//$offset = 1+date("I");
+	//$xml_data['meeting_start_date'] = date ('Y-m-d H:i:s', strtotime ($xml_data['meeting_start_date']) - $offset*60*60);
       }
       
       $tid = _os2web_importer_create_committee($xml_data);

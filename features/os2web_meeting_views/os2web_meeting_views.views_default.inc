@@ -1235,9 +1235,12 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
         ),
       ),
     ),
-    'field_meeting_search_meta_date_value' => array(
+    'field_committee_tid' => array(
+      'bef_format' => 'default',
       'more_options' => array(
-        'bef_filter_description' => '<div class="help-button" title="Help text is set up in the exposed form settings inside this view settings"></div>',
+        'bef_select_all_none' => FALSE,
+        'bef_collapsible' => 0,
+        'bef_filter_description' => '',
         'tokens' => array(
           'available' => array(
             0 => 'global_types',
@@ -1245,12 +1248,9 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
         ),
       ),
     ),
-    'field_committee_tid' => array(
-      'bef_format' => 'default',
+    'field_meeting_search_meta_date_value' => array(
       'more_options' => array(
-        'bef_select_all_none' => FALSE,
-        'bef_collapsible' => 0,
-        'bef_filter_description' => '',
+        'bef_filter_description' => '<div class=\'help-button\' title=\'Help text is set up in the exposed form settings inside this view settings\'>search</div>',
         'tokens' => array(
           'available' => array(
             0 => 'global_types',
@@ -1910,7 +1910,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['filters']['field_date_value']['id'] = 'field_date_value';
   $handler->display->display_options['filters']['field_date_value']['table'] = 'field_data_field_date';
   $handler->display->display_options['filters']['field_date_value']['field'] = 'field_date_value';
-  $handler->display->display_options['filters']['field_date_value']['operator'] = '>';
+  $handler->display->display_options['filters']['field_date_value']['operator'] = '<';
   $handler->display->display_options['filters']['field_date_value']['default_date'] = 'now';
 
   /* Display: Block */
