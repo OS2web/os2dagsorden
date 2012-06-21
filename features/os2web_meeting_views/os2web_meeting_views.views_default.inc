@@ -1250,7 +1250,7 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
     ),
     'field_meeting_search_meta_date_value' => array(
       'more_options' => array(
-        'bef_filter_description' => '<div class=\'help-button\' title=\'Help text is set up in the exposed form settings inside this view settings\'>search</div>',
+        'bef_filter_description' => '<div class=\'help-button\' title=\'Help text is set up in the exposed form settings inside this view settings\'></div>',
         'tokens' => array(
           'available' => array(
             0 => 'global_types',
@@ -2224,7 +2224,6 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_ref_attachment']['alter']['path'] = 'meeting/[php_1]/bullet-point/!1/bullet-point-attachment/[field_ref_attachment-target_id]';
   $handler->display->display_options['fields']['field_ref_attachment']['alter']['prefix'] = '<div id="[field_ref_attachment-target_id]" class="indicator-has-no-notes"></div>';
   $handler->display->display_options['fields']['field_ref_attachment']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_ref_attachment']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['field_ref_attachment']['settings'] = array(
     'link' => 0,
   );

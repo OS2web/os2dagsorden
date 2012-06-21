@@ -219,9 +219,12 @@ function _os2web_meetings_publish_meeting($info, $xml) {
   // The date
   $node->field_date[$node->language][0]['value'] = $options['date'];
   $node->field_date[$node->language][0]['value2'] = $options['finish'];
-  $node->field_date[$node->language][0]['timezone'] = 'Europe/Berlin';
-  $node->field_date[$node->language][0]['timezone_db'] = 'UTC';
-  $node->field_date[$node->language][0]['date_type'] = 'datetime';
+
+// handeled in field properties
+//   $node->field_date[$node->language][0]['timezone'] = 'Europe/Berlin';
+//   $node->field_date[$node->language][0]['timezone_db'] = 'UTC';
+//   $node->field_date[$node->language][0]['date_type'] = 'datetime';
+
   // Proper id tagging
   $node->field_meeting_id[$node->language][0]['value'] = $options['meeting_id'];
   // Make sure the committee term is created and get the term.
@@ -287,7 +290,9 @@ function _os2web_meetings_add_item($info, $xml, $id) {
   foreach ($bullets as $bullet) {
 //    $bullet_id = (int) array_shift($bullet->xpath("fields/field[@name='sysid']"));
     // Add node for each bullet
-    $nids[] = _os2web_meetings_add_bullet($bullet);
+    $attachment_nid = _os2web_meetings_add_bullet($bullet);
+    if (isset($attachment_nid))
+      $nids[] = $attachment_nid;
   }
 
   $query = new EntityFieldQuery();
@@ -296,8 +301,8 @@ function _os2web_meetings_add_item($info, $xml, $id) {
 
   $result = $query->execute();
   if (isset($result['node'])) {
-    $nids = array_keys($result['node']);
-    $node = reset(entity_load('node', $nids));
+    $all_nids = array_keys($result['node']);
+    $node = reset(entity_load('node', $all_nids));
   } else {
     $node = new stdClass();
     $node->type = "bullet_point";
@@ -356,10 +361,9 @@ function _os2web_meetings_add_item($info, $xml, $id) {
       os2web_adlib_api_convert_to_pdf($file->fid);
     }
 
-    //$node->field_enclosures[$node->language][] = (array) $file;
-    $enclosure_nid = _os2web_meetings_add_enclosure_bullet($enclosure, $file);
-
-    $node->field_ref_attachment[LANGUAGE_NONE][]['target_id'] = $enclosure_nid;
+    //FIXME: ecnlosures creation is disabled on prod. server since it's in development state
+    //$enclosure_nid = _os2web_meetings_add_enclosure_bullet($enclosure, $file);
+    //$node->field_ref_attachment[LANGUAGE_NONE][]['target_id'] = $enclosure_nid;
   }
   node_submit($node);
   node_save($node);
@@ -383,35 +387,45 @@ function _os2web_meetings_add_bullet(SimpleXMLElement $xml) {
       'weight' => (int) array_shift($xml->xpath("fields/field[@name='bulletsortorder']")),
       'lastbullet' => (int) array_shift($xml->xpath("fields/field[@name='lastbullet']")),
   );
+  if (!empty($options['content'])){
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+	->fieldCondition('field_bpa_id', 'value', intval($options['sysid']), '=');
 
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'node')
-      ->fieldCondition('field_bpa_id', 'value', intval($options['sysid']), '=');
-
-  $result = $query->execute();
-  if (isset($result['node'])) {
-    $nids = array_keys($result['node']);
-    $node = reset(entity_load('node', $nids));
-  } else {
-    $node = new stdClass();
-    $node->type = "bullet_point_attachment";
-    $node->language = LANGUAGE_NONE;
+    $result = $query->execute();
     
-    node_object_prepare($node);
-    $node->field_bpa_id[$node->language][0]['value'] = $options['sysid'];
+    if (isset($result['node'])) {
+      $is_new = false;//node IS NOT new
+      
+      $nids = array_keys($result['node']);
+      $node = reset(entity_load('node', $nids));
+    } else {
+      $is_new = true;//node IS new
+
+      $node = new stdClass();
+      $node->type = "bullet_point_attachment";
+      $node->language = LANGUAGE_NONE;
+      
+      node_object_prepare($node);
+      $node->field_bpa_id[$node->language][0]['value'] = $options['sysid'];
+    }
+    
+    $node->title = $options['name'];
+
+    // Let's add standard body field
+    $content_ind_start = strpos($options['content'], '<div class=Section1>');
+    
+    $options['content'] = substr($options['content'], $content_ind_start);
+
+    $node->field_bpa_body[$node->language][0]['value'] = $options['content'];
+    $node->field_bpa_body[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field  
+
+    node_submit($node);
+    node_save($node);
+    
+    if ($is_new)
+      return $node->nid;
   }
-  
-  $node->title = $options['name'];
-
-  // Let's add standard body field
-  $node->field_bpa_body[$node->language][0]['value'] = $options['content'];
-  $node->field_bpa_body[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field
-  
-
-  node_submit($node);
-  node_save($node);
-
-  return $node->nid;
 }
 
 /**
