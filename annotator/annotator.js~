@@ -9,7 +9,7 @@ function init(name, meeting_id, bullet_point_id, bilag_id) {
 	
 	jQuery('#content').annotator().annotator('addPlugin', 'Store', {
 	  // The endpoint of the store on your server.
-	  prefix: 'http://192.168.1.106:5000/',
+	  prefix: 'http://192.168.1.109:5000/',
 	  annotationData: {
              'drupal_user': name,
 	     'bilag_id': bilag_id,

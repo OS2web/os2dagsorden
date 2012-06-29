@@ -1,4 +1,3 @@
-
 <?php
 
 define('DEFAULT_ACADRE_IMPORT_DIR', 'public://acadre');
@@ -121,7 +120,8 @@ function _os2web_meetings_process_agenda($agendainfo_xml) {
     $agenda_uri = implode('/', array(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), $agendainfo['filesfolder'], $agendainfo['xmlfilename']));
     if (($agenda_uri = _os2web_meetings_similar_file_exists(drupal_realpath($agenda_uri))) !== FALSE) {
       $agenda_xml = simplexml_load_file(drupal_realpath($agenda_uri));
-      _os2web_meetings_publish_meeting($agendainfo, $agenda_xml);
+      $meeting = _os2web_meetings_publish_meeting($agendainfo, $agenda_xml);
+      _os2web_meeting_mark_acadre_imported($meeting);
     }
   } else {
     _os2web_meetings_unpublish_meeting($agendainfo);
@@ -146,7 +146,7 @@ function _os2web_meetings_unpublish_meeting($info) {
 /**
  * Creates a meeting node from the infomation supplied.
  *
- * @return int Nid of the created node.
+ * @return the created node.
  * @param array $info
  * @param array $xml
  */
@@ -163,7 +163,6 @@ function _os2web_meetings_publish_meeting($info, $xml) {
 //      'Nedlagte udvalg',
   );
 
-  //TODO: Look for previously imported version to update
   // Create meeting node
   // Gather info
   $options = array(
@@ -175,24 +174,14 @@ function _os2web_meetings_publish_meeting($info, $xml) {
       'description' => (string) array_shift($xml->xpath("//table[@name='agenda']/fields/field[@name='description']")),
       'cdate' => strtotime((string) array_shift($xml->xpath("//table[@name='agenda']/fields/field[@name='producedate']"))),
       'meeting_id' => (string) array_shift($xml->xpath("//table[@name='meeting']/fields/field[@name='sysid']")),
+      'committee_acadre_id' => (int) array_shift($xml->xpath("//table[@name='committee']/fields/field[@name='sysid']")),
       'id' => $info['sysid'],
   );
   if (in_array($options['committee'], $no_publish_committee)) {
     return;
   }
 
-
-  //FIXME: Refactor dupe-check to seperate function.
-  $nid = db_select('os2web_meetings_imported', 'mi')
-      ->fields('mi')
-      ->condition('aid', $options['id'])
-      ->execute()
-      ->fetchObject();
-  if (isset($nid->nid) && $nid->nid > 0) {
-//    return; // No reimports
-//    node_delete($nid->nid);
-  }
-
+  //trying to get meeting from id
   $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'node')
       ->fieldCondition('field_meeting_id', 'value', intval($options['meeting_id']), '=');
@@ -201,13 +190,49 @@ function _os2web_meetings_publish_meeting($info, $xml) {
   if (isset($result['node'])) {
     $nids = array_keys($result['node']);
     $node = reset(entity_load('node', $nids));
-  } else {
-    $node = new stdClass();
-    $node->type = "meeting";
-    $node->language = LANGUAGE_NONE;
+  } else {//if fails, trying to get meeting from date and committe combination. Assuming this is unique
+    //getting committee tid
+    $vid = db_select('taxonomy_vocabulary', 'tv')->fields('tv', array('vid'))->condition('machine_name', 'committee')->execute()->fetchField();
     
-    node_object_prepare($node);
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'taxonomy_term')
+      ->propertyCondition('vid', $vid)
+      ->fieldCondition('field_committee_acadre_id', 'value', intval($options['committee_acadre_id']), '=');
+
+    $result = $query->execute();
+    if (isset($result['taxonomy_term'])) {
+      $tids = array_keys($result['taxonomy_term']);
+      $com_tid = reset($tids);
+    }
+
+    //getting meeting
+    $meeting_start_date_0000 = date ('Y-m-d 00:00:00', strtotime($options['date']));
+    $meeting_start_date_2359 = date ('Y-m-d 23:59:59', strtotime($options['date']));
+
+    $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+      ->fieldCondition('field_date', 'value', $meeting_start_date_0000, '>=')
+      ->fieldCondition('field_date', 'value', $meeting_start_date_2359, '<=')
+      ->fieldCondition('field_committee', 'tid', $com_tid, '=');
+    $result = $query->execute();
+
+    if (isset($result['node'])) {
+      $nids = array_keys($result['node']);
+      $node = reset(entity_load('node', $nids));
+    } else {//if fails, creating a new meeting
+      $node = new stdClass();
+      $node->type = "meeting";
+      $node->language = LANGUAGE_NONE;
+      
+      node_object_prepare($node);
+    }
   }
+  
+  //avoiding reimports
+  if (intval($node->field_meeting_acadre_imported['und']['0']['value']) == 1){
+    print_r('here');
+    return;
+  }	
 
   $node->title = $options['title'];
   $node->path = array('alias' => 'agenda/' . $options['id']); // Setting a node path
@@ -243,9 +268,7 @@ function _os2web_meetings_publish_meeting($info, $xml) {
     } else {
       $node->field_qbrick_ref = array();
     }
-  }
-
-  
+  } 
 
   //Add nodes for each bullet
 //  $items = $xml->xpath("//table[@name='agendaitem']");
@@ -274,6 +297,18 @@ function _os2web_meetings_publish_meeting($info, $xml) {
       'aid' => $options['id'],
   );
   drupal_write_record('os2web_meetings_imported', $record);
+
+  return $node;
+}
+
+/**
+ * Marks the meeting as acadre imported, so not reimports will be done or future rewritting 
+ *
+ * @param node meeting
+ */
+function _os2web_meeting_mark_acadre_imported($node){
+  //$node->field_meeting_acadre_imported['und']['0']['value'] = 1;
+  //node_save($node);
 }
 
 function _os2web_meetings_add_item($info, $xml, $id) {
@@ -361,9 +396,19 @@ function _os2web_meetings_add_item($info, $xml, $id) {
       os2web_adlib_api_convert_to_pdf($file->fid);
     }
 
-    //FIXME: ecnlosures creation is disabled on prod. server since it's in development state
-    //$enclosure_nid = _os2web_meetings_add_enclosure_bullet($enclosure, $file);
-    //$node->field_ref_attachment[LANGUAGE_NONE][]['target_id'] = $enclosure_nid;
+    //FIXME: enclosures creation is disabled on prod. server since it's in development state
+    $enclosure_nid = _os2web_meetings_add_enclosure_bullet($enclosure, $file);
+    $contains = false;
+    if (isset($node->field_ref_attachment[LANGUAGE_NONE])){
+      foreach($node->field_ref_attachment[LANGUAGE_NONE] as $attachment){
+	if ($attachment['target_id'] == $enclosure_nid){
+	  $contains = true;
+	  break;
+	}
+      }
+    }
+    if (!$contains)
+      $node->field_ref_attachment[LANGUAGE_NONE][]['target_id'] = $enclosure_nid;
   }
   node_submit($node);
   node_save($node);
@@ -580,23 +625,23 @@ function _os2web_meetings_similar_file_exists($filename) {
 
 function os2web_meetings_node_delete($node) {
   if ($node->type === 'meeting') {
-    db_delete('os2web_meetings_imported')->condition('nid', $node->nid)->execute();
-    //TODO: Delete bullets from meeting.
-    foreach ($node->field_ref_bullet_points[$node->language] as $nids) {
-      node_delete($nids['target_id']);
-    }
+//     db_delete('os2web_meetings_imported')->condition('nid', $node->nid)->execute();
+//     //TODO: Delete bullets from meeting.
+//     foreach ($node->field_ref_bullet_points[$node->language] as $nids) {
+//       node_delete($nids['target_id']);
+//     }
   }
   if ($node->type === 'bullet_point') {
-    //TODO: Delete bullet attachments from meeting.
-    if (isset($node->field_ref_attachment[$node->language])) {
-      foreach ($node->field_ref_attachment[$node->language] as $nids) {
-        node_delete($nids['target_id']);
-      }
-    }
-    if (isset($node->field_enclosures[$node->language])) {
-      foreach ($node->field_enclosures[$node->language] as $file) {
-      file_delete((object) $file, true);
-      }
-    }
+//     //TODO: Delete bullet attachments from meeting.
+//     if (isset($node->field_ref_attachment[$node->language])) {
+//       foreach ($node->field_ref_attachment[$node->language] as $nids) {
+//         node_delete($nids['target_id']);
+//       }
+//     }
+//     if (isset($node->field_enclosures[$node->language])) {
+//       foreach ($node->field_enclosures[$node->language] as $file) {
+//       file_delete((object) $file, true);
+//       }
+//     }
   }
 }

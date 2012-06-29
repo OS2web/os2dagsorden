@@ -1,10 +1,23 @@
 <?php
-function o2web_access_helper_meeting_has_speaker_paper($meeting_id){
+
+/*TO DELETE AFTER TEST*/
+function os2web_access_helper_menu() {
+  $items = array();
+  $items['test/delete_users_rights'] = array(
+      'page callback' => 'os2web_access_helper_delete_user_rights',
+      'access arguments' => array('administer os2web'),
+      'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+function os2web_access_helper_meeting_has_speaker_paper($meeting_id){
   $meetings = entity_load('node', array($meeting_id));
   $meeting = $meetings[$meeting_id];
   if (isset($meeting->field_ref_bullet_points['und'])){
     foreach ($meeting->field_ref_bullet_points['und'] as $bullet_point){
-      if (o2web_access_helper_bullet_point_has_speaker_paper($bullet_point['target_id']))
+      if (os2web_access_helper_bullet_point_has_speaker_paper($bullet_point['target_id']))
 	return true;
     }
   }
@@ -12,7 +25,7 @@ function o2web_access_helper_meeting_has_speaker_paper($meeting_id){
   return false;
 }
 
-function o2web_access_helper_bullet_point_has_speaker_paper($bullet_point_id){
+function os2web_access_helper_bullet_point_has_speaker_paper($bullet_point_id){
   global $user;  
   $query = new EntityFieldQuery();
   $query->entityCondition('entity_type', 'node')
@@ -25,13 +38,13 @@ function o2web_access_helper_bullet_point_has_speaker_paper($bullet_point_id){
   return isset($result['node']);
 }
 
-function o2web_access_helper_check_user_can_see_bullet_point($meeting_id, $bullet_point_id){
+function os2web_access_helper_check_user_can_see_bullet_point($meeting_id, $bullet_point_id){
     global $user;
 
     if (!$user->uid)
       return false;
 
-    if (o2web_access_helper_check_bullet_point_is_part_of_meeting($meeting_id, $bullet_point_id)){
+    if (os2web_access_helper_check_bullet_point_is_part_of_meeting($meeting_id, $bullet_point_id)){
       $bullet_points = entity_load('node', array($bullet_point_id), array('type'=>'bullet_point'));
       $is_closed = $bullet_points[$bullet_point_id]->field_bul_point_closed['und'][0]['value'];
       
@@ -65,15 +78,15 @@ function o2web_access_helper_check_user_can_see_bullet_point($meeting_id, $bulle
       return false;
 }
 
-function o2web_access_helper_check_user_can_see_bullet_point_attachment($meeting_id, $bullet_point_id, $bullet_point_attachment_id){
-  if (o2web_access_helper_check_attachment_is_part_of_bullet_point($bullet_point_id, $bullet_point_attachment_id))
-    return o2web_access_helper_check_user_can_see_bullet_point($meeting_id, $bullet_point_id);
+function os2web_access_helper_check_user_can_see_bullet_point_attachment($meeting_id, $bullet_point_id, $bullet_point_attachment_id){
+  if (os2web_access_helper_check_attachment_is_part_of_bullet_point($bullet_point_id, $bullet_point_attachment_id))
+    return os2web_access_helper_check_user_can_see_bullet_point($meeting_id, $bullet_point_id);
   else
     return false;
 }
 
 
-function o2web_access_helper_check_bullet_point_is_part_of_meeting($meeting_id, $bullet_point_id){
+function os2web_access_helper_check_bullet_point_is_part_of_meeting($meeting_id, $bullet_point_id){
     $meetings = entity_load('node', array($meeting_id), array('type'=>'meeting'));
     $meeting = $meetings[$meeting_id];
     
@@ -89,7 +102,7 @@ function o2web_access_helper_check_bullet_point_is_part_of_meeting($meeting_id, 
     return $contains;
 }
 
-function o2web_access_helper_check_attachment_is_part_of_bullet_point($bullet_point_id, $bilag_id){
+function os2web_access_helper_check_attachment_is_part_of_bullet_point($bullet_point_id, $bilag_id){
     $bullet_points = entity_load('node', array($bullet_point_id), array('type'=>'bullet_point'));
     $bullet_point = $bullet_points[$bullet_point_id];
 
@@ -105,24 +118,72 @@ function o2web_access_helper_check_attachment_is_part_of_bullet_point($bullet_po
     return $contains;
 }
 
-function o2web_access_helper_get_client_ip() {
-	$ipaddress = '';
-	if (getenv('HTTP_CLIENT_IP'))
-		$ipaddress = getenv('HTTP_CLIENT_IP');
-	else if(getenv('HTTP_X_FORWARDED_FOR'))
-		$ipaddress = getenv('HTTP_X_FORWARDED_FOR'");
-	else if(getenv('HTTP_X_FORWARDED'))
-		$ipaddress = getenv('HTTP_X_FORWARDED');
-	else if(getenv('HTTP_FORWARDED_FOR'))
-		$ipaddress = getenv('HTTP_FORWARDED_FOR');
-	else if(getenv('HTTP_FORWARDED'))
-		$ipaddress = getenv('HTTP_FORWARDED');
-	else if(getenv('REMOTE_ADDR'))
-		$ipaddress = getenv('REMOTE_ADDR');
-	else
-		$ipaddress = "UNKNOWN";
+function os2web_access_helper_get_client_ip() {
+    $ipaddress = '';
+    if (getenv('HTTP_CLIENT_IP'))
+	    $ipaddress = getenv('HTTP_CLIENT_IP');
+    else if(getenv('HTTP_X_FORWARDED_FOR'))
+	    $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+    else if(getenv('HTTP_X_FORWARDED'))
+	    $ipaddress = getenv('HTTP_X_FORWARDED');
+    else if(getenv('HTTP_FORWARDED_FOR'))
+	    $ipaddress = getenv('HTTP_FORWARDED_FOR');
+    else if(getenv('HTTP_FORWARDED'))
+	    $ipaddress = getenv('HTTP_FORWARDED');
+    else if(getenv('REMOTE_ADDR'))
+	    $ipaddress = getenv('REMOTE_ADDR');
+    else
+	    $ipaddress = "UNKNOWN";
 
-	return $ipaddress;
+    return $ipaddress;
+}
+
+function os2web_access_helper_cron(){
+   $uids = db_select('users', 'u')
+      ->fields('u')
+      ->execute()
+      ->fetchAssoc();
+    
+   foreach ($uids as $uid){
+    error_log($uid->uid);
+   }
+   error_log("clearing users positions");
+}
+
+function os2web_access_helper_delete_user_rights(){
+   $users = db_select('users', 'u')
+      ->fields('u', array('uid'))
+      ->execute()
+      ->fetchAll();
+    
+   foreach ($users as $user){
+      $full_user = user_load($user->uid);
+      if (isset($full_user->field_user_positions['und'])){
+	foreach ($full_user->field_user_positions['und'] as $pos_index => $pos){
+	  $pos_full = taxonomy_term_load($pos['tid']);
+	  if (isset($pos_full->field_user_pos_valid['und'])){
+	    $valid_until = strtotime($pos_full->field_user_pos_valid['und']['0']['value2']);
+	    if (strtotime('now') > $valid_until){
+		//deleting user connection to that committee (member of)
+		if (isset($full_user->field_user_committee['und'])){
+		  foreach ($full_user->field_user_committee['und'] as $com_index => $com){
+		    if ($com['tid'] == $pos_full->field_user_pos_committee['und']['0']['tid'])
+		      unset($full_user->field_user_committee['und'][$com_index]);
+		  }
+		}
+
+		//deleting user connection to role
+		unset($full_user->field_user_positions['und'][$pos_index]);
+
+		user_save($full_user);//save changes
+
+		//deleting the role itself
+		taxonomy_term_delete($pos['tid']);
+	    }
+	  }
+	}
+      }
+   }
 }
 
 ?>

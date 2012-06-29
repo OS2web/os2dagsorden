@@ -25,5 +25,4 @@ function init(name, meeting_id, bullet_point_id, bilag_id) {
 	});
  	
      });
-
 }
