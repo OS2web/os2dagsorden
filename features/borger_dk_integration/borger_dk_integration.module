@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Borger.dk integration feature.
- */
-
-include_once('borger_dk_integration.features.inc');

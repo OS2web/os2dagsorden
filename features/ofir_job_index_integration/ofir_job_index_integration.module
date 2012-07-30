@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Ofir job index integration feature.
- */
-
-include_once('ofir_job_index_integration.features.inc');

@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the os2web context feature.
- */
-
-include_once 'os2web_context.features.inc';

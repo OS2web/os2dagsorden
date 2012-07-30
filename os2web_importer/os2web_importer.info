@@ -1,5 +1,0 @@
-name = OS2Web importer module
-description = This module will import meetings, user's committees, user positions and committees.
-package = OS2Web
-core = 7.x
-version = "dev"

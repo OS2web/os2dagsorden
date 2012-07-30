@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Taxonomies and taxonomy importers feature.
- */
-
-include_once('taxonomies_and_taxonomy_importers.features.inc');

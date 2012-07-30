@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the Ballerup views feature.
- */
-
-include_once('ballerup_views.features.inc');

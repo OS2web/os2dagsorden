@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the OS2Web Menuer og Blokke feature.
- */
-
-include_once 'os2web_menuer_og_blokke.features.inc';

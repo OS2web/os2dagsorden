@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the OS2Web Selvbetjeningslinks feature.
- */
-
-include_once 'os2web_selvbetjeningslinks.features.inc';
