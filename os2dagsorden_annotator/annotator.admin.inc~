@@ -1,0 +1,37 @@
+<?php
+
+/**
+* os2dagsorden_annotator
+*
+* PHP version 5
+*
+* @category OS2Dagsorden
+* @package  OS2Dagsorden_Annotator
+* @file     The annotator module admin configuration.
+* @author   Stanislav Kutasevits <stan@bellcom.dk>
+* @license  http://www.gnu.org/copyleft/gpl.html GNU General Public License
+* @link     http://bellcom.dk
+*
+*/
+
+function annotator_settings_form($form, $form_state) {
+  $form = array();
+  $form['os2dagsorden_annotator'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#title' => t('Annotateit service configuration'),
+      '#weight' => 10,
+  );
+  $form['os2dagsorden_annotator']['os2dagsorden_annotator_ip_address'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2dagsorden_annotator_ip_address'),
+      '#title' => t('IP address on which Annotateit service is running'),
+  );
+  $form['os2dagsorden_annotator']['os2dagsorden_annotator_port_nr'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2dagsorden_annotator_port_nr'),
+      '#title' => t('Port number on which Annotateit service is running'),
+  );
+
+  return system_settings_form($form);
+}

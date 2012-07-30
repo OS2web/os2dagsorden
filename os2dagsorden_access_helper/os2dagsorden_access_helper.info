@@ -1,0 +1,4 @@
+name = OS2Dagsorden Access Helper
+description = Helps to check a complicated permissions for OS2Web (like if user can access closed bullet point)
+core = 7.x
+package = OS2Dagsorden

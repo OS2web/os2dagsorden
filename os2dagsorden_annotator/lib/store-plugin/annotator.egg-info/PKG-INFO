@@ -1,0 +1,18 @@
+Metadata-Version: 1.0
+Name: annotator
+Version: 0.8.0
+Summary: Database backend for the Annotator (http://annotateit.org)
+Home-page: http://okfnlabs.org/annotator/
+Author: Rufus Pollock and Nick Stenning (Open Knowledge Foundation)
+Author-email: annotator@okfn.org
+License: MIT
+Download-URL: https://github.com/okfn/annotator-store
+Description: UNKNOWN
+Keywords: annotation web javascript
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python

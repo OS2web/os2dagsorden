@@ -1,0 +1,6 @@
+name = OS2Dagsorden Meeting import module
+description = This module will import exported meetings from Acadre
+package = OS2Dagsorden
+core = 7.x
+configure = admin/config/os2web/meetings
+

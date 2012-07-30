@@ -1,0 +1,39 @@
+<?php
+/**
+* os2dagsorden_importer
+*
+* PHP version 5
+*
+* @category OS2Dagsorden
+* @package  OS2Dagsorden_Importer
+* @file     Install file 
+* @author   Jesper Mathiassen <jm@bellcom.dk>
+* @license  http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
+* @link     http://bellcom.dk
+*/
+
+/**
+ * Implementation of schema creating.
+ *
+ * @return schema.
+ */
+function os2dagsorden_meetings_schema() {
+    $schema['os2web_meetings_imported'] = array(
+        'description' => 'This table relates imported agendas to their node-id',
+        'fields' => array(
+            'aid' => array(
+                'description' => 'Agenda identifier',
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+            ),
+            'nid' => array(
+                'description' => 'Node id.',
+                'type' => 'int',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+            ),
+        ),
+    );
+    return $schema;
+}
