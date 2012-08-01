@@ -730,23 +730,23 @@ function os2dagsorden_meetings_node_update($node) {
  */
 function os2dagsorden_meetings_node_delete($node) {
     if ($node->type === 'meeting') {
-//     db_delete('os2web_meetings_imported')->condition('nid', $node->nid)->execute();
-//     //TODO: Delete bullets from meeting.
-//     foreach ($node->field_ref_bullet_points[$node->language] as $nids) {
-//       node_delete($nids['target_id']);
-//     }
+     db_delete('os2web_meetings_imported')->condition('nid', $node->nid)->execute();
+     //TODO: Delete bullets from meeting.
+     foreach ($node->field_ref_bullet_points[$node->language] as $nids) {
+       node_delete($nids['target_id']);
+     }
     }
     if ($node->type === 'bullet_point') {
-//     //TODO: Delete bullet attachments from meeting.
-//     if (isset($node->field_ref_attachment[$node->language])) {
-//       foreach ($node->field_ref_attachment[$node->language] as $nids) {
-//         node_delete($nids['target_id']);
-//       }
-//     }
-//     if (isset($node->field_enclosures[$node->language])) {
-//       foreach ($node->field_enclosures[$node->language] as $file) {
-//       file_delete((object) $file, TRUE);
-//       }
-//     }
+     //TODO: Delete bullet attachments from meeting.
+     if (isset($node->field_ref_attachment[$node->language])) {
+       foreach ($node->field_ref_attachment[$node->language] as $nids) {
+         node_delete($nids['target_id']);
+       }
+     }
+     if (isset($node->field_enclosures[$node->language])) {
+       foreach ($node->field_enclosures[$node->language] as $file) {
+       file_delete((object) $file, TRUE);
+       }
+     }
     }
 }

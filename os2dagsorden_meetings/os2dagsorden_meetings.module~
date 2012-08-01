@@ -1,16 +1,17 @@
 <?php
-/**
-* os2dagsorden_importer
-*
-* PHP version 5
-*
-* @category OS2Dagsorden
-* @package  OS2Dagsorden_Importer
-* @author   Jesper Mathiassen <jm@bellcom.dk>, Stanislav Kutasevits <stan@bellcom.dk>
-* @license  http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
-* @link     http://bellcom.dk
-*/
 
+/**
+ * os2dagsorden_importer
+ *
+ * PHP version 5
+ *
+ * @category OS2Dagsorden
+ * @package  OS2Dagsorden_Importer
+ * @author   Jesper Mathiassen <jm@bellcom.dk>
+ * @author   Stanislav Kutasevits <stan@bellcom.dk>
+ * @license  http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
+ * @link     http://bellcom.dk
+ */
 define('DEFAULT_ACADRE_IMPORT_DIR', 'public://acadre');
 
 /**
@@ -30,6 +31,9 @@ function os2dagsorden_meetings_menu() {
 
 /**
  * Implementation of hook_form_alter()
+ * 
+ * @param mixed &$form       form
+ * @param mixed &$form_state state of form
  *
  * @return none
  */
@@ -120,7 +124,7 @@ function _os2dagsorden_meetings_process_manifest($file) {
 /**
  * Processes an agenda item
  *
- * @param SimpleXMLElement $agendainfo Chunk of XML representing the agenda part.
+ * @param SimpleXMLElement $agendainfo_xml Chunk of XML representing the agenda part.
  *
  * @return none
  */
@@ -161,11 +165,12 @@ function _os2dagsorden_meetings_process_agenda($agendainfo_xml) {
 /**
  * Removes a meeting node from the infomation supplied.
  *
+ * @param array $info meeting info
+ * 
  * @return bool Nid og the created node.
- * @param array $info
  */
 function _os2dagsorden_meetings_unpublish_meeting($info) {
-//  error_log(basename(__FILE__) . ':' . __LINE__ . ' Unpublish: $agendainfo = ' . print_r($info, 1));
+    //error_log(basename(__FILE__) . ':' . __LINE__ . ' Unpublish: $agendainfo = ' . print_r($info, 1));
     //TODO: Look up nid of the meeting
     $aid = $info['sysid'];
     error_log(basename(__FILE__) . ':' . __LINE__ . ' Unpublish requested: $aid = ' . print_r($aid, 1));
@@ -176,20 +181,16 @@ function _os2dagsorden_meetings_unpublish_meeting($info) {
 /**
  * Creates a meeting node from the infomation supplied.
  *
+ * @param array $info meeting info
+ * @param array $xml  raw xml
+ * 
  * @return the created node.
- * @param array $info
- * @param array $xml
  */
 function _os2dagsorden_meetings_publish_meeting($info, $xml) {
     global $debug_info;
     $debug_info = $xml;
 
     $no_publish_committee = array(
-//      'Direktionsmøde',
-//      'Direktions og afdelingschef møde',
-//     'Rådhusmad',
-//      'Testudvalg',
-//      'Nedlagte udvalg',
     );
 
     // Create meeting node
@@ -213,7 +214,7 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
     //trying to get meeting from id
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
-            ->fieldCondition('field_meeting_id', 'value', intval($options['meeting_id']), '=');
+        ->fieldCondition('field_meeting_id', 'value', intval($options['meeting_id']), '=');
 
     $result = $query->execute();
     if (isset($result['node'])) {
@@ -226,8 +227,8 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
 
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'taxonomy_term')
-                ->propertyCondition('vid', $vid)
-                ->fieldCondition('field_committee_acadre_id', 'value', intval($options['committee_acadre_id']), '=');
+            ->propertyCondition('vid', $vid)
+            ->fieldCondition('field_committee_acadre_id', 'value', intval($options['committee_acadre_id']), '=');
 
         $result = $query->execute();
         if (isset($result['taxonomy_term'])) {
@@ -241,9 +242,9 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
 
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'node')
-                ->fieldCondition('field_date', 'value', $meeting_start_date_0000, '>=')
-                ->fieldCondition('field_date', 'value', $meeting_start_date_2359, '<=')
-                ->fieldCondition('field_committee', 'tid', $com_tid, '=');
+            ->fieldCondition('field_date', 'value', $meeting_start_date_0000, '>=')
+            ->fieldCondition('field_date', 'value', $meeting_start_date_2359, '<=')
+            ->fieldCondition('field_committee', 'tid', $com_tid, '=');
         $result = $query->execute();
 
         if (isset($result['node'])) {
@@ -275,10 +276,6 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
     $node->field_date[$node->language][0]['value'] = $options['date'];
     $node->field_date[$node->language][0]['value2'] = $options['finish'];
 
-// handeled in field properties
-//   $node->field_date[$node->language][0]['timezone'] = 'Europe/Berlin';
-//   $node->field_date[$node->language][0]['timezone_db'] = 'UTC';
-//   $node->field_date[$node->language][0]['date_type'] = 'datetime';
     // Proper id tagging
     $node->field_meeting_id[$node->language][0]['value'] = $options['meeting_id'];
     // Make sure the committee term is created and get the term.
@@ -334,7 +331,7 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
 /**
  * Marks the meeting as acadre imported, so not reimports will be done or future rewritting 
  *
- * @param node meeting
+ * @param mixed $node meeting
  *
  * @return none
  */
@@ -348,7 +345,7 @@ function _os2dagsorden_meeting_mark_acadre_imported($node) {
  *
  * @param mixed $info xml extracted information
  * @param mixed $xml  raw xml_item
- * @param int bullet point internal id (does not represent anything, is similar to ordinal number)
+ * @param int   $id   bullet point internal id (does not represent anything, is similar to ordinal number)
  * 
  * @return created bullet point nid
  */
@@ -364,7 +361,7 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
     $bullets = $xml->xpath("table[@name='bullet']");
     $nids = array();
     foreach ($bullets as $bullet) {
-//    $bullet_id = (int) array_shift($bullet->xpath("fields/field[@name='sysid']"));
+        //$bullet_id = (int) array_shift($bullet->xpath("fields/field[@name='sysid']"));
         // Add node for each bullet
         $attachment_nid = _os2dagsorden_meetings_add_bullet($bullet);
         if (isset($attachment_nid))
@@ -373,7 +370,7 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
 
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
-            ->fieldCondition('field_bullet_point_id', 'value', intval($options['sysid']), '=');
+        ->fieldCondition('field_bullet_point_id', 'value', intval($options['sysid']), '=');
 
     $result = $query->execute();
     if (isset($result['node'])) {
@@ -400,7 +397,7 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
         $node->field_bul_point_closed[$node->language][0]['value'] = 0;
     }
 
-      if (isset($info['movie_id']) && is_numeric($info['movie_chapters'][$id])) {
+    if (isset($info['movie_id']) && is_numeric($info['movie_chapters'][$id])) {
         $node->field_qbrick_ref[$node->language][0]['id'] = $info['movie_id'];
         $node->field_qbrick_ref[$node->language][0]['seek'] = $info['movie_chapters'][$id];
     }
@@ -413,7 +410,7 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
     foreach ($enclosures as $enclosure) {
         $filename = (string) array_shift($enclosure->xpath("fields/field[@name='filename']"));
         $uri = implode('/', array(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), $info['filesfolder'], $filename));
-	$filetype = (string) array_shift($enclosure->xpath("fields/field[@name='EnclosureFileType']")); 
+        $filetype = (string) array_shift($enclosure->xpath("fields/field[@name='EnclosureFileType']"));
 
         $fid = db_select('file_managed', 'fm')
                         ->fields('fm', array('fid'))
@@ -445,19 +442,19 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
         if (!$contains)
             $node->field_ref_attachment[LANGUAGE_NONE][]['target_id'] = $enclosure_nid;
 
-	//Adlib Conversion
+        //Adlib Conversion
         if (module_exists('os2dagsorden_adlib_api')) {
             drupal_load('module', 'os2dagsorden_adlib_api');
-	    
-	    //if not PDF, schedule for pdf conversion as well
-	    if (strcmp($filetype, ".PDF") != 0)
-	      os2dagsorden_adlib_api_convert_to_pdf($file->fid, $enclosure_nid);
-	    
-	    //convert to HTML
-	    os2dagsorden_adlib_api_convert_to_html($file->fid, $enclosure_nid);
+
+            //if not PDF, schedule for pdf conversion as well
+            if (strcmp($filetype, ".PDF") != 0)
+                os2dagsorden_adlib_api_convert_to_pdf($file->fid, $enclosure_nid);
+
+            //convert to HTML
+            os2dagsorden_adlib_api_convert_to_html($file->fid, $enclosure_nid);
         }
     }
-    
+
     node_submit($node);
     node_save($node);
 
@@ -467,11 +464,11 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
 /**
  * Creates a bullet node from xml input
  *
- * @param SimpleXMLElement $xml
+ * @param SimpleXMLElement $xml raw xml
+ * 
  * @return int - Node ID
  */
 function _os2dagsorden_meetings_add_bullet(SimpleXMLElement $xml) {
-
     $options = array(
         'sysid' => (int) array_shift($xml->xpath("fields/field[@name='sysid']")),
         'name' => (string) array_shift($xml->xpath("fields/field[@name='bulletname']")),
@@ -483,7 +480,7 @@ function _os2dagsorden_meetings_add_bullet(SimpleXMLElement $xml) {
     if (!empty($options['content'])) {
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'node')
-                ->fieldCondition('field_bpa_id', 'value', intval($options['sysid']), '=');
+            ->fieldCondition('field_bpa_id', 'value', intval($options['sysid']), '=');
 
         $result = $query->execute();
 
@@ -527,9 +524,11 @@ function _os2dagsorden_meetings_add_bullet(SimpleXMLElement $xml) {
  * The file is eventually converted to HTML and the rendered output will be used as bullet point attachment body field.
  * The file is then converted to PDF (is the file extension is not PDF already)
  *
+ * @param SimpleXMLElement $enclosure xml
+ * @param stdClass         $file      file
+ * 
  * @author Stanislav Kutasevits
- * @param SimpleXMLElement $enclosure
- * @param stdClass $file
+ * 
  * @return int - Node ID
  */
 function _os2dagsorden_meetings_add_enclosure_bullet($enclosure, $file) {
@@ -586,15 +585,15 @@ function _os2dagsorden_meetings_import_committee(SimpleXMLElement $xml) {
     );
 
     $vid = db_select('taxonomy_vocabulary', 'tv')
-            ->fields('tv', array('vid'))
-            ->condition('machine_name', 'committee')
-            ->execute()
-            ->fetchField();
+        ->fields('tv', array('vid'))
+        ->condition('machine_name', 'committee')
+        ->execute()
+        ->fetchField();
 
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'taxonomy_term')
-            ->propertyCondition('vid', $vid)
-            ->fieldCondition('field_committee_acadre_id', 'value', intval($options['acadre_id']), '=');
+        ->propertyCondition('vid', $vid)
+        ->fieldCondition('field_committee_acadre_id', 'value', intval($options['acadre_id']), '=');
 
     $result = $query->execute();
     if (isset($result['taxonomy_term'])) {
@@ -621,7 +620,8 @@ function _os2dagsorden_meetings_import_committee(SimpleXMLElement $xml) {
 /**
  * Processes xml for location and creates terms as needed.
  *
- * @param SimpleXMLElement $xml
+ * @param SimpleXMLElement $xml raw xml
+ * 
  * @return \stdClass
  */
 function _os2dagsorden_meetings_import_location(SimpleXMLElement $xml) {
@@ -656,7 +656,8 @@ function _os2dagsorden_meetings_import_location(SimpleXMLElement $xml) {
 /**
  * Case insensitive fileexists(). Code from comments on php.net
  *
- * @param string $filename
+ * @param string $filename name of file
+ * 
  * @return mixed Flase if file not found, case corrected filename if found.
  */
 function _os2dagsorden_meetings_similar_file_exists($filename) {
@@ -678,47 +679,55 @@ function _os2dagsorden_meetings_similar_file_exists($filename) {
  * Hook to node update method. Will refresh the meeting search metadatawith the information from 
  * updated node (either bullet point or bullet point attachment)
  *
- * @param mixed $node
+ * @param mixed $node node
  *
  * @return none
  */
 function os2dagsorden_meetings_node_update($node) {
     if ($node->type === 'bullet_point') {
-	//resetting cache
-	entity_get_controller('node')->resetCache(array($node->nid));
+        //resetting cache
+        entity_get_controller('node')->resetCache(array($node->nid));
 
-	//updating meeting (updates search meta-data)
+        //updating meeting (updates search meta-data)
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'node')
-              ->fieldCondition('field_ref_bullet_points', 'target_id', $node->nid, '=');
+            ->fieldCondition('field_ref_bullet_points', 'target_id', $node->nid, '=');
         $result = $query->execute();
 
         if (isset($result['node'])) {
             $nids = array_keys($result['node']);
             $meeting = reset(entity_load('node', $nids));
-	    
-	    node_save($meeting);
+
+            node_save($meeting);
         }
     }
     if ($node->type === 'bullet_point_attachment') {
-	//resetting cache
-	entity_get_controller('node')->resetCache(array($node->nid));
+        //resetting cache
+        entity_get_controller('node')->resetCache(array($node->nid));
 
-	//updating bullet point (will call bullet point presave hook, which updates meeting search meta-data)
-	$query = new EntityFieldQuery();
+        //updating bullet point (will call bullet point presave hook, which updates meeting search meta-data)
+        $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'node')
-              ->fieldCondition('field_ref_attachment', 'target_id', $node->nid, '=');
+            ->fieldCondition('field_ref_attachment', 'target_id', $node->nid, '=');
         $result = $query->execute();
 
         if (isset($result['node'])) {
             $nids = array_keys($result['node']);
             $bullet_point = reset(entity_load('node', $nids));
-	    
-	    node_save($bullet_point);
+
+            node_save($bullet_point);
         }
     }
 }
 
+/**
+ * Hook to node delete method. If a bullet point attachment is deleted will delete its attached files, 
+ * if a meeting is deleted - will delete all the bullet points attached
+ *
+ * @param mixed $node
+ *
+ * @return none
+ */
 function os2dagsorden_meetings_node_delete($node) {
     if ($node->type === 'meeting') {
 //     db_delete('os2web_meetings_imported')->condition('nid', $node->nid)->execute();
