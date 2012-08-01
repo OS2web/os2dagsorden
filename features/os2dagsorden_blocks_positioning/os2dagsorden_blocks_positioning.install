@@ -1,0 +1,17 @@
+<?php
+/**
+ * @file
+ * Code for the OS2Dagsorden Block positioning
+ */
+
+/**
+ * Sets the title of the menu block to nothing
+ */
+function os2dagsorden_blocks_positioning_enable(){
+ db_update('block')->fields(array(
+    'title' => '<none>',
+  ))
+  ->condition('delta', 'menu-sidepane-menu', '=')
+  ->execute();
+}
+
