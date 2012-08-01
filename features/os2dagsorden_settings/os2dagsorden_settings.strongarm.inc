@@ -13,6 +13,25 @@ function os2dagsorden_settings_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'language_default';
+  $strongarm->value = (object) array(
+    'language' => 'da',
+    'name' => 'Danish',
+    'native' => 'Dansk',
+    'direction' => '0',
+    'enabled' => '1',
+    'plurals' => '2',
+    'formula' => '($n!=1)',
+    'domain' => '',
+    'prefix' => 'da',
+    'weight' => '0',
+    'javascript' => 'C-ihHk5BodO6bV0ClCXxcRqIdeTfvdDA8k7mbaMjOig',
+  );
+  $export['language_default'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'theme_syddjurs_omega_subtheme_settings';
   $strongarm->value = array(
     'toggle_logo' => 1,
