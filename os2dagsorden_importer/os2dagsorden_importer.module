@@ -607,6 +607,9 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
     $node->title = $xml_data['title'];
     if (!empty($xml_data['title_short'])){
 	$node->field_title_short[$node->language][0]['value'] = $xml_data['title_short'];
+    } 
+    else {
+        $node->field_title_short[$node->language][0]['value'] = $xml_data['title'];
     }
 
     $node->field_meeting_id[$node->language][0]['value'] = $xml_data['meeting_id'];
