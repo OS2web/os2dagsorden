@@ -1,4 +1,4 @@
-name = "OS2Web AD Integration"
+name = "OS2Dagsorden AD Integration"
 description = "Configures Active Directory authentication and authorization"
 core = "7.x"
 package = "OS2Dagsorden"
