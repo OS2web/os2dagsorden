@@ -23,7 +23,7 @@
  */
 function os2dagsorden_annotator_get_notes_by_attachment_id($bilag_id) {
     global $user;
-    $url = variable_get('os2dagsorden_annotator_ip_address') . ':' . variable_get('os2dagsorden_annotator_port_nr') . '/search?drupal_user=' . $user->name . '&bilag_id=' . $bilag_id;
+    $url = variable_get('os2dagsorden_annotator_url') . ':' . variable_get('os2dagsorden_annotator_port_nr') . '/search?drupal_user=' . $user->name . '&bilag_id=' . $bilag_id;
 
     return os2dagsorden_annotator_get_results($url);
 }
@@ -37,7 +37,7 @@ function os2dagsorden_annotator_get_notes_by_attachment_id($bilag_id) {
  */
 function os2dagsorden_annotator_get_notes_by_bullet_point_id($bullet_point_id) {
     global $user;
-    $url = variable_get('os2dagsorden_annotator_ip_address') . ':' . variable_get('os2dagsorden_annotator_port_nr') . '/search?drupal_user=' . $user->name . '&bullet_point_id=' . $bullet_point_id;
+    $url = variable_get('os2dagsorden_annotator_url') . ':' . variable_get('os2dagsorden_annotator_port_nr') . '/search?drupal_user=' . $user->name . '&bullet_point_id=' . $bullet_point_id;
 
     return os2dagsorden_annotator_get_results($url);
 }
@@ -51,7 +51,7 @@ function os2dagsorden_annotator_get_notes_by_bullet_point_id($bullet_point_id) {
  */
 function os2dagsorden_annotator_get_notes_by_meeting_id($meeting_id) {
     global $user;
-    $url = variable_get('os2dagsorden_annotator_ip_address') . ':' . variable_get('os2dagsorden_annotator_port_nr') . '/search?drupal_user=' . $user->name . '&meeting_id=' . $meeting_id;
+    $url = variable_get('os2dagsorden_annotator_url') . ':' . variable_get('os2dagsorden_annotator_port_nr') . '/search?drupal_user=' . $user->name . '&meeting_id=' . $meeting_id;
 
     return os2dagsorden_annotator_get_results($url);
 }
