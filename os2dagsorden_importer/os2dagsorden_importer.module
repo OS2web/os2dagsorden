@@ -129,9 +129,12 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
             'committee_name' => (string) array_shift($row->xpath('GroupLongName')),
             'follower_id' => (int) array_shift($row->xpath('FollowerID')),
             'follower_initials' => (string) array_shift($row->xpath('FollowerInitials')),
+	    'follower_name' => (string) array_shift($row->xpath('FollowerName')),
             'follower_plus_id' => (int) array_shift($row->xpath('FollowerPlusID')),
             'follower_plus_initials' => (string) array_shift($row->xpath('FollowerPlusInitials')),
+	    'follower_plus_name' => (string) array_shift($row->xpath('FollowerPlusName')),
             'member_id' => (int) array_shift($row->xpath('MemberID')),
+	    'member_name' => (string) array_shift($row->xpath('MemberName')),
             'member_start_date' => (string) array_shift($row->xpath('MemberStartDate')),
             'member_end_date' => (string) array_shift($row->xpath('MemberEndDate')),
             'member_initials' => (string) array_shift($row->xpath('MemberInitials')),
@@ -157,6 +160,7 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
             if (empty($user)) {
                 $user = user_load_by_name($xml_data['member_initials']);
             }
+
         }
 
         //trying to get user from "Follows" association 
@@ -174,6 +178,7 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
             if (empty($user)) {
                 $user = user_load_by_name($xml_data['follower_initials']);
             }
+
         }
 
         //trying to get user from "Follows+" association 
@@ -191,6 +196,7 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
             if (empty($user)) {
                 $user = user_load_by_name($xml_data['follower_plus_initials']);
             }
+
         }
 
         //if the entry is not deleted
@@ -212,11 +218,30 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
                 }
             }
 
-            //create user role
-            if (isset($xml_data['role']) && !empty($user)) {
-                $role_tid = _os2dagsorden_importer_create_user_role($xml_data, $com_tid);
-                //update user if needed
-                _os2dagsorden_importer_add_role_to_user($role_tid, $user);
+            if (!empty($user)) {
+		//update full name
+		if (isset($xml_data['member_name'])){
+		    if (strcmp($user->field_user_full_name['und'][0]['value'], $xml_data['member_name']) != 0) {
+			_os2dagsorden_importer_set_user_fullname($user, $xml_data['member_name']);
+		    }
+		}
+		if (isset($xml_data['follower_name'])){
+		    if (strcmp($user->field_user_full_name['und'][0]['value'], $xml_data['follower_name']) != 0) {
+			_os2dagsorden_importer_set_user_fullname($user, $xml_data['follower_name']);
+		    }
+		}
+		if (isset($xml_data['follower_plus_name'])){
+		    if (strcmp($user->field_user_full_name['und'][0]['value'], $xml_data['follower_plus_name']) != 0) {
+			_os2dagsorden_importer_set_user_fullname($user, $xml_data['follower_plus_name']);
+		    }
+		}
+
+		//create user role
+		if (isset($xml_data['role'])) {
+		    $role_tid = _os2dagsorden_importer_create_user_role($xml_data, $com_tid);
+		    //update user if needed
+		    _os2dagsorden_importer_add_role_to_user($role_tid, $user);
+		} 
             }
         }
         else {
@@ -224,6 +249,24 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
             _os2dagsorden_importer_delete_user_role($xml_data);
         }
     }
+}
+
+/**
+ * Helper function. Will update user's full name field
+ *
+ * @param mixed  $user user object  
+ * @param string $name new name
+ *
+ * @return none
+ */
+function _os2dagsorden_importer_set_user_fullname($user, $name) {
+//     $name_field['und'][0]['value'] = $name;
+// 
+//     $edit = array(
+// 	'field_user_full_name' => $name_field,
+//     );
+    $user->field_user_full_name['und'][0]['value'] = $name;
+    user_save($user);
 }
 
 /**
@@ -607,7 +650,7 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
     $node->title = $xml_data['title'];
     if (!empty($xml_data['title_short'])){
 	$node->field_title_short[$node->language][0]['value'] = $xml_data['title_short'];
-    } 
+    }     
     else {
         $node->field_title_short[$node->language][0]['value'] = $xml_data['title'];
     }
