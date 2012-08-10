@@ -13,6 +13,10 @@
  * @link     http://bellcom.dk
  */
 define('DEFAULT_ACADRE_IMPORT_DIR', 'public://acadre');
+define('MEETINGS_FORCE_RECREATE', false); // Delete existing nodes before import
+define('MEETINGS_FOCUS', false); // File key for import
+define('MEETINGS_MEETING_FOCUS', false); // Meeting id
+define('MEETINGS_CLEAR_COMMITTEE', true); // Clean out invalid committees
 
 /**
  * Implementation of hook_menu
@@ -21,12 +25,50 @@ define('DEFAULT_ACADRE_IMPORT_DIR', 'public://acadre');
  */
 function os2dagsorden_meetings_menu() {
     $items = array();
+    $items['os2dagsorden/test/meetings/batch'] = array(
+	'page callback' => 'os2dagsorden_meetings_do_import_batch',
+	'access arguments' => array('administer os2web'),
+	'type' => MENU_CALLBACK,
+    );
     $items['os2dagsorden/test/meetings'] = array(
         'page callback' => 'os2dagsorden_meetings_test_page',
         'access arguments' => array('administer os2web'),
         'type' => MENU_CALLBACK,
     );
     return $items;
+}
+
+/**
+ * Implemetation of hook_cron()
+ * Will run import on every cron.
+ *
+ * @return none
+ */
+function os2dagsorden_meetings_cron() {
+  $options = array(
+//      'callback' => '_os2dagsorden_meetings_process_manifest',
+      'recurse' => FALSE,
+  );
+  $files = file_scan_directory(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), '/\.xml$/i', $options);
+  $queue = DrupalQueue::get('import_agendas');
+  if ($queue->numberOfItems() == 0) {
+    foreach ($files as $file) {
+      $queue->createItem($file->uri);
+    }
+  }
+}
+
+/**
+ * Implemetation of hook_cron_queue_info()
+ *
+ * @return none
+ */
+function os2dagsorden_meetings_cron_queue_info() {
+  $queues['import_agendas'] = array(
+      'worker callback' => '_os2dagsorden_meetings_process_manifest',
+      'time' => 300,
+  );
+  return $queues;
 }
 
 /**
@@ -37,7 +79,7 @@ function os2dagsorden_meetings_menu() {
  *
  * @return none
  */
-function os2dagsorden_meetings_form_os2web_settings_settings_form_alter(&$form, &$form_state) {
+function os2dagsorden_meetings_form__settings_settings_form_alter(&$form, &$form_state) {
     $form['meetings'] = array(
         '#type' => 'fieldset',
         '#title' => 'Referat import',
@@ -61,11 +103,52 @@ function os2dagsorden_meetings_form_os2web_settings_settings_form_alter(&$form, 
  */
 function os2dagsorden_meetings_test_page() {
     global $debug_info;
+    // 
+    //     os2dagsorden_meetings_do_import();
+    //     os2dagsorden_meetings_order_addenums();
+    // 
+    //     return '<div><textarea cols="150" rows=50>' . print_r($debug_info, 1) . '</textarea>';
+    return '<a href="?q=os2dagsorden/test/meetings/batch">Start import</a>';
+}
 
-    os2dagsorden_meetings_do_import();
-    os2dagsorden_meetings_order_addenums();
-
-    return '<div><textarea cols="150" rows=50>' . print_r($debug_info, 1) . '</textarea>';
+/**
+ * Import xml files from the defined folder
+ *
+ */
+function os2dagsorden_meetings_do_import_batch() {
+    $focus = MEETINGS_FOCUS;
+    //$focus = false;
+    $batch = array(
+	'title' => 'Dagsorden import',
+	'operations' => array(
+  //      array('_os2web_meetings_cleanup_nodes',array('meeting')),
+  //      array('_os2web_meetings_cleanup_nodes',array('bullet_point')),
+  //      array('_os2web_meetings_cleanup_nodes',array('bullet_point_attachment')),
+	),
+	'finished' => 'os2dagsorden_meetings_order_addenums',
+    );
+    if (MEETINGS_CLEAR_COMMITTEE) {
+      //$batch['operations'][]=array('_os2web_meetings_clear_committees',array());
+    }
+    $options = array(
+  //      'callback' => '_os2dagsorden_meetings_process_manifest',
+	'recurse' => FALSE,
+    );
+    $files = file_scan_directory(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), '/\.xml$/i', $options);
+    foreach ($files as $file) {
+      if ($focus !== false) {
+	if (strpos($file->name, (string) $focus) !== FALSE) {
+	  $batch['operations'][] = array('_os2os2dagsorden_meetings_process_manifest', array($file->uri));
+	}
+      } else {
+	$batch['operations'][] = array('_os2os2dagsorden_meetings_process_manifest', array($file->uri));
+      }
+    }
+    if ($focus) {
+      error_log("Var: \$batch = " . print_r($batch, 1));
+    }
+    batch_set($batch);
+    batch_process('os2dagsorden/test/meetings');
 }
 
 /**
@@ -261,8 +344,8 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
     }
 
     //avoiding reimports
-    if (intval($node->field_meeting_acadre_imported['und']['0']['value']) == 1) {
-        return;
+    if (intval($node->field_meeting_acadre_imported[$node->language][0]['value']) == 1) {
+        return $node;
     }
 
     $node->title = $options['title'];
@@ -323,7 +406,7 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
         'nid' => $node->nid,
         'aid' => $options['id'],
     );
-    drupal_write_record('os2dagsorden_meetings_imported', $record);
+    drupal_write_record('os2web_meetings_imported', $record);
 
     return $node;
 }

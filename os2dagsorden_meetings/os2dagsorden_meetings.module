@@ -353,8 +353,8 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
 
     $node->created = $options['cdate'];
     // Let's add standard body field
-    $node->field_meeting_abbr[$node->language][0]['value'] = $options['description'];
-    $node->field_meeting_abbr[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field
+    //$node->field_meeting_abbr[$node->language][0]['value'] = $options['description'];
+    //$node->field_meeting_abbr[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field
     // The date
     $node->field_date[$node->language][0]['value'] = $options['date'];
     $node->field_date[$node->language][0]['value2'] = $options['finish'];
