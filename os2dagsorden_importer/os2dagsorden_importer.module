@@ -34,7 +34,7 @@ function os2dagsorden_importer_menu() {
  * @return none
  */
 function os2dagsorden_importer_sync() {
-    //os2dagsorden_importer_import_user_committees();
+    os2dagsorden_importer_import_user_committees();
     //os2dagsorden_importer_import_committees();
     //os2dagsorden_importer_import_meetings();
 }
@@ -46,9 +46,9 @@ function os2dagsorden_importer_sync() {
  * @return none
  */
 function os2dagsorden_importer_cron() {
-    os2dagsorden_importer_import_user_committees();
-    os2dagsorden_importer_import_committees();
-    os2dagsorden_importer_import_meetings();
+    //os2dagsorden_importer_import_user_committees();
+    //os2dagsorden_importer_import_committees();
+    //os2dagsorden_importer_import_meetings();
 }
 
 /**
@@ -220,17 +220,17 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
 
             if (!empty($user)) {
 		//update full name
-		if (isset($xml_data['member_name'])){
+		if (!empty($xml_data['member_name'])){
 		    if (strcmp($user->field_user_full_name['und'][0]['value'], $xml_data['member_name']) != 0) {
 			_os2dagsorden_importer_set_user_fullname($user, $xml_data['member_name']);
 		    }
 		}
-		if (isset($xml_data['follower_name'])){
+		if (!empty($xml_data['follower_name'])){
 		    if (strcmp($user->field_user_full_name['und'][0]['value'], $xml_data['follower_name']) != 0) {
 			_os2dagsorden_importer_set_user_fullname($user, $xml_data['follower_name']);
 		    }
 		}
-		if (isset($xml_data['follower_plus_name'])){
+		if (!empty($xml_data['follower_plus_name'])){
 		    if (strcmp($user->field_user_full_name['und'][0]['value'], $xml_data['follower_plus_name']) != 0) {
 			_os2dagsorden_importer_set_user_fullname($user, $xml_data['follower_plus_name']);
 		    }
