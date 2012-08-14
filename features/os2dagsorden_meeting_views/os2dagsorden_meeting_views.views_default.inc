@@ -1612,7 +1612,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title="Help text goes here"></div>';
+  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title="Her vises de seneste 8 møder i de stående politiske udvalg. Der er ikke et referat tilgængeligt før status er angivet til publiceret."></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* Relationship: Content: Committee (field_committee) */
   $handler->display->display_options['relationships']['field_committee_tid']['id'] = 'field_committee_tid';
