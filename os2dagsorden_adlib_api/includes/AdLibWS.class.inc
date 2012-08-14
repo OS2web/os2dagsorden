@@ -126,6 +126,24 @@ class AdLibWS {
     }
 
     /**
+     * Deletes the job folder on Adlib Server
+     *
+     * @param int $id Job folder id 
+     * 
+     * @return reply
+     */
+    public function deleteJobFolder($id) {
+      if (ADLIB_DISABLED) {
+	return false;
+      }
+      if (isset($this->client)) {
+	$reply = $this->client->deleteJobFolder(array('JobFolder' => $id));
+	return $reply;
+      }
+    }
+
+
+    /**
     * Gets the status of the job
     *
     * @param int $id Job id 
