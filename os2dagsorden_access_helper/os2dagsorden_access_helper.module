@@ -190,6 +190,13 @@ function os2dagsorden_access_helper_get_client_ip() {
     return $ipaddress;
 }
 
+function os2dagsorden_access_helper_user_logout() {
+  // Destroy the current session, and reset $user to the anonymous user.
+  session_destroy();
+  drupal_set_message("Du har nu logget af OS2dagsorden. Vi anbefaler, at du lukker alle browservinduer.");
+  drupal_goto();
+}
+
 /**
  * Implements the hook_cron
  *
