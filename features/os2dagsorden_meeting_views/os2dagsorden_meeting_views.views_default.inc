@@ -1109,7 +1109,7 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
     ),
     'field_meeting_search_meta_date_value' => array(
       'more_options' => array(
-        'bef_filter_description' => '<div class=\'help-button\' title=\'Help text is set up in the exposed form settings inside this view settings\'></div>',
+        'bef_filter_description' => '<div class=\'help-button\' title=\'Her kan der søges i dagsordenspunkters tekst og i bilagenes fritekst, hvis sidstnævnte er konverteret til html. Søgning kan filtreres via dato, udvalg og søgeord.\'></div>',
         'tokens' => array(
           'available' => array(
             0 => 'global_types',
