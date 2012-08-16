@@ -51,12 +51,12 @@ function os2dagsorden_meetings_cron() {
   );
   $files = file_scan_directory(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), '/\.xml$/i', $options);
   $queue = DrupalQueue::get('import_agendas');
-  if ($queue->numberOfItems() == 0) {
+  //if ($queue->numberOfItems() == 0) {
     foreach ($files as $file) {
-      $queue->createItem($file->uri);
+      //$queue->createItem($file->uri);
       _os2dagsorden_meetings_process_manifest($file->uri);
     }
-  }
+  //}
 }
 
 /**

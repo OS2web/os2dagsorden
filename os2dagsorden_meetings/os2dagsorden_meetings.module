@@ -346,7 +346,7 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
 
     //avoiding reimports
     if (intval($node->field_meeting_acadre_imported[$node->language][0]['value']) == 1) {
-        return $node;
+        //return $node;
     }
 
     $node->title = $options['title'];

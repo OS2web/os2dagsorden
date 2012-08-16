@@ -159,6 +159,7 @@ function os2dagsorden_meeting_views_views_default_views() {
   $handler->display->display_options['fields']['field_meeting_status']['field'] = 'field_meeting_status';
   $handler->display->display_options['fields']['field_meeting_status']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['field_meeting_status']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['field_meeting_status']['empty'] = '&nbsp;';
   /* Field: indicator - has speaker paper */
   $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
   $handler->display->display_options['fields']['php_1']['table'] = 'views';
@@ -348,8 +349,8 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     t('field_follows_committee_plus'),
     t('Status'),
     t('meeting/[nid]'),
-    t('Titel'),
     t('&nbsp;'),
+    t('Titel'),
     t('Møde'),
     t('[title]'),
     t('Dato'),
@@ -1231,6 +1232,7 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['fields']['field_meeting_status']['field'] = 'field_meeting_status';
   $handler->display->display_options['fields']['field_meeting_status']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['field_meeting_status']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['field_meeting_status']['empty'] = '&nbsp;';
   /* Field: indicator - has speaker paper */
   $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
   $handler->display->display_options['fields']['php_1']['table'] = 'views';
@@ -1454,11 +1456,11 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     t('term from field_committee'),
     t('Status'),
     t('meeting/[nid]'),
+    t('&nbsp;'),
     t('PHP'),
     t('Møde'),
     t('[title]'),
     t('Dato'),
-    t('&nbsp;'),
     t('Lokation'),
     t('Udvalg'),
     t('[field_committee]'),
