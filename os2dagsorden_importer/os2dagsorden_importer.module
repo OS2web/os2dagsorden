@@ -34,9 +34,9 @@ function os2dagsorden_importer_menu() {
  * @return none
  */
 function os2dagsorden_importer_sync() {
-    os2dagsorden_importer_import_user_committees();
+    //os2dagsorden_importer_import_user_committees();
     //os2dagsorden_importer_import_committees();
-    //os2dagsorden_importer_import_meetings();
+    os2dagsorden_importer_import_meetings();
 }
 
 /**
@@ -656,6 +656,8 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
     }
 
     $node->field_meeting_id[$node->language][0]['value'] = $xml_data['meeting_id'];
+    
+    $node->field_meeting_status[$node->language][0]['value'] = 'Planlagt';
 
     if (!empty($xml_data['meeting_start_date'])) {
         $node->field_date[$node->language][0]['value'] = $xml_data['meeting_start_date'];

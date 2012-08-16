@@ -39,19 +39,26 @@ function os2dagsorden_meeting_views_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'nid' => 'nid',
+    'field_meeting_status' => 'field_meeting_status',
     'php_1' => 'field_title_short',
     'php' => 'field_title_short',
-    'field_meeting_status' => 'field_meeting_status',
     'title' => 'title',
+    'field_meeting_abbr' => 'field_meeting_abbr',
     'field_title_short' => 'field_title_short',
     'field_date' => 'field_date',
     'field_location' => 'field_location',
     'field_committee' => 'field_committee',
-    'field_name_short' => 'field_name_short',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
     'nid' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_meeting_status' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -68,14 +75,14 @@ function os2dagsorden_meeting_views_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_meeting_status' => array(
+    'title' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
-    'title' => array(
+    'field_meeting_abbr' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -104,13 +111,6 @@ function os2dagsorden_meeting_views_views_default_views() {
       'empty_column' => 0,
     ),
     'field_committee' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_name_short' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -157,8 +157,12 @@ function os2dagsorden_meeting_views_views_default_views() {
   $handler->display->display_options['fields']['field_meeting_status']['id'] = 'field_meeting_status';
   $handler->display->display_options['fields']['field_meeting_status']['table'] = 'field_data_field_meeting_status';
   $handler->display->display_options['fields']['field_meeting_status']['field'] = 'field_meeting_status';
+  $handler->display->display_options['fields']['field_meeting_status']['alter']['text'] = 'test';
   $handler->display->display_options['fields']['field_meeting_status']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['field_meeting_status']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['field_meeting_status']['empty'] = '&nbsp;';
+  $handler->display->display_options['fields']['field_meeting_status']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['field_meeting_status']['type'] = 'taxonomy_term_reference_plain';
   /* Field: indicator - has speaker paper */
   $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
   $handler->display->display_options['fields']['php_1']['table'] = 'views';
@@ -341,15 +345,16 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     t('Items per page'),
     t('- All -'),
     t('Offset'),
-    t('<div class=\'help-button\' title=\'Her vises de kommende 5 møder i "Mine udvalg". Det vil sige udvalg som man enten er medlem af eller følger. Udvalgene kan ses i boksene "Medlem af" og "Jeg følger" i højremenuen. Der er ikke en dagsorden tilgængelig før status er angivet til publiceret.\'></div>'),
+    t('<div class=\'help-button\' title=\'Her vises de kommende 5 møder i "Mine udvag". Det vil sige udvalg som man enten er medlem af eller følger. Udvalgene kan ses i boksene "Medlem af" og "Jeg følger" i højremenuen. Der er ikke en dagsorden tilgængelig før status er angivet til publiceret.\'></div>'),
     t('term from field_committee'),
     t('field_user_committee'),
     t('field_follows_committee'),
     t('field_follows_committee_plus'),
     t('Status'),
+    t('test'),
     t('meeting/[nid]'),
-    t('Titel'),
     t('&nbsp;'),
+    t('Titel'),
     t('Møde'),
     t('[title]'),
     t('Dato'),
@@ -1071,12 +1076,22 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
       'bef_format' => 'default',
       'more_options' => array(
         'bef_filter_description' => 'fff',
+        'tokens' => array(
+          'available' => array(
+            0 => 'global_types',
+          ),
+        ),
       ),
     ),
     'field_date_value_1' => array(
       'bef_format' => 'default',
       'more_options' => array(
         'bef_filter_description' => 'testik',
+        'tokens' => array(
+          'available' => array(
+            0 => 'global_types',
+          ),
+        ),
       ),
     ),
     'field_committee_tid' => array(
@@ -1085,11 +1100,21 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
         'bef_select_all_none' => FALSE,
         'bef_collapsible' => 0,
         'bef_filter_description' => '',
+        'tokens' => array(
+          'available' => array(
+            0 => 'global_types',
+          ),
+        ),
       ),
     ),
     'field_meeting_search_meta_date_value' => array(
       'more_options' => array(
-        'bef_filter_description' => '<div class=\'help-button\' title=\'Her kan der søges i dagsordenspunkters tekst og i bilagenes fritekst, hvis sidstnævnte er konverteret til html. Søgning kan filtreres via dato, udvalg og søgeord.\'></div>',
+        'bef_filter_description' => '<div class=\'help-button\' title=\'Help text is set up in the exposed form settings inside this view settings\'></div>',
+        'tokens' => array(
+          'available' => array(
+            0 => 'global_types',
+          ),
+        ),
       ),
     ),
   );
@@ -1231,6 +1256,9 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['fields']['field_meeting_status']['field'] = 'field_meeting_status';
   $handler->display->display_options['fields']['field_meeting_status']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['field_meeting_status']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['field_meeting_status']['empty'] = '&nbsp;';
+  $handler->display->display_options['fields']['field_meeting_status']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['field_meeting_status']['type'] = 'taxonomy_term_reference_plain';
   /* Field: indicator - has speaker paper */
   $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
   $handler->display->display_options['fields']['php_1']['table'] = 'views';
@@ -1454,11 +1482,11 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     t('term from field_committee'),
     t('Status'),
     t('meeting/[nid]'),
+    t('&nbsp;'),
     t('PHP'),
     t('Møde'),
     t('[title]'),
     t('Dato'),
-    t('&nbsp;'),
     t('Lokation'),
     t('Udvalg'),
     t('[field_committee]'),
@@ -1757,7 +1785,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('<div class="help-button" title="Her vises de seneste 8 møder i de stående politiske udvalg. Der er ikke et referat tilgængeligt før status er angivet til publiceret."></div>'),
+    t('<div class="help-button" title="Help text goes here"></div>'),
     t('term from field_committee'),
     t('field_user_committee'),
     t('Status'),

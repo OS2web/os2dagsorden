@@ -1137,29 +1137,24 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
       'entity_types' => array(),
       'field_name' => 'field_meeting_status',
       'foreign keys' => array(
-        'tid' => array(
+        'format' => array(
           'columns' => array(
-            'tid' => 'tid',
+            'format' => 'format',
           ),
-          'table' => 'taxonomy_term_data',
+          'table' => 'filter_format',
         ),
       ),
       'indexes' => array(
-        'tid' => array(
-          0 => 'tid',
+        'format' => array(
+          0 => 'format',
         ),
       ),
-      'module' => 'taxonomy',
+      'module' => 'text',
       'settings' => array(
-        'allowed_values' => array(
-          0 => array(
-            'vocabulary' => 'meetin_status',
-            'parent' => '0',
-          ),
-        ),
+        'max_length' => '255',
       ),
       'translatable' => '0',
-      'type' => 'taxonomy_term_reference',
+      'type' => 'text',
     ),
     'field_instance' => array(
       'bundle' => 'meeting',
@@ -1169,16 +1164,10 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'taxonomy',
+          'module' => 'text',
           'settings' => array(),
-          'type' => 'taxonomy_term_reference_link',
-          'weight' => '4',
-        ),
-        'ical' => array(
-          'label' => 'above',
-          'settings' => array(),
-          'type' => 'hidden',
-          'weight' => '2',
+          'type' => 'text_default',
+          'weight' => 18,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1192,14 +1181,17 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
       'label' => 'Status',
       'required' => 0,
       'settings' => array(
+        'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_buttons',
-        'weight' => '1',
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '11',
       ),
     ),
   );

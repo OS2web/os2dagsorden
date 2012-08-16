@@ -54,6 +54,7 @@ function os2dagsorden_meetings_cron() {
   if ($queue->numberOfItems() == 0) {
     foreach ($files as $file) {
       $queue->createItem($file->uri);
+      _os2dagsorden_meetings_process_manifest($file->uri);
     }
   }
 }
@@ -353,8 +354,8 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
 
     $node->created = $options['cdate'];
     // Let's add standard body field
-    $node->field_meeting_abbr[$node->language][0]['value'] = $options['description'];
-    $node->field_meeting_abbr[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field
+    //$node->field_meeting_abbr[$node->language][0]['value'] = $options['description'];
+    //$node->field_meeting_abbr[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field
     // The date
     $node->field_date[$node->language][0]['value'] = $options['date'];
     $node->field_date[$node->language][0]['value2'] = $options['finish'];
@@ -412,7 +413,8 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
 }
 
 /**
- * Marks the meeting as acadre imported, so not reimports will be done or future rewritting 
+ * Marks the meeting as acadre imported, so not reimports will be done or future rewritting
+ * Also changes the status of the meeting to "Publiceret" 
  *
  * @param mixed $node meeting
  *
@@ -420,6 +422,7 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
  */
 function _os2dagsorden_meeting_mark_acadre_imported($node) {
     $node->field_meeting_acadre_imported['und']['0']['value'] = 1;
+    $node->field_meeting_status['und'][0]['value'] = 'Publiceret';
     node_save($node);
 }
 

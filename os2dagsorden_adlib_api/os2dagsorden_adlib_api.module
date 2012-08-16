@@ -18,6 +18,19 @@ define('ADLIB_TEST_FID', FALSE);
  * @return created menu links
  */
 function os2dagsorden_adlib_api_menu() {
+  $items['admin/config/os2dagsorden/adlibstatus'] = array(
+      'title' => t('AdLib Status'),
+      'description' => t('Provides an overview of known AdLib jobs.'),
+      'access callback' => TRUE,
+      'page callback' => 'os2dagsorden_adlib_api_status',
+      'type' => MENU_LOCAL_TASK,
+  );
+  $items['os2dagsorden/adlib/ajax/status/%'] = array(
+      'page callback' => 'os2dagsorden_adlib_api_status_ajax',
+      'page arguments' => array(4),
+      'type' => MENU_CALLBACK,
+      'access callback' => TRUE,
+  );
   $items['os2dagsorden/adlib/test'] = array(
       'title' => t('AdLib test page'),
 //    'description' => t('Your description goes here.'),
@@ -25,14 +38,99 @@ function os2dagsorden_adlib_api_menu() {
       'page callback' => 'os2dagsorden_adlib_api_page',
       'type' => MENU_CALLBACK,
   );
-    $items['os2dagsorden/adlib/delete_all_jobs'] = array(
-        'title' => 'AdLib delete all jobs',
-        'access callback' => TRUE,
-        'page callback' => 'os2dagsorden_adlib_api_delete_all_jobs',
-        'type' => MENU_CALLBACK,
-    );
+  $items['os2dagsorden/adlib/delete_all_jobs'] = array(
+      'title' => 'AdLib delete all jobs',
+      'access callback' => TRUE,
+      'page callback' => 'os2dagsorden_adlib_api_delete_all_jobs',
+      'type' => MENU_CALLBACK,
+  );
 
   return $items;
+}
+
+/**
+ * Renderes the Adlib status page
+ * 
+ * @param mixed $fid file reference
+ *
+ * @return none
+ */
+function os2dagsorden_adlib_api_status_ajax($fid) {
+  $file = db_select('os2web_adlib_api_doc_files', 'df')
+      ->fields('df')
+      ->condition('fid', $fid)
+      ->execute()
+      ->fetchObject();
+  if (is_object($file)) {
+    if ($file->job_id != '') {
+      $adlib = _os2dagsorden_adlib_api_get_instance();
+      $status = $adlib->getJobStatus($file->job_id);
+      drupal_json_output($status->status);
+    } else {
+      drupal_json_output('Not queued.');
+    }
+  } else {
+    drupal_json_output('Not found.');
+  }
+}
+
+/**
+ * Provides an overview of known AdLib jobs.
+ * 
+ * @access public
+ * @return void
+ */
+function os2dagsorden_adlib_api_status() {
+  if (isset($_GET['delete'])) {
+    $query = db_delete('os2web_adlib_api_doc_files');
+    if (is_numeric($_GET['delete'])) {
+      $query = $query->condition('fid', $_GET['delete']);
+    }
+    $query->execute();
+    drupal_goto('admin/config/os2dagsorden/adlibstatus');
+  }
+  if (isset($_GET['reset'])) {
+    $query = db_delete('os2web_adlib_api_doc_files');
+    $query = $query->condition('fid', $_GET['reset']);
+    $query->execute();
+    os2dagsorden_adlib_api_convert_to_pdf($_GET['reset']);
+    drupal_goto('admin/config/os2dagsorden/adlibstatus');
+  }
+  if (isset($_GET['process'])) {
+    _os2dagsorden_adlib_api_process_pdf();
+    drupal_goto('admin/config/os2dagsorden/adlibstatus');
+  }
+  $adlib = _os2dagsorden_adlib_api_get_instance();
+  $head = array('Connector Name', 'status', 'Jobs');
+  $statuslist = $adlib->getConnectorStatusList();
+  $rows = array();
+  foreach ($statuslist as $status) {
+    $rows[] = array(
+        $status->ServerDetail['ServerName'],
+        ($status->ServerDetail['Enabled'] == 'True' ? 'E' : 'Not e') . 'nabled - ' . $status->ServerInfo['Status'],
+        $status->ServerInfo['JobCount'],
+    );
+  }
+  drupal_add_js(drupal_get_path('module', 'os2dagsorden_adlib_api') . '/js/os2dagsorden_adlib_api.js', 'file');
+  $html = '<h2>Connector information</h2>';
+  $html .= theme('table', array('header' => $head, 'rows' => $rows));
+  $head = array('Fid', 'Job-id', 'Status', 'action');
+  $rows = array();
+  $files = db_query("SELECT * FROM {os2web_adlib_api_doc_files} WHERE job_id NOT LIKE 'Complete'");
+  foreach ($files as $file) {
+    $fdata = file_load($file->fid);
+    $rows[] = array(
+        l($fdata->uri, file_create_url($fdata->uri)),
+        $file->job_id,
+        array('data' => 'Looking up..', 'class' => 'status', 'id' => $file->fid),
+        l('delete', 'admin/config/os2dagsorden/adlibstatus', array('query' => array('delete' => $file->fid))) . ' ' . l('reset', 'admin/config/os2dagsorden/adlibstatus', array('query' => array('reset' => $file->fid))),
+    );
+  }
+  $html .= '<h2>Active jobs</h2>';
+  $html .= theme('table', array('header' => $head, 'rows' => $rows));
+  $html .= l('Delete all', 'admin/config/os2dagsorden/adlibstatus', array('query' => array('delete' => 'all')));
+  $html .= ' - ' . l('Run processing', 'admin/config/os2dagsorden/adlibstatus', array('query' => array('process' => true)));
+  return $html;
 }
 
 /**
@@ -42,26 +140,40 @@ function os2dagsorden_adlib_api_menu() {
  */
 function os2dagsorden_adlib_api_page() {
   error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '()');
-  $fid = ADLIB_TEST_FID;
+  $fid = 225735;
+//  db_delete('os2web_adlib_api_doc_files')->condition('fid', $fid)->execute();
+//  os2dagsorden_adlib_api_convert_to_pdf($fid);
 //  $nid = 74558;
-//   db_delete('os2dagsorden_adlib_api_doc_files')->condition('fid',$fid)->execute();
 //   os2dagsorden_adlib_api_convert_to_html($fid,$nid);
-//   os2dagsorden_adlib_api_convert_to_pdf($fid);
 //  _os2dagsorden_adlib_api_process_pdf();
 //  sleep(5);
-  _os2dagsorden_adlib_api_process_pdf();
-  $file = db_select('os2web_adlib_api_doc_files','df')->fields('df')->condition('fid',$fid)->execute()->fetchObject();
-  $adlib = _os2dagsorden_adlib_api_get_instance();
+//  _os2dagsorden_adlib_api_process_pdf();
+//  $file = db_select('os2web_adlib_api_doc_files', 'df')->fields('df')->condition('fid', $fid)->execute()->fetchObject();
+//  $adlib = _os2dagsorden_adlib_api_get_instance();
 //  $call = array();
 //  $call[] = explode('\\',$adlib->addJobFolder());
 //  $call[] = $adlib->deleteJobFolder($call[0][1]);
-  $call = $adlib->getJobStatus($file->job_id);
- // $call= file_load(ADLIB_TEST_FID);
+//  $call = $adlib->getJobStatus($file->job_id);
+  // $call= file_load(ADLIB_TEST_FID);
 // $call = node_load($nid,NULL,TRUE);
 
-  return '<textarea cols=100 rows=50>' . print_r($call, 1) . '</textarea>';
+  $files = db_select('file_managed','fm')->fields('fm')->condition('filemime','application/msword')->execute();
+  $rows=array();
+  foreach ($files as $file) {
+    if (file_exists(drupal_realpath($file->uri))) {
+      $rows[]= array(l($file->fid, 'admin/config/os2dagsorden/adlibstatus', array('query' => array('reset' => $file->fid))) ,$file->filename);
+    }
+  }
+  return theme('table',array('rows'=>$rows));
+
+//  return '<textarea cols=100 rows=50>' . print_r($call, 1) . '</textarea>';
 }
 
+/**
+ * Deletes all the jobs and the jobs folders on Adlib serer
+ *
+ * @return none
+ */
 function os2dagsorden_adlib_api_delete_all_jobs() {
     $adlib = _os2dagsorden_adlib_api_get_instance();
 
@@ -81,21 +193,22 @@ function os2dagsorden_adlib_api_delete_all_jobs() {
     }
 }
 
-
 /**
  * Implementation of hook_cron
  *
  * @return none
  */
 function os2dagsorden_adlib_api_cron() {
-  _os2dagsorden_adlib_api_process_pdf();
+  _os2dagsorden_adlib_api_process_pdf(100);
 }
 
 /**
  * Implementation of hook_init()
+ *
+ * @return none
  */
 function os2dagsorden_adlib_api_init() {
- // _os2dagsorden_adlib_api_process_pdf(1);
+  // _os2dagsorden_adlib_api_process_pdf(1);
 }
 
 /**
@@ -108,13 +221,13 @@ function os2dagsorden_adlib_api_init() {
  *
  * @return void
  */
-function os2dagsorden_adlib_api_convert_to_html($fid, $nid ) {
+function os2dagsorden_adlib_api_convert_to_html($fid, $nid) {
   if (0 === db_query('SELECT fid from {os2web_adlib_api_doc_files} where fid = :fid AND jobtype = :jobtype', array(':fid' => $fid, ':jobtype' => 1))->rowCount()) {
     $record = array(
         'fid' => $fid,
         'did' => $nid,
         'jobtype' => 1,
-        );
+    );
     drupal_write_record('os2web_adlib_api_doc_files', $record);
     if (ADLIB_TEST_FID) {
       error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File queued for processing.");
@@ -135,6 +248,12 @@ function os2dagsorden_adlib_api_convert_to_html($fid, $nid ) {
  * @return boolean
  */
 function os2dagsorden_adlib_api_convert_to_pdf($fid, $docref = NULL) {
+  $file = file_load($fid);
+  if (!file_exists(drupal_realpath($file->uri))) {
+    watchdog('adlib_api', 'Cannot queue file %file. File does not exist.', array('%file' => $file->filename), WATCHDOG_WARNING);
+    db_delete('os2web_adlib_api_doc_files')->condition('fid', $fid);
+    return false;
+  }
   if (!_os2dagsorden_adlib_api_is_file_pdf($fid)) {
     if (0 === db_query('SELECT fid from {os2web_adlib_api_doc_files} where fid = :fid AND jobtype = :jobtype', array(':fid' => $fid, ':jobtype' => 0))->rowCount()) {
       $record = array(
@@ -171,7 +290,7 @@ function os2dagsorden_adlib_api_convert_to_pdf($fid, $docref = NULL) {
  * @return int
  */
 function os2dagsorden_adlib_api_get_fid($ref) {
-    return (int)db_query('SELECT fid FROM {os2web_adlib_api_doc_files} WHERE did=:did',array(':did' => $ref))->fetchField();
+  return (int) db_query('SELECT fid FROM {os2web_adlib_api_doc_files} WHERE did=:did', array(':did' => $ref))->fetchField();
 }
 
 /**
@@ -184,7 +303,7 @@ function _os2dagsorden_adlib_api_get_instance() {
   $obj = &drupal_static(__FUNCTION__);
   if (is_object($obj))
     return $obj;
-  module_load_include('inc', 'os2dagsorden_adlib_api', '/includes/AdLibWS.class');
+  module_load_include('inc', 'os2dagsorden_adlib_api', 'includes/AdLibWS.class');
   return $obj = new AdLibWS();
 }
 
@@ -203,9 +322,9 @@ function _os2dagsorden_adlib_api_process_pdf($limit = FALSE) {
       ->fields('f')
       ->isNotNull('job_id')
       ->condition('job_id', array('Complete'), 'NOT IN');
-      if (ADLIB_TEST_FID) {
-        $files = $files->condition('fid',ADLIB_TEST_FID);
-      }
+  if (ADLIB_TEST_FID) {
+    $files = $files->condition('fid', ADLIB_TEST_FID);
+  }
   if ($limit !== FALSE) {
     $files->range(0, $limit);
   }
@@ -218,16 +337,25 @@ function _os2dagsorden_adlib_api_process_pdf($limit = FALSE) {
       if (in_array($jobinfo->status, array('Not found', 'Failed'))) {
         $jobfileinfo = unserialize($file->job_info);
         $adlib->deleteJob($file->job_id);
-        $folder = explode('\\',$jobfileinfo['basefolder']);
+        $folder = explode('\\', $jobfileinfo['basefolder']);
         $adlib->deleteJobFolder($folder[1]);
-        $record = array(
-            'fid' => $file->fid,
-            'jobtype' => $file->jobtype,
-            'job_id' => null,
-            'job_info' => null,
-        );
-        drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid','jobtype'));
-        error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Job failed and reset: " . $file->fid);
+
+
+        $fdata = file_load($file->fid);
+        if (!file_exists(drupal_realpath($fdata->uri)) || file_uri_scheme($fdata->uri)=='' || $fdata->filemime=='application/pdf' ) {
+          watchdog('adlib_api', 'Cannot re-queue file %file. File does not exist or is invalid.', array('%file' => $fdata->filename), WATCHDOG_WARNING);
+          db_delete('os2web_adlib_api_doc_files')->condition('fid', $file->fid)->execute();
+        } else {
+          $record = array(
+              'fid' => $file->fid,
+              'jobtype' => $file->jobtype,
+              'job_id' => null,
+              'job_info' => null,
+          );
+          drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid', 'jobtype'));
+          error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Job failed and reset: " . $file->fid);
+          watchdog('adlib_api', 'Found a failed job for %file. Resetting.', array('%file' => $fdata->filename), WATCHDOG_WARNING);
+        }
       } elseif (in_array($jobinfo->status, array('Complete'))) {
         $record = array(
             'fid' => $file->fid,
@@ -237,6 +365,7 @@ function _os2dagsorden_adlib_api_process_pdf($limit = FALSE) {
         $jobfileinfo = unserialize($file->job_info);
 
         error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Job complete. Fetching file");
+        watchdog('adlib_api', 'A PDF has been generated successfully for file: %file ',array('%file' => $jobfileinfo['out_filename']));
         $file_url = $jobfileinfo['out_url'] . rawurlencode($jobfileinfo['out_filename']);
         $download = curl_init($file_url);
         if (variable_get('os2web_pws_proxy')) {
@@ -248,13 +377,12 @@ function _os2dagsorden_adlib_api_process_pdf($limit = FALSE) {
         $data = curl_exec($download);
 
         $info = curl_getinfo($download);
-        if ($info['http_code']===200 && $info['size_download']>4 ) {
+        if ($info['http_code'] === 200 && $info['size_download'] > 4) {
           switch ($file->jobtype) {
             case 0: // PDF
               $upd_file = file_load($file->fid);
               error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File recieved successfully, Saving.");
               $uri = file_unmanaged_save_data($data, dirname($upd_file->uri) . '/' . $jobfileinfo['out_filename'], FILE_EXISTS_REPLACE);
-              error_log(basename(__FILE__) . ':' . __LINE__ . ' Var: $uri = ' . print_r($uri, 1));
               if (filesize(drupal_realpath($uri)) > 0) {
                 //            file_unmanaged_delete($upd_file->uri);
                 db_delete('file_managed')->condition('uri', $uri);
@@ -263,10 +391,10 @@ function _os2dagsorden_adlib_api_process_pdf($limit = FALSE) {
                 $upd_file->filemime = file_get_mimetype($upd_file->uri);
                 $upd_file->filesize = filesize(drupal_realpath($upd_file->uri));
                 $upd_file->timestamp = time();
-                drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid','jobtype'));
-//                drupal_write_record('file_managed', $upd_file, array('fid'));
+                drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid', 'jobtype'));
+                drupal_write_record('file_managed', $upd_file, array('fid'));
                 $adlib->deleteJob($file->job_id);
-                $folder = explode('\\',$jobfileinfo['basefolder']);
+                $folder = explode('\\', $jobfileinfo['basefolder']);
                 $adlib->deleteJobFolder($folder[1]);
                 error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File saved, file record updated.");
               } else {
@@ -283,16 +411,26 @@ function _os2dagsorden_adlib_api_process_pdf($limit = FALSE) {
                 $node->feeds = array();
                 node_save($node);
                 $adlib->deleteJob($file->job_id);
-                $folder = explode('\\',$jobfileinfo['basefolder']);
+                $folder = explode('\\', $jobfileinfo['basefolder']);
                 $adlib->deleteJobFolder($folder[1]);
-                drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid','jobtype'));
+                drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid', 'jobtype'));
                 error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '() - File converted, node updated.');
+		_os2dagsorden_adlib_api_set_meeting_status_published_plus($node);
               }
               break;
             default:
               error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '() - Unknown jobtype');
           }
-
+        } elseif ($info['http_code'] === 404) { // File not found ??
+          $record = array(
+              'fid' => $file->fid,
+              'jobtype' => $file->jobtype,
+              'job_id' => null,
+              'job_info' => null,
+              );
+          drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid', 'jobtype'));
+          watchdog('adlib_api','Completed file (fid: %fid)could not be found on the server. Job reset.',array('%fid' => $file->fid),WATCHDOG_WARNING);
+          error_log('Completed file (fid: '.$file->fid.') could not be found on the server. Job reset.');
         }
       }
     }
@@ -301,7 +439,7 @@ function _os2dagsorden_adlib_api_process_pdf($limit = FALSE) {
 // Start new job if needed
   $files = db_select('os2web_adlib_api_doc_files', 'f')->fields('f')->isNull('job_id');
   if (ADLIB_TEST_FID) {
-    $files = $files->condition('fid',ADLIB_TEST_FID);
+    $files = $files->condition('fid', ADLIB_TEST_FID);
   }
   if ($limit !== FALSE) {
     $files->range(0, $limit);
@@ -311,22 +449,26 @@ function _os2dagsorden_adlib_api_process_pdf($limit = FALSE) {
   if ($files->rowCount() > 0) {
     $adlib = _os2dagsorden_adlib_api_get_instance();
 
-    while ($file = $files->fetchObject()){
+    while ($file = $files->fetchObject()) {
       $file->file = file_load($file->fid);
       $filename = drupal_realpath($file->file->uri);
 
       if (is_file(drupal_realpath($file->file->uri))) {
         $upload = $adlib->uploadData($file->file->filename, file_get_contents(drupal_realpath($file->file->uri)));
         if ($upload) {
-          $job = $adlib->addJob($upload,$file->jobtype);
+          $job = $adlib->addJob($upload, $file->jobtype);
           if ($job !== FALSE) {
             $jobinfo = array(
                 'fid' => $file->fid,
                 'jobtype' => $file->jobtype,
                 'job_id' => (string) $job->JobSettings['JobID'],
                 'job_info' => $upload,
-                );
-            drupal_write_record('os2web_adlib_api_doc_files', $jobinfo, array('fid','jobtype'));
+            );
+            drupal_write_record('os2web_adlib_api_doc_files', $jobinfo, array('fid', 'jobtype'));
+            watchdog('adlib_api', 'Queued file %file for PDF.', array('%file' => $file->file->filename));
+          } else {
+            watchdog('adlib_api', 'Upload of %file failed. Check permissions.', array('%file' => $file->file->filename));
+            db_delete('os2web_adlib_api_doc_files')->condition('fid', $file->file->fid)->execute();
           }
         }
       }
@@ -358,6 +500,66 @@ function _os2dagsorden_adlib_api_improve_html($data) {
     $data = str_replace("&#61623</FONT></FONT></FONT></SPAN>\r\n", "•</FONT></FONT></FONT></SPAN>", $data); //fix bullet point dot representation
 
     return $data;
+}
+
+/**
+ * Changes the status of the parent meeting of the given bullet point attachment to Publiceret+ 
+ * if all of the attachments of all of the corresponding bullet points of that meeting are converted to HTML.
+ * 
+ * @author Stanislav Kutasevits <stan@bellcom.dk>
+ * @param string $node bullet points attachment
+ *
+ * @return none
+ */
+function _os2dagsorden_adlib_api_set_meeting_status_published_plus($node) {
+    //assuming that all attachmens are converted, will be examined above
+    $all_attachments_converted = true;
+
+    //getting corresponding bullet point
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+	  ->fieldCondition('field_ref_attachment', 'target_id', $node->nid, '=');
+    $result = $query->execute();
+
+    if (isset($result['node'])) {//if success
+      $nids = array_keys($result['node']);
+      $bullet_point = reset(entity_load('node', $nids));
+
+      //getting corresponding meeting
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+	  ->fieldCondition('field_ref_bullet_points', 'target_id', $bullet_point->nid, '=');
+
+      $result = $query->execute();
+
+      if (isset($result['node'])) {//if success
+	$nids = array_keys($result['node']);
+	$meeting = reset(entity_load('node', $nids));
+	
+	//goint through all the meetings bullet points
+	if (!empty($meeting->field_ref_bullet_points['und'])) {
+	    foreach ($meeting->field_ref_bullet_points['und'] as $ref_bullet_point) {
+		$bullet_point = node_load($ref_bullet_point['target_id']);
+		
+		//going through all the bullet points attachments
+		if (!empty($bullet_point->field_ref_attachment['und'])) {
+		    foreach ($bullet_point->field_ref_attachment['und'] as $ref_bullet_point_attachment) {
+			$attachment = node_load($ref_bullet_point_attachment['target_id']);
+			
+			if (empty($attachment->field_bpa_body['und'][0]['value'])){
+			  $all_attachments_converted = false;
+			  break;
+			}
+		    }
+		}
+	    }
+	}
+	if ($all_attachments_converted){
+	    $meeting->field_meeting_status['und'][0]['value'] = 'Publiceret+';
+	    node_save($meeting);
+	}
+      }
+    }
 }
 
 /**
@@ -400,4 +602,16 @@ function _os2dagsorden_adlib_api_is_file_pdf($fid) {
   } else {
     return strcasecmp(pathinfo(file_load($fid)->filename, PATHINFO_EXTENSION), 'pdf') === 0;
   }
+}
+
+/**
+ * Deletes the file entry from adlib conversion table
+ * 
+ * @param file $file the file
+ *
+ * @return none
+ */
+function os2dagsorden_adlib_api_file_delete($file) {
+  db_delete('os2web_adlib_api_doc_files')->condition('fid', $file->fid)->execute();
+  watchdog('adlib_api','File %file has been cleaned up from adlib conversion table.',array('%file' => $file->uri),WATCHDOG_DEBUG);
 }

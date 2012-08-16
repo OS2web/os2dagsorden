@@ -220,17 +220,17 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
 
             if (!empty($user)) {
 		//update full name
-		if (isset($xml_data['member_name'])){
+		if (!empty($xml_data['member_name'])){
 		    if (strcmp($user->field_user_full_name['und'][0]['value'], $xml_data['member_name']) != 0) {
 			_os2dagsorden_importer_set_user_fullname($user, $xml_data['member_name']);
 		    }
 		}
-		if (isset($xml_data['follower_name'])){
+		if (!empty($xml_data['follower_name'])){
 		    if (strcmp($user->field_user_full_name['und'][0]['value'], $xml_data['follower_name']) != 0) {
 			_os2dagsorden_importer_set_user_fullname($user, $xml_data['follower_name']);
 		    }
 		}
-		if (isset($xml_data['follower_plus_name'])){
+		if (!empty($xml_data['follower_plus_name'])){
 		    if (strcmp($user->field_user_full_name['und'][0]['value'], $xml_data['follower_plus_name']) != 0) {
 			_os2dagsorden_importer_set_user_fullname($user, $xml_data['follower_plus_name']);
 		    }
@@ -656,6 +656,8 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
     }
 
     $node->field_meeting_id[$node->language][0]['value'] = $xml_data['meeting_id'];
+    
+    $node->field_meeting_status[$node->language][0]['value'] = 'Planlagt';
 
     if (!empty($xml_data['meeting_start_date'])) {
         $node->field_date[$node->language][0]['value'] = $xml_data['meeting_start_date'];

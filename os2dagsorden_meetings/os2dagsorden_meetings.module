@@ -51,11 +51,12 @@ function os2dagsorden_meetings_cron() {
   );
   $files = file_scan_directory(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), '/\.xml$/i', $options);
   $queue = DrupalQueue::get('import_agendas');
-  if ($queue->numberOfItems() == 0) {
+  //if ($queue->numberOfItems() == 0) {
     foreach ($files as $file) {
-      $queue->createItem($file->uri);
+      //$queue->createItem($file->uri);
+      _os2dagsorden_meetings_process_manifest($file->uri);
     }
-  }
+  //}
 }
 
 /**
@@ -412,7 +413,8 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
 }
 
 /**
- * Marks the meeting as acadre imported, so not reimports will be done or future rewritting 
+ * Marks the meeting as acadre imported, so not reimports will be done or future rewritting
+ * Also changes the status of the meeting to "Publiceret" 
  *
  * @param mixed $node meeting
  *
@@ -420,6 +422,7 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
  */
 function _os2dagsorden_meeting_mark_acadre_imported($node) {
     $node->field_meeting_acadre_imported['und']['0']['value'] = 1;
+    $node->field_meeting_status['und'][0]['value'] = 'Publiceret';
     node_save($node);
 }
 
