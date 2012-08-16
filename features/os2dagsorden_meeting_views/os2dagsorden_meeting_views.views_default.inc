@@ -160,6 +160,7 @@ function os2dagsorden_meeting_views_views_default_views() {
   $handler->display->display_options['fields']['field_meeting_status']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['field_meeting_status']['alter']['path'] = 'meeting/[nid]';
   $handler->display->display_options['fields']['field_meeting_status']['empty'] = '&nbsp;';
+  $handler->display->display_options['fields']['field_meeting_status']['hide_alter_empty'] = FALSE;
   /* Field: indicator - has speaker paper */
   $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
   $handler->display->display_options['fields']['php_1']['table'] = 'views';
@@ -1233,6 +1234,7 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['fields']['field_meeting_status']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['field_meeting_status']['alter']['path'] = 'meeting/[nid]';
   $handler->display->display_options['fields']['field_meeting_status']['empty'] = '&nbsp;';
+  $handler->display->display_options['fields']['field_meeting_status']['hide_alter_empty'] = FALSE;
   /* Field: indicator - has speaker paper */
   $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
   $handler->display->display_options['fields']['php_1']['table'] = 'views';
