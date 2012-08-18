@@ -346,7 +346,7 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
 
     //avoiding reimports
     if (intval($node->field_meeting_acadre_imported[$node->language][0]['value']) == 1) {
-        return $node;
+        //return $node;
     }
 
     $node->title = $options['title'];
@@ -505,40 +505,43 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
 
         $file = new stdClass();
         if ($fid) {
-            $file->fid = $fid;
+	    $file = file_load($fid);
         }
-        $file->uri = $uri;
-        $file->display = 1;
-        $file->filename = drupal_basename($file->uri);
-        $file->filemime = file_get_mimetype($file->uri);
-        $file->uid = 1;
-        $file->status = FILE_STATUS_PERMANENT;
-        $file = file_save($file);
-
+	else {
+	    $file->uri = $uri;
+	    $file->display = 1;
+	    $file->filename = drupal_basename($file->uri);
+	    $file->filemime = file_get_mimetype($file->uri);
+	    $file->uid = 1;
+	    $file->status = FILE_STATUS_PERMANENT;
+	    $file = file_save($file);
+	}
         $enclosure_nid = _os2dagsorden_meetings_add_enclosure_bullet($enclosure, $file);
         $contains = FALSE;
-        if (isset($node->field_ref_attachment[LANGUAGE_NONE])) {
-            foreach ($node->field_ref_attachment[LANGUAGE_NONE] as $attachment) {
-                if ($attachment['target_id'] == $enclosure_nid) {
-                    $contains = TRUE;
-                    break;
-                }
-            }
-        }
-        if (!$contains)
+	if (isset($enclosure_nid)){//if the ID is empty - means that the enclosure has been created before, and hence already added to the bullet point
+	  if (isset($node->field_ref_attachment[LANGUAGE_NONE])) {
+	      foreach ($node->field_ref_attachment[LANGUAGE_NONE] as $attachment) {
+		  if ($attachment['target_id'] == $enclosure_nid) {
+		      $contains = TRUE;
+		      break;
+		  }
+	      }
+	  }
+	  if (!$contains)
             $node->field_ref_attachment[LANGUAGE_NONE][]['target_id'] = $enclosure_nid;
 
-        //Adlib Conversion
-        if (module_exists('os2dagsorden_adlib_api')) {
-            drupal_load('module', 'os2dagsorden_adlib_api');
+	  //Adlib Conversion
+	  if (module_exists('os2dagsorden_adlib_api')) {
+	      drupal_load('module', 'os2dagsorden_adlib_api');
 
-            //if not PDF, schedule for pdf conversion as well
-            if (strcmp($filetype, ".PDF") != 0)
-                os2dagsorden_adlib_api_convert_to_pdf($file->fid, $enclosure_nid);
+	      //if not PDF, schedule for pdf conversion as well
+	      if (strcmp($filetype, ".PDF") != 0)
+		  os2dagsorden_adlib_api_convert_to_pdf($file->fid, $enclosure_nid);
 
-            //convert to HTML
-            os2dagsorden_adlib_api_convert_to_html($file->fid, $enclosure_nid);
-        }
+	      //convert to HTML
+	      os2dagsorden_adlib_api_convert_to_html($file->fid, $enclosure_nid);
+	  }
+	}        
     }
 
     node_submit($node);
@@ -571,14 +574,10 @@ function _os2dagsorden_meetings_add_bullet(SimpleXMLElement $xml) {
         $result = $query->execute();
 
         if (isset($result['node'])) {
-            $is_new = FALSE; //node IS NOT new
-
-            $nids = array_keys($result['node']);
-            $node = reset(entity_load('node', $nids));
+	    //node exists, avoiding recreation
+	    return;
         }
         else {
-            $is_new = TRUE; //node IS new
-
             $node = new stdClass();
             $node->type = "bullet_point_attachment";
             $node->language = LANGUAGE_NONE;
@@ -600,8 +599,7 @@ function _os2dagsorden_meetings_add_bullet(SimpleXMLElement $xml) {
         node_submit($node);
         node_save($node);
 
-        if ($is_new)
-            return $node->nid;
+        return $node->nid;
     }
 }
 
@@ -629,8 +627,8 @@ function _os2dagsorden_meetings_add_enclosure_bullet($enclosure, $file) {
 
     $result = $query->execute();
     if (isset($result['node'])) {
-        $nids = array_keys($result['node']);
-        $node = reset(entity_load('node', $nids));
+	//node exists, avoiding recreation
+	return;
     }
     else {
         $node = new stdClass();
@@ -642,7 +640,6 @@ function _os2dagsorden_meetings_add_enclosure_bullet($enclosure, $file) {
     }
 
     $node->title = $options['name'];
-    //TODO: handle filling of body field with file content rendered to HTML
 
     $node->field_bpa_file[$node->language][] = (array) $file;
 
