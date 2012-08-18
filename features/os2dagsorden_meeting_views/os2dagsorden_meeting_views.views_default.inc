@@ -1189,12 +1189,13 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
       'empty_column' => 0,
     ),
   );
-  /* Header: Global: Text area */
+  /* Header: help text */
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['ui_name'] = 'help text';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title="Help text goes here"></div>';
+  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title="Her vises de møder der indeholdt møder, punkter eller bilag der matchede dine søgekriterier. Søgeresultatet vises på mødeniveau i listen."></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* Header: breadcrumb override */
   $handler->display->display_options['header']['php']['id'] = 'php';
@@ -1453,7 +1454,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     t('Items per page'),
     t('- All -'),
     t('Offset'),
-    t('<div class="help-button" title="Help text goes here"></div>'),
+    t('<div class="help-button" title="Her vises de møder der indeholdt møder, punkter eller bilag der matchede dine søgekriterier. Søgeresultatet vises på mødeniveau i listen."></div>'),
     t('Ingen møder er fundet'),
     t('term from field_committee'),
     t('Status'),
