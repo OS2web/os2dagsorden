@@ -1,0 +1,30 @@
+<?php
+/**
+ * @file
+ * Code for the OS2Web Front page feature feature.
+ */
+
+include_once 'os2dagsorden_front_page_feature.features.inc';
+
+function os2dagsorden_front_page_feature_enable(){
+  $roles = user_roles();
+  foreach ($roles as $rid => $role) {
+    
+    $result = db_select('front_page', 'f')
+    ->fields('f')
+    ->execute()
+    ->fetchAssoc();
+    
+    if (empty($result)){
+      $nid = db_insert('front_page')
+      ->fields(array(
+	'rid' => $rid,
+	'mode' => 'themed',
+	'data' => ' ',
+	'filter_format' => 'filtered_html',
+	'weight' => 0
+      ))
+      ->execute();
+    }
+  }
+}
