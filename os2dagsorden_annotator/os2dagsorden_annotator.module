@@ -43,7 +43,6 @@ function os2dagsorden_annotator_menu() {
         'title' => 'Creating note',
         'type' => MENU_CALLBACK,
         'page callback' => '_os2dagsorden_annotator_create',
-	'access callback' => '_os2dagsorden_annotator_check_permission',
 	'access arguments' => array('access content')
     );
 
