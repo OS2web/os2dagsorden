@@ -11,6 +11,7 @@
  * @link     http://bellcom.dk
  */
 define('ADLIB_TEST_FID', FALSE);
+define('ADLIB_HTML_IMG_FOLDER', 'public://bpimg/');
 
 /**
  * Implementation of hook_menu
@@ -116,7 +117,7 @@ function os2dagsorden_adlib_api_status() {
   $html .= theme('table', array('header' => $head, 'rows' => $rows));
   $head = array('Fid', 'Job-id', 'Status', 'action');
   $rows = array();
-  $files = db_query("SELECT * FROM {os2web_adlib_api_doc_files} WHERE job_id NOT LIKE 'Complete'");
+  $files = db_query("SELECT * FROM {os2web_adlib_api_doc_files}");
   foreach ($files as $file) {
     $fdata = file_load($file->fid);
     $rows[] = array(
@@ -391,28 +392,25 @@ function _os2dagsorden_adlib_api_process_pdf($limit = FALSE) {
                 $upd_file->filemime = file_get_mimetype($upd_file->uri);
                 $upd_file->filesize = filesize(drupal_realpath($upd_file->uri));
                 $upd_file->timestamp = time();
+		os2dagsorden_adlib_api_destroy_job($file->job_id);
                 drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid', 'jobtype'));
                 drupal_write_record('file_managed', $upd_file, array('fid'));
-                $adlib->deleteJob($file->job_id);
-                $folder = explode('\\', $jobfileinfo['basefolder']);
-                $adlib->deleteJobFolder($folder[1]);
                 error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File saved, file record updated.");
               } else {
                 error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Filesize was 0. Aborting update.");
               }
               break;
-            case 1: // HTML 
+            case 1: // HTML
               $nid = $file->did;
               if ($node = node_load($nid)) {
 		$data = _os2dagsorden_adlib_api_improve_html($data);
 
-                $node->field_bpa_body[LANGUAGE_NONE][0]['value'] = $data;
+		$node->field_bpa_body[LANGUAGE_NONE][0]['value'] = _os2dagsorden_adlib_api_process_html($data, $jobfileinfo['out_url']);
                 $node->field_bpa_body[LANGUAGE_NONE][0]['format'] = 'full_html';
+
                 $node->feeds = array();
                 node_save($node);
-                $adlib->deleteJob($file->job_id);
-                $folder = explode('\\', $jobfileinfo['basefolder']);
-                $adlib->deleteJobFolder($folder[1]);
+                os2dagsorden_adlib_api_destroy_job($file->job_id);
                 drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid', 'jobtype'));
                 error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '() - File converted, node updated.');
 		_os2dagsorden_adlib_api_set_meeting_status_published_plus($node);
@@ -454,7 +452,7 @@ function _os2dagsorden_adlib_api_process_pdf($limit = FALSE) {
       $filename = drupal_realpath($file->file->uri);
 
       if (is_file(drupal_realpath($file->file->uri))) {
-        $upload = $adlib->uploadData($file->file->filename, file_get_contents(drupal_realpath($file->file->uri)));
+        $upload = $adlib->uploadData($file->file->filename, file_get_contents(drupal_realpath($file->file->uri)), $file->jobtype);
         if ($upload) {
           $job = $adlib->addJob($upload, $file->jobtype);
           if ($job !== FALSE) {
@@ -468,7 +466,7 @@ function _os2dagsorden_adlib_api_process_pdf($limit = FALSE) {
             watchdog('adlib_api', 'Queued file %file for PDF.', array('%file' => $file->file->filename));
           } else {
             watchdog('adlib_api', 'Upload of %file failed. Check permissions.', array('%file' => $file->file->filename));
-            db_delete('os2web_adlib_api_doc_files')->condition('fid', $file->file->fid)->execute();
+	    os2dagsorden_adlib_api_file_delete($file);
           }
         }
       }
@@ -494,9 +492,12 @@ function _os2dagsorden_adlib_api_improve_html($data) {
     //decode spec. characters
     $data = utf8_encode($data);
 
+    //replace new lines with br tags
+    $data = str_replace("\r\n", "<br>", $data);
+
     //general HTML improvements
     $data = str_replace("position:absolute", "position:relative", $data); //change html positioning
-    $data = preg_replace('/top:[0-9]*\.[0-9]*pt;/i', '', $data); //remove top attribute
+    $data = preg_replace('/top:[0-9]*\.[0-9]*pt/i', '', $data); //remove top attribute
     $data = str_replace("&#61623</FONT></FONT></FONT></SPAN>\r\n", "•</FONT></FONT></FONT></SPAN>", $data); //fix bullet point dot representation
 
     return $data;
@@ -563,6 +564,64 @@ function _os2dagsorden_adlib_api_set_meeting_status_published_plus($node) {
 }
 
 /**
+ * This function validates html and fixes all image links
+ *
+ * @param type   $data     html data
+ * @param string $base_url base url
+ *
+ * @return processed version of input
+ */
+function _os2dagsorden_adlib_api_process_html($data, $base_url) {
+  $base_dir = ADLIB_HTML_IMG_FOLDER;
+  if (!file_prepare_directory($base_dir, FILE_CREATE_DIRECTORY | FILE_MODIFY_PERMISSIONS)) {
+    watchdog('adlib_api', 'Cannot get write permission for the AdLib image store folder.', null, WATCHDOG_ERROR);
+    return;
+  }
+  module_load_include('php', 'os2dagsorden_adlib_api', 'includes/simple_html_dom');
+  $html = str_get_html($data);
+  $img = $html->find('img');
+  for ($i = 0; $i < count($img); $i++) {
+    watchdog('adlib_api', 'Importing image for HTML: %fname', array('%fname' => basename($img[$i]->src)));
+    $image_url = $base_url . '/' . rawurlencode($img[$i]->src);
+    $download = curl_init($image_url);
+    if (variable_get('os2web_pws_proxy')) {
+      curl_setopt($download, CURLOPT_PROXY, variable_get('os2web_pws_proxy_host'));
+      curl_setopt($download, CURLOPT_PROXYPORT, variable_get('os2web_pws_proxy_port'));
+      curl_setopt($download, CURLOPT_HTTPPROXYTUNNEL, TRUE);
+    }
+    curl_setopt($download, CURLOPT_RETURNTRANSFER, TRUE);
+    $image = curl_exec($download);
+
+    $info = curl_getinfo($download);
+    if ($info['http_code'] === 200) {
+      $file_uri = $base_dir . basename(str_replace('\\', '/', $img[$i]->src)); // AdLib uses Windows folder notation
+      $file = file_save_data($image, $file_uri, FILE_EXISTS_REPLACE);
+      $img[$i]->src = file_create_url($file->uri);
+    } else {
+      watchdog('adlib_api', 'Failed to fetch image for HTML: %fname', array('%fname' => basename($element->src)), WATCHDOG_WARNING);
+    }
+  }
+  $data = (string) $html;
+
+  // Clean up the html, since AdLib sometimes return less-than-valid html and hence can cause PDO exceptions
+  if (!function_exists('tidy_repair_string')) {
+    watchdog('adlib_api', 'Tidy API not found! Cannot process HTML.', null, WATCHDOG_ERROR);
+  } else {
+    $config = array(
+//        'clean' => true,
+        'indent' => true,
+        'output-xhtml' => true,
+        'wrap' => 200,
+        'word-2000' => true,
+        'show-body-only' => true,
+    );
+    //$data = tidy_repair_string($data, $config);
+  }
+
+  return $data;
+}
+
+/**
  * Cleanup job
  * 
  * @access protected
@@ -612,6 +671,38 @@ function _os2dagsorden_adlib_api_is_file_pdf($fid) {
  * @return none
  */
 function os2dagsorden_adlib_api_file_delete($file) {
+   if (is_numeric($file)) {
+    $file = db_select('os2web_adlib_api_doc_files', 'f')
+        ->fields('f')
+        ->condition('fid', $file)
+        ->execute()
+        ->fetchObject();
+  }
+  os2dagsorden_adlib_api_destroy_job($file->job_id);
   db_delete('os2web_adlib_api_doc_files')->condition('fid', $file->fid)->execute();
-  watchdog('adlib_api','File %file has been cleaned up from adlib conversion table.',array('%file' => $file->uri),WATCHDOG_DEBUG);
+}
+
+/**
+ * Destroys the job on adlib server, also deletes the job folder
+ * 
+ * @param file $file the file
+ *
+ * @return none
+ */
+function os2dagsorden_adlib_api_destroy_job($job_id) {
+  $file = db_select('os2web_adlib_api_doc_files', 'f')
+      ->fields('f')
+      ->condition('job_id', $job_id)
+      ->execute()
+      ->fetchObject();
+  if (is_object($file)) {
+    $adlib = _os2dagsorden_adlib_api_get_instance();
+    if (isset($file->job_id) && $file->job_id != 'Complete') {
+      $jobfileinfo = unserialize($file->job_info);
+      $adlib->deleteJob($file->job_id);
+      $folder = explode('\\', $jobfileinfo['basefolder']);
+      $adlib->deleteJobFolder($folder[1]);
+    }
+    watchdog('adlib_api', 'Deleted job for %fid', array('%fid' => $job_id));
+  }
 }

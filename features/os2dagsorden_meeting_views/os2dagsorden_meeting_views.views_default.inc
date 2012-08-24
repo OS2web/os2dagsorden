@@ -467,6 +467,18 @@ $breadcrumb[] = l(\'Hjem\', $base_url);
 $breadcrumb[] .= \'<span class="breadcrumb-active">Mødedetaljer</span>\';
 drupal_set_breadcrumb($breadcrumb);
 ?>';
+  /* Header: description download */
+  $handler->display->display_options['header']['php_1']['id'] = 'php_1';
+  $handler->display->display_options['header']['php_1']['table'] = 'views';
+  $handler->display->display_options['header']['php_1']['field'] = 'php';
+  $handler->display->display_options['header']['php_1']['ui_name'] = 'description download';
+  $handler->display->display_options['header']['php_1']['empty'] = FALSE;
+  $handler->display->display_options['header']['php_1']['php_output'] = '<div align="right" style="margin:5px;"><input class="form-submit" type="button" onclick="window.open(\'<?php  
+$nid = $results[0]->nid;
+$meeting = node_load($nid);
+print(file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\']));
+?>
+\')" value="Hent møde dagsorden i PDF"></div>';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_ref_bullet_points_target_id']['id'] = 'field_ref_bullet_points_target_id';
   $handler->display->display_options['relationships']['field_ref_bullet_points_target_id']['table'] = 'field_data_field_ref_bullet_points';

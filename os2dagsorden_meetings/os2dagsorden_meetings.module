@@ -200,8 +200,9 @@ function os2dagsorden_meetings_order_addenums() {
 function _os2dagsorden_meetings_process_manifest($file) {
     $manifest = simplexml_load_file(drupal_realpath($file));
     $items_xml = $manifest->xpath("//table[@name='producedAgenda']/fields");
+    $meeting_id = (int) array_shift($manifest->xpath("//table[@name='agenda']/fields/field/@sysid"));
     foreach ($items_xml as $xml_item) {
-        _os2dagsorden_meetings_process_agenda($xml_item);
+        _os2dagsorden_meetings_process_agenda($xml_item, $meeting_id);
     }
 }
 
@@ -212,7 +213,7 @@ function _os2dagsorden_meetings_process_manifest($file) {
  *
  * @return none
  */
-function _os2dagsorden_meetings_process_agenda($agendainfo_xml) {
+function _os2dagsorden_meetings_process_agenda($agendainfo_xml, $meeting_id) {
     $agendainfo = array(
         'sysid' => (int) array_shift($agendainfo_xml->xpath('field/@sysid')),
         'xmlFusionID' => (int) array_shift($agendainfo_xml->xpath('field/@xmlFusionID')),
@@ -232,6 +233,10 @@ function _os2dagsorden_meetings_process_agenda($agendainfo_xml) {
         'startDate' => (string) array_shift($agendainfo_xml->xpath('field/@startDate')),
         'endDate' => (string) array_shift($agendainfo_xml->xpath('field/@endDate'))
     );
+    
+    if (empty($agendainfo['filesfolder'])){
+	$agendainfo['filesfolder'] = 'Files_' . $meeting_id . '_' . $agendainfo['docID'];
+    }
 
     if ($agendainfo['publish'] === 1) {
         $agenda_uri = implode('/', array(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), $agendainfo['filesfolder'], $agendainfo['xmlfilename']));
@@ -340,9 +345,11 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
             $node->type = "meeting";
             $node->language = LANGUAGE_NONE;
 
-            node_object_prepare($node);
+            node_object_prepare($node);    
         }
     }
+
+    $node = os2dagsorden_meetings_add_meeting_description($node, $info);
 
     //avoiding reimports
     if (intval($node->field_meeting_acadre_imported[$node->language][0]['value']) == 1) {
@@ -424,6 +431,50 @@ function _os2dagsorden_meeting_mark_acadre_imported($node) {
     $node->field_meeting_acadre_imported['und']['0']['value'] = 1;
     $node->field_meeting_status['und'][0]['value'] = 'Publiceret';
     node_save($node);
+}
+
+/**
+ * Add the description file (originally in DOC format) to the meeting, also schedules the file to the adlib conversion.
+ * When a new description file is available, it will replace the old file.
+ *
+ * @param mixed $node meeting
+ * @param mixed $info xml extracted information
+ *
+ * @return modified meeting
+ */
+function os2dagsorden_meetings_add_meeting_description($node, $info){
+    $description_uri = implode('/', array(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), $info['filesfolder'], $info['docID'] . '.' . $info['fileType']));
+
+    $file = new stdClass();
+    $file->uri = $description_uri;
+    $file->display = 1;
+    $file->filename = drupal_basename($file->uri);
+    $file->filemime = file_get_mimetype($file->uri);
+    $file->uid = 1;
+    $file->status = FILE_STATUS_PERMANENT;
+
+    if (!isset($node->field_meeting_description[$node->language][0])) { //no description files is connected to the meeting  
+      $file = file_save($file);
+
+      $node->field_meeting_description[$node->language][0] = (array) $file;
+      os2dagsorden_adlib_api_convert_to_pdf($file->fid, $node->nid);
+    } else {
+      //getting old file name
+      $files = field_get_items('node', $node, 'field_meeting_description');
+      $old_file_name = explode('/', $files[0]['uri']);//assuming uri as public://acadre/Files_1582_3387435/3387435/XXXX.pdf, 
+						      //so in order to get pure file with file type we need [4] element of the array
+      //getting new file name
+      $new_file_name = $info['docID'] . '.' . $info['fileType'];////assuming name as XXXX.DOC
+      
+      if (strcmp($old_file_name[4],$new_file_name) < 0) { //new file has bigger filename, thus is created later - then replace
+	$file = file_save($file);
+
+	$node->field_meeting_description[$node->language][0] = (array) $file;
+	os2dagsorden_adlib_api_convert_to_pdf($file->fid, $node->nid);
+      }
+    }
+
+    return $node;
 }
 
 /**
@@ -748,6 +799,7 @@ function _os2dagsorden_meetings_similar_file_exists($filename) {
         return $filename;
     }
     $dir = dirname($filename);
+    error_log($dir);
     $files = glob($dir . '/*');
     $lcaseFilename = strtolower($filename);
     foreach ($files as $file) {
