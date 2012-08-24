@@ -615,6 +615,7 @@ function _os2dagsorden_adlib_api_process_html($data, $base_url) {
         'word-2000' => true,
         'show-body-only' => true,
     );
+    //disabled by stan@bellcom.dk 24/08/2012 since it was misbehaving and making the HTML output messy
     //$data = tidy_repair_string($data, $config);
   }
 

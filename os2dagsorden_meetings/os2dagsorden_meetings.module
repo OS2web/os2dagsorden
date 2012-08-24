@@ -243,7 +243,7 @@ function _os2dagsorden_meetings_process_agenda($agendainfo_xml, $meeting_id) {
         if (($agenda_uri = _os2dagsorden_meetings_similar_file_exists(drupal_realpath($agenda_uri))) !== FALSE) {
             $agenda_xml = simplexml_load_file(drupal_realpath($agenda_uri));
             $meeting = _os2dagsorden_meetings_publish_meeting($agendainfo, $agenda_xml);
-            _os2dagsorden_meeting_mark_acadre_imported($meeting);
+            //_os2dagsorden_meeting_mark_acadre_imported($meeting);
         }
     }
     else {
@@ -348,7 +348,17 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
             node_object_prepare($node);    
         }
     }
-
+    
+    //TODO: add meeting version
+    //avoiding reimports
+    if (isset($node->field_meeting_description[$node->language][0])) {
+      $files = field_get_items('node', $node, 'field_meeting_description');
+      $old_file_name = explode('/', $files[0]['uri']); //assuming uri as public://acadre/Files_1582_3387435/3387435/XXXX.pdf, 
+						       //so in order to get pure file with file type we need [4] element of the array
+      if (strcmp($old_file_name[4],$new_file_name) >= 0){
+	return $node;
+      }
+    }
     $node = os2dagsorden_meetings_add_meeting_description($node, $info);
 
     //avoiding reimports
