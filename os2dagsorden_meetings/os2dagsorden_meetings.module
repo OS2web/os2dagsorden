@@ -243,7 +243,7 @@ function _os2dagsorden_meetings_process_agenda($agendainfo_xml, $meeting_id) {
         if (($agenda_uri = _os2dagsorden_meetings_similar_file_exists(drupal_realpath($agenda_uri))) !== FALSE) {
             $agenda_xml = simplexml_load_file(drupal_realpath($agenda_uri));
             $meeting = _os2dagsorden_meetings_publish_meeting($agendainfo, $agenda_xml);
-            //_os2dagsorden_meeting_mark_acadre_imported($meeting);
+            _os2dagsorden_meeting_mark_acadre_imported($meeting);
         }
     }
     else {
