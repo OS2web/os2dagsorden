@@ -243,7 +243,6 @@ function _os2dagsorden_meetings_process_agenda($agendainfo_xml, $meeting_id) {
         if (($agenda_uri = _os2dagsorden_meetings_similar_file_exists(drupal_realpath($agenda_uri))) !== FALSE) {
             $agenda_xml = simplexml_load_file(drupal_realpath($agenda_uri));
             $meeting = _os2dagsorden_meetings_publish_meeting($agendainfo, $agenda_xml);
-            _os2dagsorden_meeting_mark_acadre_imported($meeting);
         }
     }
     else {
@@ -348,34 +347,25 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
             node_object_prepare($node);    
         }
     }
-    
-    //TODO: add meeting version
+
     //avoiding reimports
-    if (isset($node->field_meeting_description[$node->language][0])) {
-      $files = field_get_items('node', $node, 'field_meeting_description');
-      $old_file_name = explode('/', $files[0]['uri']); //assuming uri as public://acadre/Files_1582_3387435/3387435/XXXX.pdf, 
-						       //so in order to get pure file with file type we need [4] element of the array
-      if (strcmp($old_file_name[4],$new_file_name) >= 0){
+    if (isset($node->field_meeting_acadre_version[$node->language][0])) {
+      $old_version = $node->field_meeting_acadre_version[$node->language][0]['value'];
+      $new_version = $info['docID'];
+      if (strcmp($old_version,$new_version) >= 0){//meeting is of the same version, no need to proceed
 	return $node;
       }
     }
-    $node = os2dagsorden_meetings_add_meeting_description($node, $info);
-
-    //avoiding reimports
-    if (intval($node->field_meeting_acadre_imported[$node->language][0]['value']) == 1) {
-        //return $node;
-    }
 
     $node->title = $options['title'];
-    $node->path = array('alias' => 'agenda/' . $options['id']); // Setting a node path
+    $node->field_meeting_acadre_version[$node->language][0]['value'] = $info['docID'];//setting the acarde version of the meeting
 
-    $node->created = $options['cdate'];
-    // Let's add standard body field
-    //$node->field_meeting_abbr[$node->language][0]['value'] = $options['description'];
-    //$node->field_meeting_abbr[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field
-    // The date
     $node->field_date[$node->language][0]['value'] = $options['date'];
     $node->field_date[$node->language][0]['value2'] = $options['finish'];
+
+    $node = os2dagsorden_meetings_add_meeting_description($node, $info);
+
+    $node->field_meeting_status['und'][0]['value'] = 'Publiceret';
 
     // Proper id tagging
     $node->field_meeting_id[$node->language][0]['value'] = $options['meeting_id'];
@@ -398,8 +388,15 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
         }
     }
 
+    //Adding participants
+    $part_names = array();
+    $participants = $xml->xpath("//table[@name='committee']/table[@name='commember']/table[@name='member']");
+    foreach ($participants as $participant) {
+	$part_names[] = (string) array_shift($participant->xpath("fields/field[@name='name']"));
+    }
+    $node->field_meeting_participants[$node->language][0]['value'] = implode(', ', $part_names);
+
     //Add nodes for each bullet
-//  $items = $xml->xpath("//table[@name='agendaitem']");
     $items = $xml->xpath("//table[@name='agendaitemparents']");
     $item_nids = array();
     foreach ($items as $item) {
@@ -430,20 +427,6 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
 }
 
 /**
- * Marks the meeting as acadre imported, so not reimports will be done or future rewritting
- * Also changes the status of the meeting to "Publiceret" 
- *
- * @param mixed $node meeting
- *
- * @return none
- */
-function _os2dagsorden_meeting_mark_acadre_imported($node) {
-    $node->field_meeting_acadre_imported['und']['0']['value'] = 1;
-    $node->field_meeting_status['und'][0]['value'] = 'Publiceret';
-    node_save($node);
-}
-
-/**
  * Add the description file (originally in DOC format) to the meeting, also schedules the file to the adlib conversion.
  * When a new description file is available, it will replace the old file.
  *
@@ -463,26 +446,26 @@ function os2dagsorden_meetings_add_meeting_description($node, $info){
     $file->uid = 1;
     $file->status = FILE_STATUS_PERMANENT;
 
-    if (!isset($node->field_meeting_description[$node->language][0])) { //no description files is connected to the meeting  
+    //if (!isset($node->field_meeting_description[$node->language][0])) { //no description files is connected to the meeting  
       $file = file_save($file);
 
       $node->field_meeting_description[$node->language][0] = (array) $file;
       os2dagsorden_adlib_api_convert_to_pdf($file->fid, $node->nid);
-    } else {
+    //} else {
       //getting old file name
-      $files = field_get_items('node', $node, 'field_meeting_description');
-      $old_file_name = explode('/', $files[0]['uri']);//assuming uri as public://acadre/Files_1582_3387435/3387435/XXXX.pdf, 
-						      //so in order to get pure file with file type we need [4] element of the array
-      //getting new file name
-      $new_file_name = $info['docID'] . '.' . $info['fileType'];////assuming name as XXXX.DOC
-      
-      if (strcmp($old_file_name[4],$new_file_name) < 0) { //new file has bigger filename, thus is created later - then replace
-	$file = file_save($file);
-
-	$node->field_meeting_description[$node->language][0] = (array) $file;
-	os2dagsorden_adlib_api_convert_to_pdf($file->fid, $node->nid);
-      }
-    }
+//       $files = field_get_items('node', $node, 'field_meeting_description');
+//       $old_file_name = explode('/', $files[0]['uri']);//assuming uri as public://acadre/Files_1582_3387435/3387435/XXXX.pdf, 
+// 						      //so in order to get pure file with file type we need [4] element of the array
+//       //getting new file name
+//       $new_file_name = $info['docID'] . '.' . $info['fileType'];////assuming name as XXXX.DOC
+//       
+//       if (strcmp($old_file_name[4],$new_file_name) < 0) { //new file has bigger filename, thus is created later - then replace
+// 	$file = file_save($file);
+// 
+// 	$node->field_meeting_description[$node->language][0] = (array) $file;
+// 	os2dagsorden_adlib_api_convert_to_pdf($file->fid, $node->nid);
+      //}
+    //}
 
     return $node;
 }
@@ -501,6 +484,7 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
         'sysid' => (int) array_shift($xml->xpath("fields/field[@name='sysid']")),
         'name' => (string) array_shift($xml->xpath("fields/field[@name='name']")),
         'accessname' => (string) array_shift($xml->xpath("fields/field[@name='accessname']")),
+	'caseno' => (string) array_shift($xml->xpath("fields/field[@name='caseno']")),
     );
 
 
@@ -535,7 +519,7 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
     }
 
 
-    $node->title = 'Punkt ' . $id . ' ' . $options['name'];
+    $node->title = 'Punkt ' . $id . ' ' . $options['name'] . ' - ' . $options['caseno'];
 
     if (strcmp($options['accessname'], 'Lukket') == 0) {
         $node->field_bul_point_closed[$node->language][0]['value'] = 1;
