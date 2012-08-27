@@ -478,7 +478,7 @@ $nid = $results[0]->nid;
 $meeting = node_load($nid);
 print(file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\']));
 ?>
-\')" value="Hent møde dagsorden i PDF"></div>';
+\')" value="Hent samlet dokument i PDF"></div>';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_ref_bullet_points_target_id']['id'] = 'field_ref_bullet_points_target_id';
   $handler->display->display_options['relationships']['field_ref_bullet_points_target_id']['table'] = 'field_data_field_ref_bullet_points';
