@@ -377,7 +377,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Lokation';
+  $handler->display->display_options['title'] = 'Deltagerne';
   $handler->display->display_options['css_class'] = 'bullet-point-attachments';
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
@@ -495,13 +495,24 @@ print(file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\']))
   $handler->display->display_options['relationships']['uid']['id'] = 'uid';
   $handler->display->display_options['relationships']['uid']['table'] = 'node';
   $handler->display->display_options['relationships']['uid']['field'] = 'uid';
-  /* Field: Content: Lokation */
-  $handler->display->display_options['fields']['field_location']['id'] = 'field_location';
-  $handler->display->display_options['fields']['field_location']['table'] = 'field_data_field_location';
-  $handler->display->display_options['fields']['field_location']['field'] = 'field_location';
-  $handler->display->display_options['fields']['field_location']['label'] = '';
-  $handler->display->display_options['fields']['field_location']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_location']['type'] = 'taxonomy_term_reference_plain';
+  /* Field: Meeting id - hidden */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['ui_name'] = 'Meeting id - hidden';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Global: PHP */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php 
+print \'test\';
+?>';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
@@ -659,8 +670,8 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   );
   $handler->display->display_options['path'] = 'meeting/%';
 
-  /* Display: Attachment */
-  $handler = $view->new_display('attachment', 'Attachment', 'attachment_3');
+  /* Display: Lokation */
+  $handler = $view->new_display('attachment', 'Lokation', 'attachment_3');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Lokation';
   $handler->display->display_options['pager']['type'] = 'some';
@@ -731,8 +742,50 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   );
   $handler->display->display_options['attachment_position'] = 'after';
 
-  /* Display: Attachment */
-  $handler = $view->new_display('attachment', 'Attachment', 'attachment_1');
+  /* Display: Deltagerne */
+  $handler = $view->new_display('attachment', 'Deltagerne', 'attachment_2');
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Field: Meeting id - hidden */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['ui_name'] = 'Meeting id - hidden';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: Content: Participants */
+  $handler->display->display_options['fields']['field_meeting_participants']['id'] = 'field_meeting_participants';
+  $handler->display->display_options['fields']['field_meeting_participants']['table'] = 'field_data_field_meeting_participants';
+  $handler->display->display_options['fields']['field_meeting_participants']['field'] = 'field_meeting_participants';
+  $handler->display->display_options['fields']['field_meeting_participants']['label'] = 'Deltagerne';
+  $handler->display->display_options['fields']['field_meeting_participants']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_meeting_participants']['hide_empty'] = TRUE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'meeting' => 'meeting',
+  );
+  $handler->display->display_options['displays'] = array(
+    'page' => 'page',
+    'default' => 0,
+  );
+  $handler->display->display_options['attachment_position'] = 'after';
+
+  /* Display: Dagsorden */
+  $handler = $view->new_display('attachment', 'Dagsorden', 'attachment_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Dagsorden';
   $handler->display->display_options['pager']['type'] = 'some';
@@ -1028,7 +1081,7 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
   $handler->display->display_options['attachment_position'] = 'after';
   $translatables['meeting_details'] = array(
     t('Master'),
-    t('Lokation'),
+    t('Deltagerne'),
     t('more'),
     t('Apply'),
     t('Reset'),
@@ -1038,6 +1091,7 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
     t('Meetings bullet points'),
     t('bullet point attachments'),
     t('author'),
+    t('PHP'),
     t('All'),
     t('Page'),
     t('Mødedetaljer'),
@@ -1047,7 +1101,7 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
     t('Slutdato'),
     t('Udvalg'),
     t('[field_committee]'),
-    t('Attachment'),
+    t('Lokation'),
     t('Dagsorden'),
     t('<h3>Dagsorden:</h3>'),
     t('Content entity referenced from field_ref_bullet_points'),
