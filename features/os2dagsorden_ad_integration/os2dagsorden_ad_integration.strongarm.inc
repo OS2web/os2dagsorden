@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * os2web_ad_integration.strongarm.inc
+ * os2dagsorden_ad_integration.strongarm.inc
  */
 
 /**
  * Implements hook_strongarm().
  */
-function os2web_ad_integration_strongarm() {
+function os2dagsorden_ad_integration_strongarm() {
   $export = array();
 
   $strongarm = new stdClass();

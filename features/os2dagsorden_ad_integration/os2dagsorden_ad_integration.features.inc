@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * os2web_ad_integration.features.inc
+ * os2dagsorden_ad_integration.features.inc
  */
 
 /**
  * Implements hook_ctools_plugin_api().
  */
-function os2web_ad_integration_ctools_plugin_api() {
+function os2dagsorden_ad_integration_ctools_plugin_api() {
   list($module, $api) = func_get_args();
   if ($module == "ldap_authorization" && $api == "ldap_authorization") {
     return array("version" => "1");

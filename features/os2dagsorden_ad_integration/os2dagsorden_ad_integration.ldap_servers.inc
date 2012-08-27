@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * os2web_ad_integration.ldap_servers.inc
+ * os2dagsorden_ad_integration.ldap_servers.inc
  */
 
 /**
  * Implements hook_default_ldap_servers().
  */
-function os2web_ad_integration_default_ldap_servers() {
+function os2dagsorden_ad_integration_default_ldap_servers() {
   $export = array();
 
   $ldap_servers_conf = new stdClass();

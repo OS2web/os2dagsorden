@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * os2web_ad_integration.ldap_authorization.inc
+ * os2dagsorden_ad_integration.ldap_authorization.inc
  */
 
 /**
  * Implements hook_default_ldap_authorization().
  */
-function os2web_ad_integration_default_ldap_authorization() {
+function os2dagsorden_ad_integration_default_ldap_authorization() {
   $export = array();
 
   $consumer_type = new stdClass();
@@ -18,7 +18,7 @@ function os2web_ad_integration_default_ldap_authorization() {
   $consumer_type->consumer_module = 'ldap_authorization_drupal_role';
   $consumer_type->status = TRUE;
   $consumer_type->only_ldap_authenticated = TRUE;
-  $consumer_type->derive_from_dn = FALSE;
+  $consumer_type->derive_from_dn = TRUE;
   $consumer_type->derive_from_dn_attr = 'ou';
   $consumer_type->derive_from_attr = TRUE;
   $consumer_type->derive_from_attr_attr = 'memberOf';
