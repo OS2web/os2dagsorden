@@ -888,47 +888,46 @@ function os2dagsorden_content_types_field_default_fields() {
     ),
   );
 
-  // Exported field: 'node-meeting-field_meeting_acadre_imported'
-  $fields['node-meeting-field_meeting_acadre_imported'] = array(
+  // Exported field: 'node-meeting-field_meeting_acadre_version'
+  $fields['node-meeting-field_meeting_acadre_version'] = array(
     'field_config' => array(
       'active' => '1',
       'cardinality' => '1',
       'deleted' => '0',
       'entity_types' => array(),
-      'field_name' => 'field_meeting_acadre_imported',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
+      'field_name' => 'field_meeting_acadre_version',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
         ),
       ),
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => '',
-          1 => '',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
         ),
-        'allowed_values_function' => '',
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
       ),
       'translatable' => '0',
-      'type' => 'list_boolean',
+      'type' => 'text',
     ),
     'field_instance' => array(
       'bundle' => 'meeting',
-      'default_value' => array(
-        0 => array(
-          'value' => 0,
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
       'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'list',
+          'module' => 'text',
           'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 17,
+          'type' => 'text_default',
+          'weight' => 20,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -938,20 +937,21 @@ function os2dagsorden_content_types_field_default_fields() {
         ),
       ),
       'entity_type' => 'node',
-      'field_name' => 'field_meeting_acadre_imported',
-      'label' => 'Acadre imported',
+      'field_name' => 'field_meeting_acadre_version',
+      'label' => 'Acadre version',
       'required' => 0,
       'settings' => array(
+        'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
+        'module' => 'text',
         'settings' => array(
-          'display_label' => 1,
+          'size' => '60',
         ),
-        'type' => 'options_onoff',
-        'weight' => '8',
+        'type' => 'text_textfield',
+        'weight' => '13',
       ),
     ),
   );
@@ -2587,8 +2587,8 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
   // Included for use with string extractors like potx.
   t('Abbreviation');
   t('Acadre ID');
-  t('Acadre imported');
   t('Acadre name');
+  t('Acadre version');
   t('Body');
   t('Closed');
   t('Committee');

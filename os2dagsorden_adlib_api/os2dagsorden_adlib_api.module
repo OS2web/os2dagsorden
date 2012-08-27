@@ -496,8 +496,8 @@ function _os2dagsorden_adlib_api_improve_html($data) {
     $data = str_replace("\r\n", "<br>", $data);
 
     //general HTML improvements
-    $data = str_replace("position:absolute", "position:relative", $data); //change html positioning
-    $data = preg_replace('/top:[0-9]*\.[0-9]*pt/i', '', $data); //remove top attribute
+    //$data = str_replace("position:absolute", "position:relative", $data); //change html positioning
+    //$data = preg_replace('/top:[0-9]*\.[0-9]*pt/i', '', $data); //remove top attribute
     $data = str_replace("&#61623</FONT></FONT></FONT></SPAN>\r\n", "•</FONT></FONT></FONT></SPAN>", $data); //fix bullet point dot representation
 
     return $data;
