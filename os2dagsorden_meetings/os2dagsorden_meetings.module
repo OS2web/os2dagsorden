@@ -519,7 +519,7 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
     }
 
 
-    $node->title = 'Punkt ' . $id . ' ' . $options['name'] . ' - ' . $options['caseno'];
+    $node->title = 'Punkt ' . $id . ' ' . $options['name'] . ' (' . $options['caseno'] . ')';
 
     if (strcmp($options['accessname'], 'Lukket') == 0) {
         $node->field_bul_point_closed[$node->language][0]['value'] = 1;
