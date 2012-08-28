@@ -377,7 +377,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Deltagerne';
+  $handler->display->display_options['title'] = 'Deltagere';
   $handler->display->display_options['css_class'] = 'bullet-point-attachments';
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
@@ -742,8 +742,8 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   );
   $handler->display->display_options['attachment_position'] = 'after';
 
-  /* Display: Deltagerne */
-  $handler = $view->new_display('attachment', 'Deltagerne', 'attachment_2');
+  /* Display: Deltagere */
+  $handler = $view->new_display('attachment', 'Deltagere', 'attachment_2');
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
@@ -760,7 +760,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_meeting_participants']['id'] = 'field_meeting_participants';
   $handler->display->display_options['fields']['field_meeting_participants']['table'] = 'field_data_field_meeting_participants';
   $handler->display->display_options['fields']['field_meeting_participants']['field'] = 'field_meeting_participants';
-  $handler->display->display_options['fields']['field_meeting_participants']['label'] = 'Deltagerne';
+  $handler->display->display_options['fields']['field_meeting_participants']['label'] = 'Deltagere';
   $handler->display->display_options['fields']['field_meeting_participants']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_meeting_participants']['hide_empty'] = TRUE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -1081,7 +1081,7 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
   $handler->display->display_options['attachment_position'] = 'after';
   $translatables['meeting_details'] = array(
     t('Master'),
-    t('Deltagerne'),
+    t('Deltagere'),
     t('more'),
     t('Apply'),
     t('Reset'),
