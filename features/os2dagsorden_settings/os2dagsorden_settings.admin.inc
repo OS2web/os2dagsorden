@@ -46,25 +46,6 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#title' => t('Acadre groups (committees) url:'),
       '#maxlength' => 128, 
   );
-
-  // Annotateit settings
-  $form['os2dagsorden_annotator'] = array(
-      '#type' => 'fieldset',
-      '#collapsible' => TRUE,
-      '#title' => t('Annotateit service configuration'),
-      '#weight' => 10,
-  );
-  $form['os2dagsorden_annotator']['os2dagsorden_annotator_url'] = array(
-      '#type' => 'textfield',
-      '#default_value' => variable_get('os2dagsorden_annotator_url'),
-      '#title' => t('URL on which Annotateit service is running'),
-  );
-  $form['os2dagsorden_annotator']['os2dagsorden_annotator_port_nr'] = array(
-      '#type' => 'textfield',
-      '#default_value' => variable_get('os2dagsorden_annotator_port_nr'),
-      '#title' => t('Port number on which Annotateit service is running'),
-  );
-
   
   return system_settings_form($form);
 }
