@@ -34,8 +34,8 @@ function os2dagsorden_importer_menu() {
  * @return none
  */
 function os2dagsorden_importer_sync() {
-    //os2dagsorden_importer_import_user_committees();
-    //os2dagsorden_importer_import_committees();
+    os2dagsorden_importer_import_user_committees();
+    os2dagsorden_importer_import_committees();
     os2dagsorden_importer_import_meetings();
 }
 
@@ -57,18 +57,22 @@ function os2dagsorden_importer_cron() {
  * @return none
  */
 function os2dagsorden_importer_import_user_committees() {
-    $url = curl_init(variable_get('os2dagsorden_pws_v_meetinggroups_url'));
+    if (!variable_get('os2dagsorden_pws_use_local_copy')){
+      $url = curl_init(variable_get('os2dagsorden_pws_v_meetinggroups_url'));
 
-    if (variable_get('os2web_pws_proxy')) {
-        curl_setopt($url, CURLOPT_PROXY, variable_get('os2web_pws_proxy_host'));
-        curl_setopt($url, CURLOPT_PROXYPORT, variable_get('os2web_pws_proxy_port'));
-        curl_setopt($url, CURLOPT_HTTPPROXYTUNNEL, TRUE);
+      if (variable_get('os2web_pws_proxy')) {
+	  curl_setopt($url, CURLOPT_PROXY, variable_get('os2web_pws_proxy_host'));
+	  curl_setopt($url, CURLOPT_PROXYPORT, variable_get('os2web_pws_proxy_port'));
+	  curl_setopt($url, CURLOPT_HTTPPROXYTUNNEL, TRUE);
+      }
+
+      curl_setopt($url, CURLOPT_RETURNTRANSFER, TRUE);
+      $userCommittees_raw = curl_exec($url);
+
+      $userCommittees = new SimpleXMLElement($userCommittees_raw);
+    } else {
+      $userCommittees = simplexml_load_file(DEFAULT_ACADRE_VIEWS_IMPORT_DIR . '/V_web_MeetingGroups.xml');
     }
-
-    curl_setopt($url, CURLOPT_RETURNTRANSFER, TRUE);
-    $userCommittees_raw = curl_exec($url);
-
-    $userCommittees = new SimpleXMLElement($userCommittees_raw);
     _os2dagsorden_importer_process_user_committees($userCommittees);
 }
 
@@ -78,17 +82,21 @@ function os2dagsorden_importer_import_user_committees() {
  * @return none
  */
 function os2dagsorden_importer_import_committees() {
-    $url = curl_init(variable_get('os2dagsorden_pws_v_acadregroups_url'));
+    if (!variable_get('os2dagsorden_pws_use_local_copy')){
+      $url = curl_init(variable_get('os2dagsorden_pws_v_acadregroups_url'));
 
-    if (variable_get('os2web_pws_proxy')) {
-        curl_setopt($url, CURLOPT_PROXY, variable_get('os2web_pws_proxy_host'));
-        curl_setopt($url, CURLOPT_PROXYPORT, variable_get('os2web_pws_proxy_port'));
-        curl_setopt($url, CURLOPT_HTTPPROXYTUNNEL, TRUE);
+      if (variable_get('os2web_pws_proxy')) {
+	  curl_setopt($url, CURLOPT_PROXY, variable_get('os2web_pws_proxy_host'));
+	  curl_setopt($url, CURLOPT_PROXYPORT, variable_get('os2web_pws_proxy_port'));
+	  curl_setopt($url, CURLOPT_HTTPPROXYTUNNEL, TRUE);
+      }
+
+      curl_setopt($url, CURLOPT_RETURNTRANSFER, TRUE);
+      $acadreGroups_raw = curl_exec($url);
+      $acadreGroups = new SimpleXMLElement($acadreGroups_raw);
+    } else {
+      $acadreGroups = simplexml_load_file(DEFAULT_ACADRE_VIEWS_IMPORT_DIR . '/V_web_AcadreGroups.xml');
     }
-
-    curl_setopt($url, CURLOPT_RETURNTRANSFER, TRUE);
-    $acadreGroups_raw = curl_exec($url);
-    $acadreGroups = new SimpleXMLElement($acadreGroups_raw);
     _os2dagsorden_importer_process_committees($acadreGroups);
 }
 
@@ -98,16 +106,20 @@ function os2dagsorden_importer_import_committees() {
  * @return none
  */
 function os2dagsorden_importer_import_meetings() {
-    $url = curl_init(variable_get('os2dagsorden_pws_v_meetings_url'));
+    if (!variable_get('os2dagsorden_pws_use_local_copy')){
+      $url = curl_init(variable_get('os2dagsorden_pws_v_meetings_url'));
 
-    if (variable_get('os2web_pws_proxy')) {
-        curl_setopt($url, CURLOPT_PROXY, variable_get('os2web_pws_proxy_host'));
-        curl_setopt($url, CURLOPT_PROXYPORT, variable_get('os2web_pws_proxy_port'));
-        curl_setopt($url, CURLOPT_HTTPPROXYTUNNEL, TRUE);
+      if (variable_get('os2web_pws_proxy')) {
+	  curl_setopt($url, CURLOPT_PROXY, variable_get('os2web_pws_proxy_host'));
+	  curl_setopt($url, CURLOPT_PROXYPORT, variable_get('os2web_pws_proxy_port'));
+	  curl_setopt($url, CURLOPT_HTTPPROXYTUNNEL, TRUE);
+      }
+      curl_setopt($url, CURLOPT_RETURNTRANSFER, TRUE);
+      $meetings_raw = curl_exec($url);
+      $meetings = new SimpleXMLElement($meetings_raw);
+    } else {
+      $meetings = simplexml_load_file(DEFAULT_ACADRE_VIEWS_IMPORT_DIR . '/V_web_Meetings.xml');
     }
-    curl_setopt($url, CURLOPT_RETURNTRANSFER, TRUE);
-    $meetings_raw = curl_exec($url);
-    $meetings = new SimpleXMLElement($meetings_raw);
     _os2dagsorden_importer_process_meetings($meetings);
 }
 

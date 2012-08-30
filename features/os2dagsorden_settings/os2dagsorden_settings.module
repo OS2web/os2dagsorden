@@ -21,7 +21,7 @@ include_once('os2dagsorden_settings.features.inc');
  */
 function os2dagsorden_settings_menu() {
     $items['admin/config/os2dagsorden'] = array(
-        'title' => 'OS2Web Setup',
+        'title' => 'OS2Dagsorden Setup',
         'description' => 'Set up OS2 cms services',
         'position' => 'right',
         'weight' => -15,

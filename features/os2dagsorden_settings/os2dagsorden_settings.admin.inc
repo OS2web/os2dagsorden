@@ -28,23 +28,32 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#title' => t('SOFD Integration settings'),
       '#weight' => 11,
   );
+  $form['os2dagsorden_pws_sofd_group']['os2dagsorden_pws_use_local_copy'] = array(
+      '#type' => 'checkbox',
+      '#default_value' => variable_get('os2dagsorden_pws_use_local_copy'),
+      '#title' => t('Use local XML files'), 
+      '#description' => variable_get('os2dagsorden_pws_use_local_copy') ? 'Diselect and click save to enable the fields below' : 'Selecting and clicking save will disable the textfields below'
+  );
   $form['os2dagsorden_pws_sofd_group']['os2dagsorden_pws_v_meetings_url'] = array(
       '#type' => 'textfield',
       '#default_value' => variable_get('os2dagsorden_pws_v_meetings_url'),
       '#title' => t('Meeting (planned meetings) view url:'),
-      '#maxlength' => 128, 
+      '#maxlength' => 256, 
+      '#disabled' => variable_get('os2dagsorden_pws_use_local_copy'),
   );
   $form['os2dagsorden_pws_sofd_group']['os2dagsorden_pws_v_meetinggroups_url'] = array(
       '#type' => 'textfield',
       '#default_value' => variable_get('os2dagsorden_pws_v_meetinggroups_url'),
       '#title' => t('Meeting groups (is member of/follows/follows+) view url:'),
-      '#maxlength' => 128, 
+      '#maxlength' => 256, 
+      '#disabled' => variable_get('os2dagsorden_pws_use_local_copy'),
   );
   $form['os2dagsorden_pws_sofd_group']['os2dagsorden_pws_v_acadregroups_url'] = array(
       '#type' => 'textfield',
       '#default_value' => variable_get('os2dagsorden_pws_v_acadregroups_url'),
       '#title' => t('Acadre groups (committees) url:'),
-      '#maxlength' => 128, 
+      '#maxlength' => 256, 
+      '#disabled' => variable_get('os2dagsorden_pws_use_local_copy'),
   );
   
   return system_settings_form($form);
