@@ -403,9 +403,10 @@ function _os2dagsorden_adlib_api_process_pdf($limit = FALSE) {
             case 1: // HTML
               $nid = $file->did;
               if ($node = node_load($nid)) {
-		$data = _os2dagsorden_adlib_api_improve_html($data);
+		$data = _os2dagsorden_adlib_api_process_html($data, $jobfileinfo['out_url']);
+		//$data = _os2dagsorden_adlib_api_improve_html($data);
 
-		$node->field_bpa_body[LANGUAGE_NONE][0]['value'] = _os2dagsorden_adlib_api_process_html($data, $jobfileinfo['out_url']);
+		$node->field_bpa_body[LANGUAGE_NONE][0]['value'] = $data;
                 $node->field_bpa_body[LANGUAGE_NONE][0]['format'] = 'full_html';
 
                 $node->feeds = array();
@@ -615,8 +616,7 @@ function _os2dagsorden_adlib_api_process_html($data, $base_url) {
         'word-2000' => true,
         'show-body-only' => true,
     );
-    //disabled by stan@bellcom.dk 24/08/2012 since it was misbehaving and making the HTML output messy
-    //$data = tidy_repair_string($data, $config);
+    $data = tidy_repair_string($data, $config);
   }
 
   return $data;
