@@ -34,9 +34,9 @@ function os2dagsorden_importer_menu() {
  * @return none
  */
 function os2dagsorden_importer_sync() {
-    //os2dagsorden_importer_import_user_committees();
-    //os2dagsorden_importer_import_committees();
-    //os2dagsorden_importer_import_meetings();
+    os2dagsorden_importer_import_user_committees();
+    os2dagsorden_importer_import_committees();
+    os2dagsorden_importer_import_meetings();
 }
 
 /**
@@ -46,9 +46,9 @@ function os2dagsorden_importer_sync() {
  * @return none
  */
 function os2dagsorden_importer_cron() {
-    os2dagsorden_importer_import_user_committees();
-    os2dagsorden_importer_import_committees();
-    os2dagsorden_importer_import_meetings();
+    //os2dagsorden_importer_import_user_committees();
+    //os2dagsorden_importer_import_committees();
+    //os2dagsorden_importer_import_meetings();
 }
 
 /**
@@ -645,8 +645,8 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
             $nids = array_keys($result['node']);
             $node = reset(entity_load('node', $nids));
             //avoiding reimports, or value overriding
-            if (intval($node->field_meeting_acadre_imported['und']['0']['value']) == 1) {
-                return;
+            if (!empty($node->field_meeting_acadre_version['und']['0']['value'])) {
+                return $node;
             }
         }
         else {
