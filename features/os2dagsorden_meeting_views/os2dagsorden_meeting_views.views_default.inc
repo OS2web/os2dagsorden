@@ -1015,7 +1015,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	//if is bilag - have the preview/trimmed content
 	if (!empty($attachment->field_bpa_file[\'und\'])){
 	  print \'<div class="attachment_text_trimmed_container">\';
-          print os2dagsorden_access_helper_smart_truncate($attachment->field_bpa_body[\'und\'][0][\'safe_value\'], 300, \'...\', true, true);
+          print os2dagsorden_access_helper_smart_truncate($attachment->field_bpa_body[\'und\'][0][\'value\'], 300, \'...\', true, true);
 	  print \'</div>\';
 	  print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
 	}

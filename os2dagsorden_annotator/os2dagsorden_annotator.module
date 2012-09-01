@@ -284,7 +284,7 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
         drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.css');
 
         drupal_set_title(t('Bilag') . ' - ' . $bilag->title);
-        $text = $bilag->field_bpa_body['und'][0]['safe_value'];
+        $text = $bilag->field_bpa_body['und'][0]['value'];
     }
 
     $download_pdf_link = file_create_url($bilag->field_bpa_file['und'][0]['uri']);
@@ -322,7 +322,7 @@ function _os2dagsorden_annotator_view_print($meeting_id, $bullet_point_id, $bila
         drupal_set_title(t('Bilag') . ' - ' . $bilag->title);
         $header = '<h3>Bilag - ' . $bilag->title . '</h3>';
 
-        $body = $bilag->field_bpa_body['und'][0]['safe_value'];
+        $body = $bilag->field_bpa_body['und'][0]['value'];
 
         //getting annotations from storage
         $annotations = os2dagsorden_annotator_get_notes_by_attachment_id($bilag_id);
