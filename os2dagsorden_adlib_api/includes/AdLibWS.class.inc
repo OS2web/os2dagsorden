@@ -49,13 +49,15 @@ class AdLibWS {
       $url = preg_replace('/([fhtps]{3,5}):\/\/(.+?)\//', self::$base_url, $url);
       preg_match('%http://.+?/%', $url, $matches);
       self::$base_url = array_shift($matches);
+      if (function_exists('xdebug_disable'))
+        xdebug_disable();
       try {
         $this->client = new SoapClient($url, $options);
         //error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Created SOAP client.");
       } catch (Exception $exc) {
-
+	watchdog('adlib_api', 'Error creating AdLib client, message: %var', array('%var' => $exc->getMessage()), WATCHDOG_ERROR);
+       }
       }
-    }
   }
 
   /**
@@ -66,29 +68,30 @@ class AdLibWS {
     * 
     * @return type
     */
-  public function addJob($fileInfo, $type = ADLIB_JOBTYPE_PDF) {
+  public function addJob($fileInfo, $type = ADLIB_JOBTYPE_PDF, $priority = 3) {
     if (ADLIB_DISABLED)
       return false;
     if (!isset($this->client)) {
       return false;
     }
     $jobInfo = '<JobInfo>
-        <JobSettings JobID="" UserJobID="" JobPriority="3" AdlibServer="" AdlibServerGroup=""/>
+        <JobSettings JobID="" UserJobID="" JobPriority="' . $priority . '" AdlibServer="" AdlibServerGroup=""/>
+        <JobFileMsg Count=""/>
         <JobFileMsg Count=""/>
         <JobFileList>
           <JobFile Filename="" Folder=""/>
         </JobFileList>
       </JobInfo>';
-    $jobTicket = '<?xml version="1.0" encoding="ISO-8859-1"?>
+    $jobTicket = '<?xml version="1.0" encoding="UTF-8"?>
         <?AdlibExpress applanguage="USA" appversion="2.5" dtdversion="1.0" ?>
         <!DOCTYPE JOBS SYSTEM "C:\Adlib Express\DTD\AdlibExpress.dtd">
         <JOBS xmlns:JOBS="http://www.Adlibsoftware.com" xmlns:JOB="http://www.Adlibsoftware.com">
           <JOB>
             <JOB:DOCINPUTS>
-              <JOB:DOCINPUT FILENAME="' . $fileInfo['filename'] . '" FOLDER="' . self::$base_path . $fileInfo['in_folder'] . '" />
+               <JOB:DOCINPUT FILENAME="' . $this->safeFilename($fileInfo['filename']) . '" FOLDER="' . self::$base_path . $fileInfo['in_folder'] . '" />
             </JOB:DOCINPUTS>
             <JOB:DOCOUTPUTS>
-              <JOB:DOCOUTPUT FILENAME="' . $fileInfo['out_filename'] . '" FOLDER="' . self::$base_path . $fileInfo['out_folder'] . '" DOCTYPE="' . ($type == ADLIB_JOBTYPE_HTML ? 'HTML' : 'PDF') . '" />
+              <JOB:DOCOUTPUT FILENAME="' . $this->safeFilename($fileInfo['out_filename']) . '" FOLDER="' . self::$base_path . $fileInfo['out_folder'] . '" DOCTYPE="' . ($type == ADLIB_JOBTYPE_HTML ? 'HTML' : 'PDF') . '" />
             </JOB:DOCOUTPUTS>
             <JOB:SETTINGS>
               <JOB:HEADER ENABLED="Yes" TEXTRIGHT="&amp;[Page] of &amp;[Pages]" LAYER="Foreground" />
@@ -217,7 +220,7 @@ class AdLibWS {
       $reply = simplexml_load_string($this->client->addJobFolder()->AddJobFolderResult);
       $folder_info = $reply;
       $result = 'ExponentJobs\\' . ((string) $folder_info['FolderID']);
-      watchdog('adlib_api','Added a folder: %folder',array('%folder' => $result),WATCHDOG_DEBUG);
+      watchdog('adlib_api', 'Added a folder: %folder', array('%folder' => $result), WATCHDOG_DEBUG);
       return $result;
     }
   }
@@ -257,7 +260,7 @@ class AdLibWS {
     }
     $payload = '
       <JobFiles>
-        <JobFile FileName="' . $filename . '" Data="' . base64_encode($data) . '" Length="' . strlen($data) . '" />
+        <JobFile FileName="' . $this->safeFilename($filename) . '" Data="' . base64_encode($data) . '" Length="' . strlen($data) . '" />
       </JobFiles>';
     $result = $this->client->AddJobFilesAsStream(array(
             'JobFolder' => $folder . '\\Input',
@@ -270,14 +273,16 @@ class AdLibWS {
           'basefolder' => $folder,
           'in_folder' => $folder . '\\Input',
           'out_folder' => $folder . '\\Output',
-          'out_url' => self::$base_url . str_replace('\\', '/', $folder . '/Output/'),
+          'out_url' => self::$base_url . str_replace('\\', '/', $folder . '/Output/') . rawurlencode($this->safeFilename(pathinfo($filename, PATHINFO_FILENAME) . '.' . $jobext)),
           'filename' => $filename,
           'job_type' => $jobtype,
           'out_filename' => pathinfo($filename, PATHINFO_FILENAME) . '.' . $jobext,
       );
     } else {
       error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Failed to upload: " . $filename);
-      watchdog('adlib_api','Upload of %filename failed with message: %msg',array('%file' => $filename, '%msg' => $result),WATCHDOG_ERROR);
+      watchdog('adlib_api', 'Upload of %filename failed with message: %msg', array('%file' => $filename, '%msg' => $result), WATCHDOG_ERROR);
+      $folder = explode('\\', $folder);
+      $this->deleteJobFolder($folder[1]);
       return false;
     }
   }
@@ -304,4 +309,13 @@ class AdLibWS {
         'response' => $this->client->__getLastResponse(),
     );
   }
+
+  private function safeFilename($fname) {
+    $pi = pathinfo($fname);
+    $safe_name = md5($pi['filename']);
+    if (isset($pi['extension']))
+      $safe_name .= '.' . $pi['extension'];
+    return $safe_name;
+  }
+  
 }
