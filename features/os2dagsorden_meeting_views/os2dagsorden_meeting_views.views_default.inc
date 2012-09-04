@@ -475,7 +475,7 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['header']['php_1']['empty'] = FALSE;
   $handler->display->display_options['header']['php_1']['php_output'] = '<div align="right" style="margin:5px;"><input class="form-submit" type="button" onclick="window.open(\'<?php  
 $nid = $results[0]->nid;
-$meeting = node_load($nid);
+$meeting = node_load($nid, null, TRUE);
 print(file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\']));
 ?>
 \')" value="Hent samlet dokument i PDF"></div>';
