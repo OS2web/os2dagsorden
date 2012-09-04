@@ -631,7 +631,7 @@ function _os2dagsorden_meetings_add_bullet(SimpleXMLElement $xml) {
             $node->field_bpa_id[$node->language][0]['value'] = $options['sysid'];
         }
 
-        $node->title = 'Bilag: ' . $options['name'];
+        $node->title = $options['name'];
 
         // Let's add standard body field
         $content_ind_start = strpos($options['content'], '<div class=Section1>');
@@ -684,7 +684,7 @@ function _os2dagsorden_meetings_add_enclosure_bullet($enclosure, $file) {
         $node->field_bpa_id[$node->language][0]['value'] = $options['sysid'];
     }
 
-    $node->title = $options['name'];
+    $node->title = 'Bilag: ' . $options['name'];
 
     $node->field_bpa_file[$node->language][] = (array) $file;
 
