@@ -298,9 +298,9 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['filters']['field_date_value']['id'] = 'field_date_value';
   $handler->display->display_options['filters']['field_date_value']['table'] = 'field_data_field_date';
   $handler->display->display_options['filters']['field_date_value']['field'] = 'field_date_value';
-  $handler->display->display_options['filters']['field_date_value']['operator'] = '>';
+  $handler->display->display_options['filters']['field_date_value']['operator'] = '>=';
   $handler->display->display_options['filters']['field_date_value']['group'] = 1;
-  $handler->display->display_options['filters']['field_date_value']['default_date'] = 'now';
+  $handler->display->display_options['filters']['field_date_value']['default_date'] = 'today';
   /* Filter criterion: User: Current */
   $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
   $handler->display->display_options['filters']['uid_current']['table'] = 'users';
@@ -473,12 +473,29 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['header']['php_1']['field'] = 'php';
   $handler->display->display_options['header']['php_1']['ui_name'] = 'description download';
   $handler->display->display_options['header']['php_1']['empty'] = FALSE;
-  $handler->display->display_options['header']['php_1']['php_output'] = '<div align="right" style="margin:5px;"><input class="form-submit" type="button" onclick="window.open(\'<?php  
+  $handler->display->display_options['header']['php_1']['php_output'] = '<div align="right" style="margin:5px;">
+<?php 
+//closed version - if not empty
 $nid = $results[0]->nid;
 $meeting = node_load($nid, null, TRUE);
-print(file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\']));
+if (os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid)){
+  if (!empty($meeting->field_meeting_description_closed[\'und\'][0][\'uri\'])){
+    print \'<span style="margin-right:5px;">\';
+    print \'<input class="form-submit" type="button" onclick="window.open(\';
+    print(" \' " . file_create_url($meeting->field_meeting_description_closed[\'und\'][0][\'uri\']) . " \' ");
+    print \')" value="Hent samlet dokument i PDF (lukket version)">\';
+    print \'</span>\';
+  }
+}
+
+//opened version - if not empty
+if (!empty($meeting->field_meeting_description[\'und\'][0][\'uri\'])){
+  print \'<input class="form-submit" type="button" onclick="window.open(\';
+  print(" \' " . file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\']) . " \' ");
+  print \')" value="Hent samlet dokument i PDF">\';
+}
 ?>
-\')" value="Hent samlet dokument i PDF"></div>';
+</div>';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_ref_bullet_points_target_id']['id'] = 'field_ref_bullet_points_target_id';
   $handler->display->display_options['relationships']['field_ref_bullet_points_target_id']['table'] = 'field_data_field_ref_bullet_points';
@@ -998,9 +1015,42 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
     print "<i>Dagsordenpunktets indhold er skjult fordi dagsordenspunktet er lukket. Klik på dagsordenspunktets overskrift for at få indeholdet frem.</i>";
   }
   else {
+    $bilags = array();
     foreach($bullet_point->field_ref_attachment[\'und\'] as $attachment_id){
-      print \'<li>\';
       $attachment = node_load($attachment_id[\'target_id\']);
+
+      if (!empty($attachment->field_bpa_file[\'und\'])){// if is bilag
+	//saving bilags to the end
+	$bilags[] = $attachment;
+      } else {//not bilag
+	print \'<li>\';
+      
+	if (strlen($attachment->title) < 75)
+	  $title = $attachment->title;
+	else 
+	  $title = substr($attachment->title, 0, 75).\'...\';
+	$link = $base_url.\'?q=meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment/\'.$attachment->nid;
+	
+	print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
+
+	//attachment text - if any
+	if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
+	  print \'<div class="attachment_text_container">\';
+
+	  print \'<div class="attachment_text_full_container">\';
+	  print($attachment->field_bpa_body[\'und\'][0][\'safe_value\']);
+	  print \'</div>\';
+
+	  print \'</div>\';
+	}
+	print \'</li>\';
+      }
+    }
+
+    //going through all bilags
+    foreach ($bilags as $attachment){
+      print \'<li>\';
+      
       if (strlen($attachment->title) < 75)
 	$title = $attachment->title;
       else 
@@ -1012,18 +1062,10 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
 	print \'<div class="attachment_text_container">\';
 
-	//if is bilag - have the preview/trimmed content
-	if (!empty($attachment->field_bpa_file[\'und\'])){
-	  print \'<div class="attachment_text_trimmed_container">\';
-          print os2dagsorden_access_helper_smart_truncate($attachment->field_bpa_body[\'und\'][0][\'value\'], 300, \'...\', true, true);
-	  print \'</div>\';
-	  print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
-	}
-	else { //if not bilag just print the content
-	  print \'<div class="attachment_text_full_container">\';
-	  print($attachment->field_bpa_body[\'und\'][0][\'safe_value\']);
-	  print \'</div>\';
-	}
+	print \'<div class="attachment_text_trimmed_container">\';
+	print os2dagsorden_access_helper_smart_truncate($attachment->field_bpa_body[\'und\'][0][\'value\'], 300, \'...\', true, true);
+	print \'</div>\';
+	print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
 
 	print \'</div>\';
       }
@@ -1815,7 +1857,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['filters']['field_date_value']['table'] = 'field_data_field_date';
   $handler->display->display_options['filters']['field_date_value']['field'] = 'field_date_value';
   $handler->display->display_options['filters']['field_date_value']['operator'] = '<';
-  $handler->display->display_options['filters']['field_date_value']['default_date'] = 'now';
+  $handler->display->display_options['filters']['field_date_value']['default_date'] = 'tomorrow';
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block');
@@ -2124,13 +2166,17 @@ $bullet_point = node_load($row->nid_1);
 if (isset($bullet_point->field_ref_attachment[\'und\'])){
   print \'<div class="item-list item-list-dagsordenspunkt">\';
   print \'<ul>\';
-  //if ($bullet_point->field_bul_point_closed[\'und\'][0][\'value\'] == 1){
-  //  print "<i>Dagsorden punktets indhold er skjult fordi dagsorden punktet er lukket.<br/> For at indhold skal kommet fram skal der klikkes på dagsorden\'s punktets overskrift.</i>";
-  //}
-  //else {
-    foreach($bullet_point->field_ref_attachment[\'und\'] as $attachment_id){
+
+  $bilags = array();
+  foreach($bullet_point->field_ref_attachment[\'und\'] as $attachment_id){
+    $attachment = node_load($attachment_id[\'target_id\']);
+
+    if (!empty($attachment->field_bpa_file[\'und\'])){// if is bilag
+      //saving bilags to the end
+      $bilags[] = $attachment;
+    } else {//not bilag
       print \'<li>\';
-      $attachment = node_load($attachment_id[\'target_id\']);
+    
       if (strlen($attachment->title) < 75)
 	$title = $attachment->title;
       else 
@@ -2142,24 +2188,40 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
 	print \'<div class="attachment_text_container">\';
 
-	//if is bilag - have the preview/trimmed content
-	if (!empty($attachment->field_bpa_file[\'und\'])){
-	  print \'<div class="attachment_text_trimmed_container">\';
-          print os2dagsorden_access_helper_smart_truncate($attachment->field_bpa_body[\'und\'][0][\'value\'], 300, \'...\', true, true);
-	  print \'</div>\';
-	  print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
-	}
-	else { //if not bilag just print the content
-	  print \'<div class="attachment_text_full_container">\';
-	  print($attachment->field_bpa_body[\'und\'][0][\'safe_value\']);
-	  print \'</div>\';
-	}
+	print \'<div class="attachment_text_full_container">\';
+	print($attachment->field_bpa_body[\'und\'][0][\'safe_value\']);
+	print \'</div>\';
 
 	print \'</div>\';
       }
       print \'</li>\';
     }
-  //}
+  }
+
+  //going through all bilags
+  foreach ($bilags as $attachment){
+    print \'<li>\';
+    
+    if (strlen($attachment->title) < 75)
+      $title = $attachment->title;
+    else 
+      $title = substr($attachment->title, 0, 75).\'...\';
+    $link = $base_url.\'?q=meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment/\'.$attachment->nid;
+    print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
+
+    //attachment text - if any
+    if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
+      print \'<div class="attachment_text_container">\';
+
+      print \'<div class="attachment_text_trimmed_container">\';
+      print os2dagsorden_access_helper_smart_truncate($attachment->field_bpa_body[\'und\'][0][\'value\'], 300, \'...\', true, true);
+      print \'</div>\';
+      print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
+
+      print \'</div>\';
+    }
+    print \'</li>\';
+  }
   print \'</ul>\';
   print \'</div>\';
 }

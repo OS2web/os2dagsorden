@@ -663,7 +663,7 @@ function os2dagsorden_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '6',
+        'weight' => '5',
       ),
     ),
   );
@@ -745,7 +745,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '3',
+        'weight' => '2',
       ),
     ),
   );
@@ -813,7 +813,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '5',
+        'weight' => '4',
       ),
     ),
   );
@@ -883,7 +883,7 @@ function os2dagsorden_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '7',
+        'weight' => '6',
       ),
     ),
   );
@@ -951,7 +951,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '13',
+        'weight' => '12',
       ),
     ),
   );
@@ -1023,7 +1023,79 @@ function os2dagsorden_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '12',
+        'weight' => '10',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-meeting-field_meeting_description_closed'
+  $fields['node-meeting-field_meeting_description_closed'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_meeting_description_closed',
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'file',
+      'settings' => array(
+        'display_default' => 0,
+        'display_field' => 0,
+        'uri_scheme' => 'private',
+      ),
+      'translatable' => '0',
+      'type' => 'file',
+    ),
+    'field_instance' => array(
+      'bundle' => 'meeting',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'file',
+          'settings' => array(),
+          'type' => 'file_default',
+          'weight' => 22,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_meeting_description_closed',
+      'label' => 'Description Closed',
+      'required' => 0,
+      'settings' => array(
+        'description_field' => 0,
+        'file_directory' => '',
+        'file_extensions' => 'doc pdf',
+        'max_filesize' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'file',
+        'settings' => array(
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'file_generic',
+        'weight' => '11',
       ),
     ),
   );
@@ -1150,7 +1222,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '14',
+        'weight' => '13',
       ),
     ),
   );
@@ -1261,7 +1333,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '10',
+        'weight' => '8',
       ),
     ),
   );
@@ -1329,7 +1401,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '11',
+        'weight' => '9',
       ),
     ),
   );
@@ -1420,7 +1492,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '9',
+        'weight' => '7',
       ),
     ),
   );
@@ -1488,7 +1560,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '4',
+        'weight' => '3',
       ),
     ),
   );
@@ -2661,6 +2733,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
   t('Date');
   t('Date valid');
   t('Description');
+  t('Description Closed');
   t('Enclosures');
   t('File');
   t('Follows committees');

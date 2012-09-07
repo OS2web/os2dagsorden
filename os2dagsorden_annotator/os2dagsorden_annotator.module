@@ -295,8 +295,8 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 	    <div class="help-button" title="Help text goes here"></div>
 	    <div align="right">';
 
-    if (!empty($bilag->field_bpa_file['und'][0]['uri']))
-      $html .= '<input style="margin-right:10px;" class="form-submit" type="button" onclick="window.open(\'' . file_create_url($bilag->field_bpa_file['und'][0]['uri']) . '\')" value="Hent PDF-version">';
+    //if (!empty($bilag->field_bpa_file['und'][0]['uri']))
+      $html .= '<input style="margin-right:10px;" class="form-submit" type="button" onclick="window.open(\'' . $download_pdf_link . '\')" value="Hent PDF-version">';
       
 	    
     $html .= '<input class="form-submit" type="button" onclick="window.open(\'' . $print_link . '\')" value="Print"></div>' .

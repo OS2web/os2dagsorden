@@ -21,7 +21,7 @@
 function os2dagsorden_access_helper_meeting_has_speaker_paper($meeting_id) {
     $meetings = entity_load('node', array($meeting_id));
     $meeting = $meetings[$meeting_id];
-    if (isset($meeting->field_ref_bullet_points['und'])) {
+    if (isset($meeting->field_ref_bullet_points['und'])) {	
         foreach ($meeting->field_ref_bullet_points['und'] as $bullet_point) {
             if (os2dagsorden_access_helper_bullet_point_has_speaker_paper($bullet_point['target_id']))
                 return TRUE;
@@ -29,6 +29,86 @@ function os2dagsorden_access_helper_meeting_has_speaker_paper($meeting_id) {
     }
 
     return FALSE;
+}
+
+/**
+ * Hook to file download. Allows or denies the file download based on user permissions.
+ *
+ * @param int $meeting_id ID of the meeting.
+ *
+ * @return -1 in case or refusal and file headers in case of success.
+ */
+function os2dagsorden_access_helper_file_download ($uri){
+  $path = explode('/', $uri);
+  $filename = $path[3];
+  $result = db_query("SELECT f.* FROM {file_managed} f WHERE filename = :filename", array('filename' => $filename));
+  foreach ($result as $file) {
+    
+    //find meeting that this file is attached to
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+        ->fieldCondition('field_meeting_description_closed', 'fid', $file->fid, '=');
+    
+    $result = $query->execute();
+    if (isset($result['node'])) {//if meeting is found - meaning that the file is closed. Perform deep check
+        $nids = array_keys($result['node']);
+        $meeting = reset(entity_load('node', $nids));
+        
+        if (os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid)){  
+	  return array(
+	    'Content-Type' => $file->filemime,
+	    'Content-Length' => $file->filesize,
+	    'Content-Disposition' => 'attachment; filename=' . $file->filename
+	  );
+	} else 
+	  return -1;
+    } else {//else just return the file
+      return array(
+	'Content-Type' => $file->filemime,
+	'Content-Length' => $file->filesize,
+	'Content-Disposition' => 'attachment; filename=' . $file->filename
+      );
+    }
+  }
+}
+
+/**
+ * Checks if a user can see the closed agenda of a given meeting.
+ *
+ * @param int $meeting_id ID of the meeting
+ *
+ * @return true of false
+ */
+function os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting_id){
+    global $user;
+
+    if (!$user->uid)
+        return FALSE;
+
+    $user_ent = entity_load('user', array($user->uid));
+
+    $meetings = entity_load('node', array($meeting_id), array('type' => 'meeting'));
+    $meeting_committee_id = $meetings[$meeting_id]->field_committee['und'][0]['tid'];
+
+    if (!empty($user_ent[$user->uid]->field_user_committee)) {  //is part of the committee
+	foreach ($user_ent[$user->uid]->field_user_committee['und'] as $user_committee_id) {
+	    if (intval($meeting_committee_id) == $user_committee_id['tid']) {
+		return TRUE;
+	    }
+	}
+    }
+
+    if (!empty($user_ent[$user->uid]->field_follows_committee_plus)) {  //follows committee PLUS
+	foreach ($user_ent[$user->uid]->field_follows_committee_plus['und'] as $user_committee_id) {
+	    if (intval($meeting_committee_id) == $user_committee_id['tid']) {
+		return TRUE;
+	    }
+	}
+    }
+    
+    //none of the above, access denied
+    return FALSE;
+  
 }
 
 /**

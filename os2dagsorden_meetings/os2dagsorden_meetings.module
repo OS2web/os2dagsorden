@@ -12,7 +12,7 @@
  * @license  http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @link     http://bellcom.dk
  */
-define('DEFAULT_ACADRE_IMPORT_DIR', 'public://acadre');
+define('DEFAULT_ACADRE_IMPORT_DIR', 'private://');
 define('MEETINGS_FORCE_RECREATE', false); // Delete existing nodes before import
 define('MEETINGS_FOCUS', false); // File key for import
 define('MEETINGS_MEETING_FOCUS', false); // Meeting id
@@ -409,8 +409,7 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
     foreach ($item_nids as $nid) {
         $node->field_ref_bullet_points[$node->language][]['target_id'] = $nid;
     }
-
-
+    
     // Add items to meeting node.
     // Save the meeting node.
     node_submit($node);
@@ -436,7 +435,7 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
  * @return modified meeting
  */
 function os2dagsorden_meetings_add_meeting_description($node, $info){
-    $description_uri = implode('/', array(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), $info['filesfolder'], $info['docID'] . '.' . $info['fileType']));
+    $description_uri = _os2dagsorden_meetings_similar_file_exists(implode('/', array(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), $info['filesfolder'], $info['docID'] . '.' . $info['fileType'])));
 
     $file = new stdClass();
     $file->uri = $description_uri;
@@ -446,26 +445,14 @@ function os2dagsorden_meetings_add_meeting_description($node, $info){
     $file->uid = 1;
     $file->status = FILE_STATUS_PERMANENT;
 
-    //if (!isset($node->field_meeting_description[$node->language][0])) { //no description files is connected to the meeting  
-      $file = file_save($file);
-
+    $file = file_save($file);
+    
+    if (strcmp($info['access'], 'Lukket') == 0) 
+      $node->field_meeting_description_closed[$node->language][0] = (array) $file;
+    else 
       $node->field_meeting_description[$node->language][0] = (array) $file;
-      os2dagsorden_adlib_api_convert_to_pdf($file->fid, $node->nid);
-    //} else {
-      //getting old file name
-//       $files = field_get_items('node', $node, 'field_meeting_description');
-//       $old_file_name = explode('/', $files[0]['uri']);//assuming uri as public://acadre/Files_1582_3387435/3387435/XXXX.pdf, 
-// 						      //so in order to get pure file with file type we need [4] element of the array
-//       //getting new file name
-//       $new_file_name = $info['docID'] . '.' . $info['fileType'];////assuming name as XXXX.DOC
-//       
-//       if (strcmp($old_file_name[4],$new_file_name) < 0) { //new file has bigger filename, thus is created later - then replace
-// 	$file = file_save($file);
-// 
-// 	$node->field_meeting_description[$node->language][0] = (array) $file;
-// 	os2dagsorden_adlib_api_convert_to_pdf($file->fid, $node->nid);
-      //}
-    //}
+      
+    os2dagsorden_adlib_api_convert_to_pdf($file->fid, $node->nid);
 
     return $node;
 }
