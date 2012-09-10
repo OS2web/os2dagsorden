@@ -1010,7 +1010,7 @@ global $base_url;
 $bullet_point = node_load($row->nid);
 if (isset($bullet_point->field_ref_attachment[\'und\'])){
   print \'<div class="item-list">\';
-  print \'<ul>\';
+  print \'<ul class="ul-item-list-dagsordenspunkt">\';
   if ($bullet_point->field_bul_point_closed[\'und\'][0][\'value\'] == 1){
     print "<i>Dagsordenpunktets indhold er skjult fordi dagsordenspunktet er lukket. Klik på dagsordenspunktets overskrift for at få indeholdet frem.</i>";
   }
@@ -2165,7 +2165,7 @@ global $base_url;
 $bullet_point = node_load($row->nid_1);
 if (isset($bullet_point->field_ref_attachment[\'und\'])){
   print \'<div class="item-list item-list-dagsordenspunkt">\';
-  print \'<ul>\';
+  print \'<ul class="ul-item-list-dagsordenspunkt">\';
 
   $bilags = array();
   foreach($bullet_point->field_ref_attachment[\'und\'] as $attachment_id){
