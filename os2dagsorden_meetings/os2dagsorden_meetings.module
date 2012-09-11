@@ -363,8 +363,6 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
     $node->field_date[$node->language][0]['value'] = $options['date'];
     $node->field_date[$node->language][0]['value2'] = $options['finish'];
 
-    $node = os2dagsorden_meetings_add_meeting_description($node, $info);
-
     $node->field_meeting_status['und'][0]['value'] = 'Publiceret';
 
     // Proper id tagging
@@ -410,11 +408,17 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
         $node->field_ref_bullet_points[$node->language][]['target_id'] = $nid;
     }
     
+    //adding description
+    $description_fid = os2dagsorden_meetings_add_meeting_description($node, $info);
+    
     // Add items to meeting node.
     // Save the meeting node.
     node_submit($node);
     node_save($node);
-
+    
+    //schedule description for PDF convertion
+    os2dagsorden_adlib_api_convert_to_pdf($description_fid, $node->nid);
+    
     //TODO: add reference to the os2web_meetings_import table
     $record = array(
         'nid' => $node->nid,
@@ -426,16 +430,16 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
 }
 
 /**
- * Add the description file (originally in DOC format) to the meeting, also schedules the file to the adlib conversion.
+ * Add the description file (originally in DOC format) to the meeting.
  * When a new description file is available, it will replace the old file.
  *
  * @param mixed $node meeting
  * @param mixed $info xml extracted information
  *
- * @return modified meeting
+ * @return saved file fid
  */
 function os2dagsorden_meetings_add_meeting_description($node, $info){
-    $description_uri = _os2dagsorden_meetings_similar_file_exists(implode('/', array(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), $info['filesfolder'], $info['docID'] . '.' . $info['fileType'])));
+    $description_uri = _os2dagsorden_meetings_similar_file_exists(implode('/', array(variable_get('os2web_meetings_path', DEFAULT_ACADRE_IMPORT_DIR), $info['filesfolder'], $info['docID'] . '.' . strtoupper($info['fileType']))));
 
     $file = new stdClass();
     $file->uri = $description_uri;
@@ -451,10 +455,8 @@ function os2dagsorden_meetings_add_meeting_description($node, $info){
       $node->field_meeting_description_closed[$node->language][0] = (array) $file;
     else 
       $node->field_meeting_description[$node->language][0] = (array) $file;
-      
-    os2dagsorden_adlib_api_convert_to_pdf($file->fid, $node->nid);
 
-    return $node;
+    return $file->fid;
 }
 
 /**
@@ -570,8 +572,9 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
 	      if (strcmp($filetype, ".PDF") != 0)
 		  os2dagsorden_adlib_api_convert_to_pdf($file->fid, $enclosure_nid);
 
-	      //convert to HTML
-	      os2dagsorden_adlib_api_convert_to_html($file->fid, $enclosure_nid);
+	      //convert to HTML, if not Excel file
+	      if (strcmp($filetype, ".XLS") != 0)
+		  os2dagsorden_adlib_api_convert_to_html($file->fid, $enclosure_nid);
 	  }
 	}        
     }
