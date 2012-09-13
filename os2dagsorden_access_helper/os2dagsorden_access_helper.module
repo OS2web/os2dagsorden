@@ -430,6 +430,15 @@ function os2dagsorden_access_helper_smart_truncate($text, $length = 100, $ending
     return $truncate;
 }
 
+/**
+ * Prints only first page from the output produced by pdf2htmlEX
+ *
+ * Is used in the places where only preview of the document is shown.
+ *
+ * @param string $html html
+ *
+ * @return html with only one page left
+ */
 function os2dagsorden_access_helper_print_first_page($html){
     $html = utf8_decode($html);
     $doc = new DOMDocument('1.0', 'iso-8859-1');
@@ -445,5 +454,4 @@ function os2dagsorden_access_helper_print_first_page($html){
       $i++;
     }
     return $doc->saveHTML();
-    //return 'test';
 }

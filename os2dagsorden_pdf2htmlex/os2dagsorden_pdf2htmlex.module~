@@ -1,0 +1,189 @@
+<?php
+
+/**
+ * os2dagsorden_pdf2htmlex
+ *
+ * PHP version 5
+ *
+ * @category OS2Dagsorden
+ * @package  OS2Dagsorden_Pdf2htmlex
+ * @author   Stanislav Kutasevits <stan@bellcom.dk>
+ * @license  http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
+ * @link     http://bellcom.dk
+ */
+define('DEFAULT_PDF_HTML_ZOOM', 1.25); // default zoom for convertion
+define('DEFAULT_TEMP_DIR', variable_get('file_temporary_path', '/tmp/')); // default zoom for convertion
+
+/**
+ * Schedules the future convertion
+ *
+ * @param int $fid file id
+ * @param int $did node id
+ *
+ * @return none
+ */
+function os2dagsorden_pdf2htmlex_schedule($fid, $did) {
+  db_insert('os2dagsorden_pdf2htmlex_files')
+    ->fields(array(
+      'fid' => $fid,
+      'did' => $did,
+      'filename' => NULL,
+      'progress' => NULL,
+    ))
+    ->execute();
+}
+
+/**
+ * Cron implementation.
+ * Goes through the enrties in database table, converts the new records,
+ * also updates the destination node with the html taken from converted file.
+ * When node is updated, the database entry is erased.
+ *
+ * Also calls function to update meeting status.
+ *
+ * @return none
+ */
+function os2dagsorden_pdf2htmlex_cron() {
+    //make convertion
+    $query = db_select('os2dagsorden_pdf2htmlex_files', 'f');
+    $query->fields('f',array('fid','did'))
+    ->isNull('f.progress');
+    $result = $query->execute();
+
+    while($record = $result->fetchAssoc()) {
+    error_log($record['fid']);
+        os2dagsorden_pdf2htmlex_convert($record['fid'], $record['did']);
+    }
+    
+    //go through the finished tasks
+    $query = db_select('os2dagsorden_pdf2htmlex_files', 'f');
+    $query->fields('f')
+	  ->condition('progress', 'Converted');
+    $result = $query->execute();
+    
+    while($record = $result->fetchAssoc()) {
+	$destination = node_load($record['did']);
+	if (file_exists($record['created_filepath'])) { //filename.html
+	  $data = file_get_contents($record['created_filepath']);
+	}
+	else { //try to locate filename.PDF.html
+	  $path = explode('.', $record['created_filepath']);//'filename' and 'html'
+	  $path = $path[0] . '.PDF.' . $path[1];
+	  $data = file_get_contents($path);
+	}
+	
+	$destination->field_bpa_body[LANGUAGE_NONE][0]['value'] = _os2dagsorden_pdf2htmlex_improve_html($data);
+        $destination->field_bpa_body[LANGUAGE_NONE][0]['format'] = 'full_html';
+        
+        node_save($destination);
+	
+	//deleting
+        db_delete('os2dagsorden_pdf2htmlex_files')
+	  ->condition('fid', $record['fid'])
+	  ->condition('did', $record['did'])
+	  ->execute();
+	  
+	_os2dagsorden_pdf2htmlex_set_meeting_status_published_plus($destination);
+    }
+}
+
+function _os2dagsorden_pdf2htmlex_improve_html($data){
+  $data = str_replace("<p>&nbsp;</p>", "", $data); //removing unneeded paragraphs
+  return $data;
+}
+
+/**
+ * Call to console pdf2htmlEX programm ro convert PDF to html.
+ * Updates the record progress to Converted on success, and file_not_found is the file is missing.
+ *
+ * @param int $fid file id
+ * @param int $did node id
+ *
+ * @return none
+ */
+function os2dagsorden_pdf2htmlex_convert($fid, $did) {
+  $file = file_load($fid);
+  if (isset($file)){
+    shell_exec('pdf2htmlEX ' . drupal_realpath($file->uri) . '  --dest-dir ' . DEFAULT_TEMP_DIR . ' --zoom ' . DEFAULT_PDF_HTML_ZOOM);
+    
+    $file_name_no_ext = explode('.', $file->filename);
+    //updating database entry
+    db_update('os2dagsorden_pdf2htmlex_files')
+      ->fields(array(
+	'filename' => $file->filename,
+	'created_filepath' => DEFAULT_TEMP_DIR . '/' . $file_name_no_ext[0] . '.html',
+	'progress' => 'Converted',
+      ))
+      ->condition('fid', $fid)
+      ->condition('did', $did)
+      ->execute();
+  } else {
+    db_update('os2dagsorden_pdf2htmlex_files')
+      ->fields(array(
+	'progress' => 'file_not_found',
+      ))
+      ->condition('fid', $fid)
+      ->condition('did', $did)
+      ->execute();
+  }   
+}
+
+/**
+ * Changes the status of the parent meeting of the given bullet point attachment to Publiceret+ 
+ * if all of the attachments of all of the corresponding bullet points of that meeting are converted to HTML.
+ * 
+ * @author Stanislav Kutasevits <stan@bellcom.dk>
+ * @param string $node bullet points attachment
+ *
+ * @return none
+ */
+function _os2dagsorden_pdf2htmlex_set_meeting_status_published_plus($node) {
+    //assuming that all attachmens are converted, will be examined above
+    $all_attachments_converted = true;
+
+    //getting corresponding bullet point
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+	  ->fieldCondition('field_ref_attachment', 'target_id', $node->nid, '=');
+    $result = $query->execute();
+
+    if (isset($result['node'])) {//if success
+      $nids = array_keys($result['node']);
+      $bullet_point = reset(entity_load('node', $nids));
+
+      //getting corresponding meeting
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+	  ->fieldCondition('field_ref_bullet_points', 'target_id', $bullet_point->nid, '=');
+
+      $result = $query->execute();
+
+      if (isset($result['node'])) {//if success
+	$nids = array_keys($result['node']);
+	$meeting = reset(entity_load('node', $nids));
+	
+	//goint through all the meetings bullet points
+	if (!empty($meeting->field_ref_bullet_points['und'])) {
+	    foreach ($meeting->field_ref_bullet_points['und'] as $ref_bullet_point) {
+		$bullet_point = node_load($ref_bullet_point['target_id']);
+		
+		//going through all the bullet points attachments
+		if (!empty($bullet_point->field_ref_attachment['und'])) {
+		    foreach ($bullet_point->field_ref_attachment['und'] as $ref_bullet_point_attachment) {
+			$attachment = node_load($ref_bullet_point_attachment['target_id']);
+			
+			if (empty($attachment->field_bpa_body['und'][0]['value'])){
+			  $all_attachments_converted = false;
+			  break;
+			}
+		    }
+		}
+	    }
+	}
+	if ($all_attachments_converted){
+	    $meeting->field_meeting_status['und'][0]['value'] = 'Publiceret+';
+	    node_save($meeting);
+	}
+      }
+    }
+}

@@ -1063,7 +1063,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	print \'<div class="attachment_text_container">\';
 
 	print \'<div class="attachment_text_trimmed_container">\';
-	print os2dagsorden_access_helper_smart_truncate($attachment->field_bpa_body[\'und\'][0][\'value\'], 300, \'...\', true, true);
+        print os2dagsorden_access_helper_print_first_page($attachment->field_bpa_body[\'und\'][0][\'value\']);
 	print \'</div>\';
 	print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
 
@@ -2214,7 +2214,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       print \'<div class="attachment_text_container">\';
 
       print \'<div class="attachment_text_trimmed_container">\';
-      print os2dagsorden_access_helper_smart_truncate($attachment->field_bpa_body[\'und\'][0][\'value\'], 300, \'...\', true, true);
+      print os2dagsorden_access_helper_print_first_page($attachment->field_bpa_body[\'und\'][0][\'value\']);
       print \'</div>\';
       print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
 
@@ -2245,8 +2245,8 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
   );
   $handler->display->display_options['path'] = 'meeting/%/bullet-point/%';
 
-  /* Display: Attachment */
-  $handler = $view->new_display('attachment', 'Attachment', 'attachment_1');
+  /* Display: Speaker paper */
+  $handler = $view->new_display('attachment', 'Speaker paper', 'attachment_1');
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
@@ -2314,7 +2314,7 @@ print "<a href=\"".$base_url."?q=node/add/speaker-paper&edit[field_ref_bullet_po
     t('All'),
     t('Page'),
     t('<div class="indicator-unlocked"></div>'),
-    t('Attachment'),
+    t('Speaker paper'),
     t('talepapir - [title_1]'),
     t('#'),
     t('Talepapir -'),
