@@ -223,18 +223,19 @@ function os2dagsorden_adlib_api_init() {
  * @return void
  */
 function os2dagsorden_adlib_api_convert_to_html($fid, $nid) {
-  if (0 === db_query('SELECT fid from {os2web_adlib_api_doc_files} where fid = :fid AND jobtype = :jobtype', array(':fid' => $fid, ':jobtype' => 1))->rowCount()) {
-    $record = array(
-        'fid' => $fid,
-        'did' => $nid,
-        'jobtype' => 1,
-    );
-    drupal_write_record('os2web_adlib_api_doc_files', $record);
-    return TRUE;
-  } else {
-    //      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File already in queue, aborting.");
-    return FALSE;
-  }
+// currently disabled - the HTML convertion is handeled by another module - os2dagsorden_pdf2htmlex
+//   if (0 === db_query('SELECT fid from {os2web_adlib_api_doc_files} where fid = :fid AND jobtype = :jobtype', array(':fid' => $fid, ':jobtype' => 1))->rowCount()) {
+//     $record = array(
+//         'fid' => $fid,
+//         'did' => $nid,
+//         'jobtype' => 1,
+//     );
+//     drupal_write_record('os2web_adlib_api_doc_files', $record);
+//     return TRUE;
+//   } else {
+//     //      error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File already in queue, aborting.");
+//     return FALSE;
+//   }
 }
 
 /**
@@ -382,17 +383,37 @@ function _os2dagsorden_adlib_api_do_processing($limit = FALSE) {
               $upd_file = file_load($file->fid);
               $uri = file_unmanaged_save_data($data, dirname($upd_file->uri) . '/' . $jobfileinfo['out_filename'], FILE_EXISTS_REPLACE);
               if (filesize(drupal_realpath($uri)) > 0) {
-                //            file_unmanaged_delete($upd_file->uri);
+                $old_file_mime = $upd_file->filemime;//getting the initial format of the file
+                
                 db_delete('file_managed')->condition('uri', $uri)->execute();
                 $upd_file->uri = $uri;
                 $upd_file->filename = basename($uri);
+                $upd_file->display = 1;
                 $upd_file->filemime = file_get_mimetype($upd_file->uri);
                 $upd_file->filesize = filesize(drupal_realpath($upd_file->uri));
                 $upd_file->timestamp = time();
 		os2dagsorden_adlib_api_destroy_job($file->job_id);
                 drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid', 'jobtype'));
-                drupal_write_record('file_managed', $upd_file, array('fid'));
+                $upd_file = file_save($upd_file);
                 error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File saved, file record updated.");
+                
+                $destination_node = node_load($file->did);
+
+                if (strcmp($destination_node->type, 'bullet_point_attachment') == 0){//update bullet point attachment
+		    os2dagsorden_pdf2htmlex_schedule($upd_file->fid, $file->did);
+		    
+		    //resave file
+		    $destination_node->field_bpa_file[$node->language][0] = (array) $upd_file;
+		 } else if (strcmp($destination_node->type, 'meeting') == 0){//meeting
+		    error_log("HERE: file->fid: " . $upd_file->fid . ' $destination_node->field_meeting_description_closed[$node->language][0][fid]: ' . $destination_node->field_meeting_description_closed[$destination_node->language][0]['fid']);
+		    error_log("HERE: file->fid: " . $upd_file->fid . ' $destination_node->field_meeting_description[$node->language][0][fid]: ' . $destination_node->field_meeting_description[$destination_node->language][0]['fid']);
+		    //resave file
+		    if ($upd_file->fid == $destination_node->field_meeting_description_closed[$destination_node->language][0]['fid'])//update closed file
+		      $destination_node->field_meeting_description_closed[$destination_node->language][0] = (array) $upd_file;
+		    else //update opened file
+		      $destination_node->field_meeting_description[$destination_node->language][0] = (array) $upd_file;	
+		 }
+		 node_save($destination_node);	
               } else {
                 error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Filesize was 0. Aborting update.");
               }
@@ -411,7 +432,8 @@ function _os2dagsorden_adlib_api_do_processing($limit = FALSE) {
                 os2dagsorden_adlib_api_destroy_job($file->job_id);
                 drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid', 'jobtype'));
                 error_log('MARK - ' . basename(__FILE__) . ':' . __LINE__ . ' in ' . __FUNCTION__ . '() - File converted, node updated.');
-		_os2dagsorden_adlib_api_set_meeting_status_published_plus($node);
+                
+                _os2dagsorden_adlib_api_set_meeting_status_published_plus($node);
               }
               break;
             default:

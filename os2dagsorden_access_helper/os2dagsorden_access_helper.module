@@ -272,7 +272,9 @@ function os2dagsorden_access_helper_get_client_ip() {
 
 function os2dagsorden_access_helper_user_logout() {
   // Destroy the current session, and reset $user to the anonymous user.
-  session_destroy();
+  if (session_id() != '')
+    session_destroy();
+    
   drupal_set_message("Du har nu logget af OS2dagsorden. Vi anbefaler, at du lukker alle browservinduer.");
   drupal_goto();
 }
@@ -426,4 +428,22 @@ function os2dagsorden_access_helper_smart_truncate($text, $length = 100, $ending
     }
 
     return $truncate;
+}
+
+function os2dagsorden_access_helper_print_first_page($html){
+    $html = utf8_decode($html);
+    $doc = new DOMDocument('1.0', 'iso-8859-1');
+    $doc->loadHTML($html);
+    
+    $finder = new DomXPath($doc);
+    $nodes = $finder->query('//div[@id="pdf-main"]/div[@class="p"]');
+    
+    $i = 0;
+    foreach ($nodes as $node) {
+      if ($i > 0)//keeping the first page
+	$node->parentNode->removeChild($node);
+      $i++;
+    }
+    return $doc->saveHTML();
+    //return 'test';
 }

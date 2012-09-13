@@ -571,10 +571,8 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
 	      //if not PDF, schedule for pdf conversion as well
 	      if (strcmp($filetype, ".PDF") != 0)
 		  os2dagsorden_adlib_api_convert_to_pdf($file->fid, $enclosure_nid);
-
-	      //convert to HTML, if not Excel file
-	      if (strcmp($filetype, ".XLS") != 0)
-		  os2dagsorden_adlib_api_convert_to_html($file->fid, $enclosure_nid);
+	      else //if is PDF, schedule for HTML conversion
+		  os2dagsorden_pdf2htmlex_schedule($file->fid, $enclosure_nid);
 	  }
 	}        
     }
