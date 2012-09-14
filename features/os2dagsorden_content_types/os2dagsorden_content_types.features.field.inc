@@ -521,7 +521,7 @@ function os2dagsorden_content_types_field_default_fields() {
       'settings' => array(
         'description_field' => 0,
         'file_directory' => '',
-        'file_extensions' => 'pdf tif doc docx msg',
+        'file_extensions' => 'pdf tif doc docx msg xls',
         'max_filesize' => '',
         'user_register_form' => FALSE,
       ),
