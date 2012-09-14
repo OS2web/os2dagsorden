@@ -2619,7 +2619,11 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
     ),
     'field_instance' => array(
       'bundle' => 'user',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => '0',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
@@ -2639,7 +2643,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
       'entity_type' => 'user',
       'field_name' => 'field_user_id',
       'label' => 'ID',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
         'max' => '',
         'min' => '',
