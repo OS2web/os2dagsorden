@@ -22,11 +22,12 @@ function os2dagsorden_ad_integration_default_ldap_servers() {
   $ldap_servers_conf->tls = FALSE;
   $ldap_servers_conf->bind_method = TRUE;
   $ldap_servers_conf->binddn = 'DrupalAdLookup';
-  $ldap_servers_conf->bindpw = '3/gHlEY5yMeF9z449v27UQ==';
+  $ldap_servers_conf->bindpw = 'w0b8cBKkYDs0FIUIKnWuRg==';
   $ldap_servers_conf->basedn = array(
     0 => 'OU=syddjurs,DC=intern,DC=syddjurs,DC=dk',
   );
   $ldap_servers_conf->user_attr = 'sAMAccountName';
+  $ldap_servers_conf->account_name_attr = '';
   $ldap_servers_conf->mail_attr = 'mail';
   $ldap_servers_conf->mail_template = '';
   $ldap_servers_conf->allow_conflicting_drupal_accts = FALSE;

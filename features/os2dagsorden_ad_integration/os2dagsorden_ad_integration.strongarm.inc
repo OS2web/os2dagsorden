@@ -50,10 +50,13 @@ function os2dagsorden_ad_integration_strongarm() {
     'mapping' => array(
       'username' => 'samaccountname',
       'mail' => 'mail',
-      'field_navn_stilling' => 'name',
     ),
     'derivedMapping' => array(
       'field_navn_stilling' => array(
+        'derive' => FALSE,
+        'derive_value' => '',
+      ),
+      'field_user_id' => array(
         'derive' => FALSE,
         'derive_value' => '',
       ),
