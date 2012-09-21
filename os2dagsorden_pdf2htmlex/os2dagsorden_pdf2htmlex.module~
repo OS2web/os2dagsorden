@@ -74,6 +74,7 @@ function os2dagsorden_pdf2htmlex_cron() {
 	
 	$destination->field_bpa_body[LANGUAGE_NONE][0]['value'] = _os2dagsorden_pdf2htmlex_improve_html($data);
         $destination->field_bpa_body[LANGUAGE_NONE][0]['format'] = 'full_html';
+        $destination->field_bpa_page_amount[LANGUAGE_NONE][0]['value'] = _os2dagsorden_pdf2htmlex_calc_page_amount($data);
         
         node_save($destination);
 	
@@ -87,8 +88,41 @@ function os2dagsorden_pdf2htmlex_cron() {
     }
 }
 
+/**
+ * Calculate the amount of the pages in HTML file.
+ *
+ * @param string $html html code
+ *
+ * @return page amount
+ */
+function _os2dagsorden_pdf2htmlex_calc_page_amount($html){
+  $doc = new DOMDocument();
+  libxml_use_internal_errors(true);
+  $doc->loadHTML($data);
+  libxml_clear_errors();
+  
+  $finder = new DomXPath($doc);
+  $nodes = $finder->query('//div[@id="pdf-main"]/div[@class="b"]');    
+  
+  $pages = 0;
+  foreach ($nodes as $node) {
+    $pages++;
+  }
+  return $pages;
+}
+
+/**
+ * Improvment of the HTML code, produced by pdf2htmlEX
+ * At the moment only removes the empty paragraph tags.
+ *
+ * @param string $data html code
+ *
+ * @return data
+ */
 function _os2dagsorden_pdf2htmlex_improve_html($data){
   $data = str_replace("<p>&nbsp;</p>", "", $data); //removing unneeded paragraphs
+  $data = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $data);//removing scripts tags
+  
   return $data;
 }
 
@@ -186,4 +220,71 @@ function _os2dagsorden_pdf2htmlex_set_meeting_status_published_plus($node) {
 	}
       }
     }
+}
+
+/**
+ * Returns the html code with only first page remaining.
+ *
+ * Is used in the places where only preview of the document is shown.
+ *
+ * @param string $html      html
+ * @param int    $startPage start page number (incl)
+ * @param int    $endPage   end page number (incl)
+ *
+ * @return html with selected pages left
+ */
+function os2dagsorden_pdf2htmlex_print_first_page($html){
+    $html = utf8_decode($html);
+    
+    $doc = new DOMDocument();
+    libxml_use_internal_errors(true);
+    $doc->loadHTML($html);
+    libxml_clear_errors();
+    
+    $finder = new DomXPath($doc);
+    $nodes = $finder->query('//div[@id="pdf-main"]/div[@class="b"]');    
+    
+    $i = 1;
+    foreach ($nodes as $node) {
+      if ($i > 1)//keeping the first page
+	$node->parentNode->removeChild($node);
+      $i++;
+    }
+    return $doc->saveHTML();
+}
+
+/**
+ * Returns the html code with only selected pages remaining.
+ *
+ * Is used in the places where only preview of the document is shown.
+ *
+ * @param string $html      html
+ * @param int    $startPage start page number (incl)
+ * @param int    $endPage   end page number (incl)
+ *
+ * @return html with selected pages left
+ */
+function os2dagsorden_pdf2htmlex_hide_unused_pages($html, $startPage, $endPage){
+    $html = utf8_decode($html);
+    
+    $doc = new DOMDocument();
+    libxml_use_internal_errors(true);
+    $doc->loadHTML($html);
+    libxml_clear_errors();
+    
+    $finder = new DomXPath($doc);
+    $nodes = $finder->query('//div[@id="pdf-main"]/div[@class="b"]');    
+    
+    $i = 1;
+    foreach ($nodes as $node) {
+      if ($i < $startPage || $i > $endPage){//if outside the allowed borders
+	  $node->removeAttribute("style");
+	  $node->setAttribute("style", "display: none;");	  
+	  foreach($node->childNodes as $child){
+	    $child->removeAttribute("style");
+	  }
+	}
+      $i++;
+    }
+    return $doc->saveHTML();
 }

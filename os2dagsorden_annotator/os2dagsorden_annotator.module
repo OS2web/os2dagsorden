@@ -12,6 +12,7 @@
  * @link     http://bellcom.dk
  */
 require drupal_get_path('module', 'os2dagsorden_annotator') . '/includes/os2dagsorden_annotator.common.inc';
+define('ANNOTATOR_PAGES_PER_VIEW', 5);
 
 /**
  * Implementation of hook_menu().
@@ -90,7 +91,7 @@ function _os2dagsorden_annotator_create() {
     global $user;
     
     $note_json = json_decode(file_get_contents('php://input'), true);
-
+    
     //saving fields, that fill be used for search
     $bilag_id = $note_json['bilag_id'];
     $bullet_point_id = $note_json['bullet_point_id'];
@@ -100,10 +101,9 @@ function _os2dagsorden_annotator_create() {
     unset($note_json['bilag_id']);
     unset($note_json['bullet_point_id']);
     unset($note_json['meeting_id']);
-
+    
     $last_ins_id = db_insert('os2dagsorden_annotator_notes')
     ->fields(array(
-
       'bilag_id' => $bilag_id,
       'bullet_point_id' => $bullet_point_id,
       'meeting_id' => $meeting_id,
@@ -260,13 +260,16 @@ function _os2dagsorden_annotator_check_permission($meeting_id, $bullet_point_id,
  */
 function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) {
     global $base_url;
-    $q = explode('/', $_GET['q']);
     $breadcrumb[] = l('Hjem', $base_url);
-    $breadcrumb[] .= l('Mødedetaljer', 'meeting/' . $q[1]);
-    $breadcrumb[] .= l('Dagsordenspunkt', 'meeting/' . $q[1] . '/bullet-point/' . $q[3]);
+    $breadcrumb[] .= l('Mødedetaljer', 'meeting/' . $meeting_id);
+    $breadcrumb[] .= l('Dagsordenspunkt', 'meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id);
     $breadcrumb[] .= '<span class="breadcrumb-active">Bilag</span>';
     drupal_set_breadcrumb($breadcrumb);
 
+    $pageStart = intval($_GET['page'])+1;
+    $pageEnd = intval($_GET['page'])+ANNOTATOR_PAGES_PER_VIEW;
+    
+    
     $bilag = node_load($bilag_id);
     if (strcmp($bilag->type, 'bullet_point_attachment') == 0) {
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.js');
@@ -284,12 +287,12 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
         drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.css');
 
         drupal_set_title(t('Bilag') . ' - ' . $bilag->title);
-        $text = $bilag->field_bpa_body['und'][0]['value'];
+        $text = os2dagsorden_pdf2htmlex_hide_unused_pages($bilag->field_bpa_body['und'][0]['value'], $pageStart, $pageEnd);
+        $pageAmount = $bilag->field_bpa_page_amount['und'][0]['value'];
     }
 
     $download_pdf_link = file_create_url($bilag->field_bpa_file['und'][0]['uri']);
     $print_link = $GLOBALS['base_path'] . '?q=/print/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id . '/print';
-
 
     $html = '<div class="node">
 	    <div class="help-button" title="Help text goes here"></div>
@@ -297,13 +300,55 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 
     if (!empty($download_pdf_link))
       $html .= '<input style="margin-right:10px;" class="form-submit" type="button" onclick="window.open(\'' . $download_pdf_link . '\')" value="Hent PDF-version">';
-      
-	    
+
     $html .= '<input class="form-submit" type="button" onclick="window.open(\'' . $print_link . '\')" value="Print"></div>' .
-            '<div id="content">' . $text . '</div>
-            </div>';
+            _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) . 
+            '<div id="content">' . $text . '</div>' . 
+            _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) .
+            '</div>';
 
     return $html;
+}
+
+/**
+ * Renders the html for custom pager for bilag.
+ *
+ * @param int $meeting_id      ID of the meeting
+ * @param int $bullet_point_id ID of the bullet point
+ * @param int $bilag_id        ID of the attachment (bilag)
+ * @param int $pageLimit       maximum numbers of pages in this bilag
+ *
+ * @return the html code of pager.
+ */
+function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageLimit){
+    $pages_per_view = ANNOTATOR_PAGES_PER_VIEW;
+    $page = intval($_GET['page']);//value or 0 if not set
+    
+    $current_bilag_url = $GLOBALS['base_path'] . '?q=/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id;
+    
+    if ($page-$pages_per_view >= 0)
+      $prev_page_link = $current_bilag_url . '&page=' . ($page-$pages_per_view );
+    else if ($page-$pages_per_view < 0 && $page > 0)
+      $prev_page_link = $current_bilag_url; //go to the first page
+      
+    if ($page+5 <= $pageLimit)
+      $next_page_link = $current_bilag_url . '&page=' . ($page+$pages_per_view);
+    
+    $pager = '<div class="item-list clearfix annotator-pager">
+		<ul class="pager">';
+    if (isset($prev_page_link)) {
+	$pager .= '<li class="page-prev"> 
+		    <a rel="nofollow" href="' . $prev_page_link . '">« Tidligere</a>
+		  </li>';
+    }
+    if (isset($next_page_link)) {
+	$pager .= '<li class="page-next">
+		    <a rel="nofollow" href="' . $next_page_link . '">Næste »</a>
+		  </li>';
+    }	  
+    $pager .= '</ul>
+	      </div>';
+    return $pager;
 }
 
 /**

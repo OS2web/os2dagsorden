@@ -1063,7 +1063,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	print \'<div class="attachment_text_container">\';
 
 	print \'<div class="attachment_text_trimmed_container">\';
-        print os2dagsorden_access_helper_print_first_page($attachment->field_bpa_body[\'und\'][0][\'value\']);
+        print os2dagsorden_pdf2htmlex_print_first_page($attachment->field_bpa_body[\'und\'][0][\'value\']);
 	print \'</div>\';
 	print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
 
@@ -2214,7 +2214,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       print \'<div class="attachment_text_container">\';
 
       print \'<div class="attachment_text_trimmed_container">\';
-      print os2dagsorden_access_helper_print_first_page($attachment->field_bpa_body[\'und\'][0][\'value\']);
+      print os2dagsorden_pdf2htmlex_print_first_page($attachment->field_bpa_body[\'und\'][0][\'value\']);
       print \'</div>\';
       print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
 

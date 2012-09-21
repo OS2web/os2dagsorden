@@ -12,12 +12,12 @@ function init(name, meeting_id, bullet_point_id, bilag_id, url) {
 			annotationData: {
 				'bilag_id': bilag_id,
 				'bullet_point_id': bullet_point_id,
-				'meeting_id': meeting_id
+				'meeting_id': meeting_id,
 			},
 			loadFromSearch: {
 				'bilag_id': bilag_id,
 				'bullet_point_id': bullet_point_id,
-				'meeting_id': meeting_id
+				'meeting_id': meeting_id,
 			},
 			urls: {
 			  create:  'annotator/create',
