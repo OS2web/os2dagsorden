@@ -13,6 +13,7 @@
  */
 define('DEFAULT_PDF_HTML_ZOOM', 1.25); // default zoom for convertion
 define('DEFAULT_TEMP_DIR', variable_get('file_temporary_path', '/tmp/')); // default zoom for convertion
+define('DEFAULT_PDF_HTML_TRANS_LIMIT', 10);//number of files to handle at once
 
 /**
  * Schedules the future convertion
@@ -47,7 +48,8 @@ function os2dagsorden_pdf2htmlex_cron() {
     //make convertion
     $query = db_select('os2dagsorden_pdf2htmlex_files', 'f');
     $query->fields('f',array('fid','did'))
-    ->isNull('f.progress');
+    ->isNull('f.progress')
+    ->range(0,DEFAULT_PDF_HTML_TRANS_LIMIT);
     $result = $query->execute();
 
     while($record = $result->fetchAssoc()) {
