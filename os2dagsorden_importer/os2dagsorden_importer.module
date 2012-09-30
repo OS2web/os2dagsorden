@@ -46,8 +46,8 @@ function os2dagsorden_importer_sync() {
  * @return none
  */
 function os2dagsorden_importer_cron() {
-    //os2dagsorden_importer_import_user_committees();
-    //os2dagsorden_importer_import_committees();
+    os2dagsorden_importer_import_user_committees();
+    os2dagsorden_importer_import_committees();
     os2dagsorden_importer_import_meetings();
 }
 
