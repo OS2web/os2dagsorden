@@ -46,8 +46,8 @@ function os2dagsorden_importer_sync() {
  * @return none
  */
 function os2dagsorden_importer_cron() {
-    os2dagsorden_importer_import_user_committees();
-    os2dagsorden_importer_import_committees();
+    //os2dagsorden_importer_import_user_committees();
+    //os2dagsorden_importer_import_committees();
     os2dagsorden_importer_import_meetings();
 }
 
@@ -593,7 +593,10 @@ function _os2dagsorden_importer_process_meetings($xml_file) {
         );
 
         if ($xml_data['deactivated'] == 0) {
-            if (!empty($xml_data['meeting_start_date']) && !empty($xml_data['meeting_start_time'])) {
+            if (!empty($xml_data['meeting_start_date'])) {
+		 if (empty($xml_data['meeting_start_time'])){
+		  $xml_data['meeting_start_time'] = "00:01";
+		 }
                 $xml_data['meeting_start_date'] = substr_replace($xml_data['meeting_start_date'], $xml_data['meeting_start_time'], 11);
 
                 //is handled in the field settings - field is set to be in neutral timezone - time will not be changed on presentation
