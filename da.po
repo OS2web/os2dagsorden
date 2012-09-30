@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2012-09-14 14:36+0200\n"
-"PO-Revision-Date: 2012-09-14 14:36+0200\n"
+"POT-Creation-Date: 2012-09-30 12:36+0200\n"
+"PO-Revision-Date: 2012-09-30 12:36+0200\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -4452,10 +4452,6 @@ msgstr ""
 
 #: /webapp_politik/?q=node/273/edit&destination=meeting/249/bullet-point/272
 msgid "Log"
-msgstr ""
-
-#: /webapp_politik/?q=node/273/edit&destination=meeting/249/bullet-point/272
-msgid "Switch to rich text editor"
 msgstr ""
 
 #: sites/all/modules/ckeditor/includes/ckeditor.utils.js
@@ -9153,10 +9149,6 @@ msgstr ""
 
 #: /webapp_politik/?q=admin/config/regional/language
 msgid "Select terms from vocabulary @voc"
-msgstr ""
-
-#: /webapp_politik/?q=admin/config/regional/language
-msgid "- Any -"
 msgstr ""
 
 #: /webapp_politik/?q=admin/structure/types/manage/speaker-paper
@@ -32585,4 +32577,12 @@ msgstr "Linkformat"
 #: /webapp_politik/?q=node/273/edit&destination=meeting/249/bullet-point/272
 msgid "Switch to plain text editor"
 msgstr "Skift til simpel tekstredigering"
+
+#: /webapp_politik/?q=node/273/edit&destination=meeting/249/bullet-point/272
+msgid "Switch to rich text editor"
+msgstr "Skift til avanceret tekstredigering"
+
+#: /webapp_politik/?q=admin/config/regional/language
+msgid "- Any -"
+msgstr "- Alle -"
 

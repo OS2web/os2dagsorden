@@ -1038,7 +1038,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	  print \'<div class="attachment_text_container">\';
 
 	  print \'<div class="attachment_text_full_container">\';
-	  print($attachment->field_bpa_body[\'und\'][0][\'safe_value\']);
+	  print($attachment->field_bpa_body[\'und\'][0][\'value\']);
 	  print \'</div>\';
 
 	  print \'</div>\';
@@ -2189,7 +2189,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	print \'<div class="attachment_text_container">\';
 
 	print \'<div class="attachment_text_full_container">\';
-	print($attachment->field_bpa_body[\'und\'][0][\'safe_value\']);
+	print($attachment->field_bpa_body[\'und\'][0][\'value\']);
 	print \'</div>\';
 
 	print \'</div>\';

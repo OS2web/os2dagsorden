@@ -102,7 +102,7 @@ function _os2dagsorden_pdf2htmlex_calc_page_amount($html){
   libxml_clear_errors();
   
   $finder = new DomXPath($doc);
-  $nodes = $finder->query('//div[@id="pdf-main"]/div[@class="b"]');    
+  $nodes = $finder->query('//div[@id="pdf-main"]/div[@class="p"]');    
   
   $pages = 0;
   foreach ($nodes as $node) {
@@ -242,7 +242,7 @@ function os2dagsorden_pdf2htmlex_print_first_page($html){
     libxml_clear_errors();
     
     $finder = new DomXPath($doc);
-    $nodes = $finder->query('//div[@id="pdf-main"]/div[@class="b"]');    
+    $nodes = $finder->query('//div[@id="pdf-main"]/div[@class="p"]');    
     
     $i = 1;
     foreach ($nodes as $node) {
@@ -273,7 +273,7 @@ function os2dagsorden_pdf2htmlex_hide_unused_pages($html, $startPage, $endPage){
     libxml_clear_errors();
     
     $finder = new DomXPath($doc);
-    $nodes = $finder->query('//div[@id="pdf-main"]/div[@class="b"]');    
+    $nodes = $finder->query('//div[@id="pdf-main"]/div[@class="p"]');    
     
     $i = 1;
     foreach ($nodes as $node) {
