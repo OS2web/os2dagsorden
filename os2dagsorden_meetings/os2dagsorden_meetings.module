@@ -539,6 +539,7 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
 
         if ($fid) {
 	    $file = file_load($fid);
+	    $file->display = 1;
         }
 	else {
 	    $file = new stdClass();
