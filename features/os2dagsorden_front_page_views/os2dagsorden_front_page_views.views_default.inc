@@ -139,7 +139,6 @@ if (isset($full_user->field_follows_committee_plus[\'und\'])){
     print(\'<b>+</b><br/>\');
   }
 }
-
 if (isset($full_user->field_follows_committee[\'und\'])){
   foreach ($full_user->field_follows_committee[\'und\'] as $com){
     $com_term = taxonomy_term_load($com[\'tid\']);
@@ -151,6 +150,7 @@ if (isset($full_user->field_follows_committee[\'und\'])){
     print(\'<br/>\');
   }
 }
+
 ?>';
   /* Field: Prints Follows+ committees with a plus sign, prints follows committees */
   $handler->display->display_options['fields']['php']['id'] = 'php';
