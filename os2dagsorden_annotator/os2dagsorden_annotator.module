@@ -288,27 +288,34 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
         drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.css');
 
         drupal_set_title(t('Bilag') . ' - ' . $bilag->title);
-        $file_uri = $bilag->field_bpa_file_html['und'][0]['uri'];
-        $body_file = file_get_contents($file_uri);
-        $text = os2dagsorden_pdf2htmlex_hide_unused_pages($body_file, $pageStart, $pageEnd);
-        $pageAmount = $bilag->field_bpa_page_amount['und'][0]['value'];
+        
+
+	$download_pdf_link = file_create_url($bilag->field_bpa_file['und'][0]['uri']);
+	$print_link = $GLOBALS['base_path'] . '/print/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id . '/print';
+
+	$html = '<div class="node">
+		<div class="help-button" title="Help text goes here"></div>
+		<div align="right" style="margin-bottom:5px;">';
+
+	if (!empty($bilag->field_bpa_file['und'][0]['uri'])){
+	  $file_uri = $bilag->field_bpa_file_html['und'][0]['uri'];
+	  $body_file = file_get_contents($file_uri);
+	  $text = os2dagsorden_pdf2htmlex_hide_unused_pages($body_file, $pageStart, $pageEnd);
+	  $pageAmount = $bilag->field_bpa_page_amount['und'][0]['value'];
+        
+	  $html .= '<input style="margin-right:10px;" class="form-submit" type="button" onclick="window.open(\'' . $download_pdf_link . '\')" value="Hent PDF-version">';
+	}
+	else {
+	  $text = $bilag->field_bpa_body['und'][0]['value'];
+	}
+
+	$html .= '<input class="form-submit" type="button" onclick="window.open(\'' . $print_link . '\')" value="Print"></div>' .
+		_os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) . 
+		'<div id="content">' . $text . '</div>' . 
+		_os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) .
+		'</div>';
+            
     }
-
-    $download_pdf_link = file_create_url($bilag->field_bpa_file['und'][0]['uri']);
-    $print_link = $GLOBALS['base_path'] . '/print/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id . '/print';
-
-    $html = '<div class="node">
-	    <div class="help-button" title="Help text goes here"></div>
-	    <div align="right" style="margin-bottom:5px;">';
-
-    if (!empty($bilag->field_bpa_file['und'][0]['uri']))
-      $html .= '<input style="margin-right:10px;" class="form-submit" type="button" onclick="window.open(\'' . $download_pdf_link . '\')" value="Hent PDF-version">';
-
-    $html .= '<input class="form-submit" type="button" onclick="window.open(\'' . $print_link . '\')" value="Print"></div>' .
-            _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) . 
-            '<div id="content">' . $text . '</div>' . 
-            _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) .
-            '</div>';
 
     return $html;
 }
@@ -370,9 +377,16 @@ function _os2dagsorden_annotator_view_print($meeting_id, $bullet_point_id, $bila
         drupal_set_title(t('Bilag') . ' - ' . $bilag->title);
         $header = '<h3>Bilag - ' . $bilag->title . '</h3>';
 
-        $body = $bilag->field_bpa_body['und'][0]['value'];
-
-        //getting annotations from storage
+        if (!empty($bilag->field_bpa_file['und'][0]['uri'])){
+	  $file_uri = $bilag->field_bpa_file_html['und'][0]['uri'];
+	  $body_file = file_get_contents($file_uri);
+	  $body = os2dagsorden_pdf2htmlex_hide_unused_pages($body_file, $pageStart, $pageEnd);
+	}
+	else {
+	  $body = $bilag->field_bpa_body['und'][0]['value'];
+	}
+	  
+	//getting annotations from storage
         $annotations = os2dagsorden_annotator_get_notes_by_attachment_id($bilag_id);
 
         //initiating variabes
