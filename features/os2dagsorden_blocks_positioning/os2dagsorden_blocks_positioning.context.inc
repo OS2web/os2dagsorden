@@ -20,7 +20,6 @@ function os2dagsorden_blocks_positioning_context_default_contexts() {
     'path' => array(
       'values' => array(
         '~calendar-field-date/month*' => '~calendar-field-date/month*',
-        '~meeting/*/bullet-point/*/bullet-point-attachment/*' => '~meeting/*/bullet-point/*/bullet-point-attachment/*',
       ),
     ),
     'user' => array(

@@ -45,6 +45,7 @@ function os2dagsorden_pdf2htmlex_schedule($fid, $did) {
     ->fields(array(
       'fid' => $fid,
       'did' => $did,
+      //'created_filepath' => $file_path,
       'filename' => NULL,
       'progress' => NULL,
     ))
@@ -83,17 +84,29 @@ function os2dagsorden_pdf2htmlex_cron() {
     
     while($record = $result->fetchAssoc()) {
 	$destination = node_load($record['did']);
-	if (file_exists($record['created_filepath'])) { //filename.html
-	  $data = file_get_contents($record['created_filepath']);
-	}
-	else { //try to locate filename.PDF.html
-	  $path = explode('.', $record['created_filepath']);//'filename' and 'html'
-	  $path = $path[0] . '.PDF.' . $path[1];
-	  $data = file_get_contents($path);
-	}
 	
-	$destination->field_bpa_body[LANGUAGE_NONE][0]['value'] = _os2dagsorden_pdf2htmlex_improve_html($data);
-        $destination->field_bpa_body[LANGUAGE_NONE][0]['format'] = 'full_html';
+	$data = file_get_contents($record['created_filepath']);
+	
+	//convert the real path back to drupal path
+	$file_path_real = explode('/',$record['created_filepath']);
+	$filename = array_pop($file_path_real);
+	$acadre_dir = array_pop($file_path_real);
+	
+	$path = 'private://' . $acadre_dir . '/' . $filename ;
+	
+	$file = new stdClass();
+	$file->uri = $path;
+	$file->display = 1;
+	$file->filename = $filename;
+	$file->filemime = file_get_mimetype($record['created_filepath']);
+	$file->uid = 1;
+	$file->status = FILE_STATUS_PERMANENT;
+	
+	$file = file_save($file);
+    
+// 	$destination->field_bpa_body[LANGUAGE_NONE][0]['value'] = _os2dagsorden_pdf2htmlex_improve_html($data);
+//         $destination->field_bpa_body[LANGUAGE_NONE][0]['format'] = 'full_html';
+	$destination->field_bpa_file_html[LANGUAGE_NONE][0] = (array) $file;
         $destination->field_bpa_page_amount[LANGUAGE_NONE][0]['value'] = _os2dagsorden_pdf2htmlex_calc_page_amount($data);
         
         node_save($destination);
@@ -122,7 +135,7 @@ function _os2dagsorden_pdf2htmlex_calc_page_amount($html){
   libxml_clear_errors();
   
   $finder = new DomXPath($doc);
-  $nodes = $finder->query('//div[@id="pdf-main"]/div[@class="p"]');    
+  $nodes = $finder->query('//div[@id="pdf-main"]/div');    
   
   $pages = 0;
   foreach ($nodes as $node) {
@@ -157,15 +170,37 @@ function _os2dagsorden_pdf2htmlex_improve_html($data){
  */
 function os2dagsorden_pdf2htmlex_convert($fid, $did) {
   $file = file_load($fid);
+  
+  $file_path_real = drupal_realpath($file->uri);//with file name
+  $file_path_real_arr = explode('/', $file_path_real);
+  array_pop($file_path_real_arr);
+  $dest_dir_real = implode('/', $file_path_real_arr);//without file name
+  
   if (isset($file)){
-    shell_exec('pdf2htmlEX ' . drupal_realpath($file->uri) . '  --dest-dir ' . DEFAULT_TEMP_DIR . ' --zoom ' . DEFAULT_PDF_HTML_ZOOM);
+    shell_exec('pdf2htmlEX ' . $file_path_real . '  --dest-dir ' . $dest_dir_real . ' --zoom ' . DEFAULT_PDF_HTML_ZOOM);
     
     $file_name_no_ext = explode('.', $file->filename);
+    $assumed_path1 = $dest_dir_real . '/' . $file_name_no_ext[0] . '.html';//filename.html
+    $assumed_path2 = $dest_dir_real . '/' . $file_name_no_ext[0] . '.PDF' . '.html';//filename.PDF.html
+    
+    if (file_exists($assumed_path1)) {
+      $path = $assumed_path1;
+    }
+    else {
+      $path = $assumed_path2;
+    }
+    $data = file_get_contents($path);
+    
+    //rewritting with improved HTML code
+    $fh = fopen($path, 'w');
+    fwrite($fh, _os2dagsorden_pdf2htmlex_improve_html($data));
+    fclose($fh);
+	
     //updating database entry
     db_update('os2dagsorden_pdf2htmlex_files')
       ->fields(array(
 	'filename' => $file->filename,
-	'created_filepath' => DEFAULT_TEMP_DIR . '/' . $file_name_no_ext[0] . '.html',
+	'created_filepath' => $path,
 	'progress' => 'Converted',
       ))
       ->condition('fid', $fid)
@@ -247,13 +282,12 @@ function _os2dagsorden_pdf2htmlex_set_meeting_status_published_plus($node) {
  *
  * Is used in the places where only preview of the document is shown.
  *
- * @param string $html      html
- * @param int    $startPage start page number (incl)
- * @param int    $endPage   end page number (incl)
+ * @param string $html html
+ * @param int    $id   nid of the bullet point attachment
  *
  * @return html with selected pages left
  */
-function os2dagsorden_pdf2htmlex_print_first_page($html){
+function os2dagsorden_pdf2htmlex_print_first_page($html, $id){
     $html = utf8_decode($html);
     
     $doc = new DOMDocument();
@@ -262,7 +296,7 @@ function os2dagsorden_pdf2htmlex_print_first_page($html){
     libxml_clear_errors();
     
     $finder = new DomXPath($doc);
-    $nodes = $finder->query('//div[@id="pdf-main"]/div[@class="p"]');    
+    $nodes = $finder->query('//div[@id="pdf-main"]/div');    
     
     $i = 1;
     foreach ($nodes as $node) {
@@ -270,7 +304,27 @@ function os2dagsorden_pdf2htmlex_print_first_page($html){
 	$node->parentNode->removeChild($node);
       $i++;
     }
-    return $doc->saveHTML();
+    $html = $doc->saveHTML();
+    $start = strrpos($html, '<style type="text/css">');
+    $end = strrpos($html, '</style>');
+    $style_cut = substr($html, $start, $end+count('<style>')-$start);
+   
+    $styles_specific = explode(PHP_EOL, $style_cut);
+    for ($i = 0; $i < count($styles_specific); $i++){
+      if (substr($styles_specific[$i], 0, 1) === '.' || substr($styles_specific[$i], 0, 1) === '#')//id or class
+	$styles_specific[$i] = '.bpa-' . $id . ' ' . $styles_specific[$i];
+    }
+    $style_specific = implode(PHP_EOL, $styles_specific);//specific for every document
+    
+    $start = strpos($html, '<style type="text/css">');
+    $end = strpos($html, '</style>');
+    $style_general = substr($html, $start, $end+8-$start);//reused among the documents
+    
+    $html = preg_replace('#<style(.*?)>(.*?)</style>#is', '', $html);//removing the style completely
+    $html = preg_replace('#<title(.*?)>(.*?)</title>#is', $style_specific.$style_general, $html);//reusing the empty tag to ensure the styles are included only once
+    
+    
+    return $html;
 }
 
 /**
@@ -293,15 +347,21 @@ function os2dagsorden_pdf2htmlex_hide_unused_pages($html, $startPage, $endPage){
     libxml_clear_errors();
     
     $finder = new DomXPath($doc);
-    $nodes = $finder->query('//div[@id="pdf-main"]/div[@class="p"]');    
+    $nodes = $finder->query('//div[@id="pdf-main"]/div');    
     
     $i = 1;
     foreach ($nodes as $node) {
       if ($i < $startPage || $i > $endPage){//if outside the allowed borders
 	  $node->removeAttribute("style");
 	  $node->setAttribute("style", "display: none;");	  
-	  foreach($node->childNodes as $child){
-	    $child->removeAttribute("style");
+	  foreach($node->childNodes as $child) {
+	    if ($child instanceof DOMElement) {
+	      $child->removeAttribute("style");
+	      foreach($child->childNodes as $child_child){
+		  if ($child_child instanceof DOMElement)
+		    $child_child->removeAttribute("style");
+	      }
+	    }
 	  }
 	}
       $i++;

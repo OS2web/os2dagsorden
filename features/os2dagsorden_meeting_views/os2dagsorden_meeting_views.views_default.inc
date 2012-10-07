@@ -1006,7 +1006,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['php_3']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_3']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_3']['php_output'] = '<?php
-global $base_url;
+global $user, $base_url;
 $bullet_point = node_load($row->nid);
 if (isset($bullet_point->field_ref_attachment[\'und\'])){
   print \'<div class="item-list">\';
@@ -1029,7 +1029,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	  $title = $attachment->title;
 	else 
 	  $title = substr($attachment->title, 0, 75).\'...\';
-	$link = $base_url.\'?q=meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment/\'.$attachment->nid;
+	$link = $base_url.\'/meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment/\'.$attachment->nid;
 	
 	print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
 
@@ -1037,7 +1037,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
 	  print \'<div class="attachment_text_container">\';
 
-	  print \'<div class="attachment_text_full_container">\';
+	  print \'<div class="attachment_text_full_container bpa-\' . $attachment->nid . \'">\';
 	  print($attachment->field_bpa_body[\'und\'][0][\'value\']);
 	  print \'</div>\';
 
@@ -1055,15 +1055,19 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	$title = $attachment->title;
       else 
 	$title = substr($attachment->title, 0, 75).\'...\';
-      $link = $base_url.\'?q=meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment/\'.$attachment->nid;
+      $link = $base_url.\'/meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment/\'.$attachment->nid;
       print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
 
       //attachment text - if any
-      if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
+      if (!empty($attachment->field_bpa_file_html[\'und\'][0])){
 	print \'<div class="attachment_text_container">\';
 
-	print \'<div class="attachment_text_trimmed_container">\';
-        print os2dagsorden_pdf2htmlex_print_first_page($attachment->field_bpa_body[\'und\'][0][\'value\']);
+	print \'<div class="attachment_text_trimmed_container bpa-\' . $attachment->nid . \'">\';
+
+	$file_uri = $attachment->field_bpa_file_html[\'und\'][0][\'uri\'];
+	$body_file = file_get_contents($file_uri);
+
+	print os2dagsorden_pdf2htmlex_print_first_page($body_file, $attachment->nid);
 	print \'</div>\';
 	print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
 
@@ -2181,7 +2185,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	$title = $attachment->title;
       else 
 	$title = substr($attachment->title, 0, 75).\'...\';
-      $link = $base_url.\'?q=meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment/\'.$attachment->nid;
+      $link = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment/\'.$attachment->nid;
       print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
 
       //attachment text - if any
@@ -2206,15 +2210,19 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       $title = $attachment->title;
     else 
       $title = substr($attachment->title, 0, 75).\'...\';
-    $link = $base_url.\'?q=meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment/\'.$attachment->nid;
+    $link = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment/\'.$attachment->nid;
     print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
 
     //attachment text - if any
-    if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
+    if (!empty($attachment->field_bpa_file_html[\'und\'][0])){
       print \'<div class="attachment_text_container">\';
 
-      print \'<div class="attachment_text_trimmed_container">\';
-      print os2dagsorden_pdf2htmlex_print_first_page($attachment->field_bpa_body[\'und\'][0][\'value\']);
+      print \'<div class="attachment_text_trimmed_container bpa-\' . $attachment->nid . \'">\';
+
+      $file_uri = $attachment->field_bpa_file_html[\'und\'][0][\'uri\'];
+      $body_file = file_get_contents($file_uri);
+
+      print os2dagsorden_pdf2htmlex_print_first_page($body_file, $attachment->nid);
       print \'</div>\';
       print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
 

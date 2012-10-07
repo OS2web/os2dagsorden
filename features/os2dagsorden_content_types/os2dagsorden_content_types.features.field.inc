@@ -460,7 +460,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'rows' => '20',
         ),
         'type' => 'text_textarea',
-        'weight' => '3',
+        'weight' => '2',
       ),
     ),
   );
@@ -522,6 +522,78 @@ function os2dagsorden_content_types_field_default_fields() {
         'description_field' => 0,
         'file_directory' => '',
         'file_extensions' => 'pdf tif doc docx msg xls',
+        'max_filesize' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'file',
+        'settings' => array(
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'file_generic',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-bullet_point_attachment-field_bpa_file_html'
+  $fields['node-bullet_point_attachment-field_bpa_file_html'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_bpa_file_html',
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'file',
+      'settings' => array(
+        'display_default' => 0,
+        'display_field' => 0,
+        'uri_scheme' => 'private',
+      ),
+      'translatable' => '0',
+      'type' => 'file',
+    ),
+    'field_instance' => array(
+      'bundle' => 'bullet_point_attachment',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'file',
+          'settings' => array(),
+          'type' => 'file_default',
+          'weight' => 5,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_bpa_file_html',
+      'label' => 'File HTML',
+      'required' => 0,
+      'settings' => array(
+        'description_field' => 0,
+        'file_directory' => '',
+        'file_extensions' => 'html',
         'max_filesize' => '',
         'user_register_form' => FALSE,
       ),
@@ -2801,6 +2873,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
   t('Description Closed');
   t('Enclosures');
   t('File');
+  t('File HTML');
   t('Follows committees');
   t('Follows committees+');
   t('Full name');
