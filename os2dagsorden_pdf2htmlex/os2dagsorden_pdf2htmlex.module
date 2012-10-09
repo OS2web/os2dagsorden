@@ -94,18 +94,26 @@ function os2dagsorden_pdf2htmlex_cron() {
 	
 	$path = 'private://' . $acadre_dir . '/' . $filename ;
 	
-	$file = new stdClass();
-	$file->uri = $path;
-	$file->display = 1;
-	$file->filename = $filename;
-	$file->filemime = file_get_mimetype($record['created_filepath']);
-	$file->uid = 1;
-	$file->status = FILE_STATUS_PERMANENT;
+	$fid = db_select('file_managed', 'fm')
+                        ->fields('fm', array('fid'))
+                        ->condition('uri', $path)
+                        ->execute()->fetchField();
+
+        if ($fid) {
+	    $file = file_load($fid);
+	    $file->display = 1;
+	} else {
+	  $file = new stdClass();
+	  $file->uri = $path;
+	  $file->display = 1;
+	  $file->filename = $filename;
+	  $file->filemime = file_get_mimetype($record['created_filepath']);
+	  $file->uid = 1;
+	  $file->status = FILE_STATUS_PERMANENT;
+	  
+	  $file = file_save($file);
+	}
 	
-	$file = file_save($file);
-    
-// 	$destination->field_bpa_body[LANGUAGE_NONE][0]['value'] = _os2dagsorden_pdf2htmlex_improve_html($data);
-//         $destination->field_bpa_body[LANGUAGE_NONE][0]['format'] = 'full_html';
 	$destination->field_bpa_file_html[LANGUAGE_NONE][0] = (array) $file;
         $destination->field_bpa_page_amount[LANGUAGE_NONE][0]['value'] = _os2dagsorden_pdf2htmlex_calc_page_amount($data);
         
@@ -261,7 +269,7 @@ function _os2dagsorden_pdf2htmlex_set_meeting_status_published_plus($node) {
 		    foreach ($bullet_point->field_ref_attachment['und'] as $ref_bullet_point_attachment) {
 			$attachment = node_load($ref_bullet_point_attachment['target_id']);
 			
-			if (empty($attachment->field_bpa_body['und'][0]['value'])){
+			if (empty($attachment->field_bpa_body['und'][0]['value']) && empty($attachment->field_bpa_file_html['und'][0])){
 			  $all_attachments_converted = false;
 			  break;
 			}
@@ -305,8 +313,8 @@ function os2dagsorden_pdf2htmlex_print_first_page($html, $id){
       $i++;
     }
     $html = $doc->saveHTML();
-    $start = strrpos($html, '<style type="text/css">');
-    $end = strrpos($html, '</style>');
+    $start = strrpos($html, '<style type="text/css">');//last style - document specific
+    $end = strrpos($html, '</style>');//last style - document specific
     $style_cut = substr($html, $start, $end+count('<style>')-$start);
    
     $styles_specific = explode(PHP_EOL, $style_cut);
@@ -314,16 +322,9 @@ function os2dagsorden_pdf2htmlex_print_first_page($html, $id){
       if (substr($styles_specific[$i], 0, 1) === '.' || substr($styles_specific[$i], 0, 1) === '#')//id or class
 	$styles_specific[$i] = '.bpa-' . $id . ' ' . $styles_specific[$i];
     }
-    $style_specific = implode(PHP_EOL, $styles_specific);//specific for every document
-    
-    $start = strpos($html, '<style type="text/css">');
-    $end = strpos($html, '</style>');
-    $style_general = substr($html, $start, $end+8-$start);//reused among the documents
-    
-    $html = preg_replace('#<style(.*?)>(.*?)</style>#is', '', $html);//removing the style completely
-    $html = preg_replace('#<title(.*?)>(.*?)</title>#is', $style_specific.$style_general, $html);//reusing the empty tag to ensure the styles are included only once
-    
-    
+    $style_specific = implode(PHP_EOL, $styles_specific);
+    $html = substr_replace($html, $style_specific, $start, $end+count('<style>')-$start); //replacing the last style with updated
+
     return $html;
 }
 
