@@ -2003,10 +2003,8 @@ print "<a href=\\"".$base_url."?q=node/add/speaker-paper&edit[field_ref_bullet_p
   $handler->display->display_options['arguments']['nid_1']['table'] = 'node';
   $handler->display->display_options['arguments']['nid_1']['field'] = 'nid';
   $handler->display->display_options['arguments']['nid_1']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['nid_1']['default_argument_type'] = 'php';
-  $handler->display->display_options['arguments']['nid_1']['default_argument_options']['code'] = '$q = explode(\'/\',$_GET[\'q\']);
-
-return $q[3];';
+  $handler->display->display_options['arguments']['nid_1']['default_argument_type'] = 'raw';
+  $handler->display->display_options['arguments']['nid_1']['default_argument_options']['index'] = '3';
   $handler->display->display_options['arguments']['nid_1']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['nid_1']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['nid_1']['summary_options']['items_per_page'] = '25';
