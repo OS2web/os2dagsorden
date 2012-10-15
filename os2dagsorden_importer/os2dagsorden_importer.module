@@ -216,17 +216,19 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
             //create committee
             if ($xml_data['committee_id'] != 0) {
                 $com_tid = _os2dagsorden_importer_create_committee($xml_data);
-                if ($xml_data['member_id'] != 0 && !empty($user)) {
-                    //add committee to user
-                    _os2dagsorden_importer_add_committee_to_user($com_tid, $user);
-                }
-                if ($xml_data['follower_id'] != 0 && !empty($user)) {
-                    //add user follows committee
-                    _os2dagsorden_importer_add_user_follows_committee($com_tid, $user);
-                }
-                if ($xml_data['follower_plus_id'] != 0 && !empty($user)) {
-                    //add user follows committee PLUS
-                    _os2dagsorden_importer_add_user_follows_committee_plus($com_tid, $user);
+                if (isset($com_tid)){
+		  if ($xml_data['member_id'] != 0 && !empty($user)) {
+		      //add committee to user
+		      _os2dagsorden_importer_add_committee_to_user($com_tid, $user);
+		  }
+		  if ($xml_data['follower_id'] != 0 && !empty($user)) {
+		      //add user follows committee
+		      _os2dagsorden_importer_add_user_follows_committee($com_tid, $user);
+		  }
+		  if ($xml_data['follower_plus_id'] != 0 && !empty($user)) {
+		      //add user follows committee PLUS
+		      _os2dagsorden_importer_add_user_follows_committee_plus($com_tid, $user);
+		  }
                 }
             }
 
@@ -428,6 +430,18 @@ function _os2dagsorden_importer_create_committee($xml_data) {
         $term->field_committee_abbr['und'][0]['value'] = $xml_data['committee_abbr'];
 
     if (!empty($xml_data['acadre_id'])) {
+	//check if is in the list of import committees
+	$can_be_imported = FALSE;
+
+	$import_committees = explode(';',variable_get('os2dagsorden_import_committees_list'));
+	foreach($import_committees as $imp_com_entry){
+	  $imp_com = explode(',', $imp_com_entry);
+	  if (intval($imp_com[0]) == intval($xml_data['acadre_id'])){
+	    $can_be_imported = TRUE;
+	    break;
+	  }
+	}
+	
         $contains = FALSE;
         if (isset($term->field_committee_acadre_id['und'])) {
             foreach ($term->field_committee_acadre_id['und'] as $id_raw) {
@@ -441,10 +455,13 @@ function _os2dagsorden_importer_create_committee($xml_data) {
             $term->field_committee_acadre_id['und'][]['value'] = $xml_data['acadre_id'];
         }
     }
-
-    taxonomy_term_save($term);
-
-    return $term->tid;
+    
+    if ($can_be_imported){
+      taxonomy_term_save($term);
+      return $term->tid;
+    } else {
+      return;
+    }
 }
 
 /**
@@ -606,7 +623,8 @@ function _os2dagsorden_importer_process_meetings($xml_file) {
             }
 
             $tid = _os2dagsorden_importer_create_committee($xml_data);
-            _os2dagsorden_importer_create_meeting($xml_data, $tid);
+            if (isset($tid))
+	      _os2dagsorden_importer_create_meeting($xml_data, $tid);
         }
         else {
             _os2dagsorden_importer_unpublish_meeting($xml_data);

@@ -26,7 +26,6 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#type' => 'fieldset',
       '#collapsible' => TRUE,
       '#title' => t('SOFD Integration settings'),
-      '#weight' => 11,
   );
   $form['os2dagsorden_pws_sofd_group']['os2dagsorden_pws_use_local_copy'] = array(
       '#type' => 'checkbox',
@@ -55,6 +54,22 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#maxlength' => 256, 
       '#disabled' => variable_get('os2dagsorden_pws_use_local_copy'),
   );
+  
+  //No import committees
+  $form['os2dagsorden_import_committees'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#title' => t('List of committees to import:'),
+      '#description' => t('List of committees, which should be imported from Acadre/SOFD systems.'),
+  );
+  $form['os2dagsorden_import_committees']['os2dagsorden_import_committees_list'] = array(
+      '#type' => 'textarea',
+      '#default_value' => variable_get('os2dagsorden_import_committees_list'),
+      '#title' => t('Committees to import list:'),
+      '#description' => t('Format the entry as <b>acadre_nr</b> of committee then <b>coma (,)</b> and then the <b>name of the committee</b>, separate the entries with <b>semicolon (;)</b> <br/> 
+      Example:<br/>acadre_nr1,committee1;<br/>acadre_nr2,committee2;<br/>...')
+  );
+  
   
   return system_settings_form($form);
 }

@@ -369,6 +369,10 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
     $node->field_meeting_id[$node->language][0]['value'] = $options['meeting_id'];
     // Make sure the committee term is created and get the term.
     $committee_term = _os2dagsorden_meetings_import_committee(array_shift($xml->xpath("//table[@name='committee']")));
+    //committee has not been created for some reasons - abort meeting creation
+    if (!isset($committee_term))
+      return $node;
+      
     $node->field_committee[LANGUAGE_NONE][0]['tid'] = $committee_term->tid;
     $location_term = _os2dagsorden_meetings_import_location(array_shift($xml->xpath("//table[@name='meeting']")));
     $node->field_location[LANGUAGE_NONE][0]['tid'] = $location_term->tid;
