@@ -694,9 +694,6 @@ function _os2dagsorden_meetings_add_enclosure_bullet($enclosure, $file) {
  * @return \stdClass 
  */
 function _os2dagsorden_meetings_import_committee(SimpleXMLElement $xml) {
-    //TODO: Process members of the committee.
-    //FIXME: MAke vocab name configurable.
-
     $options = array(
         'name' => (string) array_shift($xml->xpath("fields/field[@name='name']")),
         'description' => (string) array_shift($xml->xpath("fields/field[@name='description']")),
@@ -720,22 +717,20 @@ function _os2dagsorden_meetings_import_committee(SimpleXMLElement $xml) {
     if (isset($result['taxonomy_term'])) {
         $tids = array_keys($result['taxonomy_term']);
         $term = taxonomy_term_load($tids[0]);
+        
+        $term->name = $options['name'];
+	$term->description = $options['description'];
+	
+	taxonomy_term_save($term);
+
+	return $term;
     }
-    else {
-        $term = new stdClass();
-        $term->vid = $vid;
-        $term->language = LANGUAGE_NONE;
+    else {//not allowing to create new committees in here, new committees can be only created from SOFD views using os2dagsorden_importer
+	return;
+//         $term = new stdClass();
+//         $term->vid = $vid;
+//         $term->language = LANGUAGE_NONE;
     }
-
-    $term->name = $options['name'];
-    $term->description = $options['description'];
-    //$term->field_department_id[LANGUAGE_NONE][0]['value'] = $options['dept_id'];
-    //$term->field_department_name[LANGUAGE_NONE][0]['value'] = $options['dept_name'];
-    //$term->field_committee_acadre_id[LANGUAGE_NONE][0]['value'] = $options['acadre_id'];
-
-    taxonomy_term_save($term);
-
-    return $term;
 }
 
 /**
