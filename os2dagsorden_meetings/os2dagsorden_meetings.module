@@ -784,10 +784,12 @@ function _os2dagsorden_meetings_similar_file_exists($filename) {
     error_log($dir);
     $files = glob($dir . '/*');
     $lcaseFilename = strtolower($filename);
-    foreach ($files as $file) {
-        if (strtolower($file) == $lcaseFilename) {
-            return $file;
-        }
+    if (!empty($files)){
+      foreach ($files as $file) {
+	  if (strtolower($file) == $lcaseFilename) {
+	      return $file;
+	  }
+      }
     }
     return FALSE;
 }
