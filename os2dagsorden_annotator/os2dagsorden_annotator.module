@@ -281,7 +281,7 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 
 	//Help icon
 	$html = '<div class="node">
-		<div class="help-button" title="Help text goes here"></div>
+		<div class="help-button" title="Hvis du ønsker at lave en kommentar til et ord eller et afsnit, så marker blot dette hvorefter du får mulighed for at indtaste kommentaren."></div>
 		<div align="right" style="margin-bottom:5px;">';
 		
 	//starting the breadcrumb - common for bilag/not bilag	
