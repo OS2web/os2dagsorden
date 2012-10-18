@@ -421,7 +421,9 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
     node_save($node);
     
     //schedule description for PDF convertion
-    os2dagsorden_adlib_api_convert_to_pdf($description_fid, $node->nid);
+    if (module_exists('os2dagsorden_adlib_api')) {
+      os2dagsorden_adlib_api_convert_to_pdf($description_fid, $node->nid);
+    }
     
     //TODO: add reference to the os2web_meetings_import table
     $record = array(
@@ -576,9 +578,9 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
 	      //if not PDF, schedule for pdf conversion as well
 	      if (strcmp($filetype, ".PDF") != 0)
 		  os2dagsorden_adlib_api_convert_to_pdf($file->fid, $enclosure_nid);
-	      else //if is PDF, schedule for HTML conversion
-		  os2dagsorden_pdf2htmlex_schedule($file->fid, $enclosure_nid);
 	  }
+	  if (strcmp($filetype, ".PDF") == 0)//if is PDF, schedule for HTML conversion
+		  os2dagsorden_pdf2htmlex_schedule($file->fid, $enclosure_nid);
 	}        
     }
 
