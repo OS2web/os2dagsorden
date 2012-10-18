@@ -1600,7 +1600,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Seneste 8 møder i de stående politiske udvalg';
+  $handler->display->display_options['title'] = 'Seneste 8 møder i alle udvalg';
   $handler->display->display_options['css_class'] = 'front-page-content-block';
   $handler->display->display_options['use_ajax'] = TRUE;
   $handler->display->display_options['access']['type'] = 'role';
@@ -1867,7 +1867,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler = $view->new_display('block', 'Block', 'block');
   $translatables['seneste_8_m_der_i_de_st_ende_politiske_udvalg_'] = array(
     t('Master'),
-    t('Seneste 8 møder i de stående politiske udvalg'),
+    t('Seneste 8 møder i alle udvalg'),
     t('more'),
     t('Apply'),
     t('Reset'),
