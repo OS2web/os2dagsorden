@@ -30,6 +30,19 @@ function os2dagsorden_pdf2htmlex_do_convert(){
     global $debug_info;
     os2dagsorden_pdf2htmlex_cron();
     return '<div><textarea cols="150" rows=50>' . print_r($debug_info, 1) . '</textarea>';
+
+//    reschedule all
+//     $nodes = entity_load('node', FALSE, array('type' => 'bullet_point_attachment'));
+//     foreach ($nodes as $node){
+//       if (!empty($node->field_bpa_file)){
+// 	print_r($node->nid . ' ' . $node->field_bpa_file['und'][0]['fid']);
+// 	$file = file_load($node->field_bpa_file['und'][0]['fid']);
+// 	if (strcmp($file->filemime,'application/pdf') == 0){
+// 	  os2dagsorden_pdf2htmlex_schedule($node->field_bpa_file['und'][0]['fid'], $node->nid);
+// 	  print_r("<br/>");	
+// 	}
+//       }
+//     }
 }
 
 /**
@@ -56,7 +69,7 @@ function os2dagsorden_pdf2htmlex_schedule($fid, $did) {
  * Cron implementation.
  * Goes through the enrties in database table, converts the new records,
  * also updates the destination node with the html taken from converted file.
- * When node is updated, the database entry is erased.
+ * When node is updated, the database entry progress field is changed to Complete.
  *
  * Also calls function to update meeting status.
  *
@@ -120,9 +133,18 @@ function os2dagsorden_pdf2htmlex_cron() {
         node_save($destination);
 	
 	//deleting
-        db_delete('os2dagsorden_pdf2htmlex_files')
+        //db_delete('os2dagsorden_pdf2htmlex_files')
+	//  ->condition('fid', $record['fid'])
+	//  ->condition('did', $record['did'])
+	//  ->execute();
+	
+	//updating database entry
+	db_update('os2dagsorden_pdf2htmlex_files')
+	  ->fields(array(
+	    'progress' => 'Completed',
+	  ))
 	  ->condition('fid', $record['fid'])
-	  ->condition('did', $record['did'])
+	  ->condition('did',$record['did'])
 	  ->execute();
 	  
 	_os2dagsorden_pdf2htmlex_set_meeting_status_published_plus($destination);
@@ -313,6 +335,7 @@ function os2dagsorden_pdf2htmlex_print_first_page($html, $id){
       $i++;
     }
     $html = $doc->saveHTML();
+    
     $start = strrpos($html, '<style type="text/css">');//last style - document specific
     $end = strrpos($html, '</style>');//last style - document specific
     $style_cut = substr($html, $start, $end+count('<style>')-$start);
