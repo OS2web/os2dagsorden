@@ -186,6 +186,13 @@ function os2dagsorden_blocks_positioning_context_default_contexts() {
         1 => 1,
       ),
     ),
+    'user' => array(
+      'values' => array(
+        'administrator' => 'administrator',
+        'authenticated user' => 'authenticated user',
+        'os2dagsorden' => 'os2dagsorden',
+      ),
+    ),
   );
   $context->reactions = array(
     'block' => array(
@@ -199,7 +206,7 @@ function os2dagsorden_blocks_positioning_context_default_contexts() {
       ),
     ),
   );
-  $context->condition_mode = 0;
+  $context->condition_mode = 1;
 
   // Translatables
   // Included for use with string extractors like potx.
