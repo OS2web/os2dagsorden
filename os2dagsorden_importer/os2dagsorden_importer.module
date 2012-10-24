@@ -215,8 +215,10 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
         if ($xml_data['deactivated'] == 0) {
             //create committee
             if ($xml_data['committee_id'] != 0) {
-                $com_tid = _os2dagsorden_importer_create_committee($xml_data);
-                if (isset($com_tid)){
+                $com_term = _os2dagsorden_importer_get_committee_by_id($xml_data['committee_id']);
+		
+                if (isset($com_term)){
+		  $com_tid = $com_term->tid;
 		  if ($xml_data['member_id'] != 0 && !empty($user)) {
 		      //add committee to user
 		      _os2dagsorden_importer_add_committee_to_user($com_tid, $user);
@@ -274,11 +276,6 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
  * @return none
  */
 function _os2dagsorden_importer_set_user_fullname($user, $name) {
-//     $name_field['und'][0]['value'] = $name;
-// 
-//     $edit = array(
-// 	'field_user_full_name' => $name_field,
-//     );
     $user->field_user_full_name['und'][0]['value'] = $name;
     user_save($user);
 }
@@ -392,13 +389,13 @@ function _os2dagsorden_importer_add_role_to_user($tid, $user) {
 }
 
 /**
- * Helper function. Creates/updates the committee
+ * Helper function. Returns the committee based on its group id.
  *
- * @param mixed $xml_data xml
+ * @param int $com_id committee id
  *
- * @return the id of created/updated entry.
+ * @return the committee term, of found.
  */
-function _os2dagsorden_importer_create_committee($xml_data) {
+function _os2dagsorden_importer_get_committee_by_id($com_id){
     $vid = db_select('taxonomy_vocabulary', 'tv')
             ->fields('tv', array('vid'))
             ->condition('machine_name', 'committee')
@@ -408,15 +405,33 @@ function _os2dagsorden_importer_create_committee($xml_data) {
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'taxonomy_term')
             ->propertyCondition('vid', $vid)
-            ->fieldCondition('field_id', 'value', intval($xml_data['committee_id']), '=');
+            ->fieldCondition('field_id', 'value', intval($com_id), '=');
 
     $result = $query->execute();
-    if (isset($result['taxonomy_term'])) {
+    if (isset($result['taxonomy_term'])) {   
         $tids = array_keys($result['taxonomy_term']);
         $tid = reset($tids);
         $term = taxonomy_term_load($tid);
+        return $term;
     }
-    else {
+}
+
+/**
+ * Helper function. Creates/updates the committee
+ *
+ * @param mixed $xml_data xml
+ *
+ * @return the id of created/updated entry.
+ */
+function _os2dagsorden_importer_create_committee($xml_data) {
+    $term = _os2dagsorden_importer_get_committee_by_id($xml_data['committee_id']);
+    if (!isset($term)){
+	$vid = db_select('taxonomy_vocabulary', 'tv')
+            ->fields('tv', array('vid'))
+            ->condition('machine_name', 'committee')
+            ->execute()
+            ->fetchField();
+            
         $term = new stdClass();
         $term->vid = $vid;
         $term->field_id['und'][0]['value'] = $xml_data['committee_id'];
@@ -621,10 +636,10 @@ function _os2dagsorden_importer_process_meetings($xml_file) {
                 //$offset = 1+date("I");
                 //$xml_data['meeting_start_date'] = date ('Y-m-d H:i:s', strtotime ($xml_data['meeting_start_date']) - $offset*60*60);
             }
-
-            $tid = _os2dagsorden_importer_create_committee($xml_data);
-            if (isset($tid))
-	      _os2dagsorden_importer_create_meeting($xml_data, $tid);
+  
+	    $term = _os2dagsorden_importer_get_committee_by_id($xml_data['committee_id']);
+            if (isset($term))
+	      _os2dagsorden_importer_create_meeting($xml_data, $term->tid);
         }
         else {
             _os2dagsorden_importer_unpublish_meeting($xml_data);
