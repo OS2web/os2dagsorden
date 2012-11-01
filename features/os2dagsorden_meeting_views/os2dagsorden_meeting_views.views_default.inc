@@ -2192,7 +2192,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
 	print \'<div class="attachment_text_container">\';
 
-	print \'<div class="attachment_text_full_container">\';
+	print \'<div class="attachment_text_full_container bpa-\' . $attachment->nid . \'">\';
 	print($attachment->field_bpa_body[\'und\'][0][\'value\']);
 	print \'</div>\';
 
