@@ -624,8 +624,8 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = 'Titel';
+  $handler->display->display_options['fields']['title']['alter']['max_length'] = '50';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
   /* Field: Content: Date */
@@ -1701,7 +1701,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title="Her vises de seneste 8 møder i de stående politiske udvalg. Der er ikke et referat tilgængeligt før status er angivet til publiceret."></div>';
+  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title="Her vises de seneste 8 møder i alle mødefora. Der er ikke et referat tilgængeligt før status er angivet til publiceret."></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* Relationship: Content: Committee (field_committee) */
   $handler->display->display_options['relationships']['field_committee_tid']['id'] = 'field_committee_tid';
@@ -1874,7 +1874,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('<div class="help-button" title="Her vises de seneste 8 møder i de stående politiske udvalg. Der er ikke et referat tilgængeligt før status er angivet til publiceret."></div>'),
+    t('<div class="help-button" title="Her vises de seneste 8 møder i alle mødefora. Der er ikke et referat tilgængeligt før status er angivet til publiceret."></div>'),
     t('term from field_committee'),
     t('field_user_committee'),
     t('Status'),
