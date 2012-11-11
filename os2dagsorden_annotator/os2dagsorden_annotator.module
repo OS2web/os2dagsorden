@@ -30,6 +30,15 @@ function os2dagsorden_annotator_menu() {
         'access callback' => '_os2dagsorden_annotator_check_permission',
         'page arguments' => array(1, 3, 5)
     );
+    
+    $items['meeting/%/bullet-point/%/bullet-point-attachment-light/%'] = array(
+        'title' => 'Bilag',
+        'type' => MENU_CALLBACK,
+        'page callback' => '_os2dagsorden_annotator_view_light',
+        'access arguments' => array(1, 3, 5),
+        'access callback' => '_os2dagsorden_annotator_check_permission',
+        'page arguments' => array(1, 3, 5)
+    );
 
     $items['meeting/%/bullet-point/%/bullet-point-attachment/%/print'] = array(
         'title' => 'Bilag Print Version',
@@ -273,8 +282,8 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
         //hiding the side pane menu
 	drupal_add_js('annotator_hide_menu();', 'inline');
 
+	drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.css');
         drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.css');
-        drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.css');
         
         //overriding title for bilag
 	drupal_set_title($bilag->title);
@@ -310,8 +319,15 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 	  $download_pdf_link = file_create_url($bilag->field_bpa_file['und'][0]['uri']);
 	  $html .= '<input style="margin-right:10px;" class="form-submit" type="button" onclick="window.open(\'' . $download_pdf_link . '\')" value="Hent PDF-version">';
 	  
+	  //composing the print link
+	  //$print_link = $GLOBALS['base_path'] . '/print/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id . '/print';
+	  
+	  
 	  //composing html output
-	  $html .= _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) . 
+	  $html .= 
+		//'<input class="form-submit" type="button" onclick="window.open(\'' . $print_link . '\')" value="Print">'
+		'</div>' .
+		_os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) . 
 		'<div id="content">' . $text . '</div>' . 
 		_os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) .
 		'</div>';
@@ -336,29 +352,96 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
     return $html;
 }
 
+function _os2dagsorden_annotator_view_light($meeting_id, $bullet_point_id, $bilag_id){
+    $bilag = node_load($bilag_id);
+    if (strcmp($bilag->type, 'bullet_point_attachment') == 0) {
+        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.js');
+        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.min.js');
+        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/json2.js');
+
+        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_secure.js');
+        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/XPath.js');
+
+        global $user, $base_path, $base_url;
+        drupal_add_js('init("' . $user->name . '","' . $meeting_id . '","' . $bullet_point_id . '","' . $bilag_id . '","' . $base_path . '?q=");', 'inline');
+ 
+        drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.css');
+        drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.css');
+        
+	//overriding title for bilag
+	drupal_set_title($bilag->title);
+	
+	$html = '<div class="node">';
+	
+	if (!empty($bilag->field_bpa_file['und'][0]['uri'])){//is an actual bilag
+	  
+	  //preparing the pager
+	  $pageStart = intval($_GET['page'])+1;
+	  $pageEnd = intval($_GET['page'])+ANNOTATOR_PAGES_PER_VIEW;
+    
+	  //bilag has converter to HTML version of file, getting the text out of it
+	  if (!empty($bilag->field_bpa_file_html['und'][0])){
+	    $file_uri = $bilag->field_bpa_file_html['und'][0]['uri'];
+	    $body_file = file_get_contents($file_uri);
+	    $text = os2dagsorden_pdf2htmlex_hide_unused_pages($body_file, $pageStart, $pageEnd);
+	    $pageAmount = $bilag->field_bpa_page_amount['und'][0]['value'];
+	  }
+	  
+	  //composing html output
+	  $html .= 
+		_os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount, TRUE) . 
+		'<div id="content">' . $text . '</div>' . 
+		_os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount, TRUE) .
+		'</div>';
+	} else {//is not an actual bilag
+	  	  
+	  //getting text
+	  $text = $bilag->field_bpa_body['und'][0]['value'];
+	 
+	  //composing html output
+	  $html .= '<div id="content">' . $text . '</div>' . 
+		  '</div>';
+	}
+    }
+    
+    //hiding unneeded regions
+    drupal_add_js("jQuery(document).ready(function(){jQuery('#section-header').hide();});","inline");
+    drupal_add_js("jQuery(document).ready(function(){jQuery('#breadcrumb').hide();});","inline");
+    drupal_add_js("jQuery(document).ready(function(){jQuery('#zone-postscript-wrapper').hide();});","inline");
+    
+    //drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.js');
+
+    return $html;
+}
+
+
 /**
  * Renders the html for custom pager for bilag.
  *
- * @param int $meeting_id      ID of the meeting
- * @param int $bullet_point_id ID of the bullet point
- * @param int $bilag_id        ID of the attachment (bilag)
- * @param int $pageLimit       maximum numbers of pages in this bilag
+ * @param int      $meeting_id      ID of the meeting
+ * @param int      $bullet_point_id ID of the bullet point
+ * @param int      $bilag_id        ID of the attachment (bilag)
+ * @param int      $pageLimit       maximum numbers of pages in this bilag
+ * @param boolean  $light           is used in the light mode
  *
  * @return the html code of pager.
  */
-function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageLimit){
+function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageLimit, $light = FALSE){
     $pages_per_view = ANNOTATOR_PAGES_PER_VIEW;
     $page = intval($_GET['page']);//value or 0 if not set
     
-    $current_bilag_url = $GLOBALS['base_url'] . '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id;
+    if (!$light)
+      $current_bilag_url = $GLOBALS['base_url'] . '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id;
+    else
+      $current_bilag_url = $GLOBALS['base_url'] . '/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment-light/' . $bilag_id;
     
     if ($page-$pages_per_view >= 0)
-      $prev_page_link = $current_bilag_url . '&page=' . ($page-$pages_per_view );
+      $prev_page_link = $current_bilag_url . '?page=' . ($page-$pages_per_view );
     else if ($page-$pages_per_view < 0 && $page > 0)
       $prev_page_link = $current_bilag_url; //go to the first page
       
     if ($page+5 <= $pageLimit)
-      $next_page_link = $current_bilag_url . '&page=' . ($page+$pages_per_view);
+      $next_page_link = $current_bilag_url . '?page=' . ($page+$pages_per_view);
     
     $pager = '<div class="item-list clearfix annotator-pager">
 		<ul class="pager">';
@@ -396,7 +479,8 @@ function _os2dagsorden_annotator_view_print($meeting_id, $bullet_point_id, $bila
         if (!empty($bilag->field_bpa_file['und'][0]['uri'])){
 	  $file_uri = $bilag->field_bpa_file_html['und'][0]['uri'];
 	  $body_file = file_get_contents($file_uri);
-	  $body = os2dagsorden_pdf2htmlex_hide_unused_pages($body_file, $pageStart, $pageEnd);
+	  $body = $body_file;
+	  //$body = os2dagsorden_pdf2htmlex_hide_unused_pages($body_file, $pageStart, $pageEnd);
 	}
 	else {
 	  $body = $bilag->field_bpa_body['und'][0]['value'];
