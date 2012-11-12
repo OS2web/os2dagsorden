@@ -89,6 +89,8 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'name' => 'access overlay',
     'roles' => array(
       0 => 'administrator',
+      1 => 'authenticated user',
+      2 => 'os2dagsorden',
     ),
     'module' => 'overlay',
   );

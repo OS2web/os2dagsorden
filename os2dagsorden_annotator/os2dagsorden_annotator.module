@@ -352,6 +352,15 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
     return $html;
 }
 
+/**
+ * Serves the attachment with annotating option in light mode - is used in overlay window.
+ *
+ * @param int $meeting_id      ID of the meeting
+ * @param int $bullet_point_id ID of the bullet point
+ * @param int $bilag_id        ID of the attachment (bilag)
+ *
+ * @return the html code of the specific attachment with annotating option.
+ */
 function _os2dagsorden_annotator_view_light($meeting_id, $bullet_point_id, $bilag_id){
     $bilag = node_load($bilag_id);
     if (strcmp($bilag->type, 'bullet_point_attachment') == 0) {
@@ -409,11 +418,20 @@ function _os2dagsorden_annotator_view_light($meeting_id, $bullet_point_id, $bila
     drupal_add_js("jQuery(document).ready(function(){jQuery('#breadcrumb').hide();});","inline");
     drupal_add_js("jQuery(document).ready(function(){jQuery('#zone-postscript-wrapper').hide();});","inline");
     
-    //drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.js');
-
     return $html;
 }
 
+/**
+ * Implements hook_overlay_paths().
+ * Speficies which paths will be used to be shown in overlay window.
+ *
+ * @return array of paths.
+ */
+function os2dagsorden_annotator_overlay_paths(){
+    return array(
+	'meeting/*/bullet-point/*/bullet-point-attachment-light/*' => TRUE,
+    );
+}
 
 /**
  * Renders the html for custom pager for bilag.
