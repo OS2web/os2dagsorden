@@ -622,6 +622,8 @@ function _os2dagsorden_importer_process_meetings($xml_file) {
             'meeting_start_time' => (string) array_shift($row->xpath('MeetingStartTime')),
             'hex_color' => (string) array_shift($row->xpath('HEXColorCode')),
             'deactivated' => (int) array_shift($row->xpath('Deactivated')),
+            'cancelled' => (int) array_shift($row->xpath('Cancelled')),
+            'changed' => (int) array_shift($row->xpath('Changed')),            
         );
 
         if ($xml_data['deactivated'] == 0) {
@@ -680,8 +682,22 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
         if (isset($result['node'])) {
             $nids = array_keys($result['node']);
             $node = reset(entity_load('node', $nids));
+            
             //avoiding reimports, or value overriding
             if (!empty($node->field_meeting_acadre_version['und']['0']['value'])) {
+		
+		//if meeting is to be cancelled, but is not cancelled yet, then cancell it.
+		if ($xml_data['cancelled'] == 1 && strcmp($node->field_meeting_status[$node->language][0]['value'],'Aflyst') != 0){
+		  $node->field_meeting_status[$node->language][0]['value'] = 'Aflyst';
+		  node_submit($node);
+		  node_save($node);
+		} //if meeting is changed, but is not marked as changed then mark is as changed
+		else if ($xml_data['changed'] == 1 && strcmp($node->field_meeting_status[$node->language][0]['value'],'Planlagt') == 0){
+		  $node->field_meeting_status[$node->language][0]['value'] = 'Ændret';
+		  node_submit($node);
+		  node_save($node);
+		}
+		
                 return $node;
             }
         }
@@ -705,7 +721,14 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
 
     $node->field_meeting_id[$node->language][0]['value'] = $xml_data['meeting_id'];
     
-    $node->field_meeting_status[$node->language][0]['value'] = 'Planlagt';
+    if ($xml_data['cancelled'] == 1){
+      $node->field_meeting_status[$node->language][0]['value'] = 'Aflyst';
+    } else if ($xml_data['changed'] == 1){
+      $node->field_meeting_status[$node->language][0]['value'] = 'Ændret';
+    }
+    else {
+      $node->field_meeting_status[$node->language][0]['value'] = 'Planlagt';
+    }
 
     if (!empty($xml_data['meeting_start_date'])) {
         $node->field_date[$node->language][0]['value'] = $xml_data['meeting_start_date'];
