@@ -1042,8 +1042,8 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){	
 	  print \'<div class="attachment_text_container">\';
 
-	  print \'<div class="attachment_text_full_container bpa-\' . $attachment->nid . \'">\';
-	  print($attachment->field_bpa_body[\'und\'][0][\'value\']);
+	  print \'<div class="attachment_text_full_container ajax-progress bpa-\' . $row->nid_1 . \'-\' . $row->nid . \'-\' . $attachment->nid . \'">\';
+	  print \'Vent venligst...<div class="throbber"></div>\';
 	  print \'</div>\';
 
 	  print \'</div>\';
@@ -1073,12 +1073,9 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       if (!empty($attachment->field_bpa_file_html[\'und\'][0])){	  
 	print \'<div class="attachment_text_container">\';
 
-	print \'<div class="attachment_text_trimmed_container bpa-\' . $attachment->nid . \'">\';
+	print \'<div class="attachment_text_trimmed_container ajax-progress bpa-\' . $row->nid_1 . \'-\' . $row->nid . \'-\' . $attachment->nid . \'">\';
 
-	$file_uri = $attachment->field_bpa_file_html[\'und\'][0][\'uri\'];
-	$body_file = file_get_contents($file_uri);
-
-	print os2dagsorden_pdf2htmlex_print_first_page($body_file, $attachment->nid);
+	print \'Vent venligst...<div class="throbber"></div>\';
 	print \'</div>\';
 	print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
 
@@ -2203,8 +2200,8 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
 	print \'<div class="attachment_text_container">\';
 
-	print \'<div class="attachment_text_full_container bpa-\' . $attachment->nid . \'">\';
-	print($attachment->field_bpa_body[\'und\'][0][\'value\']);
+	print \'<div class="attachment_text_full_container ajax-progress bpa-\' . $meeting_id . \'-\' . $row->nid_1 . \'-\' . $attachment->nid . \'">\';
+	print \'Vent venligst...<div class="throbber"></div>\';
 	print \'</div>\';
 
 	print \'</div>\';
@@ -2234,12 +2231,9 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
     if (!empty($attachment->field_bpa_file_html[\'und\'][0])){
       print \'<div class="attachment_text_container">\';
 
-      print \'<div class="attachment_text_trimmed_container bpa-\' . $attachment->nid . \'">\';
-
-      $file_uri = $attachment->field_bpa_file_html[\'und\'][0][\'uri\'];
-      $body_file = file_get_contents($file_uri);
-
-      print os2dagsorden_pdf2htmlex_print_first_page($body_file, $attachment->nid);
+      print \'<div class="attachment_text_trimmed_container ajax-progress bpa-\' . $meeting_id . \'-\' . $row->nid_1 . \'-\' . $attachment->nid . \'">\';
+      
+      print \'Vent venligst...<div class="throbber"></div>\';
       print \'</div>\';
       print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
 
