@@ -1,12 +1,14 @@
-function init(name, meeting_id, bullet_point_id, bilag_id, url) {
-	jQuery(document).ready(function() {
+function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotate, url, filter = false) {	
+  jQuery(document).ready(function() {
           	"use strict";
-		jQuery('#content').annotator().annotator('addPlugin', 'Touch', {
+		jQuery(element_to_annotate).annotator().annotator('addPlugin', 'Touch', {
 			force: location.search.indexOf('force') > -1,
 			useHighlighter: location.search.indexOf('highlighter') > -1
 		});
-		jQuery('#content').annotator().annotator('addPlugin', 'Filter');
-		jQuery('#content').annotator().annotator('addPlugin', 'Store', {
+		if (filter){
+		  jQuery(element_to_annotate).annotator().annotator('addPlugin', 'Filter');
+		}
+		jQuery(element_to_annotate).annotator().annotator('addPlugin', 'Store', {
 			// The endpoint of the store on your server.
 			prefix: url,
 			annotationData: {
@@ -26,7 +28,7 @@ function init(name, meeting_id, bullet_point_id, bilag_id, url) {
 			  destroy: 'annotator/delete/:id',
 			  search:  'annotator/search'
 			}
-		});	
+		});
 	});
 }
 

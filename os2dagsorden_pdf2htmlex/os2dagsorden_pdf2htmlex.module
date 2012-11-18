@@ -313,11 +313,13 @@ function _os2dagsorden_pdf2htmlex_set_meeting_status_published_plus($node) {
  * Is used in the places where only preview of the document is shown.
  *
  * @param string $html html
- * @param int    $id   nid of the bullet point attachment
+ * @param int    $meeting_id       nid of the meeting
+ * @param int    $bullet_point_id  nid of the bullet point
+ * @param int    $bilag_id         nid of the bullet point attachment
  *
  * @return html with selected pages left
  */
-function os2dagsorden_pdf2htmlex_print_first_page($html, $id){
+function os2dagsorden_pdf2htmlex_print_first_page($html, $meeting_id, $bullet_point_id, $bilag_id){
     $html = utf8_decode($html);
     
     $doc = new DOMDocument();
@@ -343,7 +345,7 @@ function os2dagsorden_pdf2htmlex_print_first_page($html, $id){
     $styles_specific = explode(PHP_EOL, $style_cut);
     for ($i = 0; $i < count($styles_specific); $i++){
       if (substr($styles_specific[$i], 0, 1) === '.' || substr($styles_specific[$i], 0, 1) === '#')//id or class
-	$styles_specific[$i] = '.bpa-' . $id . ' ' . $styles_specific[$i];
+	$styles_specific[$i] = '.bpa-' . $meeting_id . '-' . $bullet_point_id . '-' . $bilag_id . ' ' . $styles_specific[$i];
     }
     $style_specific = implode(PHP_EOL, $styles_specific);
     $html = substr_replace($html, $style_specific, $start, $end+count('<style>')-$start); //replacing the last style with updated
