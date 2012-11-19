@@ -457,7 +457,7 @@ function _os2dagsorden_annotator_view_raw($meeting_id, $bullet_point_id, $bilag_
 	  $html = $text;
 	}
     }
-        
+    header('Content-Type: text/html; charset=utf-8');
     print $html;
 }
 
