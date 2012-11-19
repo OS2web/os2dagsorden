@@ -1,4 +1,4 @@
-function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotate, url, filter = false) {	
+function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotate, url, filter) {	
   jQuery(document).ready(function() {
           	"use strict";
 		jQuery(element_to_annotate).annotator().annotator('addPlugin', 'Touch', {
