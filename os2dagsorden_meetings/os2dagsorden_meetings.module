@@ -31,7 +31,7 @@ function os2dagsorden_meetings_menu() {
 	'type' => MENU_CALLBACK,
     );
     $items['os2dagsorden/test/meetings'] = array(
-        'page callback' => 'os2dagsorden_meetings_test_page',
+        'page callback' => 'os2dagsorden_meetings_cron',
         'access arguments' => array('administer os2web'),
         'type' => MENU_CALLBACK,
     );
@@ -139,10 +139,10 @@ function os2dagsorden_meetings_do_import_batch() {
     foreach ($files as $file) {
       if ($focus !== false) {
 	if (strpos($file->name, (string) $focus) !== FALSE) {
-	  $batch['operations'][] = array('_os2os2dagsorden_meetings_process_manifest', array($file->uri));
+	  $batch['operations'][] = array('_os2dagsorden_meetings_process_manifest', array($file->uri));
 	}
       } else {
-	$batch['operations'][] = array('_os2os2dagsorden_meetings_process_manifest', array($file->uri));
+	$batch['operations'][] = array('_os2dagsorden_meetings_process_manifest', array($file->uri));
       }
     }
     if ($focus) {
@@ -232,8 +232,7 @@ function _os2dagsorden_meetings_process_agenda($agendainfo_xml, $meeting_id) {
         'casePublish' => (string) array_shift($agendainfo_xml->xpath('field/@casePublish')),
         'startDate' => (string) array_shift($agendainfo_xml->xpath('field/@startDate')),
         'endDate' => (string) array_shift($agendainfo_xml->xpath('field/@endDate'))
-    );
-    
+    );    
     if (empty($agendainfo['filesfolder'])){
 	$agendainfo['filesfolder'] = 'Files_' . $meeting_id . '_' . $agendainfo['docID'];
     }
@@ -348,6 +347,7 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
             node_object_prepare($node);    
         }
     }
+    print_r($node->nid . " ");
 
     //avoiding reimports
     if (isset($node->field_meeting_acadre_version[$node->language][0])) {
