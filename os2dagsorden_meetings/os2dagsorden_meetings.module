@@ -291,6 +291,7 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
         'committee' => (string) array_shift($xml->xpath("//table[@name='committee']/fields/field[@name='name']")),
         'description' => (string) array_shift($xml->xpath("//table[@name='agenda']/fields/field[@name='description']")),
         'cdate' => strtotime((string) array_shift($xml->xpath("//table[@name='agenda']/fields/field[@name='producedate']"))),
+        'agenda_type' => (string) array_shift($xml->xpath("//table[@name='agenda']/fields/field[@name='name']")),
         'meeting_id' => (string) array_shift($xml->xpath("//table[@name='meeting']/fields/field[@name='sysid']")),
         'committee_acadre_id' => (int) array_shift($xml->xpath("//table[@name='committee']/fields/field[@name='sysid']")),
         'id' => $info['sysid'],
@@ -404,8 +405,7 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
     foreach ($items as $item) {
         $xml = array_shift($item->xpath("table[@name='agendaitem']"));
         $id = (int) array_shift($item->xpath("fields/field[@name='sort']"));
-        $item_nids[] = _os2dagsorden_meetings_add_item($info, $xml, $id);
-        // add node for each items
+	$item_nids[] = _os2dagsorden_meetings_add_item($info, $xml, $id, $options['agenda_type']);
     }
 
     foreach ($item_nids as $nid) {
@@ -468,13 +468,14 @@ function os2dagsorden_meetings_add_meeting_description($node, $info){
 /**
  * Adds an item (bullet point) to the meeting
  *
- * @param mixed $info xml extracted information
- * @param mixed $xml  raw xml_item
- * @param int   $id   bullet point internal id (does not represent anything, is similar to ordinal number)
+ * @param mixed  $info        xml extracted information
+ * @param mixed  $xml         raw xml_item
+ * @param int    $id          bullet point internal id (does not represent anything, is similar to ordinal number)
+ * @param string $agenda_type type of agenda (simple of additional agenda, etc)
  * 
  * @return created bullet point nid
  */
-function _os2dagsorden_meetings_add_item($info, $xml, $id) {
+function _os2dagsorden_meetings_add_item($info, $xml, $id, $agenda_type) {
     $options = array(
         'sysid' => (int) array_shift($xml->xpath("fields/field[@name='sysid']")),
         'name' => (string) array_shift($xml->xpath("fields/field[@name='name']")),
@@ -513,8 +514,12 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
         $node->field_bullet_point_id[$node->language][0]['value'] = $options['sysid'];
     }
 
-
-    $node->title = 'Punkt ' . $id . ' ' . $options['name'] . ' (' . $options['caseno'] . ')';
+    error_log("Stan look here: " . $agenda_type);
+    //check the name
+    if (strcmp($agenda_type, 'Tillægsreferat') != 0)
+      $node->title = 'Punkt ' . $id . ' ' . $options['name'] . ' (' . $options['caseno'] . ')';
+    else
+     $node->title = 'Tillægsdagsorden: Punkt ' . $id . ' ' . $options['name'] . ' (' . $options['caseno'] . ')';
 
     if (strcmp($options['accessname'], 'Lukket') == 0) {
         $node->field_bul_point_closed[$node->language][0]['value'] = 1;
@@ -582,7 +587,7 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id) {
 	  if (strcmp($filetype, ".PDF") == 0)//if is PDF, schedule for HTML conversion
 		  os2dagsorden_pdf2htmlex_schedule($file->fid, $enclosure_nid);
 	}        
-    }
+    }*/
 
     node_submit($node);
     node_save($node);
@@ -851,23 +856,23 @@ function os2dagsorden_meetings_node_update($node) {
  */
 function os2dagsorden_meetings_node_delete($node) {
     if ($node->type === 'meeting') {
-//     db_delete('os2web_meetings_imported')->condition('nid', $node->nid)->execute();
-//     //TODO: Delete bullets from meeting.
-//     foreach ($node->field_ref_bullet_points[$node->language] as $nids) {
-//       node_delete($nids['target_id']);
-//     }
+    db_delete('os2web_meetings_imported')->condition('nid', $node->nid)->execute();
+    //TODO: Delete bullets from meeting.
+    foreach ($node->field_ref_bullet_points[$node->language] as $nids) {
+      node_delete($nids['target_id']);
+    }
     }
     if ($node->type === 'bullet_point') {
-//     //TODO: Delete bullet attachments from meeting.
-//     if (isset($node->field_ref_attachment[$node->language])) {
-//       foreach ($node->field_ref_attachment[$node->language] as $nids) {
-//         node_delete($nids['target_id']);
-//       }
-//     }
-//     if (isset($node->field_enclosures[$node->language])) {
-//       foreach ($node->field_enclosures[$node->language] as $file) {
-//       file_delete((object) $file, TRUE);
-//       }
-//     }
+    //TODO: Delete bullet attachments from meeting.
+    if (isset($node->field_ref_attachment[$node->language])) {
+      foreach ($node->field_ref_attachment[$node->language] as $nids) {
+        node_delete($nids['target_id']);
+      }
+    }
+    if (isset($node->field_enclosures[$node->language])) {
+      foreach ($node->field_enclosures[$node->language] as $file) {
+      file_delete((object) $file, TRUE);
+      }
+    }
     }
 }
