@@ -587,7 +587,7 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id, $agenda_type) {
 	  if (strcmp($filetype, ".PDF") == 0)//if is PDF, schedule for HTML conversion
 		  os2dagsorden_pdf2htmlex_schedule($file->fid, $enclosure_nid);
 	}        
-    }*/
+    }
 
     node_submit($node);
     node_save($node);
