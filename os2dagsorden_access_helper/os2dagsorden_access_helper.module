@@ -12,6 +12,46 @@
 */
 
 /**
+ * Implementation of hook_menu
+ *
+ * @return list of links
+ */
+function os2dagsorden_access_helper_menu() {
+    $items = array();
+    
+    $items['bullet-point/%/speaker-paper/%/print'] = array(
+        'title' => 'Print Talepapir',
+        'type' => MENU_CALLBACK,
+        'page arguments' => array(3),
+	'page callback' => 'os2dagsorden_access_helper_print_speaker_paper',
+	'access arguments' => array(1),
+	'access callback' => 'os2dagsorden_access_helper_bullet_point_has_speaker_paper',
+	'type' => MENU_CALLBACK,
+    );
+    
+    return $items;
+}
+
+/**
+ * Returns the nice print version of the speaker paper
+ *
+ * @param int $speaker_paper_id ID of the speaker paper
+ *
+ * @return html for nice printing of speaker paper
+ */
+function os2dagsorden_access_helper_print_speaker_paper($speaker_paper_id) {
+    $speaker_paper = node_load($speaker_paper_id);
+    if (strcmp($speaker_paper->type, 'speaker_paper') == 0) {	 
+        drupal_set_title(t('Talepapir') . ' - ' . $speaker_paper->title);
+        $html .= '<h3>Talepapir - ' . $speaker_paper->title . '</h3>';
+
+	$html .= $speaker_paper->body['und'][0]['value'];
+    }
+
+    return ('<div class="node" id="content">' . $html . '</div>');    
+}
+
+/**
  * Checks if given meeting has speaker paper of the current user attached.
  *
  * @param int $meeting_id ID of the meeting
