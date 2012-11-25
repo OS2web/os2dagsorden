@@ -89,6 +89,7 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
   $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
   $handler->display->display_options['fields']['title']['alter']['text'] = '<font color="[field_hex]">[title]</font>';
   $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['title']['alter']['path'] = 'meeting/[nid]';
@@ -98,6 +99,16 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Field: Content: Short title */
+  $handler->display->display_options['fields']['field_title_short']['id'] = 'field_title_short';
+  $handler->display->display_options['fields']['field_title_short']['table'] = 'field_data_field_title_short';
+  $handler->display->display_options['fields']['field_title_short']['field'] = 'field_title_short';
+  $handler->display->display_options['fields']['field_title_short']['label'] = '';
+  $handler->display->display_options['fields']['field_title_short']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['field_title_short']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['field_title_short']['alter']['link_class'] = 'color_[field_hex]';
+  $handler->display->display_options['fields']['field_title_short']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_title_short']['empty'] = '[title]';
   /* Sort criterion: Content: Date -  start date (field_date) */
   $handler->display->display_options['sorts']['field_date_value']['id'] = 'field_date_value';
   $handler->display->display_options['sorts']['field_date_value']['table'] = 'field_data_field_date';
@@ -497,9 +508,9 @@ print \'<a href="\'.$base_url.\'?q=meetings-export/day/\'.$date.\'" class="butto
     t('yyy'),
     t('<font color="[field_hex]">[title]</font>'),
     t('meeting/[nid]'),
+    t('[title]'),
     t('All'),
     t('Måned'),
-    t('[title]'),
     t('Week'),
     t('Dag'),
     t('Year'),
