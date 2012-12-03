@@ -12,6 +12,8 @@
 * @link     http://bellcom.dk
 */
 
+define('ACADRE_MM_IMPORT_DIR', 'public://acadre');
+
 /**
  * Implementation of settings form specifically for OS2Dagsorden system.
  *
@@ -55,13 +57,21 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#disabled' => variable_get('os2dagsorden_pws_use_local_copy'),
   );
   
-  //No import committees
+  //Import committees
   $form['os2dagsorden_import_committees'] = array(
       '#type' => 'fieldset',
       '#collapsible' => TRUE,
       '#title' => t('List of committees to import:'),
       '#description' => t('List of committees, which should be imported from Acadre/SOFD systems.'),
   );
+  
+  $form['os2dagsorden_import_committees']['os2dagsorden_meetings_path'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Sti til acadre publish folder.',
+    '#description' => 'Dette er stien hvor Acadre publisere .XML filer til.',
+    '#default_value' => variable_get('os2dagsorden_meetings_path', ACADRE_MM_IMPORT_DIR),
+  );
+  
   $form['os2dagsorden_import_committees']['os2dagsorden_import_committees_list'] = array(
       '#type' => 'textarea',
       '#default_value' => variable_get('os2dagsorden_import_committees_list'),
