@@ -106,10 +106,10 @@ function acadre_esdh_mm_import_meeting($meeting) {
         }
         else {
           // Publication not published or public.
-          $meetings[] = array(
-           'system_id' => $agendainfo['sysid'],
-           'publish' => FALSE,
-          ) + os2web_esdh_provider_default_meeting();
+//           $meetings[] = array(
+//            'system_id' => $agendainfo['sysid'],
+//            'publish' => FALSE,
+//           ) + os2web_esdh_provider_default_meeting();
         }
       }
     }

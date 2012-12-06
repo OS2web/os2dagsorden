@@ -300,9 +300,11 @@ function _acadre_esdh_similar_file_exists($filename) {
     return $filename;
   }
   $lcase_filename = strtolower($filename);
-  foreach (glob(dirname($filename) . '/*') as $file) {
-    if (strtolower($file) == $lcase_filename) {
-      return $file;
+  if (!empty($files)){
+    foreach (glob(dirname($filename) . '/*') as $file) {
+      if (strtolower($file) == $lcase_filename) {
+	return $file;
+      }
     }
   }
   return FALSE;
