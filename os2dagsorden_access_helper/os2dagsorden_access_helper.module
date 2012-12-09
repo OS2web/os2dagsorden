@@ -73,18 +73,23 @@ function os2dagsorden_access_helper_print_meeting_speaker_papers($meeting_id){
     global $user;
     $speaker_papers_print = "";    
     $meeting = node_load($meeting_id);
+    $bullet_point_unique = array();
     if (isset($meeting->field_ref_bullet_points['und'])) {
 	foreach ($meeting->field_ref_bullet_points['und'] as $bullet_point) {
+	  $bullet_point_unique[] = $bullet_point['target_id'];
+	}
+	$bullet_point_unique = array_unique($bullet_point_unique);
+	foreach($bullet_point_unique as $bullet_point){
             $query = new EntityFieldQuery();
 	    $query->entityCondition('entity_type', 'node')
 		->propertyCondition('type', array('speaker_paper'))
 		->propertyCondition('uid', $user->uid)
-		->fieldCondition('field_ref_bullet_point', 'target_id', $bullet_point['target_id'], '=');
+		->fieldCondition('field_ref_bullet_point', 'target_id', $bullet_point, '=');
 
 	    $result = $query->execute();
 	    if (isset($result['node'])){
-	    $nids = array_keys($result['node']);
-	    $speaker_papers_print .= os2dagsorden_access_helper_print_speaker_paper($bullet_point['target_id'], $nids[0]);
+	      $nids = array_keys($result['node']);
+	      $speaker_papers_print .= os2dagsorden_access_helper_print_speaker_paper($bullet_point, $nids[0]);
 	    }
         }
     }
