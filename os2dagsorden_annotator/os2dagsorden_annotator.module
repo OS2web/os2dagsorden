@@ -286,8 +286,8 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_secure.js');
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/XPath.js');
 
-        global $base_path, $base_url;
-        drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',"#content","' . $base_path . '?q=", true);', 'inline');
+        global $base_url;
+        drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',"#content","' . $base_url . '?q=", true);', 'inline');
         //hiding the side pane menu
 	drupal_add_js('annotator_hide_menu();', 'inline');
 
@@ -329,7 +329,7 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 	  $html .= '<input style="margin-right:10px;" class="form-submit" type="button" onclick="window.open(\'' . $download_pdf_link . '\')" value="Hent PDF-version">';
 	  
 	  //composing the print link
-	  $print_link = $GLOBALS['base_path'] . '/print/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id . '/print';
+	  $print_link = $GLOBALS['base_url'] . '/print/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id . '/print';
 	  
 	  //composing html output
 	  $html .= 
@@ -348,7 +348,7 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 	  $text = $bilag->field_bpa_body['und'][0]['value'];
 	  
 	  //composing the print link
-	  $print_link = $GLOBALS['base_path'] . '/print/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id . '/print';
+	  $print_link = $GLOBALS['base_url'] . '/print/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id . '/print';
 	  
 	  //composing html output
 	  $html .= '<input class="form-submit" type="button" onclick="window.open(\'' . $print_link . '\')" value="Print"></div>' .
@@ -379,8 +379,8 @@ function _os2dagsorden_annotator_view_light($meeting_id, $bullet_point_id, $bila
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_secure.js');
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/XPath.js');
 
-        global $base_path, $base_url;
-        drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',"#content","' . $base_path . '?q=", true);', 'inline');
+        global $base_url;
+        drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',"#content","' . $base_url . '?q=", true);', 'inline');
  
         drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.css');
         drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.css');
