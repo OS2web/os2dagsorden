@@ -329,12 +329,11 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 	  $html .= '<input style="margin-right:10px;" class="form-submit" type="button" onclick="window.open(\'' . $download_pdf_link . '\')" value="Hent PDF-version">';
 	  
 	  //composing the print link
-	  //$print_link = $GLOBALS['base_path'] . '/print/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id . '/print';
-	  
+	  $print_link = $GLOBALS['base_path'] . '/print/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id . '/print';
 	  
 	  //composing html output
 	  $html .= 
-		//'<input class="form-submit" type="button" onclick="window.open(\'' . $print_link . '\')" value="Print">'
+		'<input class="form-submit" type="button" onclick="window.open(\'' . $print_link . '\')" value="Print noter">' .
 		'</div>' .
 		_os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) . 
 		'<div id="content">' . $text . '</div>' . 
@@ -457,7 +456,7 @@ function _os2dagsorden_annotator_view_raw($meeting_id, $bullet_point_id, $bilag_
 	  $html = $text;
 	}
     }
-    header('Content-Type: text/html; charset=utf-8');
+    header('Content-Type: text/html; charset=utf-8');            
     print $html;
 }
 
@@ -530,53 +529,111 @@ function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $
 function _os2dagsorden_annotator_view_print($meeting_id, $bullet_point_id, $bilag_id) {
     $bilag = node_load($bilag_id);
     if (strcmp($bilag->type, 'bullet_point_attachment') == 0) {
-
-        drupal_set_title(t('Bilag') . ' - ' . $bilag->title);
-        $header = '<h3>Bilag - ' . $bilag->title . '</h3>';
-
-        if (!empty($bilag->field_bpa_file['und'][0]['uri'])){
-	  $file_uri = $bilag->field_bpa_file_html['und'][0]['uri'];
-	  $body_file = file_get_contents($file_uri);
-	  $body = $body_file;
-	  //$body = os2dagsorden_pdf2htmlex_hide_unused_pages($body_file, $pageStart, $pageEnd);
-	}
-	else {
-	  $body = $bilag->field_bpa_body['und'][0]['value'];
-	}
-	  
 	//getting annotations from storage
         $annotations = os2dagsorden_annotator_get_notes_by_attachment_id($bilag_id);
 
-        //initiating variabes
-        $annotation_list = '';
-        $note_nr = 1;
+	//initiating variabes
+	$annotation_list = '';//in a nice print format
+	$note_nr = 1;//used for enumerating
+	
+        //converted attachment
+        if (!empty($bilag->field_bpa_file['und'][0]['uri'])){
+	  drupal_set_title($bilag->title);
+	  $header = '<h3>' . $bilag->title . '</h3>';
+	  
+	  $text = $header;
+	  
+	  //printing annotations one by one in right order
+	  while (!empty($annotations)) {
+	      //flushing array indexing
+	      $annotations = array_values($annotations);
 
-        //printing annotations one by one in right order
-        while (!empty($annotations)) {
-            //flushing array indexing
-            $annotations = array_values($annotations);
+	      $first_note_ind = 0;
+	      for ($i = 1; $i < count($annotations); $i++) {
+		  $location = _os2dagsorden_compare_xpath($annotations[$i]->ranges[0]->start, $annotations[$first_note_ind]->ranges[0]->start);
+		  
+		  if ($location == -1)
+		      $first_note_ind = $i;
+		  else if ($location == 0 && $annotations[$i]->ranges[0]->startOffset < $annotations[$first_note_ind]->ranges[0]->startOffset)
+		      $first_note_ind = $i;
+	      }
+	      $annotation_list .= _os2dagsorden_annotator_append_note($annotations[$first_note_ind], $note_nr, true);
+	      $note_nr++;
 
-            $first_note_ind = 0;
-            for ($i = 1; $i < count($annotations); $i++) {
-                if ($annotations[$i]->ranges[0]->startOffset < $annotations[$first_note_ind]->ranges[0]->startOffset)
-                    $first_note_ind = $i;
-            }
-            $body = _os2dagsorden_annotator_append_index($body, $annotations[$first_note_ind], $note_nr);
-            $annotation_list .= _os2dagsorden_annotator_append_note($annotations[$first_note_ind], $note_nr);
-            $note_nr++;
+	      unset($annotations[$first_note_ind]);
+	  }
+	}
+	//just billag
+	else {
+	  drupal_set_title(t('Bilag') . ' - ' . $bilag->title);
+	  $header = '<h3>Bilag - ' . $bilag->title . '</h3>';
+	  $text = $header;
+	  
+	  $body = $bilag->field_bpa_body['und'][0]['value'];
 
-            unset($annotations[$first_note_ind]);
-        }
+	  //printing annotations one by one in right order
+	  while (!empty($annotations)) {
+	      //flushing array indexing
+	      $annotations = array_values($annotations);
 
-        $text = $header;
-        $text .= $body;
-        $text .= "<hr/>";
-        $text .= $annotation_list;
+	      $first_note_ind = 0;
+	      for ($i = 1; $i < count($annotations); $i++) {
+		  if ($annotations[$i]->ranges[0]->startOffset < $annotations[$first_note_ind]->ranges[0]->startOffset)
+		      $first_note_ind = $i;
+	      }
+	      $body = _os2dagsorden_annotator_append_index($body, $annotations[$first_note_ind], $note_nr);
+	      $annotation_list .= _os2dagsorden_annotator_append_note($annotations[$first_note_ind], $note_nr);
+	      $note_nr++;
+
+	      unset($annotations[$first_note_ind]);
+	  }
+	  $text .= $body;
+	  $text .= "<hr/>";
+	}
     }
-
+    $text .= $annotation_list;
+  
     return ('<div class="node" id="content">' . $text . '</div>');
 }
 
+/**
+ * Compares two xpath.
+ *
+ * @param string $path1 first xpath
+ * @param string $path2 first xpath
+ *
+ * @return -1 if $path1 is before, 1 if $path1 is after, 0 if equal.
+ */
+function _os2dagsorden_compare_xpath($path1, $path2){
+  $path1_el = explode('/', $path1);
+  $path2_el = explode('/', $path2);
+  
+  //finding the array to start with
+  if (count($path1_el) > count($path1_e2))
+    $start_with = $path1_el;
+  else 
+    $start_with = $path2_e;;
+    
+  for ($i = 0; $i < count($start_with); $i++){
+    if (!strpos($path1_el[$i], '[') && !strpos($path2_el[$i], '['))//if none of them have container index 
+      continue;
+    else if (!strpos($path1_el[$i], '[') && strpos($path2_el[$i], '['))//only second has contained index, means that the first path is before
+      return -1;
+    else if (strpos($path1_el[$i], '[') && !strpos($path2_el[$i], '['))//only first has contained index, means that the second path is before 
+      return 1;
+    else { //all the paths have [..]
+      $num1 = substr($path1_el[$i], strpos($path1_el[$i], '[')+1, strpos($path1_el[$i], ']') - (strpos($path1_el[$i], '[')+1));
+      $num2 = substr($path2_el[$i], strpos($path2_el[$i], '[')+1, strpos($path2_el[$i], ']') - (strpos($path2_el[$i], '[')+1));
+      if ($num1 > $num2)
+	return 1;
+      else if ($num1 < $num2)
+	return -1;
+      else 
+	continue;
+    }
+  }
+  return 0;//equal
+}
 
 
 /**
@@ -600,11 +657,17 @@ function _os2dagsorden_annotator_append_index($body, $note, $note_nr) {
  * Composes the line with note ordinal index and the note text.
  * Is used below the attachment text as footnotes.
  *
- * @param string $note  the note object
- * @param int    $index the ordinal number of the note
+ * @param string  $note        the note object
+ * @param int     $index       the ordinal number of the note
+ * @param boolaen $print_text  print or not print the annotated text
  *
  * @return the footnote with note text.
  */
-function _os2dagsorden_annotator_append_note($note, $index) {
-    return '<b>[' . $index . ']</b> ' . $note->text . '<br/>';
+function _os2dagsorden_annotator_append_note($note, $index, $print_text = false) {
+    if (!$print_text)
+      return '<b>[' . $index . ']</b> ' . $note->text . '<br/>';
+    else {
+      $sp = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+      return '<b>[' . $index . '] ' . $note->quote . '</b>:<br/><i>' . $sp . $note->text . '</i><br/>';
+    }
 }

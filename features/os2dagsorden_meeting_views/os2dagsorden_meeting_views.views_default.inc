@@ -520,13 +520,24 @@ if (!empty($meeting->field_meeting_description[\'und\'][0][\'uri\'])){
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Field: Global: PHP */
+  /* Field: print all speaker papers */
   $handler->display->display_options['fields']['php']['id'] = 'php';
   $handler->display->display_options['fields']['php']['table'] = 'views';
   $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['ui_name'] = 'print all speaker papers';
+  $handler->display->display_options['fields']['php']['label'] = '';
+  $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php']['php_output'] = '<?php 
-print \'test\';
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php
+    if (os2dagsorden_access_helper_meeting_has_speaker_paper($row->nid)){
+    global $base_url;
+    print "<div class=\'speaker-paper-all-print\'>";
+    print \'<input class="form-submit" type="button" onclick="window.open(\';
+    print(" \' " . $base_url . \'/print/meeting/\' . $row->nid . \'/speaker-papers/print\' . " \' ");
+    print \')" value="Print Alle Talepapirer">\';
+
+    print "</div>";
+    }
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -567,14 +578,8 @@ print \'test\';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
-    'bullet_point' => 'bullet_point',
+    'meeting' => 'meeting',
   );
-  /* Filter criterion: User: Current */
-  $handler->display->display_options['filters']['uid_current']['id'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['table'] = 'users';
-  $handler->display->display_options['filters']['uid_current']['field'] = 'uid_current';
-  $handler->display->display_options['filters']['uid_current']['relationship'] = 'uid';
-  $handler->display->display_options['filters']['uid_current']['value'] = '1';
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
@@ -806,6 +811,19 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   );
   $handler->display->display_options['attachment_position'] = 'after';
 
+  /* Display: Print all speaker papers */
+  $handler = $view->new_display('attachment', 'Print all speaker papers', 'attachment_print_all_speaker_papers');
+  $handler->display->display_options['defaults']['title'] = FALSE;
+  $handler->display->display_options['title'] = 'Print alle talepapirer';
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['relationships'] = FALSE;
+  $handler->display->display_options['displays'] = array(
+    'page' => 'page',
+    'default' => 0,
+  );
+  $handler->display->display_options['attachment_position'] = 'after';
+
   /* Display: Dagsorden */
   $handler = $view->new_display('attachment', 'Dagsorden', 'attachment_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
@@ -818,12 +836,12 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['style_options']['columns'] = array(
     'nid_1' => 'nid_1',
     'nid' => 'nid',
+    'php_4' => 'title',
     'nothing' => 'nothing',
     'field_bul_point_closed' => 'title',
     'php_1' => 'title',
     'php' => 'title',
     'title' => 'title',
-    'field_ref_attachment' => 'title',
     'php_3' => 'title',
     'php_2' => 'php_2',
   );
@@ -839,6 +857,11 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     'nid' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php_4' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -868,11 +891,6 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     'title' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_ref_attachment' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -1032,7 +1050,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	//print quick-annotate link only if text is not empty
 	if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){	
 	  $link_light = $base_url.\'/meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment-light/\'.$attachment->nid;
-	  print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
+	  print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" rel="lightframe" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
 	}
 	
 	if (strlen($attachment->title) < 75)
@@ -1063,7 +1081,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       //print quick-annotate link only if text is not empty
       if (!empty($attachment->field_bpa_file_html[\'und\'][0])){	
 	$link_light = $base_url.\'/meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment-light/\'.$attachment->nid;
-	print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
+	print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" rel="lightframe" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
       }
       
       if (strlen($attachment->title) < 75)
@@ -1150,7 +1168,6 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
     t('Meetings bullet points'),
     t('bullet point attachments'),
     t('author'),
-    t('PHP'),
     t('All'),
     t('Page'),
     t('Mødedetaljer'),
@@ -1161,6 +1178,8 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
     t('Udvalg'),
     t('[field_committee]'),
     t('Lokation'),
+    t('Print all speaker papers'),
+    t('Print alle talepapirer'),
     t('Dagsorden'),
     t('<h3>Dagsorden:</h3>'),
     t('Content entity referenced from field_ref_bullet_points'),
@@ -2191,7 +2210,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       //print quick-annotate link only if text is not empty
       if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){	
 	$link_light = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment-light/\'.$attachment->nid;
-	print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
+	print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" rel="lightframe" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
       }
 	     
       if (strlen($attachment->title) < 75)
@@ -2222,7 +2241,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
     //print quick-annotate link only if text is not empty
     if (!empty($attachment->field_bpa_file_html[\'und\'][0])){	
       $link_light = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment-light/\'.$attachment->nid;
-      print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
+      print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" rel="lightframe" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
     }
     
     if (strlen($attachment->title) < 75)
