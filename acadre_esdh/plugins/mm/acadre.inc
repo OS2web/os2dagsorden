@@ -207,7 +207,7 @@ function _acadre_esdh_import_meeting($info) {
   }
   else {
     // Requested file not found.
-    watchdog('acadre MM', 'Failed to read agenda manifest file %uri', array('%uri' => $agenda_uri), WATCHDOG_WARNING);
+    watchdog('acadre MM', 'Failed to read agenda manifest file %uri', array('%uri' => $info['agenda_uri']), WATCHDOG_WARNING);
   }
   return FALSE;
 }
