@@ -286,8 +286,8 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_secure.js');
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/XPath.js');
 
-        global $base_url;
-        drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',"#content","' . $base_url . '?q=", true);', 'inline');
+        global $base_url, $base_path;
+        drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',"#content","' . $base_path . '?q=", true);', 'inline');
         //hiding the side pane menu
 	drupal_add_js('annotator_hide_menu();', 'inline');
 
@@ -468,7 +468,7 @@ function _os2dagsorden_annotator_view_raw($meeting_id, $bullet_point_id, $bilag_
  */
 function os2dagsorden_annotator_overlay_paths(){
     return array(
-	'meeting/*/bullet-point/*/bullet-point-attachment-light/*' => TRUE,
+	//'meeting/*/bullet-point/*/bullet-point-attachment-light/*' => TRUE,
     );
 }
 
@@ -668,6 +668,9 @@ function _os2dagsorden_annotator_append_note($note, $index, $print_text = false)
       return '<b>[' . $index . ']</b> ' . $note->text . '<br/>';
     else {
       $sp = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-      return '<b>[' . $index . '] ' . $note->quote . '</b>:<br/><i>' . $sp . $note->text . '</i><br/>';
+      $xpath = $note->ranges[0]->start;
+      $xpath_arr = explode('/', $xpath);
+      $page_nr = trim($xpath_arr[2], 'div[]');
+      return '[' . $index . '] Side ' . $page_nr . '. <b>' . $note->quote . '</b>:<br/><i>' . $sp . $note->text . '</i>' . $page_nr . '<br/>';
     }
 }
