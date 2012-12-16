@@ -28,7 +28,7 @@ function os2dagsorden_settings_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'jquery_update_compression_type';
-  $strongarm->value = 'none';
+  $strongarm->value = 'min';
   $export['jquery_update_compression_type'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -42,7 +42,7 @@ function os2dagsorden_settings_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'jquery_update_jquery_version';
-  $strongarm->value = '1.5';
+  $strongarm->value = '1.7';
   $export['jquery_update_jquery_version'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -67,37 +67,6 @@ function os2dagsorden_settings_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'os2dagsorden_import_committees_list';
-  $strongarm->value = '3,Sammenlægningsudvalget;
-28,Direktionsmøde;
-29,MT-HSU;
-31,Børn og Unge udvalg;
-34,Hovedudvalget (HU);
-36,Rådhus MED-udvalg;
-40,Skoleledermøde;
-44,Direktions- og afdelingschefmøde;
-51,Byrådet;
-52,Valgbestyrelse ved kommunale valg;
-53,Ældrerådet;
-54,Arbejdsmarkedsudvalget (AU);
-55,Udvalget for familie og institutioner (FI);
-56,Udvalget for natur, teknik og miljø (NTM);
-57,Udvalget for plan, udvikling og kultur (PUK);
-58,Udvalget for sundhed, ældre og social (SÆ);
-59,Økonomiudvalget (ØK);
-61,Børn- og Ungeudvalget;
-62,Frivillighedsrådet;
-63,Handicaprådet;
-64,Byrådets temamøder;
-66,Huslejenævnet;
-67,Beboerklagenævnet;
-68,Udvalget til revision af Handicappolitik;
-69,Kommunalt lægelige udvalg;';
-  $export['os2dagsorden_import_committees_list'] = $strongarm;
-
-  $strongarm = new stdClass();
-  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
-  $strongarm->api_version = 1;
   $strongarm->name = 'os2dagsorden_pws_v_acadregroups_url';
   $strongarm->value = '706dwweb01.intern.syddjurs.dk/OS2DagsordenDataService/OS2DagsordenDataService.asmx/GetXMLView?viewName=V_web_acadreGroups';
   $export['os2dagsorden_pws_v_acadregroups_url'] = $strongarm;
@@ -115,6 +84,27 @@ function os2dagsorden_settings_strongarm() {
   $strongarm->name = 'os2dagsorden_pws_v_meetings_url';
   $strongarm->value = '706dwweb01.intern.syddjurs.dk/OS2DagsordenDataService/OS2DagsordenDataService.asmx/GetXMLView?viewName=V_web_Meetings';
   $export['os2dagsorden_pws_v_meetings_url'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'os2web_adlib_url';
+  $strongarm->value = 'http://706CAR01/ExponentWSA/ExponentWSA.asmx?wsdl';
+  $export['os2web_adlib_url'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'os2web_meetings_approved_committee';
+  $strongarm->value = '62,59,64,53,54,56,57,63,58,51,55,61,68,69,42,28';
+  $export['os2web_meetings_approved_committee'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'os2web_meetings_path';
+  $strongarm->value = 'private://';
+  $export['os2web_meetings_path'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */

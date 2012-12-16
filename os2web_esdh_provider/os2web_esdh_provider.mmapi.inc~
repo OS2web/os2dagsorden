@@ -15,11 +15,11 @@
  * @return int
  *   Node id
  */
-function _os2dagsorden_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$context = NULL) {
+function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$context = NULL) {
   if (!lock_acquire(__FUNCTION__ . $meeting_id['id'])) {
     return;
   }
-  $meetings = os2dagsorden_esdh_provider_invoke('mm', 'import_meeting', $meeting_id);
+  $meetings = os2web_esdh_provider_invoke('mm', 'import_meeting', $meeting_id);
   $nids = array();
   foreach ($meetings as $meeting) {
     //trying to get meeting from id
@@ -48,8 +48,8 @@ function _os2dagsorden_esdh_provider_import_meeting($meeting_id, $force = FALSE,
         }
 
         //getting meeting
-        $meeting_start_date_0000 = date('Y-m-d 00:00:00', strtotime($options['date']));
-        $meeting_start_date_2359 = date('Y-m-d 23:59:59', strtotime($options['date']));
+        $meeting_start_date_0000 = date('Y-m-d 00:00:00', strtotime($meeting['meeting_date_start']));
+        $meeting_start_date_2359 = date('Y-m-d 23:59:59', strtotime($meeting['meeting_date_start']));
 
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'node')
@@ -57,6 +57,9 @@ function _os2dagsorden_esdh_provider_import_meeting($meeting_id, $force = FALSE,
             ->fieldCondition('field_date', 'value', $meeting_start_date_2359, '<=')
             ->fieldCondition('field_committee', 'tid', $com_tid, '=');
         $result = $query->execute();
+        
+        print_r($result);
+        return;
 
         if (isset($result['node'])) {
             $nids = array_keys($result['node']);
@@ -91,14 +94,14 @@ function _os2dagsorden_esdh_provider_import_meeting($meeting_id, $force = FALSE,
     $node->field_meeting_id[LANGUAGE_NONE][0]['value'] = $meeting['meeting_id'];
     //$node->field_system_id[LANGUAGE_NONE][0]['value'] = $meeting['system_id'];
  
-    $committee = _os2dagsorden_esdh_provider_find_committee($meeting['committee_id']);
+    $committee = _os2web_esdh_provider_find_committee($meeting['committee_id']);
     if ($committee) {
        $node->field_committee[LANGUAGE_NONE][0]['tid'] = $committee->tid;
     }
     else {
       return;
     }
-    $location = _os2dagsorden_esdh_provider_find_create_location($meeting['location']);
+    $location = _os2web_esdh_provider_find_create_location($meeting['location']);
     
     if ($location) {
        $node->field_location[LANGUAGE_NONE][0]['tid'] = $location->tid;
@@ -110,14 +113,14 @@ function _os2dagsorden_esdh_provider_import_meeting($meeting_id, $force = FALSE,
      
     // Import items.
     if (is_array($meeting['items'])) {
-      $item_nids = _os2dagsorden_esdh_provider_import_items($meeting['items']);
+      $item_nids = _os2web_esdh_provider_import_items($meeting['items']);
       foreach ($item_nids as $nid) {
         $node->field_ref_bullet_points[LANGUAGE_NONE][]['target_id'] = $nid;
       }
     }
     
     //adding description
-    $description = _os2dagsorden_esdh_provider_import_file($meeting['full_doc']);
+    $description = _os2web_esdh_provider_import_file($meeting['full_doc']);
     
     if (strcmp($meeting['agenda_access'], 'Lukket') == 0) 
       $node->field_meeting_description_closed[$node->language][0] = (array) $description;
@@ -157,7 +160,7 @@ function _os2dagsorden_esdh_provider_import_meeting($meeting_id, $force = FALSE,
  * @return array
  *   List of imported node ids
  */
-function _os2dagsorden_esdh_provider_import_items($items) {
+function _os2web_esdh_provider_import_items($items) {
   $nids = array();
   foreach ($items as $item) {
     $query = new EntityFieldQuery();
@@ -193,7 +196,7 @@ function _os2dagsorden_esdh_provider_import_items($items) {
     
     // Gather the bullets for the item.
     if (isset($item['bullets']) && is_array($item['bullets'])) {
-      $bullet_nids = _os2dagsorden_esdh_provider_import_bullets($item['bullets']);
+      $bullet_nids = _os2web_esdh_provider_import_bullets($item['bullets']);
       foreach ($bullet_nids as $nid) {
 	$node->field_ref_attachment[LANGUAGE_NONE][]['target_id'] = $nid;
       }
@@ -204,8 +207,8 @@ function _os2dagsorden_esdh_provider_import_items($items) {
     
     // Gather enclosures.
     foreach ($item['enclosures'] as $enclosure) {
-      if ($file = _os2dagsorden_esdh_provider_import_file($enclosure)) {
-	$enclosure_nid = _os2dagsorden_esdh_provider_add_enclosure_bullet($enclosure, $file);
+      if ($file = _os2web_esdh_provider_import_file($enclosure)) {
+	$enclosure_nid = _os2web_esdh_provider_add_enclosure_bullet($enclosure, $file);
 	
 	$contains = FALSE;
 	if (isset($enclosure_nid)){//if the ID is empty - means that the enclosure has been created before, and hence already added to the bullet point
@@ -256,7 +259,7 @@ function _os2dagsorden_esdh_provider_import_items($items) {
  * @return array
  *   List of imported node ids
  */
-function _os2dagsorden_esdh_provider_import_bullets($bullets) {
+function _os2web_esdh_provider_import_bullets($bullets) {
   $nids = array();
   foreach ($bullets as $bullet) {
     $query = new EntityFieldQuery();
@@ -306,7 +309,7 @@ function _os2dagsorden_esdh_provider_import_bullets($bullets) {
  * @return object
  *   Drupal standard file object
  */
-function _os2dagsorden_esdh_provider_import_file($file_meta) {
+function _os2web_esdh_provider_import_file($file_meta) {
   $filename = $file_meta['title'];
   $uri = $file_meta['uri'];
 
@@ -345,7 +348,7 @@ function _os2dagsorden_esdh_provider_import_file($file_meta) {
  * 
  * @return int - Node ID
  */
-function _os2dagsorden_esdh_provider_add_enclosure_bullet($enclosure, $file) {
+function _os2web_esdh_provider_add_enclosure_bullet($enclosure, $file) {
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
             ->fieldCondition('field_bpa_id', 'value', $enclosure['sysid'], '=');
@@ -381,7 +384,7 @@ function _os2dagsorden_esdh_provider_add_enclosure_bullet($enclosure, $file) {
  * @param int $committee_acadre_id acadre id of the committee
  * @return term
  */
-function _os2dagsorden_esdh_provider_find_committee($committee_acadre_id){
+function _os2web_esdh_provider_find_committee($committee_acadre_id){
     $vid = db_select('taxonomy_vocabulary', 'tv')
         ->fields('tv', array('vid'))
         ->condition('machine_name', 'committee')
@@ -410,7 +413,7 @@ function _os2dagsorden_esdh_provider_find_committee($committee_acadre_id){
  * 
  * @return location term
  */
-function _os2dagsorden_esdh_provider_find_create_location($location_name) {
+function _os2web_esdh_provider_find_create_location($location_name) {
     $vid = db_select('taxonomy_vocabulary', 'tv')
         ->fields('tv', array('vid'))
         ->condition('machine_name', 'lokation')
@@ -434,7 +437,7 @@ function _os2dagsorden_esdh_provider_find_create_location($location_name) {
 /**
  * Page callback. Displays a technical overview of an imported meeting.
  */
-function _os2dagsorden_esdh_provider_node_tab_page($nid, $op = FALSE) {
+function _os2web_esdh_provider_node_tab_page($nid, $op = FALSE) {
   $html = "";
   $node = node_load($nid);
   $meeting_id = $node->field_meeting_id[LANGUAGE_NONE][0]['value'];
@@ -501,7 +504,7 @@ function _os2dagsorden_esdh_provider_node_tab_page($nid, $op = FALSE) {
  * @return string
  *   Sanetized filename with same extension.
  */
-function _os2dagsorden_esdh_provider_sanetize_filename($filename) {
+function _os2web_esdh_provider_sanetize_filename($filename) {
   // Replace whitespace.
   // $filename = str_replace(' ', '_', $filename);
   // Remove remaining unsafe characters.
@@ -529,7 +532,7 @@ function _os2dagsorden_esdh_provider_sanetize_filename($filename) {
  * @return mixed
  *   False if file not found, case corrected filename if found.
  */
-function _os2dagsorden_esdh_provider_similar_file_exists($filename) {
+function _os2web_esdh_provider_similar_file_exists($filename) {
     if (file_exists($filename)) {
       return $filename;
     }

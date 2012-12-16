@@ -130,6 +130,7 @@ function acadre_esdh_mm_import_meeting($meeting) {
  *   Meeting_struct array for an accepted import, else FALSE
  */
 function _acadre_esdh_import_meeting($info) {
+print_r(_acadre_esdh_similar_file_exists(drupal_realpath($info['agenda_uri'])));
   if (($real_path = _acadre_esdh_similar_file_exists(drupal_realpath($info['agenda_uri']))) !== FALSE) {
     $xml = simplexml_load_file($real_path);
     $meeting = array(
@@ -300,9 +301,11 @@ function _acadre_esdh_similar_file_exists($filename) {
     return $filename;
   }
   $lcase_filename = strtolower($filename);
-  foreach (glob(dirname($filename) . '/*') as $file) {
-    if (strtolower($file) == $lcase_filename) {
-      return $file;
+  if (!empty($lcase_filename)){
+    foreach (glob(dirname($filename) . '/*') as $file) {
+      if (strtolower($file) == $lcase_filename) {
+	return $file;
+      }
     }
   }
   return FALSE;

@@ -48,8 +48,8 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
         }
 
         //getting meeting
-        $meeting_start_date_0000 = date('Y-m-d 00:00:00', strtotime($options['date']));
-        $meeting_start_date_2359 = date('Y-m-d 23:59:59', strtotime($options['date']));
+        $meeting_start_date_0000 = date('Y-m-d 00:00:00', strtotime($meeting['meeting_date_start']));
+        $meeting_start_date_2359 = date('Y-m-d 23:59:59', strtotime($meeting['meeting_date_start']));
 
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'node')

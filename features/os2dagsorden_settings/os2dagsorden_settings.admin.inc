@@ -12,7 +12,7 @@
 * @link     http://bellcom.dk
 */
 
-define('ACADRE_MM_IMPORT_DIR', 'public://acadre');
+define('ACADRE_MM_IMPORT_DIR', 'private://');
 
 /**
  * Implementation of settings form specifically for OS2Dagsorden system.
@@ -57,29 +57,28 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#disabled' => variable_get('os2dagsorden_pws_use_local_copy'),
   );
   
-  //Import committees
-  $form['os2dagsorden_import_committees'] = array(
-      '#type' => 'fieldset',
-      '#collapsible' => TRUE,
-      '#title' => t('List of committees to import:'),
-      '#description' => t('List of committees, which should be imported from Acadre/SOFD systems.'),
-  );
-  
-  $form['os2dagsorden_import_committees']['os2dagsorden_meetings_path'] = array(
-    '#type' => 'textfield',
-    '#title' => 'Sti til acadre publish folder.',
-    '#description' => 'Dette er stien hvor Acadre publisere .XML filer til.',
-    '#default_value' => variable_get('os2dagsorden_meetings_path', ACADRE_MM_IMPORT_DIR),
-  );
-  
-  $form['os2dagsorden_import_committees']['os2dagsorden_import_committees_list'] = array(
-      '#type' => 'textarea',
-      '#default_value' => variable_get('os2dagsorden_import_committees_list'),
-      '#title' => t('Committees to import list:'),
-      '#description' => t('Format the entry as <b>acadre_nr</b> of committee then <b>coma (,)</b> and then the <b>name of the committee</b>, separate the entries with <b>semicolon (;)</b> <br/> 
-      Example:<br/>acadre_nr1,committee1;<br/>acadre_nr2,committee2;<br/>...')
-  );
-  
+  //this set up is now done in os2web_esdh_provider module
+//   //Import committees
+//   $form['os2dagsorden_import_committees'] = array(
+//       '#type' => 'fieldset',
+//       '#collapsible' => TRUE,
+//       '#title' => t('List of committees to import:'),
+//       '#description' => t('List of committees, which should be imported from Acadre/SOFD systems.'),
+//   );
+//   $form['os2dagsorden_import_committees']['os2dagsorden_meetings_path'] = array(
+//     '#type' => 'textfield',
+//     '#title' => 'Sti til acadre publish folder.',
+//     '#description' => 'Dette er stien hvor Acadre publisere .XML filer til.',
+//     '#default_value' => variable_get('os2dagsorden_meetings_path', ACADRE_MM_IMPORT_DIR),
+//   );
+//   $form['os2dagsorden_import_committees']['os2dagsorden_import_committees_list'] = array(
+//       '#type' => 'textarea',
+//       '#default_value' => variable_get('os2dagsorden_import_committees_list'),
+//       '#title' => t('Committees to import list:'),
+//       '#description' => t('Format the entry as <b>acadre_nr</b> of committee then <b>coma (,)</b> and then the <b>name of the committee</b>, separate the entries with <b>semicolon (;)</b> <br/> 
+//       Example:<br/>acadre_nr1,committee1;<br/>acadre_nr2,committee2;<br/>...')
+//   );
+//   
   
   return system_settings_form($form);
 }
