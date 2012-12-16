@@ -671,6 +671,9 @@ function _os2dagsorden_annotator_append_note($note, $index, $print_text = false)
       $xpath = $note->ranges[0]->start;
       $xpath_arr = explode('/', $xpath);
       $page_nr = trim($xpath_arr[2], 'div[]');
+      if (!$page_nr) 
+	$page_nr = 1;
+	
       return '[' . $index . '] Side ' . $page_nr . '. <b>' . $note->quote . '</b>:<br/><i>' . $sp . $note->text . '</i><br/>';
     }
 }
