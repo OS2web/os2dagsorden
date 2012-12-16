@@ -1,0 +1,112 @@
+<?php
+
+/**
+ * Implementation of hook_menu
+ *
+ * @return list of links
+ */
+function os2dagsorden_admin_suite_menu() {
+    $items = array();
+    
+    $items['update_files_path'] = array(
+        'title' => 'Print Talepapirer',
+        'type' => MENU_CALLBACK,
+        'page callback' => 'os2dagsorden_access_helper_update_files_path',
+        'access arguments' => array('administer os2web'),
+    );
+    
+    return $items;
+}    
+
+/**
+  * Updates the all the files (and the notes they are attached to: either meeting or bullet point attachment) 
+  * which have url set as 'public://acadre/Files_...' to 'private:///Files...'
+  *
+  * @return none
+  */
+function os2dagsorden_admin_suite_update_files_path(){
+  $files = entity_load('file');
+  foreach ($files as $file){
+    //add check of path
+    print_r($file);
+    print_r("<br/>");
+    
+    $public = 'public://acadre';
+    $private = 'private://';
+    
+    //bullet_point_attachment
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+		->propertyCondition('type', array('bullet_point_attachment'))
+		->fieldCondition('field_bpa_file', 'fid', $file->fid, '=');
+    $result = $query->execute();
+	
+    if (isset($result['node'])) {
+	 $nids = array_keys($result['node']);
+	 $bullet_point_attachment = reset(entity_load('node', $nids));
+		 
+	 if (os2dagsorden_admin_suite_starts_with($file->uri, $public)){
+	    $file->uri = str_replace($public,$private,$file->uri);
+	    file_save($file);
+	    node_save($bullet_point_attachment);
+	    print_r("hit meeting bpa");
+	    print_r("<br/><br/><br/>");
+	    continue;
+	 }
+    }
+        
+    //meeting - opened
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+		->propertyCondition('type', array('meeting'))
+		->fieldCondition('field_meeting_description', 'fid', $file->fid, '=');
+    $result = $query->execute();
+    if (isset($result['node'])) {
+	 $nids = array_keys($result['node']);
+	 $meeting = reset(entity_load('node', $nids));
+		 
+	 if (os2dagsorden_admin_suite_starts_with($file->uri, $public)){
+	    $file->uri = str_replace($public,$private,$file->uri);
+	    file_save($file);
+	    node_save($meeting);
+	    print_r("hit meeting closed");
+	    print_r("<br/><br/><br/>");
+	    continue;
+	 }
+    }
+    
+    //meeting - opened
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+		->propertyCondition('type', array('meeting'))
+		->fieldCondition('field_meeting_description_closed', 'fid', $file->fid, '=');
+    $result = $query->execute();
+    if (isset($result['node'])) {
+	 $nids = array_keys($result['node']);
+	 $meeting = reset(entity_load('node', $nids));
+	 
+	 if (os2dagsorden_admin_suite_starts_with($file->uri, $public)){
+	    $file->uri = str_replace($public,$private,$file->uri);
+	    file_save($file);
+	    node_save($meeting);
+	    print_r("hit meeting opened");
+	    print_r("<br/><br/><br/>");
+	    continue;
+	 }
+    }
+  }
+}
+
+
+/**
+  * Return is a string is starting with some other string
+  *
+  * @param string $haystack where to look
+  * @param string $needle   what to look for
+  *
+  * @return TRUE of FALSE
+  */
+function os2dagsorden_admin_suite_starts_with($haystack, $needle)
+{
+    return !strncmp($haystack, $needle, strlen($needle));
+}
