@@ -8,7 +8,7 @@
 function os2dagsorden_admin_suite_menu() {
     $items = array();
     
-    $items['update_files_path'] = array(
+    $items['os2dagsorden/admin_suite/update_files_path'] = array(
         'title' => 'Print Talepapirer',
         'type' => MENU_CALLBACK,
         'page callback' => 'os2dagsorden_access_helper_update_files_path',
