@@ -347,7 +347,6 @@ function _os2dagsorden_meetings_publish_meeting($info, $xml) {
             node_object_prepare($node);    
         }
     }
-    print_r($node->nid . " ");
 
     //avoiding reimports
     if (isset($node->field_meeting_acadre_version[$node->language][0])) {
@@ -514,7 +513,6 @@ function _os2dagsorden_meetings_add_item($info, $xml, $id, $agenda_type) {
         $node->field_bullet_point_id[$node->language][0]['value'] = $options['sysid'];
     }
 
-    error_log("Stan look here: " . $agenda_type);
     //check the name
     if (strcmp($agenda_type, 'Tillægsreferat') != 0)
       $node->title = 'Punkt ' . $id . ' ' . $options['name'] . ' (' . $options['caseno'] . ')';

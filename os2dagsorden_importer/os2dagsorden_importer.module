@@ -448,14 +448,14 @@ function _os2dagsorden_importer_create_committee($xml_data) {
 	//check if is in the list of import committees
 	$can_be_imported = FALSE;
 
-	$import_committees = explode(';',variable_get('os2dagsorden_import_committees_list'));
-	foreach($import_committees as $imp_com_entry){
-	  $imp_com = explode(',', $imp_com_entry);
-	  if (intval($imp_com[0]) == intval($xml_data['acadre_id'])){
-	    $can_be_imported = TRUE;
-	    break;
-	  }
+	$import_committees = explode(',',variable_get('os2web_meetings_approved_committee'));
+	  foreach($import_committees as $imp_com){
+	    if (intval($imp_com) == intval($xml_data['acadre_id'])){
+	      $can_be_imported = TRUE;
+	      break;
+	    }
 	}
+
 	
         $contains = FALSE;
         if (isset($term->field_committee_acadre_id['und'])) {
