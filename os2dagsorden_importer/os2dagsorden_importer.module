@@ -68,7 +68,6 @@ function os2dagsorden_importer_import_user_committees() {
 
       curl_setopt($url, CURLOPT_RETURNTRANSFER, TRUE);
       $userCommittees_raw = curl_exec($url);
-
       $userCommittees = new SimpleXMLElement($userCommittees_raw);
     } else {
       $userCommittees = simplexml_load_file(DEFAULT_ACADRE_VIEWS_IMPORT_DIR . '/V_web_MeetingGroups.xml');
@@ -261,8 +260,33 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
             }
         }
         else {
+	    //unsetting user rights
+	    if ($xml_data['committee_id'] != 0) {
+                $com_term = _os2dagsorden_importer_get_committee_by_id($xml_data['committee_id']);
+		
+                if (isset($com_term)){
+		  $com_tid = $com_term->tid;
+		  if ($xml_data['member_id'] != 0 && !empty($user)) {
+		      //unset is part of
+		      //_os2dagsorden_importer_unset_committee_from_user($com_tid, $user);
+		  }
+		  if ($xml_data['follower_id'] != 0 && !empty($user)) {
+		      //unset follows committee
+		      //_os2dagsorden_importer_unset_user_follows_committee($com_tid, $user);
+		  }
+		  if ($xml_data['follower_plus_id'] != 0 && !empty($user)) {
+		      print_r("Committee:" . $com_tid);
+		      print_r("<br/><br/><br/><br/>");
+		      print_r($user);
+		      print_r("<br/><br/><br/><br/>");
+		      //unset follows committee PLUS
+		      _os2dagsorden_importer_unset_user_follows_committee_plus($com_tid, $user);
+		  }
+                }
+            }
+            
             //deleting role
-            _os2dagsorden_importer_delete_user_role($xml_data);
+            _os2dagsorden_importer_delete_user_role($xml_data, $user);
         }
     }
 }
@@ -332,7 +356,7 @@ function _os2dagsorden_importer_create_user_role($xml_data, $com_tid) {
 }
 
 /**
- * Helper function. Deletes the user role
+ * Helper function. Deletes the user role.
  *
  * @param array $xml_data xml
  *
@@ -510,6 +534,35 @@ function _os2dagsorden_importer_add_committee_to_user($tid, $user) {
 }
 
 /**
+ * Helper function. Unsets the committee to the user (member of)
+ *
+ * @param int   $tid  role id
+ * @param mixed $user user object
+ *
+ * @return none
+ */
+function _os2dagsorden_importer_unset_committee_from_user($tid, $user){
+    //composing new array
+    $user_committees = array();
+    if (isset($user->field_user_committee['und'])) {
+        foreach ($user->field_user_committee['und'] as $committee_id) {
+	    //add everything except the one that has to be deleted
+            if ($tid != $committee_id['tid']) {
+                $user_committees['und'][]['tid'] = $committee_id['tid'];
+            }
+        }
+    }
+
+   
+    $edit = array(
+	'field_user_committee' => $user_committees,
+    );
+
+    user_save($user, $edit);
+}
+
+
+/**
  * Helper function. Adds the follows committee to the user
  *
  * @param int   $tid  role id
@@ -540,6 +593,31 @@ function _os2dagsorden_importer_add_user_follows_committee($tid, $user) {
 }
 
 /**
+ * Helper function. Unsets the follows committee of the user
+ *
+ * @param int   $tid  role id
+ * @param mixed $user user object
+ *
+ * @return none
+ */
+function _os2dagsorden_importer_unset_user_follows_committee($tid, $user) {
+    $user_follows = array();
+    if (isset($user->field_follows_committee['und'])) {
+        foreach ($user->field_follows_committee['und'] as $committee_id) {
+            if ($tid != $committee_id['tid']) {
+                $user_follows['und'][]['tid'] = $committee_id['tid'];
+            }
+        }
+    }
+
+    $edit = array(
+	'field_follows_committee' => $user_follows,
+    );
+
+    user_save($user, $edit);
+}
+
+/**
  * Helper function. Adds the follows+ committee to the user
  *
  * @param int   $tid  role id
@@ -567,6 +645,31 @@ function _os2dagsorden_importer_add_user_follows_committee_plus($tid, $user) {
 
         user_save($user, $edit);
     }
+}
+
+/**
+ * Helper function. Unsets the follows+ committee to the user
+ *
+ * @param int   $tid  role id
+ * @param mixed $user user object
+ *
+ * @return none
+ */
+function _os2dagsorden_importer_unset_user_follows_committee_plus($tid, $user) {
+    $user_follows_plus = array();
+    if (isset($user->field_follows_committee_plus['und'])) {
+        foreach ($user->field_follows_committee_plus['und'] as $committee_id) {
+            if ($tid != $committee_id['tid']) {
+                $user_follows_plus['und'][]['tid'] = $committee_id['tid'];
+            }
+        }
+    }
+
+    $edit = array(
+	'field_follows_committee_plus' => $user_follows_plus,
+    );
+
+    user_save($user, $edit);
 }
 
 /**
