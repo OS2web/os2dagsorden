@@ -268,17 +268,13 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
 		  $com_tid = $com_term->tid;
 		  if ($xml_data['member_id'] != 0 && !empty($user)) {
 		      //unset is part of
-		      //_os2dagsorden_importer_unset_committee_from_user($com_tid, $user);
+		      _os2dagsorden_importer_unset_committee_from_user($com_tid, $user);
 		  }
 		  if ($xml_data['follower_id'] != 0 && !empty($user)) {
 		      //unset follows committee
-		      //_os2dagsorden_importer_unset_user_follows_committee($com_tid, $user);
+		      _os2dagsorden_importer_unset_user_follows_committee($com_tid, $user);
 		  }
 		  if ($xml_data['follower_plus_id'] != 0 && !empty($user)) {
-		      print_r("Committee:" . $com_tid);
-		      print_r("<br/><br/><br/><br/>");
-		      print_r($user);
-		      print_r("<br/><br/><br/><br/>");
 		      //unset follows committee PLUS
 		      _os2dagsorden_importer_unset_user_follows_committee_plus($com_tid, $user);
 		  }
