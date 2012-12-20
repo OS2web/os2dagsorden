@@ -1,8 +1,9 @@
-function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotate, url, filter) {	
+function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotate, url, filter) {
   jQuery(document).ready(function() {
-          	"use strict";
+          	//"use strict";
 		jQuery(element_to_annotate).annotator().annotator('addPlugin', 'Touch', {
-			force: location.search.indexOf('force') > -1,
+			//force: location.search.indexOf('force') > -1,
+			force: 1,
 			useHighlighter: location.search.indexOf('highlighter') > -1
 		});
 		if (filter){
@@ -30,7 +31,7 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
 			}
 		});
 		jQuery("#annotator-filter-text").focus();
-	});
+	}); 
 }
 
 function annotator_hide_menu(){

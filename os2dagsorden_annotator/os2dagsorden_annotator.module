@@ -373,14 +373,14 @@ function _os2dagsorden_annotator_view_light($meeting_id, $bullet_point_id, $bila
     $bilag = node_load($bilag_id);
     if (strcmp($bilag->type, 'bullet_point_attachment') == 0) {
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.js');
-        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.min.js');
+        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch-show-button.js');
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/json2.js');
 
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_secure.js');
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/XPath.js');
 
         global $base_url;
-        drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',"#content","' . $base_url . '?q=", true);', 'inline');
+        drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',".Section1","' . $base_url . '?q=", true);', 'inline');
  
         drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.css');
         drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.css');
