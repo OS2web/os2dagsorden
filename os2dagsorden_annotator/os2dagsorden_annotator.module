@@ -380,7 +380,7 @@ function _os2dagsorden_annotator_view_light($meeting_id, $bullet_point_id, $bila
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/XPath.js');
 
         global $base_url;
-        drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',".Section1","' . $base_url . '?q=", true);', 'inline');
+        drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',"#content","' . $base_url . '?q=", true);', 'inline');
  
         drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.css');
         drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.css');
