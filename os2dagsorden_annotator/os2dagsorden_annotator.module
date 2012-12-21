@@ -373,7 +373,7 @@ function _os2dagsorden_annotator_view_light($meeting_id, $bullet_point_id, $bila
     $bilag = node_load($bilag_id);
     if (strcmp($bilag->type, 'bullet_point_attachment') == 0) {
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.js');
-        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch-show-button.js');
+        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.min.js');
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/json2.js');
 
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_secure.js');
@@ -388,7 +388,7 @@ function _os2dagsorden_annotator_view_light($meeting_id, $bullet_point_id, $bila
 	//overriding title for bilag
 	drupal_set_title($bilag->title);
 	
-	$html = '<div class="node">';
+	$html = '<div class="node"><div class="close-overlay-bilag-link"><a class="form-submit" href="' . $base_url . '/' . $_GET['destination'] . '">Luk vinduet [X]</a></div>';
 	
 	if (!empty($bilag->field_bpa_file['und'][0]['uri'])){//is an actual bilag
 	  
@@ -405,7 +405,7 @@ function _os2dagsorden_annotator_view_light($meeting_id, $bullet_point_id, $bila
 	  }
 	  
 	  //composing html output
-	  $html .= 
+	  $html .=  
 		_os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount, TRUE) . 
 		'<div id="content">' . $text . '</div>' . 
 		_os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount, TRUE) .
@@ -458,18 +458,6 @@ function _os2dagsorden_annotator_view_raw($meeting_id, $bullet_point_id, $bilag_
     }
     header('Content-Type: text/html; charset=utf-8');            
     print $html;
-}
-
-/**
- * Implements hook_overlay_paths().
- * Speficies which paths will be used to be shown in overlay window.
- *
- * @return array of paths.
- */
-function os2dagsorden_annotator_overlay_paths(){
-    return array(
-	//'meeting/*/bullet-point/*/bullet-point-attachment-light/*' => TRUE,
-    );
 }
 
 /**
