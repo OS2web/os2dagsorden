@@ -157,10 +157,10 @@ function _acadre_esdh_import_meeting($info) {
 
     // Fix dates:
     $date_obj = date_create($meeting['meeting_date_start']);
-    date_timezone_set($date_obj, timezone_open('UTC'));
+    //date_timezone_set($date_obj, timezone_open('UTC'));
     $meeting['meeting_date_start'] = date_format($date_obj, 'Y-m-d H:i');
     $date_obj = date_create($meeting['meeting_date_finish']);
-    date_timezone_set($date_obj, timezone_open('UTC'));
+    //date_timezone_set($date_obj, timezone_open('UTC'));
     $meeting['meeting_date_finish'] = date_format($date_obj, 'Y-m-d H:i');
 
     // Full Doc:
