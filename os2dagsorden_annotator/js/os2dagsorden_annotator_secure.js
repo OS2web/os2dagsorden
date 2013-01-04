@@ -30,7 +30,6 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
 			  search:  'annotator/search'
 			}
 		});
-		jQuery("#annotator-filter-text").focus();
 	}); 
 }
 
