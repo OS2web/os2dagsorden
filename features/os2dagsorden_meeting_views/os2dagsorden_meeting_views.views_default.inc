@@ -1546,7 +1546,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['filters']['field_date_value']['expose']['identifier'] = 'from_date';
   $handler->display->display_options['filters']['field_date_value']['form_type'] = 'date_popup';
   $handler->display->display_options['filters']['field_date_value']['default_date'] = 'now';
-  $handler->display->display_options['filters']['field_date_value']['year_range'] = '-0:+1';
+  $handler->display->display_options['filters']['field_date_value']['year_range'] = '2011:+1';
   /* Filter criterion: Content: Date -  start date (field_date) */
   $handler->display->display_options['filters']['field_date_value_1']['id'] = 'field_date_value_1';
   $handler->display->display_options['filters']['field_date_value_1']['table'] = 'field_data_field_date';
@@ -1560,7 +1560,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['filters']['field_date_value_1']['expose']['identifier'] = 'to_date';
   $handler->display->display_options['filters']['field_date_value_1']['form_type'] = 'date_popup';
   $handler->display->display_options['filters']['field_date_value_1']['default_date'] = 'now + 30 day';
-  $handler->display->display_options['filters']['field_date_value_1']['year_range'] = '-1:+0';
+  $handler->display->display_options['filters']['field_date_value_1']['year_range'] = '2011:+1';
   /* Filter criterion: Content: Committee (field_committee) */
   $handler->display->display_options['filters']['field_committee_tid']['id'] = 'field_committee_tid';
   $handler->display->display_options['filters']['field_committee_tid']['table'] = 'field_data_field_committee';
