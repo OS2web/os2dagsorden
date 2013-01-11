@@ -185,6 +185,8 @@ function _os2dagsorden_pdf2htmlex_calc_page_amount($html){
 function _os2dagsorden_pdf2htmlex_improve_html($data){
   $data = str_replace("<p>&nbsp;</p>", "", $data); //removing unneeded paragraphs
   $data = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $data);//removing scripts tags
+  $data = preg_replace('#::selection{(.*?)}#is', '', $data);//removing ::selection css specification
+  $data = preg_replace('#::-moz-selection{(.*?)}#is', '', $data);//removing ::-moz-selection css specification
   
   return $data;
 }
