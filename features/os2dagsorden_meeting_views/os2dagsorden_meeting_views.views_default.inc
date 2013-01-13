@@ -987,9 +987,8 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['php_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
-if(os2dagsorden_access_helper_bullet_point_has_speaker_paper($row->nid)){
- print("<div class=\\"indicator-has-speaker-paper\\"></div>");
-}
+if(os2dagsorden_access_helper_bullet_point_has_speaker_paper($row->nid))
+print \'<div class="indicator-has-speaker-paper"></div>\';
 ?>';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
@@ -1004,7 +1003,7 @@ if(os2dagsorden_access_helper_bullet_point_has_speaker_paper($row->nid)){
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
 $annotations = os2dagsorden_annotator_get_notes_by_bullet_point_id($row->nid);
 if (!empty($annotations))
-print("<div class=\\"indicator-has-notes\\"></div>");
+print \'<div class="indicator-has-notes"></div>\';
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -1804,7 +1803,7 @@ print \'<div class="indicator-empty"></div>\';
   $handler->display->display_options['fields']['title']['exclude'] = TRUE;
   $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
   $handler->display->display_options['fields']['title']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['title']['alter']['max_length'] = '17';
+  $handler->display->display_options['fields']['title']['alter']['max_length'] = '20';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['trim'] = TRUE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
