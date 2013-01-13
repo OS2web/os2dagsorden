@@ -1002,9 +1002,10 @@ print \'<div class="indicator-has-speaker-paper"></div>\';
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
 $annotations = os2dagsorden_annotator_get_notes_by_bullet_point_id($row->nid);
+$is_closed = $data->_field_data[\'node_field_data_field_ref_bullet_points_nid\'][\'entity\']->field_bul_point_closed[\'und\'][0][\'value\'];
 if (!empty($annotations))
 print \'<div class="indicator-has-notes"></div>\';
-else
+else if(!os2dagsorden_access_helper_bullet_point_has_speaker_paper($row->nid) && !$is_closed)
 print \'<div class="indicator-empty"></div>\';
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
