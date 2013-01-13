@@ -12,7 +12,7 @@
  * @link     http://bellcom.dk
  */
 require drupal_get_path('module', 'os2dagsorden_annotator') . '/includes/os2dagsorden_annotator.common.inc';
-define('IS_IPAD', (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
+define('IS_IPAD', (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad'));
 define('ANNOTATOR_PAGES_PER_VIEW', 5);
 define('ANNOTATOR_PAGES_PER_VIEW_IPAD', 2);
 
@@ -405,7 +405,7 @@ function _os2dagsorden_annotator_view_light($meeting_id, $bullet_point_id, $bila
 	  
 	  //preparing the pager
 	  $pageStart = intval($_GET['page'])+1;
-	  $pageEnd = intval($_GET['page'])+ (IS_IPAD) ? ANNOTATOR_PAGES_PER_VIEW_IPAD :ANNOTATOR_PAGES_PER_VIEW;;
+	  $pageEnd = intval($_GET['page'])+ (IS_IPAD) ? ANNOTATOR_PAGES_PER_VIEW_IPAD : ANNOTATOR_PAGES_PER_VIEW;
     
 	  //bilag has converter to HTML version of file, getting the text out of it
 	  if (!empty($bilag->field_bpa_file_html['und'][0])){
@@ -483,7 +483,7 @@ function _os2dagsorden_annotator_view_raw($meeting_id, $bullet_point_id, $bilag_
  * @return the html code of pager.
  */
 function _os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageLimit, $light = FALSE){
-    $pages_per_view =  (IS_IPAD) ? ANNOTATOR_PAGES_PER_VIEW_IPAD :ANNOTATOR_PAGES_PER_VIEW;;
+    $pages_per_view =  (IS_IPAD) ? ANNOTATOR_PAGES_PER_VIEW_IPAD : ANNOTATOR_PAGES_PER_VIEW;
     $page = intval($_GET['page']);//value or 0 if not set
     
     if (!$light)
