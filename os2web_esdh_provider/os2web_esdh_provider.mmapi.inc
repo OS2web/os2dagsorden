@@ -184,6 +184,7 @@ function _os2web_esdh_provider_import_items($items) {
     else
      $node->title = 'Tillægsdagsorden: ' . $item['title'] . ' (' . $item['caseno'] . ')';
 
+    $node->field_bul_point_number['und'][0]['value'] = $item['id'];
  
     if ($item['access'] === 'Lukket') {
       $node->field_bul_point_closed[LANGUAGE_NONE][]['value'] = 1;

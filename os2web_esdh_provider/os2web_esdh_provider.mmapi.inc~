@@ -57,9 +57,6 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
             ->fieldCondition('field_date', 'value', $meeting_start_date_2359, '<=')
             ->fieldCondition('field_committee', 'tid', $com_tid, '=');
         $result = $query->execute();
-        
-        print_r($result);
-        return;
 
         if (isset($result['node'])) {
             $nids = array_keys($result['node']);
