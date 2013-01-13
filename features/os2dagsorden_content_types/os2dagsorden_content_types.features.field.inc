@@ -83,7 +83,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -154,7 +154,68 @@ function os2dagsorden_content_types_field_default_fields() {
           'display_label' => 1,
         ),
         'type' => 'options_onoff',
-        'weight' => '2',
+        'weight' => '3',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-bullet_point-field_bul_point_number'
+  $fields['node-bullet_point-field_bul_point_number'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_bul_point_number',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'number',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'number_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'bullet_point',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 0,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_integer',
+          'weight' => 4,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_bul_point_number',
+      'label' => 'Number',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '1',
       ),
     ),
   );
@@ -293,7 +354,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -388,7 +449,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'options_buttons',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -2885,6 +2946,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
   t('Lokation');
   t('Meeting ID');
   t('Name Short');
+  t('Number');
   t('Page amount');
   t('Participants');
   t('Priority');
