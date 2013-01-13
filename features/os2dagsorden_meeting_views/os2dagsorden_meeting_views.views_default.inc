@@ -1004,6 +1004,8 @@ print \'<div class="indicator-has-speaker-paper"></div>\';
 $annotations = os2dagsorden_annotator_get_notes_by_bullet_point_id($row->nid);
 if (!empty($annotations))
 print \'<div class="indicator-has-notes"></div>\';
+else
+print \'<div class="indicator-empty"></div>\';
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -2177,7 +2179,7 @@ print "<a href=\\"".$base_url."?q=node/add/speaker-paper&edit[field_ref_bullet_p
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
 $annotations = os2dagsorden_annotator_get_notes_by_bullet_point_id($row->nid_1);
 if (!empty($annotations))
-print("<div class=\\"indicator-has-notes\\"></div>");
+print \'<div class="indicator-has-notes"></div>\';
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
