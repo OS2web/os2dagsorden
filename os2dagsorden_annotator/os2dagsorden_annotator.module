@@ -285,9 +285,14 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_secure.js');
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/XPath.js');
+        
+        //floating scrollbar
+        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_floatingscrollbar.min.js');
+	drupal_add_js('annotator_add_floatinscrollbar();', 'inline');
 
         global $base_url, $base_path;
         drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',"#content","' . $base_path . '?q=", true);', 'inline');
+        
         //hiding the side pane menu
 	drupal_add_js('annotator_hide_menu();', 'inline');
 
@@ -378,6 +383,10 @@ function _os2dagsorden_annotator_view_light($meeting_id, $bullet_point_id, $bila
 
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_secure.js');
         drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/XPath.js');
+        
+        //floating scrollbar
+        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_floatingscrollbar.min.js');
+	drupal_add_js('annotator_add_floatinscrollbar();', 'inline');
 
         global $base_url;
         drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',"#content","' . $base_url . '?q=", false);', 'inline');

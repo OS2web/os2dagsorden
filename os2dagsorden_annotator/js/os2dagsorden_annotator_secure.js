@@ -41,3 +41,9 @@ function annotator_hide_menu(){
 		jQuery("#region-content").addClass("grid-24");
 	});
 }
+
+function annotator_add_floatinscrollbar(){
+	jQuery(document).ready(function(){
+		jQuery("#pdf-main").floatingScrollbar();
+	});
+}
