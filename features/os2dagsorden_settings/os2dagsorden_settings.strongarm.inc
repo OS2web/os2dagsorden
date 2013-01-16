@@ -96,7 +96,7 @@ function os2dagsorden_settings_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'os2web_meetings_approved_committee';
-  $strongarm->value = '62,59,64,53,54,56,57,63,58,51,55,61,68,69,42,28';
+  $strongarm->value = '62,59,64,53,54,56,57,63,58,51,55,61,68,69,42,28,71';
   $export['os2web_meetings_approved_committee'] = $strongarm;
 
   $strongarm = new stdClass();
