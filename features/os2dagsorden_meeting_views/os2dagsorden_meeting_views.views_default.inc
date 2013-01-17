@@ -1042,8 +1042,10 @@ $bullet_point = node_load($row->nid);
 if (isset($bullet_point->field_ref_attachment[\'und\'])){
   print \'<div class="item-list">\';
   print \'<ul class="ul-item-list-dagsordenspunkt">\';
-  if ($bullet_point->field_bul_point_closed[\'und\'][0][\'value\'] == 1 || $bullet_point->field_bul_point_personal[\'und\'][0][\'value\'] == 1){
+  if ($bullet_point->field_bul_point_closed[\'und\'][0][\'value\'] == 1){
     print "<i>Dagsordenpunktets indhold er skjult fordi dagsordenspunktet er lukket. Klik på dagsordenspunktets overskrift for at få indeholdet frem.</i>";
+  } else if ($bullet_point->field_bul_point_personal[\'und\'][0][\'value\'] == 1) {
+    print "<i>Dagsordenpunktets indhold er skjult fordi dagsordenspunktet er et personpunkt. Klik på dagsordenspunktets overskrift for at få indeholdet frem.</i>";
   }
   else {
     $bilags = array();
