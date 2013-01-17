@@ -321,7 +321,7 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 	  
 	  //preparing the pager
 	  $pageStart = intval($_GET['page'])+1;
-	  $pageEnd = intval($_GET['page'])+ (IS_IPAD) ? ANNOTATOR_PAGES_PER_VIEW_IPAD :ANNOTATOR_PAGES_PER_VIEW;
+	  $pageEnd = intval($_GET['page'])+ ((IS_IPAD) ? ANNOTATOR_PAGES_PER_VIEW_IPAD : ANNOTATOR_PAGES_PER_VIEW);
     
 	  //bilag has converter to HTML version of file, getting the text out of it
 	  if (!empty($bilag->field_bpa_file_html['und'][0])){
@@ -405,7 +405,7 @@ function _os2dagsorden_annotator_view_light($meeting_id, $bullet_point_id, $bila
 	  
 	  //preparing the pager
 	  $pageStart = intval($_GET['page'])+1;
-	  $pageEnd = intval($_GET['page'])+ (IS_IPAD) ? ANNOTATOR_PAGES_PER_VIEW_IPAD : ANNOTATOR_PAGES_PER_VIEW;
+	  $pageEnd = intval($_GET['page'])+ ((IS_IPAD) ? ANNOTATOR_PAGES_PER_VIEW_IPAD : ANNOTATOR_PAGES_PER_VIEW);
     
 	  //bilag has converter to HTML version of file, getting the text out of it
 	  if (!empty($bilag->field_bpa_file_html['und'][0])){
