@@ -322,11 +322,9 @@ function _os2dagsorden_pdf2htmlex_set_meeting_status_published_plus($node) {
  * @return html with selected pages left
  */
 function os2dagsorden_pdf2htmlex_print_first_page($html, $meeting_id, $bullet_point_id, $bilag_id){
-    $html = utf8_decode($html);
-    
     $doc = new DOMDocument();
     libxml_use_internal_errors(true);
-    $doc->loadHTML($html);
+    $doc->loadHTML('<?xml encoding="UTF-8">' . $html);
     libxml_clear_errors();
     
     $finder = new DomXPath($doc);
@@ -366,12 +364,10 @@ function os2dagsorden_pdf2htmlex_print_first_page($html, $meeting_id, $bullet_po
  *
  * @return html with selected pages left
  */
-function os2dagsorden_pdf2htmlex_hide_unused_pages($html, $startPage, $endPage){
-    $html = utf8_decode($html);
-    
+function os2dagsorden_pdf2htmlex_hide_unused_pages($html, $startPage, $endPage){    
     $doc = new DOMDocument();
     libxml_use_internal_errors(true);
-    $doc->loadHTML($html);
+    $doc->loadHTML('<?xml encoding="UTF-8">' . $html);
     libxml_clear_errors();
     
     $finder = new DomXPath($doc);
