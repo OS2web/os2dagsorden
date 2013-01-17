@@ -39,11 +39,10 @@ function os2dagsorden_meeting_views_views_default_views() {
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
     'nid' => 'nid',
-    'php_1' => 'field_title_short',
-    'php' => 'field_title_short',
     'field_meeting_status' => 'field_meeting_status',
-    'title' => 'title',
-    'field_title_short' => 'field_title_short',
+    'php_1' => 'php_2',
+    'php' => 'php_2',
+    'php_2' => 'php_2',
     'field_date' => 'field_date',
     'field_location' => 'field_location',
     'field_committee' => 'field_committee',
@@ -52,6 +51,13 @@ function os2dagsorden_meeting_views_views_default_views() {
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
     'nid' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_meeting_status' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -68,23 +74,7 @@ function os2dagsorden_meeting_views_views_default_views() {
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_meeting_status' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'title' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_title_short' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
+    'php_2' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -194,31 +184,31 @@ print \'<div class="indicator-empty"></div>\';
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Titel';
-  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['title']['alter']['max_length'] = '20';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['trim'] = TRUE;
-  $handler->display->display_options['fields']['title']['empty'] = '&nbsp;';
-  $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Short title */
-  $handler->display->display_options['fields']['field_title_short']['id'] = 'field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['table'] = 'field_data_field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['field'] = 'field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['label'] = 'Møde';
-  $handler->display->display_options['fields']['field_title_short']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_title_short']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['field_title_short']['alter']['max_length'] = '20';
-  $handler->display->display_options['fields']['field_title_short']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['field_title_short']['alter']['trim'] = TRUE;
-  $handler->display->display_options['fields']['field_title_short']['empty'] = '[title]';
+  /* Field: title - php */
+  $handler->display->display_options['fields']['php_2']['id'] = 'php_2';
+  $handler->display->display_options['fields']['php_2']['table'] = 'views';
+  $handler->display->display_options['fields']['php_2']['field'] = 'php';
+  $handler->display->display_options['fields']['php_2']['ui_name'] = 'title - php';
+  $handler->display->display_options['fields']['php_2']['label'] = 'Møde';
+  $handler->display->display_options['fields']['php_2']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['php_2']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['php_2']['element_class'] = 'views-field-field-title-short';
+  $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
+$title = \'\';
+if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
+  $title = $data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\'][0][\'value\'];
+else 
+  $title = $data->_field_data[\'nid\'][\'entity\']->title;
+
+if (strlen($title) <= 20)
+echo $title;
+else 
+echo substr($title, 0, 17) . \'...\';
+
+?>';
+  $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
   /* Field: Content: Date */
   $handler->display->display_options['fields']['field_date']['id'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['table'] = 'field_data_field_date';
@@ -354,9 +344,7 @@ print \'<div class="indicator-empty"></div>\';
     t('Status'),
     t('meeting/[nid]'),
     t('&nbsp;'),
-    t('Titel'),
     t('Møde'),
-    t('[title]'),
     t('Dato'),
     t('Lokation'),
     t('none'),
@@ -1130,13 +1118,13 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
   $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
 global $base_url;
 if (os2dagsorden_access_helper_bullet_point_has_speaker_paper($row->nid)){
-$link = $base_url.\'?q=meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid;
-print "<a href=\\"".$link."\\"><div class=\\"indicator-has-speaker-paper\\"></div>Talepapir</a>";
+$link = $base_url . \'?q=meeting/\' . $row->nid_1 . \'/bullet-point/\' . $row->nid;
+print \'<a href="\' . $link . \'"><div class="indicator-has-speaker-paper"></div>Talepapir</a>\';
 } else {
 $q = $_GET[\'q\'];
-$link = $base_url."?q=node/add/speaker-paper&edit[field_ref_bullet_point][und]=".$row->nid."&destination=".$q;
+$link = $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=\' . $row->title . \' (\' . $row->nid . \')\' . \'&destination=\' . $q;
 
-print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"></div>Nyt talepapir</a>";
+print \'<a href="\' . $link . \'"><div class="indicator-create-speaker-paper"></div>Nyt talepapir</a>\';
 }
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
@@ -1252,14 +1240,12 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
   $handler->display->display_options['style_options']['columns'] = array(
     'nid' => 'nid',
     'field_meeting_status' => 'field_meeting_status',
-    'php_1' => 'field_title_short',
-    'php' => 'field_title_short',
-    'title' => 'title',
-    'field_title_short' => 'field_title_short',
+    'php_1' => 'php_2',
+    'php' => 'php_2',
+    'php_2' => 'php_2',
     'field_date' => 'field_date',
     'field_location' => 'field_location',
     'field_committee' => 'field_committee',
-    'field_committee_abbr' => 'field_committee_abbr',
     'field_name_short' => 'field_name_short',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
@@ -1288,16 +1274,7 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
       'separator' => '',
       'empty_column' => 0,
     ),
-    'title' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_title_short' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
+    'php_2' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -1317,13 +1294,6 @@ print "<a href=\\"".$link."\\"><div class=\\"indicator-create-speaker-paper\\"><
       'empty_column' => 0,
     ),
     'field_committee' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_committee_abbr' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -1406,6 +1376,8 @@ print \'<div class="indicator-empty"></div>\';
   $handler->display->display_options['fields']['php']['table'] = 'views';
   $handler->display->display_options['fields']['php']['field'] = 'php';
   $handler->display->display_options['fields']['php']['ui_name'] = 'indicator - has notes';
+  $handler->display->display_options['fields']['php']['label'] = '';
+  $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
 $annotations = os2dagsorden_annotator_get_notes_by_meeting_id($row->nid);
@@ -1416,28 +1388,31 @@ print \'<div class="indicator-empty"></div>\';
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['title']['alter']['max_length'] = '30';
-  $handler->display->display_options['fields']['title']['alter']['trim'] = TRUE;
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Short title */
-  $handler->display->display_options['fields']['field_title_short']['id'] = 'field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['table'] = 'field_data_field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['field'] = 'field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['label'] = 'Møde';
-  $handler->display->display_options['fields']['field_title_short']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_title_short']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['field_title_short']['alter']['max_length'] = '30';
-  $handler->display->display_options['fields']['field_title_short']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_title_short']['empty'] = '[title]';
+  /* Field: title - php */
+  $handler->display->display_options['fields']['php_2']['id'] = 'php_2';
+  $handler->display->display_options['fields']['php_2']['table'] = 'views';
+  $handler->display->display_options['fields']['php_2']['field'] = 'php';
+  $handler->display->display_options['fields']['php_2']['ui_name'] = 'title - php';
+  $handler->display->display_options['fields']['php_2']['label'] = 'Møde';
+  $handler->display->display_options['fields']['php_2']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['php_2']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['php_2']['element_label_class'] = 'views-field-field-title-short';
+  $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
+$title = \'\';
+if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
+  $title = $data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\'][0][\'value\'];
+else 
+  $title = $data->_field_data[\'nid\'][\'entity\']->title;
+
+if (strlen($title) <= 20)
+echo $title;
+else 
+echo substr($title, 0, 17) . \'...\';
+
+?>';
+  $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
   /* Field: Content: Date */
   $handler->display->display_options['fields']['field_date']['id'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['table'] = 'field_data_field_date';
@@ -1612,9 +1587,7 @@ print \'<div class="indicator-empty"></div>\';
     t('Status'),
     t('meeting/[nid]'),
     t('&nbsp;'),
-    t('PHP'),
     t('Møde'),
-    t('[title]'),
     t('Dato'),
     t('Lokation'),
     t('Udvalg'),
@@ -1658,14 +1631,13 @@ print \'<div class="indicator-empty"></div>\';
   $handler->display->display_options['style_options']['columns'] = array(
     'nid' => 'nid',
     'field_meeting_status' => 'field_meeting_status',
-    'php_1' => 'field_title_short',
-    'php' => 'field_title_short',
-    'title' => 'title',
-    'field_meeting_abbr' => 'field_meeting_abbr',
+    'php_1' => 'php_2',
+    'php' => 'php_2',
+    'php_2' => 'php_2',
     'field_date' => 'field_date',
     'field_location' => 'field_location',
     'field_committee' => 'field_committee',
-    'field_title_short' => 'field_title_short',
+    'field_name_short' => 'field_name_short',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -1693,16 +1665,7 @@ print \'<div class="indicator-empty"></div>\';
       'separator' => '',
       'empty_column' => 0,
     ),
-    'title' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
-    'field_meeting_abbr' => array(
-      'sortable' => 0,
-      'default_sort_order' => 'asc',
+    'php_2' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -1728,7 +1691,7 @@ print \'<div class="indicator-empty"></div>\';
       'separator' => '',
       'empty_column' => 0,
     ),
-    'field_title_short' => array(
+    'field_name_short' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -1788,6 +1751,8 @@ print \'<div class="indicator-empty"></div>\';
   $handler->display->display_options['fields']['php']['table'] = 'views';
   $handler->display->display_options['fields']['php']['field'] = 'php';
   $handler->display->display_options['fields']['php']['ui_name'] = 'indicator - has notes';
+  $handler->display->display_options['fields']['php']['label'] = '';
+  $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
 $annotations = os2dagsorden_annotator_get_notes_by_meeting_id($row->nid);
@@ -1798,33 +1763,32 @@ print \'<div class="indicator-empty"></div>\';
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['title']['alter']['max_length'] = '20';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['trim'] = TRUE;
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Short title */
-  $handler->display->display_options['fields']['field_title_short']['id'] = 'field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['table'] = 'field_data_field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['field'] = 'field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['label'] = 'Møde';
-  $handler->display->display_options['fields']['field_title_short']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_title_short']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['field_title_short']['alter']['trim_whitespace'] = TRUE;
-  $handler->display->display_options['fields']['field_title_short']['alter']['max_length'] = '20';
-  $handler->display->display_options['fields']['field_title_short']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['field_title_short']['alter']['trim'] = TRUE;
-  $handler->display->display_options['fields']['field_title_short']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_title_short']['empty'] = '[title]';
+  /* Field: title - php */
+  $handler->display->display_options['fields']['php_2']['id'] = 'php_2';
+  $handler->display->display_options['fields']['php_2']['table'] = 'views';
+  $handler->display->display_options['fields']['php_2']['field'] = 'php';
+  $handler->display->display_options['fields']['php_2']['ui_name'] = 'title - php';
+  $handler->display->display_options['fields']['php_2']['label'] = 'Møde';
+  $handler->display->display_options['fields']['php_2']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['php_2']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['php_2']['element_class'] = 'views-field-field-title-short';
+  $handler->display->display_options['fields']['php_2']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
+$title = \'\';
+if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
+  $title = $data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\'][0][\'value\'];
+else 
+  $title = $data->_field_data[\'nid\'][\'entity\']->title;
+
+if (strlen($title) <= 20)
+echo $title;
+else 
+echo substr($title, 0, 17) . \'...\';
+
+?>';
+  $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
   /* Field: Content: Date */
   $handler->display->display_options['fields']['field_date']['id'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['table'] = 'field_data_field_date';
@@ -1923,9 +1887,7 @@ print \'<div class="indicator-empty"></div>\';
     t('Status'),
     t('meeting/[nid]'),
     t('&nbsp;'),
-    t('PHP'),
     t('Møde'),
-    t('[title]'),
     t('Dato'),
     t('Lokation'),
     t('Udvalg'),
@@ -1987,7 +1949,7 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['empty']['area']['content'] = '<?php
 global $base_url;
 $q = $_GET[\'q\'];
-print "<a href=\\"".$base_url."?q=node/add/speaker-paper&edit[field_ref_bullet_point][und]=!1&destination=".$q."\\">Opret et nye talepapir</a>";
+print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=\' . [title_1] . \' (\' . %1 . \')&destination=\' . $q . \'">Opret et nye talepapir</a>\';
 ?>
 ';
   $handler->display->display_options['empty']['area']['format'] = 'php_code';
@@ -2304,6 +2266,22 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
   $handler = $view->new_display('attachment', 'Speaker paper', 'attachment_1');
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['defaults']['header'] = FALSE;
+  $handler->display->display_options['defaults']['empty'] = FALSE;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = FALSE;
+  $handler->display->display_options['empty']['area']['content'] = '<?php
+global $base_url;
+$q = $_GET[\'q\'];
+print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=%1 (!1)&destination=\' . $q . \'">Opret et nye talepapir</a>\';
+
+//print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=%1 (!1)">test</a>\';
+?>
+';
+  $handler->display->display_options['empty']['area']['format'] = 'php_code';
+  $handler->display->display_options['empty']['area']['tokenize'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
@@ -2381,7 +2359,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
     t('<?php
 global $base_url;
 $q = $_GET[\'q\'];
-print "<a href=\"".$base_url."?q=node/add/speaker-paper&edit[field_ref_bullet_point][und]=!1&destination=".$q."\">Opret et nye talepapir</a>";
+print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=\' . [title_1] . \' (\' . %1 . \')&destination=\' . $q . \'">Opret et nye talepapir</a>\';
 ?>
 '),
     t('Content referencing Content from field_ref_bullet_point'),
@@ -2390,6 +2368,14 @@ print "<a href=\"".$base_url."?q=node/add/speaker-paper&edit[field_ref_bullet_po
     t('Page'),
     t('<div class="indicator-unlocked"></div>'),
     t('Speaker paper'),
+    t('<?php
+global $base_url;
+$q = $_GET[\'q\'];
+print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=%1 (!1)&destination=\' . $q . \'">Opret et nye talepapir</a>\';
+
+//print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=%1 (!1)">test</a>\';
+?>
+'),
     t('talepapir - [title_1]'),
     t('#'),
     t('Talepapir -'),
