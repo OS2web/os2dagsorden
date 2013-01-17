@@ -79,6 +79,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       }
     }
     
+    
     $node->title = $meeting['title'];
     $node->field_meeting_acadre_version[$node->language][0]['value'] = $meeting['acadre_version'];//setting the acarde version of the meeting
     
@@ -187,9 +188,15 @@ function _os2web_esdh_provider_import_items($items) {
     $node->field_bul_point_number['und'][0]['value'] = $item['id'];
  
     if ($item['access'] === 'Lukket') {
-      $node->field_bul_point_closed[LANGUAGE_NONE][]['value'] = 1;
+      $node->field_bul_point_closed[LANGUAGE_NONE][0]['value'] = 1;
     } else {
-      $node->field_bul_point_closed[LANGUAGE_NONE][]['value'] = 0;
+      $node->field_bul_point_closed[LANGUAGE_NONE][0]['value'] = 0;
+    }
+    
+    if ($item['access'] === 'Person') {
+      $node->field_bul_point_personal[LANGUAGE_NONE][0]['value'] = 1;
+    } else {
+      $node->field_bul_point_personal[LANGUAGE_NONE][0]['value'] = 0;
     }
     
     // Gather the bullets for the item.

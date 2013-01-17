@@ -827,9 +827,9 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['style_options']['columns'] = array(
     'nid_1' => 'nid_1',
     'nid' => 'nid',
-    'php_4' => 'title',
     'nothing' => 'nothing',
     'field_bul_point_closed' => 'title',
+    'field_bul_point_personal' => 'title',
     'php_1' => 'title',
     'php' => 'title',
     'title' => 'title',
@@ -852,17 +852,19 @@ print("<div class=\\"indicator-has-notes\\"></div>");
       'separator' => '',
       'empty_column' => 0,
     ),
-    'php_4' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
     'nothing' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
     ),
     'field_bul_point_closed' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_bul_point_personal' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -966,6 +968,18 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_bul_point_closed']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_bul_point_closed']['empty_zero'] = TRUE;
   $handler->display->display_options['fields']['field_bul_point_closed']['type'] = 'list_key';
+  /* Field: Personal indicator */
+  $handler->display->display_options['fields']['field_bul_point_personal']['id'] = 'field_bul_point_personal';
+  $handler->display->display_options['fields']['field_bul_point_personal']['table'] = 'field_data_field_bul_point_personal';
+  $handler->display->display_options['fields']['field_bul_point_personal']['field'] = 'field_bul_point_personal';
+  $handler->display->display_options['fields']['field_bul_point_personal']['relationship'] = 'field_ref_bullet_points_target_id';
+  $handler->display->display_options['fields']['field_bul_point_personal']['ui_name'] = 'Personal indicator';
+  $handler->display->display_options['fields']['field_bul_point_personal']['label'] = '';
+  $handler->display->display_options['fields']['field_bul_point_personal']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_bul_point_personal']['alter']['text'] = '<div class="indicator-personal"></div>';
+  $handler->display->display_options['fields']['field_bul_point_personal']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_bul_point_personal']['empty_zero'] = TRUE;
+  $handler->display->display_options['fields']['field_bul_point_personal']['type'] = 'list_key';
   /* Field: indicator - bullet point has speaker paper */
   $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
   $handler->display->display_options['fields']['php_1']['table'] = 'views';
@@ -991,9 +1005,10 @@ print \'<div class="indicator-has-speaker-paper"></div>\';
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
 $annotations = os2dagsorden_annotator_get_notes_by_bullet_point_id($row->nid);
 $is_closed = $data->_field_data[\'node_field_data_field_ref_bullet_points_nid\'][\'entity\']->field_bul_point_closed[\'und\'][0][\'value\'];
+$is_personal = $data->_field_data[\'node_field_data_field_ref_bullet_points_nid\'][\'entity\']->field_bul_point_personal[\'und\'][0][\'value\'];
 if (!empty($annotations))
 print \'<div class="indicator-has-notes"></div>\';
-else if(!os2dagsorden_access_helper_bullet_point_has_speaker_paper($row->nid) && !$is_closed)
+else if(!os2dagsorden_access_helper_bullet_point_has_speaker_paper($row->nid) && !$is_closed && !$is_personal)
 print \'<div class="indicator-empty"></div>\';
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
@@ -1027,7 +1042,7 @@ $bullet_point = node_load($row->nid);
 if (isset($bullet_point->field_ref_attachment[\'und\'])){
   print \'<div class="item-list">\';
   print \'<ul class="ul-item-list-dagsordenspunkt">\';
-  if ($bullet_point->field_bul_point_closed[\'und\'][0][\'value\'] == 1){
+  if ($bullet_point->field_bul_point_closed[\'und\'][0][\'value\'] == 1 || $bullet_point->field_bul_point_personal[\'und\'][0][\'value\'] == 1){
     print "<i>Dagsordenpunktets indhold er skjult fordi dagsordenspunktet er lukket. Klik på dagsordenspunktets overskrift for at få indeholdet frem.</i>";
   }
   else {
@@ -1179,6 +1194,7 @@ print \'<a href="\' . $link . \'"><div class="indicator-create-speaker-paper"></
     t('bullet point speaking paper'),
     t('bullet point attachment'),
     t('<div class="indicator-unlocked"></div>'),
+    t('<div class="indicator-personal"></div>'),
     t('meeting/[nid_1]/bullet-point/[nid]'),
   );
   $export['meeting_details'] = $view;
@@ -2041,11 +2057,11 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
   $handler->display->display_options['style_options']['columns'] = array(
     'nid_1' => 'nid_1',
     'field_bul_point_closed' => 'title',
+    'field_bul_point_personal' => 'title',
     'title' => 'title',
     'php' => 'title',
     'body' => 'title',
     'php_2' => 'title',
-    'php_1' => 'title',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
   $handler->display->display_options['style_options']['info'] = array(
@@ -2057,6 +2073,13 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
       'empty_column' => 0,
     ),
     'field_bul_point_closed' => array(
+      'sortable' => 0,
+      'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'field_bul_point_personal' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
       'align' => '',
@@ -2087,11 +2110,6 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
       'separator' => '',
       'empty_column' => 0,
     ),
-    'php_1' => array(
-      'align' => '',
-      'separator' => '',
-      'empty_column' => 0,
-    ),
   );
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
@@ -2118,6 +2136,17 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
   $handler->display->display_options['fields']['field_bul_point_closed']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_bul_point_closed']['empty_zero'] = TRUE;
   $handler->display->display_options['fields']['field_bul_point_closed']['type'] = 'list_key';
+  /* Field: Personal indicator */
+  $handler->display->display_options['fields']['field_bul_point_personal']['id'] = 'field_bul_point_personal';
+  $handler->display->display_options['fields']['field_bul_point_personal']['table'] = 'field_data_field_bul_point_personal';
+  $handler->display->display_options['fields']['field_bul_point_personal']['field'] = 'field_bul_point_personal';
+  $handler->display->display_options['fields']['field_bul_point_personal']['ui_name'] = 'Personal indicator';
+  $handler->display->display_options['fields']['field_bul_point_personal']['label'] = '';
+  $handler->display->display_options['fields']['field_bul_point_personal']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_bul_point_personal']['alter']['text'] = '<div class="indicator-personal"></div>';
+  $handler->display->display_options['fields']['field_bul_point_personal']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_bul_point_personal']['empty_zero'] = TRUE;
+  $handler->display->display_options['fields']['field_bul_point_personal']['type'] = 'list_key';
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -2367,6 +2396,7 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
     t('All'),
     t('Page'),
     t('<div class="indicator-unlocked"></div>'),
+    t('<div class="indicator-personal"></div>'),
     t('Speaker paper'),
     t('<?php
 global $base_url;

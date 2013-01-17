@@ -130,6 +130,8 @@ function acadre_esdh_mm_import_meeting($meeting) {
  *   Meeting_struct array for an accepted import, else FALSE
  */
 function _acadre_esdh_import_meeting($info) {
+  //print_r($info);
+  //print_r("<br/><br/><br/><br/>");
   if (($real_path = _acadre_esdh_similar_file_exists(drupal_realpath($info['agenda_uri']))) !== FALSE) {
     $xml = simplexml_load_file($real_path);
     $meeting = array(
@@ -150,6 +152,7 @@ function _acadre_esdh_import_meeting($info) {
       'items' => array(),
     );
     $publish_committee = array_map('trim', explode(',', variable_get('os2web_meetings_approved_committee', ACADRE_MM_DEFAULT_APPROVED)));
+    print_r($publish_committee);
     if ($meeting['committee'] == '' || !in_array($meeting['committee_id'], $publish_committee)) {
       watchdog('acadre MM', 'Ignored agenda from %committee .', array('%committee' => $meeting['committee']));
       return FALSE;

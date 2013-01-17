@@ -131,15 +131,12 @@ function os2web_esdh_provider_cron() {
   if (os2web_esdh_provider_has_api('mm')) {
     $meetings = os2web_esdh_provider_invoke('mm', 'get_import_list');
     $queue = DrupalQueue::get('acadre_mm_import');
-    
     //if ($queue->numberOfItems() == 0) {
       foreach ($meetings as $meeting) {
         //$queue->createItem(array('meeting' => $meeting, 'force' => FALSE));
         //to remove
         module_load_include('inc', 'os2web_esdh_provider', 'os2web_esdh_provider.mmapi');
 	_os2web_esdh_provider_import_meeting($meeting, FALSE);
-	//print_r($meeting);
-	//print_r("<br/><br/><br/>");
       }
       //no postprocess, uncomment to activate
 //       if (os2web_esdh_provider_supports('mm', 'post_import_process')) {
