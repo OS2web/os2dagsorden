@@ -236,7 +236,7 @@ if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
 else 
   $title = $data->_field_data[\'nid\'][\'entity\']->title;
 
-echo \'<font color="\' . $row->field_hex . \'">\' . $title . \'</font>\';
+echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'und\'][0][\'value\'] . \'">\' . $title . \'</font>\';
 
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
