@@ -24,7 +24,7 @@ function os2dagsorden_ad_integration_default_ldap_servers() {
   $ldap_servers_conf->binddn = 'DrupalAdLookup';
   $ldap_servers_conf->bindpw = 'w0b8cBKkYDs0FIUIKnWuRg==';
   $ldap_servers_conf->basedn = array(
-    0 => 'OU=syddjurs,DC=intern,DC=syddjurs,DC=dk',
+    0 => 'DC=intern,DC=syddjurs,DC=dk',
   );
   $ldap_servers_conf->user_attr = 'sAMAccountName';
   $ldap_servers_conf->account_name_attr = '';
