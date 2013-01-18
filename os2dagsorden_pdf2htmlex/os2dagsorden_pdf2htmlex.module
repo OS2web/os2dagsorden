@@ -324,7 +324,7 @@ function _os2dagsorden_pdf2htmlex_set_meeting_status_published_plus($node) {
 function os2dagsorden_pdf2htmlex_print_first_page($html, $meeting_id, $bullet_point_id, $bilag_id){
     $doc = new DOMDocument();
     libxml_use_internal_errors(true);
-    $doc->loadHTML('<?xml encoding="UTF-8">' . $html);
+    $doc->loadHTML('<?xml encoding="UTF-8"><div class="indicator-preview"></div>' . $html);
     libxml_clear_errors();
     
     $finder = new DomXPath($doc);
