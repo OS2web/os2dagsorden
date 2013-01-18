@@ -20,7 +20,7 @@ function os2dagsorden_ad_integration_default_ldap_authorization() {
   $consumer_type->only_ldap_authenticated = TRUE;
   $consumer_type->derive_from_dn = TRUE;
   $consumer_type->derive_from_dn_attr = 'ou';
-  $consumer_type->derive_from_attr = TRUE;
+  $consumer_type->derive_from_attr = FALSE;
   $consumer_type->derive_from_attr_attr = 'memberOf';
   $consumer_type->derive_from_attr_use_first_attr = TRUE;
   $consumer_type->derive_from_attr_nested = FALSE;
@@ -32,7 +32,8 @@ function os2dagsorden_ad_integration_default_ldap_authorization() {
   $consumer_type->derive_from_entry_search_all = FALSE;
   $consumer_type->derive_from_entry_use_first_attr = FALSE;
   $consumer_type->derive_from_entry_user_ldap_attr = 'dn';
-  $consumer_type->mappings = 'dagsorden_syddjurs_dk|os2dagsorden
+  $consumer_type->mappings = 'syddjurs|os2dagsorden
+Ekstern Plus|os2dagsorden
 ';
   $consumer_type->use_filter = TRUE;
   $consumer_type->synch_to_ldap = FALSE;
