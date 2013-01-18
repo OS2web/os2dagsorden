@@ -828,12 +828,13 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     'nid_1' => 'nid_1',
     'nid' => 'nid',
     'nothing' => 'nothing',
-    'field_bul_point_closed' => 'title',
-    'field_bul_point_personal' => 'title',
-    'php_1' => 'title',
-    'php' => 'title',
+    'field_bul_point_closed' => 'php_4',
+    'field_bul_point_personal' => 'php_4',
+    'php_1' => 'php_4',
+    'php' => 'php_4',
     'title' => 'title',
-    'php_3' => 'title',
+    'php_4' => 'php_4',
+    'php_3' => 'php_4',
     'php_2' => 'php_2',
   );
   $handler->display->display_options['style_options']['default'] = '-1';
@@ -884,6 +885,11 @@ print("<div class=\\"indicator-has-notes\\"></div>");
     'title' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php_4' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,
@@ -1013,21 +1019,26 @@ print \'<div class="indicator-empty"></div>\';
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
-  /* Field: Bullet point title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['relationship'] = 'field_ref_bullet_points_target_id';
-  $handler->display->display_options['fields']['title']['ui_name'] = 'Bullet point title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['path'] = 'meeting/[nid_1]/bullet-point/[nid]';
-  $handler->display->display_options['fields']['title']['alter']['link_class'] = 'first-child';
-  $handler->display->display_options['fields']['title']['alter']['max_length'] = '62';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['trim'] = TRUE;
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Field: Bullet point title - php */
+  $handler->display->display_options['fields']['php_4']['id'] = 'php_4';
+  $handler->display->display_options['fields']['php_4']['table'] = 'views';
+  $handler->display->display_options['fields']['php_4']['field'] = 'php';
+  $handler->display->display_options['fields']['php_4']['ui_name'] = 'Bullet point title - php';
+  $handler->display->display_options['fields']['php_4']['label'] = '';
+  $handler->display->display_options['fields']['php_4']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php_4']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_4']['php_output'] = '<?php
+global $base_url;
+$title = $data->_field_data[\'node_field_data_field_ref_bullet_points_nid\'][\'entity\']->title;
+$meeting_id = $row->nid_1;
+$bp_id = $row->nid;
+if (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bp_id))
+print \'<a href="\' . $base_url . \'/meeting/\' . $meeting_id . \'/bullet-point/\' . $bp_id . \'" class="first-child">\' . $title . \'</a>\';
+else 
+print \'<a class="first-child">\' . $title . \'</a>\';
+?>';
+  $handler->display->display_options['fields']['php_4']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_4']['php_click_sortable'] = '';
   /* Field: bullet point attachments with text */
   $handler->display->display_options['fields']['php_3']['id'] = 'php_3';
   $handler->display->display_options['fields']['php_3']['table'] = 'views';
@@ -1060,7 +1071,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	//print quick-annotate link only if text is not empty
 	if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){	
 	  $link_light = $base_url . \'/meeting/\' . $row->nid_1 . \'/bullet-point/\' . $row->nid . \'/bullet-point-attachment-light/\' . $attachment->nid . \'?destination=meeting/\' . $row->nid_1;
-	  print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
+	  print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" target="_blank" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
 	}
 	
 	if (strlen($attachment->title) < 75)
@@ -1069,7 +1080,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	  $title = substr($attachment->title, 0, 75).\'...\';
 	
 	$link = $base_url.\'/meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment/\'.$attachment->nid;
-	print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
+	print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" target="_blank" class="first-child last-child">\'.$title.\'</a>\';
 
 	//attachment text - if any
 	if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){	
@@ -1091,7 +1102,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       //print quick-annotate link only if text is not empty
       if (!empty($attachment->field_bpa_file_html[\'und\'][0])){	
 	$link_light = $base_url.\'/meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment-light/\'.$attachment->nid . \'?destination=meeting/\' . $row->nid_1;
-	print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
+	print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" target="_blank" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
       }
       
       if (strlen($attachment->title) < 75)
@@ -1100,7 +1111,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	$title = substr($attachment->title, 0, 75).\'...\';
       
       $link = $base_url.\'/meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment/\'.$attachment->nid;
-      print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
+      print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" target="_blank" class="first-child last-child">\'.$title.\'</a>\';
 
       //attachment text - if any
       if (!empty($attachment->field_bpa_file_html[\'und\'][0])){	  
@@ -1110,7 +1121,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 
 	print \'Vent venligst...<div class="throbber"></div>\';
 	print \'</div>\';
-	print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
+	print(\'<a class="first-child last-child" href="\'.$link.\'" target="_blank">Læs mere...</a>\');
 
 	print \'</div>\';
       }
@@ -1134,14 +1145,20 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
   $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
 global $base_url;
-if (os2dagsorden_access_helper_bullet_point_has_speaker_paper($row->nid)){
-$link = $base_url . \'?q=meeting/\' . $row->nid_1 . \'/bullet-point/\' . $row->nid;
-print \'<a href="\' . $link . \'"><div class="indicator-has-speaker-paper"></div>Talepapir</a>\';
-} else {
-$q = $_GET[\'q\'];
-$link = $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=\' . $row->title . \' (\' . $row->nid . \')\' . \'&destination=\' . $q;
-
-print \'<a href="\' . $link . \'"><div class="indicator-create-speaker-paper"></div>Nyt talepapir</a>\';
+$meeting_id = $row->nid_1;
+$bp_id = $row->nid;
+if (!os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bp_id)){
+  print "<a>&nbsp;</a>";
+}
+else {
+  if (os2dagsorden_access_helper_bullet_point_has_speaker_paper($bp_id)){
+  $link = $base_url . \'?q=meeting/\' . $meeting_id . \'/bullet-point/\' . $bp_id;
+  print \'<a href="\' . $link . \'"><div class="indicator-has-speaker-paper"></div>Talepapir</a>\';
+  } else {
+  $q = $_GET[\'q\'];
+  $link = $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=\' . $row->title . \' (\' . $bp_id . \')\' . \'&destination=\' . $q;
+  print \'<a href="\' . $link . \'"><div class="indicator-create-speaker-paper"></div>Nyt talepapir</a>\';
+  }
 }
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
@@ -1197,7 +1214,6 @@ print \'<a href="\' . $link . \'"><div class="indicator-create-speaker-paper"></
     t('bullet point attachment'),
     t('<div class="indicator-unlocked"></div>'),
     t('<div class="indicator-personal"></div>'),
-    t('meeting/[nid_1]/bullet-point/[nid]'),
   );
   $export['meeting_details'] = $view;
 
