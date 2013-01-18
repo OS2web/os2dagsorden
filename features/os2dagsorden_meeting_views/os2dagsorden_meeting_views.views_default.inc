@@ -1032,6 +1032,9 @@ global $base_url;
 $title = $data->_field_data[\'node_field_data_field_ref_bullet_points_nid\'][\'entity\']->title;
 $meeting_id = $row->nid_1;
 $bp_id = $row->nid;
+if (strlen($title) > 60)
+$title = substr($title, 0, 60);
+
 if (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bp_id))
 print \'<a href="\' . $base_url . \'/meeting/\' . $meeting_id . \'/bullet-point/\' . $bp_id . \'" class="first-child">\' . $title . \'</a>\';
 else 
