@@ -265,12 +265,15 @@ function os2dagsorden_print_meetings_generate_month($from_month, $to_month, $mee
                     $link = $base_url . '/meeting/' . $met->nid;
 
                     $committee = taxonomy_term_load($met->field_committee['und'][0]['tid']);
+		    $title = '';
                     if (!empty($committee->field_committee_abbr['und'][0]['value']))
-                        $html .= '<a href="' . $link . '"><span class="color_' . $met->field_hex['und'][0]['value'] . '">' . $committee->field_committee_abbr['und'][0]['value'] . '</span></a>, ';
+			 $title = $committee->field_committee_abbr['und'][0]['value'];
                     elseif (!empty($met->field_title_short['und'][0]['value']))
-                        $html .= '<a href="' . $link . '"><span class="color_' . $met->field_hex['und'][0]['value'] . '">' . $met->field_title_short['und'][0]['value'] . '</span></a>, ';
+			 $title = $met->field_title_short['und'][0]['value'];
                     else
-                        $html .= '<a href="' . $link . '"><span class="color_' . $met->field_hex['und'][0]['value'] . '">' . $met->title . '</span></a>, ';
+			 $title = $met->title;
+                        
+                    $html .= '<a href="' . $link . '"><font color="' . $met->field_hex['und'][0]['value'] . '">' . $title . '</font></a>, ';    
                 }
             }
             //end of content

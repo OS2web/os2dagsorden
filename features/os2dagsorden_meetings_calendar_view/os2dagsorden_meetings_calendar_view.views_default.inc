@@ -84,31 +84,28 @@ drupal_set_breadcrumb($breadcrumb);
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['text'] = '<font color="[field_hex]">[title]</font>';
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['title']['alter']['link_class'] = 'color_[field_hex]';
-  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Short title */
-  $handler->display->display_options['fields']['field_title_short']['id'] = 'field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['table'] = 'field_data_field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['field'] = 'field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['label'] = '';
-  $handler->display->display_options['fields']['field_title_short']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_title_short']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['field_title_short']['alter']['link_class'] = 'color_[field_hex]';
-  $handler->display->display_options['fields']['field_title_short']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_title_short']['empty'] = '[title]';
+  /* Field: title - php */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['ui_name'] = 'title - php';
+  $handler->display->display_options['fields']['php']['label'] = '';
+  $handler->display->display_options['fields']['php']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['php']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php
+$title = \'\';
+if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
+  $title = $data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\'][0][\'value\'];
+else 
+  $title = $data->_field_data[\'nid\'][\'entity\']->title;
+
+echo \'<font color="\' . $row->field_hex . \'">\' . $title . \'</font>\';
+
+?>';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   /* Sort criterion: Content: Date -  start date (field_date) */
   $handler->display->display_options['sorts']['field_date_value']['id'] = 'field_date_value';
   $handler->display->display_options['sorts']['field_date_value']['table'] = 'field_data_field_date';
@@ -222,27 +219,28 @@ print \'<a href="\'.$base_url.\'?q=meetings-export/month/\'.$date.\'" class="but
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Field: Content: Title */
-  $handler->display->display_options['fields']['title']['id'] = 'title';
-  $handler->display->display_options['fields']['title']['table'] = 'node';
-  $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = '';
-  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['title']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['title']['alter']['link_class'] = 'color_[field_hex]';
-  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Field: Content: Short title */
-  $handler->display->display_options['fields']['field_title_short']['id'] = 'field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['table'] = 'field_data_field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['field'] = 'field_title_short';
-  $handler->display->display_options['fields']['field_title_short']['label'] = '';
-  $handler->display->display_options['fields']['field_title_short']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_title_short']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['field_title_short']['alter']['link_class'] = 'color_[field_hex]';
-  $handler->display->display_options['fields']['field_title_short']['element_label_colon'] = FALSE;
-  $handler->display->display_options['fields']['field_title_short']['empty'] = '[title]';
+  /* Field: title - php */
+  $handler->display->display_options['fields']['php']['id'] = 'php';
+  $handler->display->display_options['fields']['php']['table'] = 'views';
+  $handler->display->display_options['fields']['php']['field'] = 'php';
+  $handler->display->display_options['fields']['php']['ui_name'] = 'title - php';
+  $handler->display->display_options['fields']['php']['label'] = '';
+  $handler->display->display_options['fields']['php']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['php']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php']['php_output'] = '<?php
+$title = \'\';
+if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
+  $title = $data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\'][0][\'value\'];
+else 
+  $title = $data->_field_data[\'nid\'][\'entity\']->title;
+
+echo \'<font color="\' . $row->field_hex . \'">\' . $title . \'</font>\';
+
+?>';
+  $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Date: Date (node) */
   $handler->display->display_options['arguments']['date_argument']['id'] = 'date_argument';
@@ -506,9 +504,7 @@ print \'<a href="\'.$base_url.\'?q=meetings-export/day/\'.$date.\'" class="butto
     t('Asc'),
     t('Desc'),
     t('yyy'),
-    t('<font color="[field_hex]">[title]</font>'),
     t('meeting/[nid]'),
-    t('[title]'),
     t('All'),
     t('Måned'),
     t('Week'),
