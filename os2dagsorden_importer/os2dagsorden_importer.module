@@ -820,16 +820,7 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
         $node->field_title_short[$node->language][0]['value'] = $xml_data['title'];
     }
 
-    $node->field_meeting_id[$node->language][0]['value'] = $xml_data['meeting_id'];
-    
-    if ($xml_data['cancelled'] == 1){
-      $node->field_meeting_status[$node->language][0]['value'] = 'Aflyst';
-    } else if ($xml_data['changed'] == 1){
-      $node->field_meeting_status[$node->language][0]['value'] = 'Ændret';
-    }
-    else {
-      $node->field_meeting_status[$node->language][0]['value'] = 'Planlagt';
-    }
+    $node->field_meeting_id[$node->language][0]['value'] = $xml_data['meeting_id']; 
 
     if (!empty($xml_data['meeting_start_date'])) {
         $node->field_date[$node->language][0]['value'] = $xml_data['meeting_start_date'];
@@ -840,8 +831,20 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
 
     $node->field_committee[$node->language][0]['tid'] = $tid;
 
-    node_submit($node);
-    node_save($node);
+    //node_submit($node);
+    //node_save($node);
+    
+    if ($xml_data['cancelled'] == 1){
+      os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Aflyst');
+      //$node->field_meeting_status[$node->language][0]['value'] = 'Aflyst';
+    } else if ($xml_data['changed'] == 1){
+      os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Ændret');
+      //$node->field_meeting_status[$node->language][0]['value'] = 'Ændret';
+    }
+    else {
+      os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Planlagt');
+      //$node->field_meeting_status[$node->language][0]['value'] = 'Planlagt';
+    }
 }
 
 /**
