@@ -399,7 +399,7 @@ function _os2dagsorden_annotator_view_light($meeting_id, $bullet_point_id, $bila
 	//overriding title for bilag
 	drupal_set_title($bilag->title);
 	
-	$html = '<div class="node"><div class="close-overlay-bilag-link"><a class="form-submit" href="' . $base_url . '/' . $_GET['destination'] . '">Luk vinduet [X]</a></div>';
+	$html = '<div class="node"><div class="close-overlay-bilag-link"><a class="form-submit" onclick="window.opener.document.location.reload(true); window.close(); return false;" href="">Luk vinduet [X]</a></div>';
 	
 	if (!empty($bilag->field_bpa_file['und'][0]['uri'])){//is an actual bilag
 	  

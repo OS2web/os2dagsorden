@@ -2233,7 +2233,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       //print quick-annotate link only if text is not empty
       if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){	
 	$link_light = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment-light/\'.$attachment->nid . \'?destination=\' . \'meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1;
-	print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
+	print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" target="_blank" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
       }
 	     
       if (strlen($attachment->title) < 75)
@@ -2241,7 +2241,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       else 
 	$title = substr($attachment->title, 0, 75).\'...\';
       $link = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment/\'.$attachment->nid;
-      print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
+      print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" target="_blank" class="first-child last-child">\'.$title.\'</a>\';
      
       //attachment text - if any
       if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
@@ -2264,7 +2264,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
     //print quick-annotate link only if text is not empty
     if (!empty($attachment->field_bpa_file_html[\'und\'][0])){	
       $link_light = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment-light/\'.$attachment->nid . \'?destination=\' . \'meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1;
-      print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
+      print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" target="_blank" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
     }
     
     if (strlen($attachment->title) < 75)
@@ -2272,7 +2272,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
     else 
       $title = substr($attachment->title, 0, 75).\'...\';
     $link = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment/\'.$attachment->nid;
-    print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
+    print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" target="_blank" class="first-child last-child">\'.$title.\'</a>\';
 
     //attachment text - if any
     if (!empty($attachment->field_bpa_file_html[\'und\'][0])){
@@ -2282,7 +2282,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       
       print \'Vent venligst...<div class="throbber"></div>\';
       print \'</div>\';
-      print(\'<a class="first-child last-child" href="\'.$link.\'">Læs mere...</a>\');
+      print(\'<a class="first-child last-child" target="_blank" href="\'.$link.\'">Læs mere...</a>\');
 
       print \'</div>\';
     }
