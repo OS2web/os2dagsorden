@@ -147,7 +147,9 @@ function os2dagsorden_pdf2htmlex_cron() {
 	  ->condition('did',$record['did'])
 	  ->execute();
 	  
-	_os2dagsorden_pdf2htmlex_set_meeting_status_published_plus($destination);
+	if (_os2dagsorden_pdf2htmlex_can_set_status_published_plus($destination)){
+	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Publiceret+');
+	}
     }
 }
 
@@ -250,15 +252,16 @@ function os2dagsorden_pdf2htmlex_convert($fid, $did) {
 }
 
 /**
- * Changes the status of the parent meeting of the given bullet point attachment to Publiceret+ 
- * if all of the attachments of all of the corresponding bullet points of that meeting are converted to HTML.
+ * Checks os the status of the parent meeting can be changed to Publiceret+.
+ * Does that by checking if all of the attachments of all of the corresponding bullet points of that meeting are converted to HTML.
+ * 
  * 
  * @author Stanislav Kutasevits <stan@bellcom.dk>
  * @param string $node bullet points attachment
  *
- * @return none
+ * @return TRUE or false
  */
-function _os2dagsorden_pdf2htmlex_set_meeting_status_published_plus($node) {
+function _os2dagsorden_pdf2htmlex_can_set_status_published_plus($node) {
     //assuming that all attachmens are converted, will be examined above
     $all_attachments_converted = true;
 
@@ -302,9 +305,11 @@ function _os2dagsorden_pdf2htmlex_set_meeting_status_published_plus($node) {
 	    }
 	}
 	if ($all_attachments_converted){
-	    $meeting->field_meeting_status['und'][0]['value'] = 'Publiceret+';
-	    node_save($meeting);
-	}
+	    return TRUE;
+	    //$meeting->field_meeting_status['und'][0]['value'] = 'Publiceret+';
+	    //node_save($meeting);
+	} else 
+	    return FALSE;
       }
     }
 }

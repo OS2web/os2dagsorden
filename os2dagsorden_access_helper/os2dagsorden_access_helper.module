@@ -411,3 +411,97 @@ function os2dagsorden_access_helper_delete_user_rights() {
         }
     }
 }
+
+/**
+ * Changes the status of a meeting and saves the node
+ * The function will delete the connection to the member object, as well as the role object itself.
+ *
+ * @param $node   mixed  meeting node to be saved
+ * @param $status string new status of meeting
+ *
+ * @return $node meeting
+ */
+function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) {
+  if (strcmp($status, 'Publiceret') == 0){
+    $node->field_meeting_status['und'][0]['value'] = $status;
+    
+    // Save the meeting node.
+    node_submit($node);
+    node_save($node);
+    
+    $committee_id = $node->field_committee['und'][0]['tid'];
+    
+    //send the email to involved people
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'user')
+        ->fieldCondition('field_user_committee', 'tid', $committee_id, '=');    
+    $result = $query->execute();
+    
+    
+    if (isset($result['user'])) {
+        $uids = array_keys($result['user']);
+    }
+   
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'user')
+        ->fieldCondition('field_follows_committee', 'tid', $committee_id, '=');   
+    $result = $query->execute();
+    if (isset($result['user'])) {
+        $uids = array_merge($uids, array_keys($result['user']));
+    }
+        
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'user')
+        ->fieldCondition('field_follows_committee_plus', 'tid', $committee_id, '='); 
+    $result = $query->execute();
+    if (isset($result['user'])) {
+        $uids = array_merge($uids, array_keys($result['user']));
+    }
+    
+    //removing duplicates
+    $uids = array_unique($uids);
+    
+    $cName = taxonomy_term_load($committee_id)->name;
+    $mName = $node->title;
+    
+    foreach ($uids as $uid){
+      $user = user_load($uid);
+      
+      $uName = $user->field_user_full_name['und'][0]['value'];
+      
+      $subject = 'En dagsorden eller et referat til ' . $mName . ' er publiceret';
+      
+      $body = 'Til ' . $uName . '<br/>&nbsp;<br/>' .
+		  'Du abonnerer på ' . $cName . '<br/>' .
+		  'Der er publiceret en dagsorden eller et referat til ' . $mName;
+		  
+      $from = variable_get('system_mail', $my_email);
+      $message = array(
+	'to' => $user->mail,
+	'subject' => $subject,
+	'body' => array($body),
+	'headers' => array(
+	  'From' => $from,
+	  'Sender' => $from,
+	  'Return-Path' => $from,
+	  'Content-Type' => 'text/plain; charset=UTF-8;', 
+	  'Content-Transfer-Encoding' => '8Bit', 
+	),
+      );
+      $system = drupal_mail_system("os2dagsorden_access_helper_set_meeting_status_and_save", "");
+
+      // The format function must be called before calling the mail function. 
+      $message = $system->format($message);
+      $system->mail($message);
+    
+    }
+      
+  } else if(strcmp($status, 'Aflyst') == 0 || strcmp($status, 'Ændret') == 0 || strcmp($status, 'Publiceret+') == 0) {
+    $node->field_meeting_status['und'][0]['value'] = $status;
+    
+    // Save the meeting node.
+    node_submit($node);
+    node_save($node);
+  }
+    
+}

@@ -86,7 +86,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     $node->field_date[LANGUAGE_NONE][0]['value'] = $meeting['meeting_date_start'];
     $node->field_date[LANGUAGE_NONE][0]['value2'] = $meeting['meeting_date_finish'];
     
-    $node->field_meeting_status['und'][0]['value'] = 'Publiceret';
+    //$node->field_meeting_status['und'][0]['value'] = 'Publiceret';
     
     // Proper id tagging.
     $node->field_meeting_id[LANGUAGE_NONE][0]['value'] = $meeting['meeting_id'];
@@ -127,10 +127,11 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
      
     
     // Save the meeting node.
-    node_submit($node);
-    $node->created = $meeting['creation_date'];
+    //node_submit($node);
+    //node_save($node);
     
-    node_save($node);
+    os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Publiceret');
+    
     watchdog('ESDH', 'Imported agenda id: %aid (Meeting: %mid) into node %nid .', array(
       '%aid' => $meeting['system_id'],
       '%mid' => $meeting['meeting_id'],
