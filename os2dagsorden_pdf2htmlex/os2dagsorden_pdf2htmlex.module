@@ -129,14 +129,13 @@ function os2dagsorden_pdf2htmlex_cron() {
 	
 	$destination->field_bpa_file_html[LANGUAGE_NONE][0] = (array) $file;
         $destination->field_bpa_page_amount[LANGUAGE_NONE][0]['value'] = _os2dagsorden_pdf2htmlex_calc_page_amount($data);
-        
-        node_save($destination);
-	
-	//deleting
-        //db_delete('os2dagsorden_pdf2htmlex_files')
-	//  ->condition('fid', $record['fid'])
-	//  ->condition('did', $record['did'])
-	//  ->execute();
+        	
+	if (_os2dagsorden_pdf2htmlex_can_set_status_published_plus($destination)){
+	  if (strcmp($destination->field_meeting_status['und'][0]['value'], 'Dagsorden') == 0)
+	    os2dagsorden_access_helper_set_meeting_status_and_save($destination, 'Dagsorden+');
+	  else
+	    os2dagsorden_access_helper_set_meeting_status_and_save($destination, 'Referat+');
+	}
 	
 	//updating database entry
 	db_update('os2dagsorden_pdf2htmlex_files')
@@ -146,10 +145,6 @@ function os2dagsorden_pdf2htmlex_cron() {
 	  ->condition('fid', $record['fid'])
 	  ->condition('did',$record['did'])
 	  ->execute();
-	  
-	if (_os2dagsorden_pdf2htmlex_can_set_status_published_plus($destination)){
-	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Publiceret+');
-	}
     }
 }
 

@@ -422,7 +422,7 @@ function os2dagsorden_access_helper_delete_user_rights() {
  * @return $node meeting
  */
 function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) {
-  if (strcmp($status, 'Publiceret') == 0){
+  if (strcmp($status, 'Dagsorden') == 0 || strcmp($status, 'Referat') == 0){
     $node->field_meeting_status['und'][0]['value'] = $status;
     
     // Save the meeting node.
@@ -496,7 +496,7 @@ function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) 
     
     }
       
-  } else if(strcmp($status, 'Aflyst') == 0 || strcmp($status, 'Ændret') == 0 || strcmp($status, 'Publiceret+') == 0) {
+  } else { //'Aflyst', 'Ændret', 'Dagsorden+', 'Referat+'
     $node->field_meeting_status['und'][0]['value'] = $status;
     
     // Save the meeting node.

@@ -125,13 +125,12 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     else 
       $node->field_meeting_description[$node->language][0] = (array) $description;
      
-    
-    // Save the meeting node.
-    //node_submit($node);
-    //node_save($node);
-    
-    os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Publiceret');
-    
+     
+    if (strcmp($meeting['agenda_type'], 'Dagsorden') == 0)//is dagsorden
+      os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden');
+    else  //is referat
+      os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat');
+      
     watchdog('ESDH', 'Imported agenda id: %aid (Meeting: %mid) into node %nid .', array(
       '%aid' => $meeting['system_id'],
       '%mid' => $meeting['meeting_id'],
