@@ -918,10 +918,13 @@ function os2dagsorden_content_types_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_buttons',
-        'weight' => '5',
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '8',
       ),
     ),
   );
@@ -1003,7 +1006,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '2',
+        'weight' => '5',
       ),
     ),
   );
@@ -1071,7 +1074,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '4',
+        'weight' => '7',
       ),
     ),
   );
@@ -1138,10 +1141,74 @@ function os2dagsorden_content_types_field_default_fields() {
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
+        'module' => 'taxonomy',
+        'settings' => array(
+          'autocomplete_path' => 'taxonomy/autocomplete',
+          'size' => 60,
+        ),
+        'type' => 'taxonomy_autocomplete',
+        'weight' => '9',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-meeting-field_meeting_acadre_id'
+  $fields['node-meeting-field_meeting_acadre_id'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_meeting_acadre_id',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'number',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'number_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'meeting',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 0,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_integer',
+          'weight' => 23,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_meeting_acadre_id',
+      'label' => 'Acadre id',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
         'settings' => array(),
-        'type' => 'options_buttons',
-        'weight' => '6',
+        'type' => 'number',
+        'weight' => '1',
       ),
     ),
   );
@@ -1209,7 +1276,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '12',
+        'weight' => '2',
       ),
     ),
   );
@@ -1281,7 +1348,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '10',
+        'weight' => '12',
       ),
     ),
   );
@@ -1353,7 +1420,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '11',
+        'weight' => '13',
       ),
     ),
   );
@@ -1400,7 +1467,7 @@ function os2dagsorden_content_types_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_meeting_id',
-      'label' => 'Meeting ID',
+      'label' => 'SOFD id',
       'required' => 1,
       'settings' => array(
         'max' => '',
@@ -1480,7 +1547,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '13',
+        'weight' => '14',
       ),
     ),
   );
@@ -1591,7 +1658,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '8',
+        'weight' => '11',
       ),
     ),
   );
@@ -1659,7 +1726,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '9',
+        'weight' => '3',
       ),
     ),
   );
@@ -1754,7 +1821,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'size' => 60,
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '7',
+        'weight' => '10',
       ),
     ),
   );
@@ -1822,7 +1889,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '3',
+        'weight' => '6',
       ),
     ),
   );
@@ -2995,6 +3062,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
   // Included for use with string extractors like potx.
   t('Abbreviation');
   t('Acadre ID');
+  t('Acadre id');
   t('Acadre name');
   t('Acadre version');
   t('Body');
@@ -3016,7 +3084,6 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
   t('Indhold');
   t('Is part of Committee');
   t('Lokation');
-  t('Meeting ID');
   t('Name Short');
   t('Number');
   t('Page amount');
@@ -3026,6 +3093,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
   t('Ref Attachment');
   t('Ref Bullet point');
   t('Ref Bullet points');
+  t('SOFD id');
   t('Search meta data');
   t('Short title');
   t('Status');

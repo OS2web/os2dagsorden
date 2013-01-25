@@ -20,8 +20,99 @@ function os2dagsorden_admin_suite_menu() {
         'access arguments' => array('administer os2web'),
     );
     
+    $items['os2dagsorden/admin_suite/update_meeting_status'] = array(
+        'type' => MENU_CALLBACK,
+        'page callback' => 'os2dagsorden_admin_suite_update_meeting_status',
+        'access arguments' => array('administer os2web'),
+    );
+    
     return $items;
 }    
+
+/**
+  * Updates the meeting statuses to dagsorden/dagsorden+, referat/referat+
+  * also sets the right acadre id to the meeting
+  *
+  * @return none
+  */
+function os2dagsorden_admin_suite_update_meeting_status(){
+    $meetings = os2web_esdh_provider_invoke('mm', 'get_import_list');
+    foreach ($meetings as $meeting){
+      $versions = os2web_esdh_provider_invoke('mm', 'import_meeting', $meeting);
+      $type = '';
+      foreach ($versions as $version){
+	$type = $version['type'];
+      }
+      
+      $last_ver = end($versions);
+      
+      //trying to get meeting from id
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+	  ->fieldCondition('field_meeting_acadre_id', 'value', $meeting['id'], '=');
+	  
+      $result = $query->execute();
+      if (isset($result['node'])) {
+	  $nids = array_keys($result['node']);
+	  $node = reset(entity_load('node', $nids));
+      }
+      else {//if fails, trying to get meeting from date and committe combination. Assuming this is unique
+	  //getting committee tid
+	  $vid = db_select('taxonomy_vocabulary', 'tv')->fields('tv', array('vid'))->condition('machine_name', 'committee')->execute()->fetchField();
+
+	  $query = new EntityFieldQuery();
+	  $query->entityCondition('entity_type', 'taxonomy_term')
+	      ->propertyCondition('vid', $vid)
+	      ->fieldCondition('field_committee_acadre_id', 'value', $last_ver['committee_id'], '=');
+
+	  $result = $query->execute();
+	  if (isset($result['taxonomy_term'])) {
+	      $tids = array_keys($result['taxonomy_term']);
+	      $com_tid = reset($tids);
+	  }
+
+	  //getting meeting
+	  $meeting_start_date_0000 = date('Y-m-d 00:00:00', strtotime($last_ver['meeting_date_start']));
+	  $meeting_start_date_2359 = date('Y-m-d 23:59:59', strtotime($last_ver['meeting_date_start']));
+
+	  $query = new EntityFieldQuery();
+	  $query->entityCondition('entity_type', 'node')
+	      ->fieldCondition('field_date', 'value', $meeting_start_date_0000, '>=')
+	      ->fieldCondition('field_date', 'value', $meeting_start_date_2359, '<=')
+	      ->fieldCondition('field_committee', 'tid', $com_tid, '=');
+	  $result = $query->execute();
+
+	  if (isset($result['node'])) {
+	      $nids = array_keys($result['node']);
+	      $node = reset(entity_load('node', $nids));
+	  }
+	  else {
+	      print_r("nothing found");
+	      print_r("<br/>");
+	      print_r("<br/>");
+	  }
+      }
+      
+      $node->field_meeting_acadre_id[LANGUAGE_NONE][0]['value'] = $meeting['id'];
+      
+      if (strcmp($type, 'Dagsorden') == 0){//is dagsorden
+	if (_os2dagsorden_pdf2htmlex_can_set_status_published_plus($node))//everything is converted
+	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden+');
+	else
+	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden');
+      }
+      else {//is is referat
+	if (_os2dagsorden_pdf2htmlex_can_set_status_published_plus($node))//everything is converted
+	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Refereat+');
+	else
+	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Refereat');
+      }
+	
+      print_r('DONE: nid[' . $node->nid . '] meeting id[' . $meeting['id'] . '] - ' . $node->field_meeting_status['und'][0]['value']);
+      print_r("<br/>");
+      print_r("<br/>");
+    }    
+}
 
 /**
   * Sets the bullet point number from the bullet point title, assuming that title is "Punkt [number] ...]

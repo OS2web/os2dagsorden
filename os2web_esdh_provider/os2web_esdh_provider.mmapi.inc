@@ -25,7 +25,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     //trying to get meeting from id
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
-        ->fieldCondition('field_meeting_id', 'value', $meeting['meeting_id'], '=');
+        ->fieldCondition('field_meeting_acadre_id', 'value', $meeting_id['id'], '=');
 
     $result = $query->execute();
     if (isset($result['node'])) {
@@ -89,8 +89,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     //$node->field_meeting_status['und'][0]['value'] = 'Publiceret';
     
     // Proper id tagging.
-    $node->field_meeting_id[LANGUAGE_NONE][0]['value'] = $meeting['meeting_id'];
-    //$node->field_system_id[LANGUAGE_NONE][0]['value'] = $meeting['system_id'];
+    $node->field_meeting_acadre_id[LANGUAGE_NONE][0]['value'] = $meeting_id['id'];
  
     $committee = _os2web_esdh_provider_find_committee($meeting['committee_id']);
     if ($committee) {

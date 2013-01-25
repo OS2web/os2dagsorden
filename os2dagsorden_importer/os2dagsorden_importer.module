@@ -782,25 +782,10 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
             $nids = array_keys($result['node']);
             $node = reset(entity_load('node', $nids));
             
-            //avoiding reimports, or value overriding
-            if (!empty($node->field_meeting_acadre_version['und']['0']['value'])) {
-		
-		//if meeting is to be cancelled, but is not cancelled yet, then cancell it.
-		if ($xml_data['cancelled'] == 1 && strcmp($node->field_meeting_status[$node->language][0]['value'],'Aflyst') != 0){
-		  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Aflyst');
-		  //$node->field_meeting_status[$node->language][0]['value'] = 'Aflyst';
-		  //node_submit($node);
-		  //node_save($node);
-		} //if meeting is changed, but is not marked as changed then mark is as changed
-		else if ($xml_data['changed'] == 1 && strcmp($node->field_meeting_status[$node->language][0]['value'],'Planlagt') == 0){
-		  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Ændret');
-		  //$node->field_meeting_status[$node->language][0]['value'] = 'Ændret';
-		  //node_submit($node);
-		  //node_save($node);
-		}
-		
-                return $node;
-            }
+            //sofd id is missing, fill it for future use
+	    $node->field_meeting_id['und'][0]['value'] = intval($xml_data['meeting_id']);
+	    node_submit($node);
+	    node_save($node);
         }
         else {
             //if fails, creating a new meeting
@@ -810,6 +795,34 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
 
             node_object_prepare($node);
         }
+    }
+    
+    //avoiding reimports, or value overriding
+    if (!empty($node->field_meeting_acadre_version['und']['0']['value'])) {
+	
+	//updating the color
+	$need_to_update = FALSE;
+	if (strcmp($node->field_hex[$node->language][0]['value'], strtolower($xml_data['hex_color'])) != 0){
+	  $node->field_hex[$node->language][0]['value'] = strtolower($xml_data['hex_color']);
+	  $need_to_update = TRUE;//setting to flag to update
+	}
+	
+	//if meeting is to be cancelled, but is not cancelled yet, then cancell it.
+	if ($xml_data['cancelled'] == 1 && strcmp($node->field_meeting_status[$node->language][0]['value'],'Aflyst') != 0){
+	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Aflyst');
+	  $need_to_update = FALSE;//already updated, resetting flag
+	} //if meeting is changed, but is not marked as changed then mark is as changed
+	else if ($xml_data['changed'] == 1 && strcmp($node->field_meeting_status[$node->language][0]['value'],'Planlagt') == 0){
+	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Ændret');
+	  $need_to_update = FALSE;//already updated, resetting flag
+	}
+	
+	if ($need_to_update) {
+	  node_submit($node);
+	  node_save($node);
+	}
+	
+	return $node;
     }
 
     $node->title = $xml_data['title'];
