@@ -96,22 +96,52 @@ function os2dagsorden_admin_suite_update_meeting_status(){
       $node->field_meeting_acadre_id[LANGUAGE_NONE][0]['value'] = $meeting['id'];
       
       if (strcmp($type, 'Dagsorden') == 0){//is dagsorden
-	if (_os2dagsorden_pdf2htmlex_can_set_status_published_plus($node))//everything is converted
+	if (os2dagsorden_admin_suite_meeting_fully_converted($node))//everything is converted
 	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden+');
 	else
 	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden');
       }
       else {//is is referat
-	if (_os2dagsorden_pdf2htmlex_can_set_status_published_plus($node))//everything is converted
-	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Refereat+');
+	if (os2dagsorden_admin_suite_meeting_fully_converted($node))//everything is converted
+	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat+');
 	else
-	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Refereat');
+	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat');
       }
 	
       print_r('DONE: nid[' . $node->nid . '] meeting id[' . $meeting['id'] . '] - ' . $node->field_meeting_status['und'][0]['value']);
+      print_r("here: " . os2dagsorden_admin_suite_meeting_fully_converted($node));
       print_r("<br/>");
       print_r("<br/>");
     }    
+}
+
+/**
+  * Checks if all of the meeitng bullet point bilga were converted
+  *
+  * @return none
+  */
+function os2dagsorden_admin_suite_meeting_fully_converted($meeting){
+	$all_attachments_converted = true;
+	
+	//goint through all the meetings bullet points
+	if (!empty($meeting->field_ref_bullet_points['und'])) {
+	    foreach ($meeting->field_ref_bullet_points['und'] as $ref_bullet_point) {
+		$bullet_point = node_load($ref_bullet_point['target_id']);
+		
+		//going through all the bullet points attachments
+		if (!empty($bullet_point->field_ref_attachment['und'])) {
+		    foreach ($bullet_point->field_ref_attachment['und'] as $ref_bullet_point_attachment) {
+			$attachment = node_load($ref_bullet_point_attachment['target_id']);
+			
+			if (empty($attachment->field_bpa_body['und'][0]['value']) && empty($attachment->field_bpa_file_html['und'][0])){
+			  $all_attachments_converted = false;
+			  break;
+			}
+		    }
+		}
+	    }
+	}
+	return $all_attachments_converted;
 }
 
 /**
