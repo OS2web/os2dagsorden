@@ -26,8 +26,43 @@ function os2dagsorden_admin_suite_menu() {
         'access arguments' => array('administer os2web'),
     );
     
+    $items['os2dagsorden/admin_suite/force_meeting_description_converting'] = array(
+        'type' => MENU_CALLBACK,
+        'page callback' => 'os2dagsorden_admin_suite_force_meeting_description_converting',
+        'access arguments' => array('administer os2web'),
+    );
+    
     return $items;
-}    
+}
+
+
+function os2dagsorden_admin_suite_force_meeting_description_converting(){
+    $nodes = entity_load('node', FALSE, array('type' => 'meeting'));
+    foreach ($nodes as $node){
+      if (isset($node->field_meeting_description[$node->language][0])){
+	$file = $node->field_meeting_description[$node->language][0];
+	$ext = explode('.', $file['filename']);
+	print_r('OPENED: nid[' . $node->nid . '] fid[' . $file['fid'] . '] type[' . $file['filename'] . '] ext[' . $ext[1] . ']');
+	print_r("<br/>");
+	if (strcmp($ext[1], 'PDF') != 0){
+	  print_r("conversion scheduled");
+	  os2dagsorden_adlib_api_convert_to_pdf($file['fid'], $node->nid);
+	}
+	print_r("<br/><br/>");
+      } 
+      if (isset($node->field_meeting_description_closed[$node->language][0])){
+	$file = $node->field_meeting_description_closed[$node->language][0];
+	$ext = explode('.', $file['filename']);
+	print_r('CLOSED: nid[' . $node->nid . '] fid[' . $file['fid'] . '] type[' . $file['filename'] . '] ext[' . $ext[1] . ']');
+	print_r("<br/>");
+	if (strcmp($ext[1], 'PDF') != 0){
+	  print_r("conversion scheduled");
+	  os2dagsorden_adlib_api_convert_to_pdf($file['fid'], $node->nid);
+	}
+	print_r("<br/><br/>");
+      }
+    }
+}
 
 /**
   * Updates the meeting statuses to dagsorden/dagsorden+, referat/referat+
