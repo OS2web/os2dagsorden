@@ -126,14 +126,14 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
      
     if (os2dagsorden_access_helper_meeting_fully_converted($meeting)){
       if (strcmp($meeting['agenda_type'], 'Dagsorden') == 0)//is dagsorden
-	os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden+');
+	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden+');
       else  //is referat
-	os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat+');
+	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat+');
     } else {
       if (strcmp($meeting['agenda_type'], 'Dagsorden') == 0)//is dagsorden
-	os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden');
+	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden');
       else  //is referat
-	os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat');
+	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat');
     }
       
     watchdog('ESDH', 'Imported agenda id: %aid (Meeting: %mid) into node %nid .', array(
@@ -145,7 +145,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     
     //schedule description for PDF convertion
     if (module_exists('os2dagsorden_adlib_api')) {
-      os2dagsorden_adlib_api_convert_to_pdf($description_fid, $node->nid);
+      os2dagsorden_adlib_api_convert_to_pdf($description->fid, $node->nid);
     }
     
   }
