@@ -453,7 +453,7 @@ function os2dagsorden_access_helper_meeting_fully_converted($meeting){
  * @return $node meeting
  */
 function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) {
-  if (strcmp($status, 'Dagsorden') == 0 || strcmp($status, 'Referat') == 0){
+  if (strcasecmp($status, 'Dagsorden') == 0 || strcasecmp($status, 'Referat') == 0){
     $node->field_meeting_status['und'][0]['value'] = $status;
     
     // Save the meeting node.
@@ -461,8 +461,8 @@ function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) 
     node_save($node);
     
     $committee_id = $node->field_committee['und'][0]['tid'];
-    
     //send the email to involved people
+    //medlem
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'user')
         ->fieldCondition('field_user_committee', 'tid', $committee_id, '=');    
@@ -474,14 +474,16 @@ function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) 
         $uids = array_keys($result['user']);
     }
    
-    $query = new EntityFieldQuery();
-    $query->entityCondition('entity_type', 'user')
-        ->fieldCondition('field_follows_committee', 'tid', $committee_id, '=');   
-    $result = $query->execute();
-    if (isset($result['user'])) {
-        $uids = array_merge($uids, array_keys($result['user']));
-    }
-        
+    //follow
+    //$query = new EntityFieldQuery();
+    //$query->entityCondition('entity_type', 'user')
+    //    ->fieldCondition('field_follows_committee', 'tid', $committee_id, '=');   
+    //$result = $query->execute();
+    //if (isset($result['user'])) {
+    //    $uids = array_merge($uids, array_keys($result['user']));
+    //}
+      
+    //follow+  
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'user')
         ->fieldCondition('field_follows_committee_plus', 'tid', $committee_id, '='); 
@@ -491,52 +493,60 @@ function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) 
     }
     
     $cName = taxonomy_term_load($committee_id)->name;
-    $mName = $node->title;
-    $mDate = $node->field_date['und'][0]['value'];
+    $mName = check_plain($node->title);
+    $mDate = check_plain($node->field_date['und'][0]['value']);
     
-    $published_item = (strcmp($status, 'Dagsorden') == 0) ? 'en dagsorden' : 'et referat';
+    $published_item = (strcasecmp($status, 'Dagsorden') == 0) ? 'en dagsorden' : 'et referat';
     
     //removing duplicates
     $uids = array_unique($uids);
-	
+    
     foreach ($uids as $uid){
+    
       $user = user_load($uid);
       
       $uName = $user->field_user_full_name['und'][0]['value'];
       
       $subject = ucfirst($published_item) . ' til ' . $mName . ' er publiceret';
       
-      $body = 'Til ' . $uName . '<br/>&nbsp;<br/>' .
-		  'Du abonnerer på ' . $cName . '<br/>' .
-		  'Der er publiceret ' . $published_item . ' til ' . $mName . ' ' . $mDate ;
+      
+      $body = '<html><body>' . 
+	      'Til ' . $uName . '<br/><br/>' . 
+	      'Du abonnerer på ' . $cName . '<br/>' .
+	      'Der er publiceret ' . $published_item . ' til ' . $mName . ' ' . $mDate .
+	      '</body></html>';
 		  
       $from = variable_get('system_mail', $my_email);
       $message = array(
 	'to' => $user->mail,
 	'subject' => $subject,
-	'body' => array($body),
+	'body' => $body,
 	'headers' => array(
+	  'MIME-Version' => '1.0',
 	  'From' => $from,
 	  'Sender' => $from,
 	  'Return-Path' => $from,
-	  'Content-Type' => 'text/plain; charset=UTF-8;', 
-	  'Content-Transfer-Encoding' => '8Bit', 
+	   'Content-Type' => 'text/html;charset=utf-8',
 	),
       );
       $system = drupal_mail_system("os2dagsorden_access_helper_set_meeting_status_and_save", "");
 
       // The format function must be called before calling the mail function. 
-      $message = $system->format($message);
+      //$message = $system->format($message); 
       $system->mail($message);
-    
-    }
       
+      //print_r($body);
+    }
+    
+    return $node;
   } else { //'Aflyst', 'Ændret', 'Dagsorden+', 'Referat+'
     $node->field_meeting_status['und'][0]['value'] = $status;
     
     // Save the meeting node.
     node_submit($node);
     node_save($node);
+    
+    return $node;
   }
     
 }
