@@ -39,9 +39,10 @@ function os2dagsorden_admin_suite_update_meeting_status(){
     $meetings = os2web_esdh_provider_invoke('mm', 'get_import_list');
     foreach ($meetings as $meeting){
       $versions = os2web_esdh_provider_invoke('mm', 'import_meeting', $meeting);
-      $type = '';
       foreach ($versions as $version){
 	$type = $version['type'];
+	print_r($version['committee_id']);
+	print_r("<br/>");
       }
       
       $last_ver = end($versions);
@@ -87,9 +88,10 @@ function os2dagsorden_admin_suite_update_meeting_status(){
 	      $node = reset(entity_load('node', $nids));
 	  }
 	  else {
-	      print_r("nothing found");
+	      print_r('FAILED: meeting id[' . $meeting['id'] . '] NOT FOUND');
 	      print_r("<br/>");
 	      print_r("<br/>");
+	      continue;
 	  }
       }
       
@@ -109,7 +111,6 @@ function os2dagsorden_admin_suite_update_meeting_status(){
       }
 	
       print_r('DONE: nid[' . $node->nid . '] meeting id[' . $meeting['id'] . '] - ' . $node->field_meeting_status['und'][0]['value']);
-      print_r("here: " . os2dagsorden_admin_suite_meeting_fully_converted($node));
       print_r("<br/>");
       print_r("<br/>");
     }    
