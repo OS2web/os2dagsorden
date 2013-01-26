@@ -124,7 +124,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     else 
       $node->field_meeting_description[$node->language][0] = (array) $description;
      
-    if (os2dagsorden_access_helper_meeting_fully_converted($meeting)){
+    if (os2dagsorden_access_helper_meeting_fully_converted($node)){
       if (strcmp($meeting['agenda_type'], 'Dagsorden') == 0)//is dagsorden
 	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden+');
       else  //is referat
