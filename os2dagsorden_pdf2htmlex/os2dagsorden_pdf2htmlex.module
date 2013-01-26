@@ -253,16 +253,12 @@ function os2dagsorden_pdf2htmlex_convert($fid, $did) {
  * @return TRUE or false
  */
 function _os2dagsorden_pdf2htmlex_set_status_published_plus($node) {
-    //assuming that all attachmens are converted, will be examined above
-    $all_attachments_converted = true;
-
     //getting corresponding bullet point
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
 	  ->fieldCondition('field_ref_attachment', 'target_id', $node->nid, '=');
     $result = $query->execute();
 
-    print_r($node->nid);
     if (isset($result['node'])) {//if success
       $nids = array_keys($result['node']);
       $bullet_point = reset(entity_load('node', $nids));
@@ -277,25 +273,7 @@ function _os2dagsorden_pdf2htmlex_set_status_published_plus($node) {
 	$nids = array_keys($result['node']);
 	$meeting = reset(entity_load('node', $nids));
 	
-	//going through all the meetings bullet points
-	if (!empty($meeting->field_ref_bullet_points['und'])) {
-	    foreach ($meeting->field_ref_bullet_points['und'] as $ref_bullet_point) {
-		$bullet_point = node_load($ref_bullet_point['target_id']);
-		
-		//going through all the bullet points attachments
-		if (!empty($bullet_point->field_ref_attachment['und'])) {
-		    foreach ($bullet_point->field_ref_attachment['und'] as $ref_bullet_point_attachment) {
-			$attachment = node_load($ref_bullet_point_attachment['target_id']);
-			
-			if (empty($attachment->field_bpa_body['und'][0]['value']) && empty($attachment->field_bpa_file_html['und'][0])){
-			  $all_attachments_converted = false;
-			  break;
-			}
-		    }
-		}
-	    }
-	}
-	if ($all_attachments_converted){
+	if (os2dagsorden_access_helper_meeting_fully_converted($meeting)){
 	    if (strcmp($meeting->field_meeting_status['und'][0]['value'], 'Dagsorden') == 0)
 	      os2dagsorden_access_helper_set_meeting_status_and_save($meeting, 'Dagsorden+');
 	    else

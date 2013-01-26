@@ -124,11 +124,17 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     else 
       $node->field_meeting_description[$node->language][0] = (array) $description;
      
-     
-    if (strcmp($meeting['agenda_type'], 'Dagsorden') == 0)//is dagsorden
-      os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden');
-    else  //is referat
-      os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat');
+    if (os2dagsorden_access_helper_meeting_fully_converted($meeting)){
+      if (strcmp($meeting['agenda_type'], 'Dagsorden') == 0)//is dagsorden
+	os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden+');
+      else  //is referat
+	os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat+');
+    } else {
+      if (strcmp($meeting['agenda_type'], 'Dagsorden') == 0)//is dagsorden
+	os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden');
+      else  //is referat
+	os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat');
+    }
       
     watchdog('ESDH', 'Imported agenda id: %aid (Meeting: %mid) into node %nid .', array(
       '%aid' => $meeting['system_id'],

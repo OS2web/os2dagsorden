@@ -42,6 +42,7 @@ function os2dagsorden_admin_suite_update_meeting_status(){
       foreach ($versions as $version){
 	$type = $version['type'];
 	print_r($version['committee_id']);
+	print_r("<br/>");
       }
       
       $last_ver = end($versions);
@@ -97,13 +98,13 @@ function os2dagsorden_admin_suite_update_meeting_status(){
       $node->field_meeting_acadre_id[LANGUAGE_NONE][0]['value'] = $meeting['id'];
       
       if (strcmp($type, 'Dagsorden') == 0){//is dagsorden
-	if (os2dagsorden_admin_suite_meeting_fully_converted($node))//everything is converted
+	if (os2dagsorden_access_helper_meeting_fully_converted($node))//everything is converted
 	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden+');
 	else
 	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden');
       }
       else {//is is referat
-	if (os2dagsorden_admin_suite_meeting_fully_converted($node))//everything is converted
+	if (os2dagsorden_access_helper_meeting_fully_converted($node))//everything is converted
 	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat+');
 	else
 	  os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat');
