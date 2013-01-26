@@ -46,7 +46,7 @@ function os2dagsorden_admin_suite_force_meeting_description_converting(){
 	print_r("<br/>");
 	if (strcmp($ext[1], 'PDF') != 0){
 	  print_r("conversion scheduled");
-	  //os2dagsorden_adlib_api_convert_to_pdf($file['fid'], $node->nid);
+	  os2dagsorden_adlib_api_convert_to_pdf($file['fid'], $node->nid);
 	}
 	print_r("<br/><br/>");
       } 
@@ -57,7 +57,7 @@ function os2dagsorden_admin_suite_force_meeting_description_converting(){
 	print_r("<br/>");
 	if (strcmp($ext[1], 'PDF') != 0){
 	  print_r("conversion scheduled");
-	  //os2dagsorden_adlib_api_convert_to_pdf($file['fid'], $node->nid);
+	  os2dagsorden_adlib_api_convert_to_pdf($file['fid'], $node->nid);
 	}
 	print_r("<br/><br/>");
       }

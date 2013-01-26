@@ -44,7 +44,7 @@ function os2dagsorden_admin_suite_force_meeting_description_converting(){
 	$ext = explode('.', $file['filename']);
 	print_r('OPENED: nid[' . $node->nid . '] fid[' . $file['fid'] . '] type[' . $file['filename'] . '] ext[' . $ext[1] . ']');
 	print_r("<br/>");
-	if (strcmp($ext[1], 'PDF') != 0){
+	if (strcasecmp($ext[1], 'PDF') != 0){
 	  print_r("conversion scheduled");
 	  os2dagsorden_adlib_api_convert_to_pdf($file['fid'], $node->nid);
 	}
@@ -55,7 +55,7 @@ function os2dagsorden_admin_suite_force_meeting_description_converting(){
 	$ext = explode('.', $file['filename']);
 	print_r('CLOSED: nid[' . $node->nid . '] fid[' . $file['fid'] . '] type[' . $file['filename'] . '] ext[' . $ext[1] . ']');
 	print_r("<br/>");
-	if (strcmp($ext[1], 'PDF') != 0){
+	if (strcasecmp($ext[1], 'PDF') != 0){
 	  print_r("conversion scheduled");
 	  os2dagsorden_adlib_api_convert_to_pdf($file['fid'], $node->nid);
 	}
