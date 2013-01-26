@@ -437,6 +437,7 @@ function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) 
         ->fieldCondition('field_user_committee', 'tid', $committee_id, '=');    
     $result = $query->execute();
     
+    $uids = array();
     
     if (isset($result['user'])) {
         $uids = array_keys($result['user']);
@@ -458,22 +459,25 @@ function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) 
         $uids = array_merge($uids, array_keys($result['user']));
     }
     
-    //removing duplicates
-    $uids = array_unique($uids);
-    
     $cName = taxonomy_term_load($committee_id)->name;
     $mName = $node->title;
+    $mDate = $node->field_date['und'][0]['value'];
     
+    $published_item = (strcmp($status, 'Dagsorden') == 0) ? 'en dagsorden' : 'et referat';
+    
+    //removing duplicates
+    $uids = array_unique($uids);
+	
     foreach ($uids as $uid){
       $user = user_load($uid);
       
       $uName = $user->field_user_full_name['und'][0]['value'];
       
-      $subject = 'En dagsorden eller et referat til ' . $mName . ' er publiceret';
+      $subject = ucfirst($published_item) . ' til ' . $mName . ' er publiceret';
       
       $body = 'Til ' . $uName . '<br/>&nbsp;<br/>' .
 		  'Du abonnerer på ' . $cName . '<br/>' .
-		  'Der er publiceret en dagsorden eller et referat til ' . $mName;
+		  'Der er publiceret ' . $published_item . ' til ' . $mName . ' ' . $mDate ;
 		  
       $from = variable_get('system_mail', $my_email);
       $message = array(
