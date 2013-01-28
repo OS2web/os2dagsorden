@@ -201,10 +201,10 @@ if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
 else 
   $title = $data->_field_data[\'nid\'][\'entity\']->title;
 
-if (strlen($title) <= 35)
+if (strlen($title) <= 30)
 echo $title;
 else 
-echo substr($title, 0, 32) . \'...\';
+echo substr($title, 0, 27) . \'...\';
 
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
@@ -1442,10 +1442,10 @@ if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
 else 
   $title = $data->_field_data[\'nid\'][\'entity\']->title;
 
-if (strlen($title) <= 35)
+if (strlen($title) <= 30)
 echo $title;
 else 
-echo substr($title, 0, 32) . \'...\';
+echo substr($title, 0, 27) . \'...\';
 
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
@@ -1818,10 +1818,10 @@ if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
 else 
   $title = $data->_field_data[\'nid\'][\'entity\']->title;
 
-if (strlen($title) <= 35)
+if (strlen($title) <= 30)
 echo $title;
 else 
-echo substr($title, 0, 32) . \'...\';
+echo substr($title, 0, 27) . \'...\';
 
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
