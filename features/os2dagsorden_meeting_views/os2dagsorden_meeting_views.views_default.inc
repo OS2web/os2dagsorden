@@ -201,10 +201,10 @@ if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
 else 
   $title = $data->_field_data[\'nid\'][\'entity\']->title;
 
-if (strlen($title) <= 20)
+if (strlen($title) <= 35)
 echo $title;
 else 
-echo substr($title, 0, 17) . \'...\';
+echo substr($title, 0, 32) . \'...\';
 
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
@@ -219,7 +219,7 @@ echo substr($title, 0, 17) . \'...\';
   $handler->display->display_options['fields']['field_date']['empty'] = '&nbsp;';
   $handler->display->display_options['fields']['field_date']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['field_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'date_only',
     'fromto' => 'value',
     'multiple_number' => '',
     'multiple_from' => '',
@@ -1442,10 +1442,10 @@ if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
 else 
   $title = $data->_field_data[\'nid\'][\'entity\']->title;
 
-if (strlen($title) <= 20)
+if (strlen($title) <= 35)
 echo $title;
 else 
-echo substr($title, 0, 17) . \'...\';
+echo substr($title, 0, 32) . \'...\';
 
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
@@ -1460,7 +1460,7 @@ echo substr($title, 0, 17) . \'...\';
   $handler->display->display_options['fields']['field_date']['empty'] = '&nbsp;';
   $handler->display->display_options['fields']['field_date']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['field_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'date_only',
     'fromto' => 'value',
     'multiple_number' => '',
     'multiple_from' => '',
@@ -1818,10 +1818,10 @@ if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
 else 
   $title = $data->_field_data[\'nid\'][\'entity\']->title;
 
-if (strlen($title) <= 20)
+if (strlen($title) <= 35)
 echo $title;
 else 
-echo substr($title, 0, 17) . \'...\';
+echo substr($title, 0, 32) . \'...\';
 
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
@@ -1835,7 +1835,7 @@ echo substr($title, 0, 17) . \'...\';
   $handler->display->display_options['fields']['field_date']['alter']['path'] = 'meeting/[nid]';
   $handler->display->display_options['fields']['field_date']['empty'] = '&nbsp;';
   $handler->display->display_options['fields']['field_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'date_only',
     'fromto' => 'value',
     'multiple_number' => '',
     'multiple_from' => '',
