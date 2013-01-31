@@ -13,7 +13,7 @@
  */
 define('DEFAULT_PDF_HTML_ZOOM', 1.25); // default zoom for convertion
 define('DEFAULT_TEMP_DIR', variable_get('file_temporary_path', '/tmp/')); // default zoom for convertion
-define('DEFAULT_PDF_HTML_TRANS_LIMIT', 10);//number of files to handle at once
+define('DEFAULT_PDF_HTML_TRANS_LIMIT', 50);//number of files to handle at once
 
 // to delete
 function os2dagsorden_pdf2htmlex_menu() {
@@ -129,8 +129,12 @@ function os2dagsorden_pdf2htmlex_cron() {
 	
 	$destination->field_bpa_file_html[LANGUAGE_NONE][0] = (array) $file;
         $destination->field_bpa_page_amount[LANGUAGE_NONE][0]['value'] = _os2dagsorden_pdf2htmlex_calc_page_amount($data);
-        	
-	_os2dagsorden_pdf2htmlex_set_status_published_plus($destination);
+        
+        //saving the destination (bullet point id)
+        node_save($destination);	
+        
+        //update the meeting, if needed
+        _os2dagsorden_pdf2htmlex_set_status_published_plus($destination);
 	
 	//updating database entry
 	db_update('os2dagsorden_pdf2htmlex_files')
