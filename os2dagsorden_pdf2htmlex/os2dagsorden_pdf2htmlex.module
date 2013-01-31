@@ -98,6 +98,18 @@ function os2dagsorden_pdf2htmlex_cron() {
     while($record = $result->fetchAssoc()) {
 	$destination = node_load($record['did']);
 	
+	if (empty($destination)){
+	  db_update('os2dagsorden_pdf2htmlex_files')
+	  ->fields(array(
+	    'progress' => 'Not found',
+	  ))
+	  ->condition('fid', $record['fid'])
+	  ->condition('did',$record['did'])
+	  ->execute();
+	  
+	  continue;
+	}
+	
 	$data = file_get_contents($record['created_filepath']);
 	
 	//convert the real path back to drupal path
