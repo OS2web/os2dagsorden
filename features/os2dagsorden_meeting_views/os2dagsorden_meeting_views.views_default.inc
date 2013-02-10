@@ -369,7 +369,6 @@ echo substr($title, 0, 27) . \'...\';
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Deltagerne';
-  $handler->display->display_options['css_class'] = 'bullet-point-attachments';
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     2 => '2',
@@ -819,6 +818,8 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler = $view->new_display('attachment', 'Dagsorden', 'attachment_1');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Dagsorden';
+  $handler->display->display_options['defaults']['css_class'] = FALSE;
+  $handler->display->display_options['css_class'] = 'bullet-point-attachments';
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '0';
   $handler->display->display_options['pager']['options']['offset'] = '0';
