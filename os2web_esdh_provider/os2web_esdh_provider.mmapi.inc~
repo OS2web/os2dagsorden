@@ -75,7 +75,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       $old_version = $node->field_meeting_acadre_version[$node->language][0]['value'];
       $new_version = $meeting['acadre_version'];
       if (strcmp($old_version,$new_version) >= 0){//meeting is of the same version, no need to proceed
-	continue;
+	//continue;
       }
     }
     
@@ -123,17 +123,19 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       $node->field_meeting_description_closed[$node->language][0] = (array) $description;
     else 
       $node->field_meeting_description[$node->language][0] = (array) $description;
-     
-    if (os2dagsorden_access_helper_meeting_fully_converted($node)){
-      if (strcmp($node['agenda_type'], 'Dagsorden') == 0)//is dagsorden
-	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden+');
-      else  //is referat
-	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat+');
-    } else {
-      if (strcmp($node['agenda_type'], 'Dagsorden') == 0)//is dagsorden
+    
+    //change status to Dagsorden / Referat and force the email notification
+    if (strcmp($meeting['agenda_type'], 'Dagsorden') == 0)
 	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden');
-      else  //is referat
+    else
 	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat');
+    
+    //check if a meeting is in a fully converted state, then change status to Dagsorden+/Referat+ status
+    if (os2dagsorden_access_helper_meeting_fully_converted($node)){
+      if (strcmp($meeting['agenda_type'], 'Dagsorden') == 0)
+	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden+');
+      else
+	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat+');
     }
       
     watchdog('ESDH', 'Imported agenda id: %aid (Meeting: %mid) into node %nid .', array(
@@ -146,8 +148,8 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     //schedule description for PDF convertion
     if (module_exists('os2dagsorden_adlib_api')) {
       os2dagsorden_adlib_api_convert_to_pdf($description->fid, $node->nid);
+      error_log('we are here');
     }
-    
   }
   lock_release(__FUNCTION__ . $meeting_id['id']);
   return $nids;
@@ -220,6 +222,10 @@ function _os2web_esdh_provider_import_items($items) {
       if ($file = _os2web_esdh_provider_import_file($enclosure)) {
 	$enclosure_nid = _os2web_esdh_provider_add_enclosure_bullet($enclosure, $file);
 	
+	print_r($enclosure);
+	print_r("<br/>");
+	print_r($enclosure_nid);
+	
 	$contains = FALSE;
 	if (isset($enclosure_nid)){//if the ID is empty - means that the enclosure has been created before, and hence already added to the bullet point
 	  if (isset($node->field_ref_attachment[LANGUAGE_NONE])) {
@@ -237,13 +243,12 @@ function _os2web_esdh_provider_import_items($items) {
 
 	  //Adlib Conversion
 	  if (module_exists('os2dagsorden_adlib_api')) {
-	      drupal_load('module', 'os2dagsorden_adlib_api');
-
 	      //if not PDF, schedule for pdf conversion as well
-	      if (strcmp($filetype, ".PDF") != 0)
+	      if (strcasecmp($filetype, ".pdf") != 0){
 		  os2dagsorden_adlib_api_convert_to_pdf($file->fid, $enclosure_nid);
+	      }
 	  }
-	  if (strcmp($filetype, ".PDF") == 0)//if is PDF, schedule for HTML conversion
+	  if (strcasecmp($filetype, ".pdf") == 0)//if is PDF, schedule for HTML conversion
 		  os2dagsorden_pdf2htmlex_schedule($file->fid, $enclosure_nid);
 	}        
       }
@@ -365,8 +370,9 @@ function _os2web_esdh_provider_add_enclosure_bullet($enclosure, $file) {
 
     $result = $query->execute();
     if (isset($result['node'])) {
+        $nodes = array_keys($result['node']);
 	//node exists, avoiding recreation
-	return;
+	return $nodes[0];//nid
     }
     else {
         $node = new stdClass();

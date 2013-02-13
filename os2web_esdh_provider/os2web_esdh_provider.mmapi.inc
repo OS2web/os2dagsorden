@@ -75,7 +75,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       $old_version = $node->field_meeting_acadre_version[$node->language][0]['value'];
       $new_version = $meeting['acadre_version'];
       if (strcmp($old_version,$new_version) >= 0){//meeting is of the same version, no need to proceed
-	continue;
+	//continue;
       }
     }
     
@@ -239,13 +239,12 @@ function _os2web_esdh_provider_import_items($items) {
 
 	  //Adlib Conversion
 	  if (module_exists('os2dagsorden_adlib_api')) {
-	      drupal_load('module', 'os2dagsorden_adlib_api');
-
 	      //if not PDF, schedule for pdf conversion as well
-	      if (strcmp($filetype, ".PDF") != 0)
+	      if (strcasecmp($filetype, ".pdf") != 0){
 		  os2dagsorden_adlib_api_convert_to_pdf($file->fid, $enclosure_nid);
+	      }
 	  }
-	  if (strcmp($filetype, ".PDF") == 0)//if is PDF, schedule for HTML conversion
+	  if (strcasecmp($filetype, ".pdf") == 0)//if is PDF, schedule for HTML conversion
 		  os2dagsorden_pdf2htmlex_schedule($file->fid, $enclosure_nid);
 	}        
       }
@@ -367,8 +366,9 @@ function _os2web_esdh_provider_add_enclosure_bullet($enclosure, $file) {
 
     $result = $query->execute();
     if (isset($result['node'])) {
+        $nodes = array_keys($result['node']);
 	//node exists, avoiding recreation
-	return;
+	return $nodes[0];//nid
     }
     else {
         $node = new stdClass();

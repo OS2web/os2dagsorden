@@ -221,7 +221,7 @@ function os2dagsorden_adlib_api_convert_to_pdf($fid, $docref = NULL) {
       );
       drupal_write_record('os2web_adlib_api_doc_files', $record);
       if (ADLIB_TEST_FID) {
-        error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File queued for processing.");
+        error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File queued for processing: ");
       }
       return TRUE;
     } else {
@@ -342,7 +342,9 @@ function _os2dagsorden_adlib_api_do_processing($limit = FALSE) {
               $upd_file = file_load($file->fid);
               $uri = file_unmanaged_save_data($data, dirname($upd_file->uri) . '/' . $jobfileinfo['out_filename'], FILE_EXISTS_REPLACE);
               if (filesize(drupal_realpath($uri)) > 0) {
-                $old_file_mime = $upd_file->filemime;//getting the initial format of the file
+		//getting the initial file information
+                $old_file_mime = $upd_file->filemime;
+                $old_file_uri = $upd_file->uri;
                 
                 db_delete('file_managed')->condition('uri', $uri)->execute();
                 $upd_file->uri = $uri;
@@ -354,6 +356,9 @@ function _os2dagsorden_adlib_api_do_processing($limit = FALSE) {
 		os2dagsorden_adlib_api_destroy_job($file->job_id);
                 drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid', 'jobtype'));
                 $upd_file = file_save($upd_file);
+                //deleting old file
+                file_unmanaged_delete($old_file_uri);
+                
                 error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File saved, file record updated.");
                 
                 $destination_node = node_load($file->did);
