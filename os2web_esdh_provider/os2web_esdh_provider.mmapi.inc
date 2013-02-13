@@ -246,7 +246,9 @@ function _os2web_esdh_provider_import_items($items) {
 	  }
 	  if (strcasecmp($filetype, ".pdf") == 0)//if is PDF, schedule for HTML conversion
 		  os2dagsorden_pdf2htmlex_schedule($file->fid, $enclosure_nid);
-	}        
+	} else {//encsolure is not recreated, file is not needed
+	  file_delete($file);
+	}
       }
       else {
 	watchdog('ESDH', 'There was an error importing file %uri ', array('%uri' => $enclosure['uri']), WATCHDOG_ERROR);
@@ -368,7 +370,7 @@ function _os2web_esdh_provider_add_enclosure_bullet($enclosure, $file) {
     if (isset($result['node'])) {
         $nodes = array_keys($result['node']);
 	//node exists, avoiding recreation
-	return $nodes[0];//nid
+	return return;
     }
     else {
         $node = new stdClass();
