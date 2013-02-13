@@ -123,29 +123,54 @@ function os2dagsorden_admin_suite_delete_extra_files(){
 		    OR filename like '%.mpp' 
 		    OR filename like '%.tiff' 
 		    OR filename like '%.txt'
-		    OR filename like '%.pdf'
-		    ");
+		    OR filename like '%.pdf'");
 		    
     while ($file = $results->fetchAssoc()){
-      print_r($file['fid']);
+      print_r($file);
+      print_r("<br/>");
+      
+      //checking bullet point
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'node')
         ->fieldCondition('field_bpa_file', 'fid', $file['fid'], '=');
       $bpa = $query->execute();
-      if (!isset($bpa['node'])) {
-	  $to_delete[] = $file;
+      if (isset($bpa['node'])) {
+	  continue;
       }
-      print_r("<br/>");
+      
+      //checking meeting description closed
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+        ->fieldCondition('field_meeting_description_closed', 'fid', $file['fid'], '=');
+      $meeting = $query->execute();
+      if (isset($meeting['node'])) {
+	  continue;
+      }
+      
+      //checking meeting description opened
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+        ->fieldCondition('field_meeting_description', 'fid', $file['fid'], '=');
+      $meeting = $query->execute();
+      if (isset($meeting['node'])) {
+	  continue;
+      }
+      
+      //not used anywhere
+      $to_delete[] = $file;
     }
     print_r("<br/>");
     print_r("<br/>");
     print_r("<br/>");
     print_r('to be deleted:');
     foreach ($to_delete as $file){
-      file_delete(file_load($file['fid']));
+      //file_delete(file_load($file['fid']));
       print_r($file);
       print_r("<br/>");
     }
+    print_r("<br/>");
+    print_r("<br/>");
+    print_r("<br/>");
 }
 
 /**
