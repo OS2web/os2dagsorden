@@ -38,6 +38,12 @@ function os2dagsorden_admin_suite_menu() {
         'access arguments' => array('administer os2web'),
     );
     
+    $items['os2dagsorden/admin_suite/delete_extra_files'] = array(
+        'type' => MENU_CALLBACK,
+        'page callback' => 'os2dagsorden_admin_suite_delete_extra_files',
+        'access arguments' => array('administer os2web'),
+    );
+    
     return $items;
 }
 
@@ -93,6 +99,51 @@ function os2dagsorden_admin_suite_delete_converted_files(){
       print_r("<br/>");
     }
   }
+}
+
+/**
+  * Deletes the extra files from the acadre directory, which are copied together with the new acadre version but are never used
+  *
+  * @return none
+  */
+function os2dagsorden_admin_suite_delete_extra_files(){
+    $to_delete = array();
+    
+    $results = db_query("SELECT * FROM file_managed WHERE filename LIKE '%.doc' 
+		    OR filename like '%.docx' 
+		    OR filename like '%.xls' 
+		    OR filename like '%.xlsx' 
+		    OR filename like '%.ppt' 
+		    OR filename like '%.pptx' 
+		    OR filename like '%.tif' 
+		    OR filename like '%.msg' 
+		    OR filename like '%.jpg'  
+		    OR filename like '%.rtf' 
+		    OR filename like '%.docm' 
+		    OR filename like '%.mpp' 
+		    OR filename like '%.tiff' 
+		    OR filename like '%.txt'");
+		    
+    while ($file = $results->fetchAssoc()){
+      print_r($file['fid']);
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+        ->fieldCondition('field_bpa_file', 'fid', $file['fid'], '=');
+      $bpa = $query->execute();
+      if (!isset($bpa['node'])) {
+	  $to_delete[] = $file;
+      }
+      print_r("<br/>");
+    }
+    print_r("<br/>");
+    print_r("<br/>");
+    print_r("<br/>");
+    print_r('to be deleted:');
+    foreach ($to_delete as $file){
+      file_delete(file_load($file['fid']));
+      print_r($file);
+      print_r("<br/>");
+    }
 }
 
 /**
