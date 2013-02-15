@@ -370,7 +370,7 @@ function _os2web_esdh_provider_add_enclosure_bullet($enclosure, $file) {
     if (isset($result['node'])) {
         $nodes = array_keys($result['node']);
 	//node exists, avoiding recreation
-	return return;
+	return;
     }
     else {
         $node = new stdClass();

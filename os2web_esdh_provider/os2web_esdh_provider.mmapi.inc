@@ -75,7 +75,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       $old_version = $node->field_meeting_acadre_version[$node->language][0]['value'];
       $new_version = $meeting['acadre_version'];
       if (strcmp($old_version,$new_version) >= 0){//meeting is of the same version, no need to proceed
-	//continue;
+	continue;
       }
     }
     

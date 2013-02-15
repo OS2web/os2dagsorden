@@ -44,6 +44,12 @@ function os2dagsorden_admin_suite_menu() {
         'access arguments' => array('administer os2web'),
     );
     
+    $items['os2dagsorden/admin_suite/delete_unused_files'] = array(
+        'type' => MENU_CALLBACK,
+        'page callback' => 'os2dagsorden_admin_suite_delete_unused_files',
+        'access arguments' => array('administer os2web'),
+    );
+    
     return $items;
 }
 
@@ -171,6 +177,55 @@ function os2dagsorden_admin_suite_delete_extra_files(){
     print_r("<br/>");
     print_r("<br/>");
     print_r("<br/>");
+}
+
+/**
+  * Deletes the files from acadre dir (not xml or pdf) that are not used by dagsorden.
+  *
+  * @return none
+  */
+function os2dagsorden_admin_suite_delete_unused_files(){
+    $acadre_dir =  drupal_realpath("private://");
+    $dirs = scandir($acadre_dir);
+    foreach ($dirs as $dir){
+      if (preg_match("/^Files/i",$dir)){
+	print_r($dir . "<br/>");
+	$files = scandir($acadre_dir . '/' . $dir);
+	
+	$not_pdf_files = array();
+	foreach ($files as $file){
+	  if ($file === '.' || $file === '..') continue;
+	  
+	  if (!preg_match("/\.xml$/i",$file) && !preg_match("/\.html$/i",$file) && !preg_match("/\.pdf$/i",$file)){//not xml, pdf or html
+	    $not_pdf_files[] = $file;
+	  }
+	}
+	
+	//going through not pdf files, to decide which to delete
+	$files_to_delete = array();
+	foreach ($not_pdf_files as $not_pdf_file){
+	  $result = db_query("SELECT COUNT(*) FROM file_managed WHERE filename ='" . $not_pdf_file . "'")->fetchField();
+	  if ($result == 0)
+	    $files_to_delete[] = $not_pdf_file;
+	  }
+	
+	//deleting file
+	foreach ($files_to_delete as $file){
+	  //unlink($acadre_dir . '/' . $dir . '/' . $file);
+	}
+	print_r('not pdf files: ');
+	print_r($not_pdf_files);
+	print_r("<br/>");
+	print_r('pdf files: ');
+	print_r($pdf_files);
+	print_r("<br/>");
+	print_r('to be deleted: ');
+	print_r($files_to_delete);
+	print_r("<br/>");
+	print_r("<br/>");
+	print_r("<br/>");
+      }
+    }
 }
 
 /**
