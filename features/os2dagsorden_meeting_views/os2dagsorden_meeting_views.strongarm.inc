@@ -499,5 +499,27 @@ function os2dagsorden_meeting_views_strongarm() {
   $strongarm->value = 0;
   $export['print_urls_anchors'] = $strongarm;
 
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'simplify_comments_speaker_paper';
+  $strongarm->value = array();
+  $export['simplify_comments_speaker_paper'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'simplify_nodes_speaker_paper';
+  $strongarm->value = array(
+    0 => 'author',
+    1 => 'format',
+    2 => 'options',
+    3 => 'revision',
+    4 => 'comment',
+    5 => 'menu',
+    6 => 'path',
+  );
+  $export['simplify_nodes_speaker_paper'] = $strongarm;
+
   return $export;
 }
