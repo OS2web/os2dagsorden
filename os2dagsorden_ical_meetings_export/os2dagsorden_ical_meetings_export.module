@@ -19,18 +19,25 @@
 function os2dagsorden_ical_meetings_export_menu() {
     $items = array();
 
+    $items['meetings-export/day/%'] = array(
+        'type' => MENU_CALLBACK,
+        'page callback' => '_os2dagsorden_ical_meetings_export_day_callback',
+        'access arguments' => array('access content'),
+        'page arguments' => array(2)
+    );
+    
     $items['meetings-export/month/%'] = array(
         'type' => MENU_CALLBACK,
         'page callback' => '_os2dagsorden_ical_meetings_export_month_callback',
         'access arguments' => array('access content'),
         'page arguments' => array(2)
     );
-
-    $items['meetings-export/day/%'] = array(
+    
+    $items['meetings-export/from_month/%/to_month/%'] = array(
         'type' => MENU_CALLBACK,
-        'page callback' => '_os2dagsorden_ical_meetings_export_day_callback',
+        'page callback' => '_os2dagsorden_ical_meetings_export_month_period_callback',
         'access arguments' => array('access content'),
-        'page arguments' => array(2)
+        'page arguments' => array(2,4)
     );
 
     return $items;
@@ -39,20 +46,20 @@ function os2dagsorden_ical_meetings_export_menu() {
 /**
  * Serves the meetings in iCal format for the month period.
  *
- * @param data $date the period from which the meetings should be returned
+ * @param data $date the period from which the meetings should be returned. Date comes in yyyy-mm format
  *
  * @return the ical formated meetings list.
  */
 function _os2dagsorden_ical_meetings_export_month_callback($date) {
-    $date = explode('-', $date);
+    $date = explode('-', $date);//extracting the month
     if (count($date) != 2) {
         drupal_access_denied();
     }
     $year = $date[0];
     $month = $date[1];
 
-    $date_start = date('Y-m-d', strtotime($year . '-' . $month . '-1'));
-    $date_end = date('Y-m-t', strtotime($year . '-' . $month . '-1'));
+    $date_start = date('Y-m-d H:i:s', strtotime($year . '-' . $month . '-1 00:00:00'));
+    $date_end = date('Y-m-d H:i:s', strtotime($year . '-' . $month . '-31 23:59:59'));
 
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
@@ -68,12 +75,12 @@ function _os2dagsorden_ical_meetings_export_month_callback($date) {
 /**
  * Serves the meetings in iCal format for the day period.
  *
- * @param data $date the period from which the meetings should be returned
+ * @param data $date the period from which the meetings should be returned. Date come in yyyy-mm-dd format
  *
  * @return the ical formated meetings list.
  */
 function _os2dagsorden_ical_meetings_export_day_callback($date) {
-    $date = explode('-', $date);
+    $date = explode('-', $date);//extracting the day
     if (count($date) != 3) {
         drupal_access_denied();
     }
@@ -84,6 +91,28 @@ function _os2dagsorden_ical_meetings_export_day_callback($date) {
     $date_start = date('Y-m-d H:i:s', strtotime($year . '-' . $month . '-' . $day . ' 00:00:00'));
     $date_end = date('Y-m-d H:i:s', strtotime($year . '-' . $month . '-' . $day . ' 23:59:59'));
 
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+            ->fieldCondition('field_date', 'value', $date_start, '>=')
+            ->fieldCondition('field_date', 'value', $date_end, '<=');
+
+    $result = $query->execute();
+    $nids = array_keys($result['node']);
+    $meetings = node_load_multiple($nids);
+    _os2dagsorden_ical_meetings_export_make_ical($meetings);
+}
+
+/**
+ * Serves the meetings in iCal format for the several month period.
+ *
+ * @param data $date the period from which the meetings should be returned.
+ *
+ * @return the ical formated meetings list.
+ */
+function _os2dagsorden_ical_meetings_export_month_period_callback($from_month, $to_month) {
+    $date_start = date('Y-m-d H:i:s', strtotime(date("Y") . '-' . $from_month . '-1 00:00:00'));//current year
+    $date_end = date('Y-m-t H:i:s', strtotime(date("Y") . '-' . $to_month . '-31 23:59:59'));//current year
+    
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
             ->fieldCondition('field_date', 'value', $date_start, '>=')
