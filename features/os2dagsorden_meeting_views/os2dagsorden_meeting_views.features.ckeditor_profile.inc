@@ -14,7 +14,7 @@ function os2dagsorden_meeting_views_ckeditor_profile_defaults() {
       'settings' => array(
         'ss' => '2',
         'default' => 't',
-        'show_toggle' => 't',
+        'show_toggle' => 'f',
         'skin' => 'kama',
         'uicolor' => 'default',
         'uicolor_textarea' => '<p>
@@ -50,8 +50,6 @@ function os2dagsorden_meeting_views_ckeditor_profile_defaults() {
         'filebrowser' => 'none',
         'filebrowser_image' => '',
         'filebrowser_flash' => '',
-        'UserFilesPath' => '%b%f/',
-        'UserFilesAbsolutePath' => '%d%b%f/',
         'ckeditor_load_method' => 'ckeditor.js',
         'ckeditor_load_time_out' => '0',
         'forcePasteAsPlainText' => 'f',

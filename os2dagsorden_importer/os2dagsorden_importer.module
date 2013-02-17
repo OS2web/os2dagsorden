@@ -719,6 +719,7 @@ function _os2dagsorden_importer_process_meetings($xml_file) {
             'committee_abbr' => (string) array_shift($row->xpath('GroupAbbreviation')),
             'meeting_start_date' => (string) array_shift($row->xpath('MeetingDate')),
             'meeting_start_time' => (string) array_shift($row->xpath('MeetingStartTime')),
+            'meeting_end_time' => (string) array_shift($row->xpath('MeetingEndTime')),
             'hex_color' => (string) array_shift($row->xpath('HEXColorCode')),
             'deactivated' => (int) array_shift($row->xpath('Deactivated')),
             'cancelled' => (int) array_shift($row->xpath('Cancelled')),
@@ -726,16 +727,14 @@ function _os2dagsorden_importer_process_meetings($xml_file) {
         );
 
         if ($xml_data['deactivated'] == 0) {
-            if (!empty($xml_data['meeting_start_date'])) {
+            if (!empty($xml_data['meeting_start_date'])) {//start time
 		 if (empty($xml_data['meeting_start_time'])){
 		  $xml_data['meeting_start_time'] = "00:01";
 		 }
                 $xml_data['meeting_start_date'] = substr_replace($xml_data['meeting_start_date'], $xml_data['meeting_start_time'], 11);
-
-                //is handled in the field settings - field is set to be in neutral timezone - time will not be changed on presentation
-                //converting the date into utc time zone, because Drupal adds the timezone offset itself
-                //$offset = 1+date("I");
-                //$xml_data['meeting_start_date'] = date ('Y-m-d H:i:s', strtotime ($xml_data['meeting_start_date']) - $offset*60*60);
+            }
+            if (!empty($xml_data['meeting_end_time'])){//end time
+		$xml_data['meeting_end_date'] = substr_replace($xml_data['meeting_start_date'], $xml_data['meeting_end_time'], 11);
             }
   
 	    $term = _os2dagsorden_importer_get_committee_by_id($xml_data['committee_id']);
@@ -837,7 +836,12 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
 
     if (!empty($xml_data['meeting_start_date'])) {
         $node->field_date[$node->language][0]['value'] = $xml_data['meeting_start_date'];
-        $node->field_date[$node->language][0]['value2'] = $xml_data['meeting_start_date'];
+    }
+    
+    if (!empty($xml_data['meeting_end_date'])) {
+	$node->field_date[$node->language][0]['value2'] = $xml_data['meeting_end_date'];
+    } else {//to represent that there is no end date
+	$node->field_date[$node->language][0]['value2'] = $xml_data['meeting_start_date'];
     }
 
     $node->field_hex[$node->language][0]['value'] = strtolower($xml_data['hex_color']);

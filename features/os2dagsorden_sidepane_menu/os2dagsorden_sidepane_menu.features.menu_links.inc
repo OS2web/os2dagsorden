@@ -15,10 +15,10 @@ function os2dagsorden_sidepane_menu_menu_default_menu_links() {
     'menu_name' => 'menu-sidepane-menu',
     'link_path' => '<front>',
     'router_path' => '',
-    'link_title' => 'Oversigt',
+    'link_title' => 'Hjem',
     'options' => array(
       'attributes' => array(
-        'id' => 'menu-oversigt',
+        'id' => 'menu-home',
         'class' => array(
           0 => 'menu-sidepane',
         ),
@@ -74,7 +74,7 @@ function os2dagsorden_sidepane_menu_menu_default_menu_links() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Halvårs-kalender');
-  t('Oversigt');
+  t('Hjem');
   t('Søg');
 
 

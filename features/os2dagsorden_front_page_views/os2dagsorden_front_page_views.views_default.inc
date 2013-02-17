@@ -40,6 +40,13 @@ function os2dagsorden_front_page_views_views_default_views() {
   $handler->display->display_options['row_options']['inline'] = array(
     'name' => 'name',
   );
+  /* Header: Global: Text area */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['empty'] = FALSE;
+  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title="Her kan du se de udvalg du er medlem af. Ret henvendelse til Direktionssekretariatet hvis du mener det skal ændres."></div>';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* Relationship: Taxonomy term: User using Is part of Committee */
   $handler->display->display_options['relationships']['reverse_field_user_committee_user']['id'] = 'reverse_field_user_committee_user';
   $handler->display->display_options['relationships']['reverse_field_user_committee_user']['table'] = 'taxonomy_term_data';
@@ -82,6 +89,7 @@ function os2dagsorden_front_page_views_views_default_views() {
     t('Items per page'),
     t('- All -'),
     t('Offset'),
+    t('<div class="help-button" title="Her kan du se de udvalg du er medlem af. Ret henvendelse til Direktionssekretariatet hvis du mener det skal ændres."></div>'),
     t('field_user_committee'),
     t('[name]'),
     t('Block'),
@@ -120,6 +128,14 @@ function os2dagsorden_front_page_views_views_default_views() {
     'field_name_short' => 'field_name_short',
     'php' => 'php',
   );
+  /* Header: help text */
+  $handler->display->display_options['header']['area']['id'] = 'area';
+  $handler->display->display_options['header']['area']['table'] = 'views';
+  $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['ui_name'] = 'help text';
+  $handler->display->display_options['header']['area']['empty'] = TRUE;
+  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title="Her kan du se de udvalg du er sat op til at følge. Følger betyder at du kun kan se åbne punkter og Følger+ betyder at du også kan se lukkede punkter. Ret henvendelse til Direktionssekretariatet hvis du mener det skal ændres."></div>';
+  $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* No results behavior: Global: PHP */
   $handler->display->display_options['empty']['php']['id'] = 'php';
   $handler->display->display_options['empty']['php']['table'] = 'views';
@@ -207,6 +223,7 @@ if (isset($full_user->field_follows_committee[\'und\'])){
     t('Items per page'),
     t('- All -'),
     t('Offset'),
+    t('<div class="help-button" title="Her kan du se de udvalg du er sat op til at følge. Følger betyder at du kun kan se åbne punkter og Følger+ betyder at du også kan se lukkede punkter. Ret henvendelse til Direktionssekretariatet hvis du mener det skal ændres."></div>'),
     t('Block'),
   );
   $export['user_follow_committees'] = $view;

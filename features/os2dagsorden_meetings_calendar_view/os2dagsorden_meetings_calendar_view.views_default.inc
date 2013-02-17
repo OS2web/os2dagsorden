@@ -186,7 +186,7 @@ $date = substr($q, strrpos($q,\'month/\')+6, 7);
 else 
 $date = date(\'Y-m\');
 
-print \'<a href="\'.$base_url.\'?q=meetings-export/month/\'.$date.\'" class="button">LAV EKSPORT-FIL TIL EGEN KALENDER</a>\';
+print \'<a href="\'.$base_url.\'?q=meetings-export/month/\'.$date.\'" class="button">Eksporter månedens møder til egen kalender</a>\';
 ?>
 ';
   $handler->display->display_options['defaults']['fields'] = FALSE;
@@ -313,25 +313,6 @@ echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'un
   $handler->display->display_options['row_plugin'] = 'calendar_entity';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['footer'] = FALSE;
-  /* Footer: iCal export */
-  $handler->display->display_options['footer']['php']['id'] = 'php';
-  $handler->display->display_options['footer']['php']['table'] = 'views';
-  $handler->display->display_options['footer']['php']['field'] = 'php';
-  $handler->display->display_options['footer']['php']['ui_name'] = 'iCal export';
-  $handler->display->display_options['footer']['php']['empty'] = FALSE;
-  $handler->display->display_options['footer']['php']['php_output'] = '<?php
-global $base_url;
-$q = $_GET[\'q\'];
-
-if (strlen($q) > strlen(\'calendar-field-date/day/\')){
-$date = substr($q, strrpos($q,\'day/\')+4, 10);
-}
-else 
-$date = date(\'Y-m-d\');
-
-print \'<a href="\'.$base_url.\'?q=meetings-export/day/\'.$date.\'" class="button">LAV EKSPORT-FIL TIL EGEN KALENDER</a>\';
-?>
-';
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Date: Date (node) */
   $handler->display->display_options['arguments']['date_argument']['id'] = 'date_argument';

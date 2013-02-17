@@ -1,4 +1,4 @@
-function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotate, url, filter) {
+function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotate, url, filter, user) {
   jQuery(document).ready(function() {
           	//"use strict";
 		jQuery(element_to_annotate).annotator().annotator('addPlugin', 'Touch', {
@@ -9,6 +9,17 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
 		if (filter){
 		  jQuery(element_to_annotate).annotator().annotator('addPlugin', 'Filter');
 		}
+		
+// 		jQuery(element_to_annotate).annotator().annotator('addPlugin', 'Permissions', {
+// 		  user: user,
+// 		  permissions: {
+// 		    'read':   [],
+// 		    'update': [user, 'group:Udvalg'],
+// 		    'delete': [user],
+// 		    'admin':  [user],
+// 		  }
+// 		});
+		
 		jQuery(element_to_annotate).annotator().annotator('addPlugin', 'Store', {
 			// The endpoint of the store on your server.
 			prefix: url,

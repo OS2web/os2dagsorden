@@ -114,7 +114,7 @@ function os2dagsorden_meeting_views_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['ui_name'] = 'help text';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<div class=\'help-button\' title=\'Her vises de kommende 5 møder i "Mine udvalg". Det vil sige udvalg som man enten er medlem af eller følger. Udvalgene kan ses i boksene "Medlem af" og "Jeg følger" i højremenuen. Der er ikke en dagsorden tilgængelig før status er angivet til publiceret.\'></div>';
+  $handler->display->display_options['header']['area']['content'] = '<div class=\'help-button\' title=\'Her vises de kommende 5 møder i "Mine udvalg". Det vil sige udvalg som man enten er medlem af eller følger. Udvalgene kan ses i boksene "Medlem af" og "Jeg følger" i højremenuen. Der er ikke en dagsorden tilgængelig før status er angivet til Dagsorden eller Dagsorden+.\'></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* Relationship: Content: Committee (field_committee) */
   $handler->display->display_options['relationships']['field_committee_tid']['id'] = 'field_committee_tid';
@@ -336,7 +336,7 @@ echo substr($title, 0, 27) . \'...\';
     t('Items per page'),
     t('- All -'),
     t('Offset'),
-    t('<div class=\'help-button\' title=\'Her vises de kommende 5 møder i "Mine udvalg". Det vil sige udvalg som man enten er medlem af eller følger. Udvalgene kan ses i boksene "Medlem af" og "Jeg følger" i højremenuen. Der er ikke en dagsorden tilgængelig før status er angivet til publiceret.\'></div>'),
+    t('<div class=\'help-button\' title=\'Her vises de kommende 5 møder i "Mine udvalg". Det vil sige udvalg som man enten er medlem af eller følger. Udvalgene kan ses i boksene "Medlem af" og "Jeg følger" i højremenuen. Der er ikke en dagsorden tilgængelig før status er angivet til Dagsorden eller Dagsorden+.\'></div>'),
     t('term from field_committee'),
     t('field_user_committee'),
     t('field_follows_committee'),
@@ -1020,6 +1020,16 @@ print \'<div class="indicator-empty"></div>\';
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
+  /* Field: bullet point title [hidden], for speaker paper link */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['relationship'] = 'field_ref_bullet_points_target_id';
+  $handler->display->display_options['fields']['title']['ui_name'] = 'bullet point title [hidden], for speaker paper link';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
   /* Field: Bullet point title - php */
   $handler->display->display_options['fields']['php_4']['id'] = 'php_4';
   $handler->display->display_options['fields']['php_4']['table'] = 'views';
@@ -1084,7 +1094,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	  $title = substr($attachment->title, 0, 75).\'...\';
 	
 	$link = $base_url.\'/meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment/\'.$attachment->nid;
-	print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" target="_blank" class="first-child last-child">\'.$title.\'</a>\';
+	print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
 
 	//attachment text - if any
 	if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){	
@@ -1737,12 +1747,13 @@ echo substr($title, 0, 27) . \'...\';
       'empty_column' => 0,
     ),
   );
-  /* Header: Global: Text area */
+  /* Header: help button */
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
+  $handler->display->display_options['header']['area']['ui_name'] = 'help button';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title="Her vises de seneste 8 møder i alle mødefora. Der er ikke et referat tilgængeligt før status er angivet til publiceret."></div>';
+  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title=\'Her vises de seneste 8 møder i alle mødefora. Der er ikke et referat tilgængeligt før status er angivet til Referat eller Referat+.\'></div>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   /* Relationship: Content: Committee (field_committee) */
   $handler->display->display_options['relationships']['field_committee_tid']['id'] = 'field_committee_tid';
@@ -1919,7 +1930,7 @@ echo substr($title, 0, 27) . \'...\';
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('<div class="help-button" title="Her vises de seneste 8 møder i alle mødefora. Der er ikke et referat tilgængeligt før status er angivet til publiceret."></div>'),
+    t('<div class="help-button" title=\'Her vises de seneste 8 møder i alle mødefora. Der er ikke et referat tilgængeligt før status er angivet til Referat eller Referat+.\'></div>'),
     t('term from field_committee'),
     t('field_user_committee'),
     t('Status'),
@@ -2242,7 +2253,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       else 
 	$title = substr($attachment->title, 0, 75).\'...\';
       $link = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment/\'.$attachment->nid;
-      print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" target="_blank" class="first-child last-child">\'.$title.\'</a>\';
+      print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
      
       //attachment text - if any
       if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
