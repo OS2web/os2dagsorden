@@ -69,7 +69,7 @@ function _os2dagsorden_ical_meetings_export_month_callback($date) {
     $result = $query->execute();
     $nids = array_keys($result['node']);
     $meetings = node_load_multiple($nids);
-    _os2dagsorden_ical_meetings_export_make_ical($meetings);
+    _os2dagsorden_ical_meetings_export_make_ical($meetings, $year . '-' . $month);
 }
 
 /**
@@ -99,7 +99,7 @@ function _os2dagsorden_ical_meetings_export_day_callback($date) {
     $result = $query->execute();
     $nids = array_keys($result['node']);
     $meetings = node_load_multiple($nids);
-    _os2dagsorden_ical_meetings_export_make_ical($meetings);
+    _os2dagsorden_ical_meetings_export_make_ical($meetings, $year . '-' . $month . '-' . $day);
 }
 
 /**
@@ -121,17 +121,21 @@ function _os2dagsorden_ical_meetings_export_month_period_callback($from_month, $
     $result = $query->execute();
     $nids = array_keys($result['node']);
     $meetings = node_load_multiple($nids);
-    _os2dagsorden_ical_meetings_export_make_ical($meetings);
+    
+    $cal_name = ($from_month == 1) ? '1. halvårskalender' : '2. halvårskalender';
+      
+    _os2dagsorden_ical_meetings_export_make_ical($meetings, $cal_name);
 }
 
 /**
  * Helper function, composes the ical format from the array of meeting objects.
  *
- * @param array $meetings array of meetings objects.
+ * @param array  $meetings array of meetings objects.
+ * @param string $name     custom name of the calendar
  *
  * @return the .ics file with the composed string.
  */
-function _os2dagsorden_ical_meetings_export_make_ical($meetings) {
+function _os2dagsorden_ical_meetings_export_make_ical($meetings, $name = 'kalendar') {
     global $base_url;
     header('Content-type: application/calendar');
     header('Content-Disposition: attachment; filename="calendar_export.ics"');
@@ -139,7 +143,7 @@ function _os2dagsorden_ical_meetings_export_make_ical($meetings) {
     print 'BEGIN:VCALENDAR' . PHP_EOL .
             'VERSION:2.0' . PHP_EOL .
             'METHOD:PUBLISH' . PHP_EOL .
-            'X-WR-CALNAME;VALUE=TEXT:WebApp Politik: Kalendar' . PHP_EOL .
+            'X-WR-CALNAME;VALUE=TEXT:OS2dagsorden - ' . $name . PHP_EOL .
             'PRODID:-//Drupal iCal API//EN' . PHP_EOL;
 
     foreach ($meetings as $meeting) {
