@@ -50,7 +50,37 @@ function os2dagsorden_admin_suite_menu() {
         'access arguments' => array('administer os2web'),
     );
     
+    $items['os2dagsorden/admin_suite/calc_damaged_meetings'] = array(
+        'type' => MENU_CALLBACK,
+        'page callback' => 'os2dagsorden_admin_suite_calculate_damaged_meetings',
+        'access arguments' => array('administer os2web'),
+    );
+    
     return $items;
+}
+
+function os2dagsorden_admin_suite_calculate_damaged_meetings(){
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+      ->propertyCondition('type', array('meeting'))
+      ->fieldCondition('field_meeting_acadre_id', 'value', '', '!=');
+      
+  $result = $query->execute();
+  
+  if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+    foreach ($nids as $nid){
+      $meeting = node_load($nid);
+      foreach ($meeting->field_ref_bullet_points['und'] as $bullet_point) {
+	  $bp = node_load($bullet_point['target_id']);
+	  if (empty($bp)){
+	    print_r($meeting->field_meeting_acadre_id['und'][0]['value']);
+	    print_r("<br/>");
+	    continue;
+	  }
+      }
+    }
+  }
 }
 
 /**
