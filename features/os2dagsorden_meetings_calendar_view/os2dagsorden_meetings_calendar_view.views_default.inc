@@ -52,7 +52,7 @@ function os2dagsorden_meetings_calendar_view_views_default_views() {
 global $base_url;
 $q = explode(\'/\',$_GET[\'q\']);
 $breadcrumb[] = l(\'Hjem\', $base_url);
-$breadcrumb[] .= \'<span class="breadcrumb-active">Kalendar</span>\';
+$breadcrumb[] .= \'<span class="breadcrumb-active">Kalender</span>\';
 drupal_set_breadcrumb($breadcrumb);
 ?>';
   /* Field: meeting hex color - hidden */
@@ -166,7 +166,7 @@ echo \'<font color="\' . $row->field_hex . \'">\' . $title . \'</font>\';
 global $base_url;
 $q = explode(\'/\',$_GET[\'q\']);
 $breadcrumb[] = l(\'Hjem\', $base_url);
-$breadcrumb[] .= \'<span class="breadcrumb-active">Kalendar</span>\';
+$breadcrumb[] .= \'<span class="breadcrumb-active">Kalender</span>\';
 drupal_set_breadcrumb($breadcrumb);
 ?>';
   $handler->display->display_options['defaults']['footer'] = FALSE;

@@ -56,7 +56,7 @@ function os2dagsorden_meeting_views_ckeditor_profile_defaults() {
         'html_entities' => 't',
         'scayt_autoStartup' => 'f',
         'theme_config_js' => 'f',
-        'js_conf' => '',
+        'js_conf' => 'config.removePlugins = \'elementspath\';',
         'loadPlugins' => array(
           'drupalbreaks' => array(
             'name' => 'drupalbreaks',
@@ -68,13 +68,6 @@ function os2dagsorden_meeting_views_ckeditor_profile_defaults() {
                 'icon' => 'images/drupalbreak.png',
               ),
             ),
-            'default' => 't',
-          ),
-          'tableresize' => array(
-            'name' => 'tableresize',
-            'desc' => 'Table Resize plugin',
-            'path' => '%base_path%%editor_path%plugins/tableresize/',
-            'buttons' => FALSE,
             'default' => 't',
           ),
         ),
