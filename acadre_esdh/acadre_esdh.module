@@ -7,6 +7,7 @@
 
 define('ACADRE_MM_IMPORT_DIR', 'public://acadre');
 define('ACADRE_MM_DEFAULT_APPROVED', '62,59,64,53,54,56,57,63,58,51,55,61,68,69,42');
+define('ACADRE_MM_DEFAULT_SEND_NOTIFICATION_OF', '28,44,71,72');
 
 /**
  * Implements hook_ctools_plugin_directory().
@@ -45,6 +46,13 @@ function acadre_esdh_form_os2web_settings_settings_form_alter(&$form, &$form_sta
     '#maxlength' => 200,
     '#description' => 'Komma sepereret liste over udvalgs-id der er godkendt til publisering.',
     '#default_value' => variable_get('os2web_meetings_approved_committee', ACADRE_MM_DEFAULT_APPROVED),
+  );
+  $form['meetings']['os2dagsorden_send_notification_committee'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Send notification of committees',
+    '#maxlength' => 200,
+    '#description' => 'Comma-separated list of committees ID changing status of which should send an email notification.',
+    '#default_value' => variable_get('os2dagsorden_send_notification_committee', ACADRE_MM_DEFAULT_SEND_NOTIFICATION_OF),
   );
 
   // CM Configuration.

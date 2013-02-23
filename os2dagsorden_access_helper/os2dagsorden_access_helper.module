@@ -461,81 +461,89 @@ function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) 
     node_save($node);
     
     $committee_id = $node->field_committee['und'][0]['tid'];
-    //send the email to involved people
-    //medlem
-    $query = new EntityFieldQuery();
-    $query->entityCondition('entity_type', 'user')
-        ->fieldCondition('field_user_committee', 'tid', $committee_id, '=');    
-    $result = $query->execute();
+    $committee = taxonomy_term_load($committee_id);
     
-    $uids = array();
+    $notification_committees = explode(',',variable_get('os2dagsorden_send_notification_committee'));
+    $send_notification = FALSE;
     
-    if (isset($result['user'])) {
-        $uids = array_keys($result['user']);
+    if (isset($committee->field_committee_acadre_id['und'])) {
+	foreach ($committee->field_committee_acadre_id['und'] as $id_raw) {
+	    print_r('checking');
+	    print_r($id_raw['value']);
+	    print_r("<br/>");
+	    if (in_array(intval($id_raw['value']), $notification_committees)) {
+		$send_notification = TRUE;
+		break;
+	    }
+	}
     }
-   
-    //follow
-    //$query = new EntityFieldQuery();
-    //$query->entityCondition('entity_type', 'user')
-    //    ->fieldCondition('field_follows_committee', 'tid', $committee_id, '=');   
-    //$result = $query->execute();
-    //if (isset($result['user'])) {
-    //    $uids = array_merge($uids, array_keys($result['user']));
-    //}
+     
+    if ($send_notification){
+      //send the email to involved people
+      //medlem
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'user')
+	  ->fieldCondition('field_user_committee', 'tid', $committee_id, '=');    
+      $result = $query->execute();
       
-    //follow+  
-    $query = new EntityFieldQuery();
-    $query->entityCondition('entity_type', 'user')
-        ->fieldCondition('field_follows_committee_plus', 'tid', $committee_id, '='); 
-    $result = $query->execute();
-    if (isset($result['user'])) {
-        $uids = array_merge($uids, array_keys($result['user']));
-    }
-    
-    $cName = taxonomy_term_load($committee_id)->name;
-    $mName = check_plain($node->title);
-    $mDate = check_plain($node->field_date['und'][0]['value']);
-    
-    $published_item = (strcasecmp($status, 'Dagsorden') == 0) ? 'en dagsorden' : 'et referat';
-    
-    //removing duplicates
-    $uids = array_unique($uids);
-    
-    foreach ($uids as $uid){
-    
-      $user = user_load($uid);
+      $uids = array();
       
-      $uName = $user->field_user_full_name['und'][0]['value'];
+      if (isset($result['user'])) {
+	  $uids = array_keys($result['user']);
+      }
+	
+      //follow+  
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'user')
+	  ->fieldCondition('field_follows_committee_plus', 'tid', $committee_id, '='); 
+      $result = $query->execute();
+      if (isset($result['user'])) {
+	  $uids = array_merge($uids, array_keys($result['user']));
+      }
       
-      $subject = ucfirst($published_item) . ' til ' . $mName . ' er publiceret';
+      $cName = taxonomy_term_load($committee_id)->name;
+      $mName = check_plain($node->title);
+      $mDate = check_plain($node->field_date['und'][0]['value']);
       
+      $published_item = (strcasecmp($status, 'Dagsorden') == 0) ? 'en dagsorden' : 'et referat';
       
-      $body = '<html><body>' . 
-	      'Til ' . $uName . '<br/><br/>' . 
-	      'Du abonnerer på ' . $cName . '<br/>' .
-	      'Der er publiceret ' . $published_item . ' til ' . $mName . ' ' . $mDate .
-	      '</body></html>';
-		  
-      $from = variable_get('system_mail', $my_email);
-      $message = array(
-	'to' => $user->mail,
-	'subject' => $subject,
-	'body' => $body,
-	'headers' => array(
-	  'MIME-Version' => '1.0',
-	  'From' => $from,
-	  'Sender' => $from,
-	  'Return-Path' => $from,
-	   'Content-Type' => 'text/html;charset=utf-8',
-	),
-      );
-      $system = drupal_mail_system("os2dagsorden_access_helper_set_meeting_status_and_save", "");
+      //removing duplicates
+      $uids = array_unique($uids);
+      
+      foreach ($uids as $uid){
+      
+	$user = user_load($uid);
+	
+	$uName = $user->field_user_full_name['und'][0]['value'];
+	
+	$subject = ucfirst($published_item) . ' til ' . $mName . ' er publiceret';
+	
+	
+	$body = '<html><body>' . 
+		'Til ' . $uName . '<br/><br/>' . 
+		'Du abonnerer på ' . $cName . '<br/>' .
+		'Der er publiceret ' . $published_item . ' til ' . $mName . ' ' . $mDate .
+		'</body></html>';
+		    
+	$from = variable_get('system_mail', $my_email);
+	$message = array(
+	  'to' => $user->mail,
+	  'subject' => $subject,
+	  'body' => $body,
+	  'headers' => array(
+	    'MIME-Version' => '1.0',
+	    'From' => $from,
+	    'Sender' => $from,
+	    'Return-Path' => $from,
+	    'Content-Type' => 'text/html;charset=utf-8',
+	  ),
+	);
+	$system = drupal_mail_system("os2dagsorden_access_helper_set_meeting_status_and_save", "");
 
-      // The format function must be called before calling the mail function. 
-      //$message = $system->format($message); 
-      $system->mail($message);
-      
-      //print_r($body);
+	// The format function must be called before calling the mail function. 
+	//$message = $system->format($message); 
+	$system->mail($message);
+      }
     }
     
     return $node;
