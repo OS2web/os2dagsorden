@@ -463,29 +463,28 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['header']['php_1']['field'] = 'php';
   $handler->display->display_options['header']['php_1']['ui_name'] = 'description download';
   $handler->display->display_options['header']['php_1']['empty'] = FALSE;
-  $handler->display->display_options['header']['php_1']['php_output'] = '<div align="right" style="margin:5px;">
+  $handler->display->display_options['header']['php_1']['php_output'] = '<div class="controls-right">
 <?php 
 //closed version - if not empty
 $nid = $results[0]->nid;
 $meeting = node_load($nid, null, TRUE);
 if (os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid)){
   if (!empty($meeting->field_meeting_description_closed[\'und\'][0][\'uri\'])){
-    print \'<span style="margin-right:5px;">\';
     print \'<input class="form-submit" type="button" onclick="window.open(\';
     print(" \' " . file_create_url($meeting->field_meeting_description_closed[\'und\'][0][\'uri\']) . " \' ");
     print \')" value="Hent samlet dokument i PDF (lukket version)">\';
-    print \'</span>\';
   }
 }
 
 //opened version - if not empty
 if (!empty($meeting->field_meeting_description[\'und\'][0][\'uri\'])){
-  print \'<input class="form-submit" type="button" onclick="window.open(\';
+  print \'<input class="form-submit next-control" type="button" onclick="window.open(\';
   print(" \' " . file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\']) . " \' ");
   print \')" value="Hent samlet dokument i PDF">\';
 }
 ?>
-</div>';
+</div>
+<div class="clearfix"></div>';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_ref_bullet_points_target_id']['id'] = 'field_ref_bullet_points_target_id';
   $handler->display->display_options['relationships']['field_ref_bullet_points_target_id']['table'] = 'field_data_field_ref_bullet_points';
@@ -1990,6 +1989,22 @@ $breadcrumb[] .= l(\'Mødedetaljer\', \'meeting/\'.$q[1]);
 $breadcrumb[] .= \'<span class="breadcrumb-active">Dagsordenspunkt</span>\';
 drupal_set_breadcrumb($breadcrumb);
 ?>';
+  /* Header: print and send to friend buttons */
+  $handler->display->display_options['header']['php_1']['id'] = 'php_1';
+  $handler->display->display_options['header']['php_1']['table'] = 'views';
+  $handler->display->display_options['header']['php_1']['field'] = 'php';
+  $handler->display->display_options['header']['php_1']['ui_name'] = 'print and send to friend buttons';
+  $handler->display->display_options['header']['php_1']['empty'] = FALSE;
+  $handler->display->display_options['header']['php_1']['php_output'] = '<?php
+global $base_url;
+$q = explode(\'/\',$_GET[\'q\']);
+$meeting_id = $q[1];
+$bp_id = $q[3];
+?>
+<div class="controls-right" style="padding-top: 5px;">
+<a href="<?php print($base_url . \'?q=meeting/\' . $meeting_id . \'/bullet-point/\' . $bp_id . \'/send_to_friend_form\');?>" class="form-submit" rel="lightframe">Send til venner</a><a href="<?php print($base_url . \'?q=/print/meeting/\' . $meeting_id . \'/bullet-point/\' . $bp_id . \'/print\'); ?>" class="form-submit next-control" target="_blank">Print</a>
+</div>
+<div class="clearfix"></div>';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -2092,6 +2107,7 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
     'field_bul_point_closed' => 'title',
     'field_bul_point_personal' => 'title',
     'title' => 'title',
+    'php_1' => 'title',
     'php' => 'title',
     'body' => 'title',
     'php_2' => 'title',
@@ -2122,6 +2138,11 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
     'title' => array(
       'sortable' => 0,
       'default_sort_order' => 'asc',
+      'align' => '',
+      'separator' => '',
+      'empty_column' => 0,
+    ),
+    'php_1' => array(
       'align' => '',
       'separator' => '',
       'empty_column' => 0,

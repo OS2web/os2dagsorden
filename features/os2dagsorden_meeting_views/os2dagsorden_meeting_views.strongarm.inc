@@ -20,6 +20,20 @@ function os2dagsorden_meeting_views_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'lightbox2_default_frame_height';
+  $strongarm->value = '400';
+  $export['lightbox2_default_frame_height'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'lightbox2_default_frame_width';
+  $strongarm->value = '700';
+  $export['lightbox2_default_frame_width'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'poshy_tip_default_class';
   $strongarm->value = '.help-button';
   $export['poshy_tip_default_class'] = $strongarm;
