@@ -340,7 +340,7 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 	  
 	  //composing html output
 	  $html .= 
-		'<input class="form-submit next-control" type="button" onclick="window.open(\'' . $print_link . '\')" value="Print noter">' .
+		'<input class="form-submit next-control print-button" type="button" onclick="window.open(\'' . $print_link . '\')" value="Print noter">' .
 		'</div>' . '<div class="clearfix"></div>' . 
 		_os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) . 
 		'<div id="content">' . $text . '</div>' . 
@@ -358,7 +358,7 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 	  $print_link = $GLOBALS['base_url'] . '/print/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id . '/print';
 	  
 	  //composing html output
-	  $html .= '<input class="form-submit" type="button" onclick="window.open(\'' . $print_link . '\')" value="Print"></div>' .
+	  $html .= '<input class="form-submit print-button" type="button" onclick="window.open(\'' . $print_link . '\')" value="Print"></div>' .
 		  '<div class="clearfix"></div>' . 
 		  '<div class="clearfix" id="content">' . $text . '</div>' . 
 		  '</div>';
