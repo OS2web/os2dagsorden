@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * os2dagsorden_create_agenda
+ *
+ * PHP version 5
+ *
+ * @category OS2Dagsorden
+ * @package  Os2dagsorden_Create_Agenda
+ * @author   Stanislav Kutasevits <stan@bellcom.dk>
+ * @license  http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
+ * @link     http://bellcom.dk
+ */
+
+require drupal_get_path('module', 'os2dagsorden_create_agenda') . '/includes/os2dagsorden_create_agenda_meeting.inc';
+require drupal_get_path('module', 'os2dagsorden_create_agenda') . '/includes/os2dagsorden_create_agenda_bullet_point.inc';
+require drupal_get_path('module', 'os2dagsorden_create_agenda') . '/includes/os2dagsorden_create_agenda_bpa.inc';
+ 
+/**
+ * Implementation of hook_menu
+ *
+ * @return list of links
+ */
+function os2dagsorden_create_agenda_menu() {
+  $items = array();
+  $items['agenda/meeting'] = array(
+      'page callback' => 'os2dagsorden_create_agenda_meeting_page',
+      'access arguments' => array('administer os2web'),
+      'type' => MENU_CALLBACK,
+  );
+  
+  $items['agenda/meeting/%'] = array(
+      'page callback' => 'os2dagsorden_create_agenda_meeting_page',
+      'access arguments' => array('administer os2web'),
+      'page arguments' => array(2),
+      'type' => MENU_CALLBACK,
+  );
+  
+  return $items;
+}
+
+function os2dagsorden_create_agenda_meeting_page($meeting_id = null) {
+  return drupal_get_form('os2dagsorden_create_agenda_meeting', $meeting_id);
+}
