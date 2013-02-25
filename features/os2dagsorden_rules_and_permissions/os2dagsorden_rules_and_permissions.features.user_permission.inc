@@ -25,6 +25,7 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'name' => 'access administration pages',
     'roles' => array(
       0 => 'administrator',
+      1 => 'os2dagsorden admin',
     ),
     'module' => 'system',
   );
@@ -90,8 +91,6 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'name' => 'access overlay',
     'roles' => array(
       0 => 'administrator',
-      1 => 'authenticated user',
-      2 => 'os2dagsorden',
     ),
     'module' => 'overlay',
   );
@@ -138,6 +137,7 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'name' => 'access toolbar',
     'roles' => array(
       0 => 'administrator',
+      1 => 'os2dagsorden admin',
     ),
     'module' => 'toolbar',
   );
@@ -151,6 +151,15 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'module' => 'user',
   );
 
+  // Exported permission: admin queue_ui
+  $permissions['admin queue_ui'] = array(
+    'name' => 'admin queue_ui',
+    'roles' => array(
+      0 => 'administrator',
+    ),
+    'module' => 'queue_ui',
+  );
+
   // Exported permission: administer actions
   $permissions['administer actions'] = array(
     'name' => 'administer actions',
@@ -158,6 +167,24 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
       0 => 'administrator',
     ),
     'module' => 'system',
+  );
+
+  // Exported permission: administer autologout
+  $permissions['administer autologout'] = array(
+    'name' => 'administer autologout',
+    'roles' => array(
+      0 => 'administrator',
+    ),
+    'module' => 'autologout',
+  );
+
+  // Exported permission: administer background process
+  $permissions['administer background process'] = array(
+    'name' => 'administer background process',
+    'roles' => array(
+      0 => 'administrator',
+    ),
+    'module' => 'background_process',
   );
 
   // Exported permission: administer blocks
@@ -259,6 +286,15 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'module' => 'locale',
   );
 
+  // Exported permission: administer lightbox2
+  $permissions['administer lightbox2'] = array(
+    'name' => 'administer lightbox2',
+    'roles' => array(
+      0 => 'administrator',
+    ),
+    'module' => 'lightbox2',
+  );
+
   // Exported permission: administer menu
   $permissions['administer menu'] = array(
     'name' => 'administer menu',
@@ -300,6 +336,7 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'name' => 'administer os2web',
     'roles' => array(
       0 => 'administrator',
+      1 => 'os2dagsorden admin',
     ),
     'module' => 'os2web_settings',
   );
@@ -358,6 +395,15 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'module' => 'shortcut',
   );
 
+  // Exported permission: administer simplify
+  $permissions['administer simplify'] = array(
+    'name' => 'administer simplify',
+    'roles' => array(
+      0 => 'administrator',
+    ),
+    'module' => 'simplify',
+  );
+
   // Exported permission: administer site configuration
   $permissions['administer site configuration'] = array(
     'name' => 'administer site configuration',
@@ -365,6 +411,15 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
       0 => 'administrator',
     ),
     'module' => 'system',
+  );
+
+  // Exported permission: administer smtp module
+  $permissions['administer smtp module'] = array(
+    'name' => 'administer smtp module',
+    'roles' => array(
+      0 => 'administrator',
+    ),
+    'module' => 'smtp',
   );
 
   // Exported permission: administer software updates
@@ -392,6 +447,15 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
       0 => 'administrator',
     ),
     'module' => 'system',
+  );
+
+  // Exported permission: administer ultimate cron
+  $permissions['administer ultimate cron'] = array(
+    'name' => 'administer ultimate cron',
+    'roles' => array(
+      0 => 'administrator',
+    ),
+    'module' => 'ultimate_cron',
   );
 
   // Exported permission: administer url aliases
@@ -625,6 +689,15 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'module' => 'taxonomy',
   );
 
+  // Exported permission: download original image
+  $permissions['download original image'] = array(
+    'name' => 'download original image',
+    'roles' => array(
+      0 => 'administrator',
+    ),
+    'module' => 'lightbox2',
+  );
+
   // Exported permission: edit any bullet_point content
   $permissions['edit any bullet_point content'] = array(
     'name' => 'edit any bullet_point content',
@@ -690,6 +763,15 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
       0 => 'authenticated user',
     ),
     'module' => 'node',
+  );
+
+  // Exported permission: edit own user account
+  $permissions['edit own user account'] = array(
+    'name' => 'edit own user account',
+    'roles' => array(
+      0 => 'administrator',
+    ),
+    'module' => 'edit_own_user_account_permission',
   );
 
   // Exported permission: edit terms in 3
@@ -888,6 +970,15 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'module' => 'advanced_help',
   );
 
+  // Exported permission: view hidden fields
+  $permissions['view hidden fields'] = array(
+    'name' => 'view hidden fields',
+    'roles' => array(
+      0 => 'administrator',
+    ),
+    'module' => 'simplify',
+  );
+
   // Exported permission: view own unpublished content
   $permissions['view own unpublished content'] = array(
     'name' => 'view own unpublished content',
@@ -912,6 +1003,7 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'name' => 'view the administration theme',
     'roles' => array(
       0 => 'administrator',
+      1 => 'os2dagsorden admin',
     ),
     'module' => 'system',
   );
