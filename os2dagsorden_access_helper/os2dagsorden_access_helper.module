@@ -37,6 +37,12 @@ function os2dagsorden_access_helper_menu() {
         'page arguments' => array(1)
     );
     
+    $items['logout'] = array(
+        'type' => MENU_CALLBACK,
+        'page callback' => 'os2dagsorden_access_helper_user_logout',
+        'access callback' => TRUE,
+    );
+    
     return $items;
 }
 
@@ -355,9 +361,11 @@ function os2dagsorden_access_helper_get_client_ip() {
 
 function os2dagsorden_access_helper_user_logout() {
   // Destroy the current session, and reset $user to the anonymous user.
-  if (session_id() != '')
-    session_destroy();
+  if (drupal_session_started())
+    _drupal_session_destroy();
     
+  unset($_GET['destination']);
+  
   drupal_set_message("Du har nu logget af OS2dagsorden. Vi anbefaler, at du lukker alle browservinduer.");
   drupal_goto();
 }

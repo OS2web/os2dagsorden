@@ -13,28 +13,114 @@ function os2dagsorden_automated_logout_configuration_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'autologout';
-  $strongarm->value = array(
-    'enabled' => 1,
-    'timeout' => '1200',
-    'use_watchdog' => 1,
-    'authenticated user' => '0',
-    'administrator' => '0',
-    'logout_message' => 'Du har nu logget af OS2dagsorden. Vi anbefaler, at du lukker alle browservinduer.',
-    'redirect_url' => '',
-    'refresh_delta' => '0',
-  );
-  $export['autologout'] = $strongarm;
+  $strongarm->name = 'autologout_enforce_admin';
+  $strongarm->value = 1;
+  $export['autologout_enforce_admin'] = $strongarm;
 
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'autologout_one_session';
-  $strongarm->value = array(
-    'authenticated user' => '0',
-    'administrator' => '0',
-  );
-  $export['autologout_one_session'] = $strongarm;
+  $strongarm->name = 'autologout_max_timeout';
+  $strongarm->value = '172800';
+  $export['autologout_max_timeout'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autologout_message';
+  $strongarm->value = 'Du har været inaktiv i 60 minutter. Ønsker du at logge af eller forsætte med at anvende OS2dagsorden?';
+  $export['autologout_message'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autologout_padding';
+  $strongarm->value = '600';
+  $export['autologout_padding'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autologout_redirect_url';
+  $strongarm->value = 'logout/';
+  $export['autologout_redirect_url'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autologout_role_2';
+  $strongarm->value = 1;
+  $export['autologout_role_2'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autologout_role_2_timeout';
+  $strongarm->value = '3600';
+  $export['autologout_role_2_timeout'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autologout_role_3';
+  $strongarm->value = 1;
+  $export['autologout_role_3'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autologout_role_3_timeout';
+  $strongarm->value = '3600';
+  $export['autologout_role_3_timeout'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autologout_role_4';
+  $strongarm->value = 1;
+  $export['autologout_role_4'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autologout_role_4_timeout';
+  $strongarm->value = '3600';
+  $export['autologout_role_4_timeout'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autologout_role_5';
+  $strongarm->value = 1;
+  $export['autologout_role_5'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autologout_role_5_timeout';
+  $strongarm->value = '3600';
+  $export['autologout_role_5_timeout'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autologout_role_logout';
+  $strongarm->value = 0;
+  $export['autologout_role_logout'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autologout_timeout';
+  $strongarm->value = '3600';
+  $export['autologout_timeout'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
+  $strongarm->name = 'autologout_use_watchdog';
+  $strongarm->value = 1;
+  $export['autologout_use_watchdog'] = $strongarm;
 
   return $export;
 }
