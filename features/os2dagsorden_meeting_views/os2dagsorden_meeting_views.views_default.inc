@@ -1080,7 +1080,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	//saving bilags to the end
 	$bilags[] = $attachment;
       } else {//not bilag
-	print \'<li>\';
+	print \'<li class="non-bilag">\';
 	//print quick-annotate link only if text is not empty
 	if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){	
 	  $link_light = $base_url . \'/meeting/\' . $row->nid_1 . \'/bullet-point/\' . $row->nid . \'/bullet-point-attachment-light/\' . $attachment->nid . \'?destination=meeting/\' . $row->nid_1;
@@ -1111,7 +1111,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 
     //going through all bilags
     foreach ($bilags as $attachment){
-      print \'<li>\';
+      print \'<li class="bilag">\';
       //print quick-annotate link only if text is not empty
       if (!empty($attachment->field_bpa_file_html[\'und\'][0])){	
 	$link_light = $base_url.\'/meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment-light/\'.$attachment->nid . \'?destination=meeting/\' . $row->nid_1;
@@ -1995,16 +1995,7 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['header']['php_1']['field'] = 'php';
   $handler->display->display_options['header']['php_1']['ui_name'] = 'print and send to friend buttons';
   $handler->display->display_options['header']['php_1']['empty'] = FALSE;
-  $handler->display->display_options['header']['php_1']['php_output'] = '<?php
-global $base_url;
-$q = explode(\'/\',$_GET[\'q\']);
-$meeting_id = $q[1];
-$bp_id = $q[3];
-?>
-<div class="controls-right" style="padding-top: 5px;">
-<a href="<?php print($base_url . \'?q=meeting/\' . $meeting_id . \'/bullet-point/\' . $bp_id . \'/send_to_friend_form\');?>" class="form-submit" rel="lightframe">Send til en ven</a><a href="<?php print($base_url . \'?q=/print/meeting/\' . $meeting_id . \'/bullet-point/\' . $bp_id . \'/print\'); ?>" class="form-submit next-control print-button" target="_blank">Print</a>
-</div>
-<div class="clearfix"></div>';
+  $handler->display->display_options['header']['php_1']['php_output'] = '';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -2262,7 +2253,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       //saving bilags to the end
       $bilags[] = $attachment;
     } else {//not bilag
-      print \'<li>\';      
+      print \'<li class="non-bilag">\';      
       //print quick-annotate link only if text is not empty
       if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){	
 	$link_light = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment-light/\'.$attachment->nid . \'?destination=\' . \'meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1;
@@ -2293,7 +2284,7 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 
   //going through all bilags
   foreach ($bilags as $attachment){
-    print \'<li>\';
+    print \'<li class="bilag">\';
     //print quick-annotate link only if text is not empty
     if (!empty($attachment->field_bpa_file_html[\'und\'][0])){	
       $link_light = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment-light/\'.$attachment->nid . \'?destination=\' . \'meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1;

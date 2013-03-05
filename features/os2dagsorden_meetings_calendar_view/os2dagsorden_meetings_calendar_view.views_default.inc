@@ -186,7 +186,7 @@ $date = substr($q, strrpos($q,\'month/\')+6, 7);
 else 
 $date = date(\'Y-m\');
 
-print \'<a href="\'.$base_url.\'?q=meetings-export/month/\'.$date.\'" class="button">Eksporter månedens møder til egen kalender</a>\';
+//print \'<a href="\'.$base_url.\'?q=meetings-export/month/\'.$date.\'" class="button">Eksporter månedens møder til egen kalender</a>\';
 ?>
 ';
   $handler->display->display_options['defaults']['fields'] = FALSE;

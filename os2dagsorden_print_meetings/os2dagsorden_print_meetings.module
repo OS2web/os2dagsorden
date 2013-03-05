@@ -219,7 +219,7 @@ function _os2dagsorden_print_meetings_get_six_month_data($from_month, $to_month,
     $html .= "</div>";
     
     $html .= '<div class="view-footer">';
-    $html .= '<a href="' . $base_url . '?q=meetings-export/from_month/' . $from_month . '/to_month/' . $to_month . '" class="button">Eksporter halvårets møder til egen kalender</a>';
+    //$html .= '<a href="' . $base_url . '?q=meetings-export/from_month/' . $from_month . '/to_month/' . $to_month . '" class="button">Eksporter halvårets møder til egen kalender</a>';
     $html .= '</div>';
 
     return $html;
