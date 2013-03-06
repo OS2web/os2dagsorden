@@ -151,15 +151,6 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'module' => 'user',
   );
 
-  // Exported permission: admin queue_ui
-  $permissions['admin queue_ui'] = array(
-    'name' => 'admin queue_ui',
-    'roles' => array(
-      0 => 'administrator',
-    ),
-    'module' => 'queue_ui',
-  );
-
   // Exported permission: administer actions
   $permissions['administer actions'] = array(
     'name' => 'administer actions',
@@ -167,15 +158,6 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
       0 => 'administrator',
     ),
     'module' => 'system',
-  );
-
-  // Exported permission: administer autologout
-  $permissions['administer autologout'] = array(
-    'name' => 'administer autologout',
-    'roles' => array(
-      0 => 'administrator',
-    ),
-    'module' => 'autologout',
   );
 
   // Exported permission: administer background process

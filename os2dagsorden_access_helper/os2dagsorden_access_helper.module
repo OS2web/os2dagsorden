@@ -450,6 +450,18 @@ function os2dagsorden_access_helper_meeting_fully_converted($meeting){
   return $all_attachments_converted;
 }
 
+/**
+ * Determines if user's agent device is touch device (iPad or Android).
+ * 
+ * @return true or false
+ */
+function os2dagsorden_access_helper_is_touch(){
+  $isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad');
+  $isAndroid = (bool) strpos($_SERVER['HTTP_USER_AGENT'],'Android');
+  $isTouch = ($isiPad or $isAndroid);
+  return $isiPad;
+}
+
 
 /**
  * Changes the status of a meeting and saves the node

@@ -201,11 +201,18 @@ if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
 else 
   $title = $data->_field_data[\'nid\'][\'entity\']->title;
 
-if (strlen($title) <= 30)
+//logic for touch devices
+if (os2dagsorden_access_helper_is_touch()){
+if (mb_strlen($title) > 25)
+echo mb_substr($title, 0, 22) . \'...\';
+else
 echo $title;
-else 
-echo substr($title, 0, 27) . \'...\';
-
+} else {//desktop device
+if (mb_strlen($title) > 55)
+echo mb_substr($title, 0, 52) . \'...\';
+else
+echo $title;
+}
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
@@ -1042,8 +1049,16 @@ global $base_url;
 $title = $data->_field_data[\'node_field_data_field_ref_bullet_points_nid\'][\'entity\']->title;
 $meeting_id = $row->nid_1;
 $bp_id = $row->nid;
-if (mb_strlen($title) > 65)
-$title = mb_substr($title, 0, 65) . \'...\';
+
+//logic for touch devices
+if (os2dagsorden_access_helper_is_touch()){
+if (mb_strlen($title) > 75)
+$title = mb_substr($title, 0, 72) . \'...\';
+} else {//desktop device
+if (mb_strlen($title) > 105)
+$title = mb_substr($title, 0, 102) . \'...\';
+}
+
 
 if (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bp_id))
 print \'<a href="\' . $base_url . \'/meeting/\' . $meeting_id . \'/bullet-point/\' . $bp_id . \'" class="first-child">\' . $title . \'</a>\';
@@ -1087,10 +1102,18 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	  print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" target="_blank" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
 	}
 	
-	if (strlen($attachment->title) < 75)
+	//logic for touch devices
+	if (os2dagsorden_access_helper_is_touch()){
+	if (mb_strlen($attachment->title) > 55)
+	  $title = mb_substr($attachment->title, 0, 52) . \'...\';
+	else
 	  $title = $attachment->title;
-	else 
-	  $title = substr($attachment->title, 0, 75).\'...\';
+	} else {//desktop device
+	if (mb_strlen($attachment->title) > 75)
+	  $title = mb_substr($attachment->title, 0, 72) . \'...\';
+	else
+	  $title = $attachment->title;
+	}
 	
 	$link = $base_url.\'/meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment/\'.$attachment->nid;
 	print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
@@ -1118,10 +1141,18 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" target="_blank" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
       }
       
-      if (strlen($attachment->title) < 75)
-	$title = $attachment->title;
-      else 
-	$title = substr($attachment->title, 0, 75).\'...\';
+      //logic for touch devices
+      if (os2dagsorden_access_helper_is_touch()){
+	if (mb_strlen($attachment->title) > 55)
+	  $title = mb_substr($attachment->title, 0, 52) . \'...\';
+	else
+	  $title = $attachment->title;
+      } else {//desktop device
+	if (mb_strlen($attachment->title) > 75)
+	  $title = mb_substr($attachment->title, 0, 72) . \'...\';
+	else
+	  $title = $attachment->title;
+      }
       
       $link = $base_url.\'/meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment/\'.$attachment->nid;
       print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" target="_blank" class="first-child last-child">\'.$title.\'</a>\';
@@ -1452,11 +1483,18 @@ if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
 else 
   $title = $data->_field_data[\'nid\'][\'entity\']->title;
 
-if (strlen($title) <= 30)
+//logic for touch devices
+if (os2dagsorden_access_helper_is_touch()){
+if (mb_strlen($title) > 25)
+echo mb_substr($title, 0, 22) . \'...\';
+else
 echo $title;
-else 
-echo substr($title, 0, 27) . \'...\';
-
+} else {//desktop device
+if (mb_strlen($title) > 55)
+echo mb_substr($title, 0, 52) . \'...\';
+else
+echo $title;
+}
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
@@ -1829,11 +1867,18 @@ if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
 else 
   $title = $data->_field_data[\'nid\'][\'entity\']->title;
 
-if (strlen($title) <= 30)
+//logic for touch devices
+if (os2dagsorden_access_helper_is_touch()){
+if (mb_strlen($title) > 25)
+echo mb_substr($title, 0, 22) . \'...\';
+else
 echo $title;
-else 
-echo substr($title, 0, 27) . \'...\';
-
+} else {//desktop device
+if (mb_strlen($title) > 55)
+echo mb_substr($title, 0, 52) . \'...\';
+else
+echo $title;
+}
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
@@ -2234,89 +2279,106 @@ print \'<div class="indicator-has-notes"></div>\';
   $handler->display->display_options['fields']['php_2']['label'] = '';
   $handler->display->display_options['fields']['php_2']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
-$q = explode(\'/\',$_GET[\'q\']);
-$meeting_id = $q[\'1\'];
+  $handler->display->display_options['fields']['php_2']['php_output'] = '  <?php
+  $q = explode(\'/\',$_GET[\'q\']);
+  $meeting_id = $q[\'1\'];
 
-global $base_url;
-$bullet_point = node_load($row->nid_1);
-if (isset($bullet_point->field_ref_attachment[\'und\'])){
-  print \'<table><tr><td>\';
-  print \'<div class="item-list item-list-dagsordenspunkt">\';
-  print \'<ul class="ul-item-list-dagsordenspunkt">\';
+  global $base_url;
+  $bullet_point = node_load($row->nid_1);
+  if (isset($bullet_point->field_ref_attachment[\'und\'])){
+    print \'<table><tr><td>\';
+    print \'<div class="item-list item-list-dagsordenspunkt">\';
+    print \'<ul class="ul-item-list-dagsordenspunkt">\';
 
-  $bilags = array();
-  foreach($bullet_point->field_ref_attachment[\'und\'] as $attachment_id){
-    $attachment = node_load($attachment_id[\'target_id\']);
+    $bilags = array();
+    foreach($bullet_point->field_ref_attachment[\'und\'] as $attachment_id){
+      $attachment = node_load($attachment_id[\'target_id\']);
 
-    if (!empty($attachment->field_bpa_file[\'und\'])){// if is bilag
-      //saving bilags to the end
-      $bilags[] = $attachment;
-    } else {//not bilag
-      print \'<li class="non-bilag">\';      
+      if (!empty($attachment->field_bpa_file[\'und\'])){// if is bilag
+	//saving bilags to the end
+	$bilags[] = $attachment;
+      } else {//not bilag
+	print \'<li class="non-bilag">\';      
+	//print quick-annotate link only if text is not empty
+	if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){	
+	  $link_light = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment-light/\'.$attachment->nid . \'?destination=\' . \'meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1;
+	  print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" target="_blank" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
+	}
+	      
+	//logic for touch devices
+	if (os2dagsorden_access_helper_is_touch()){
+	  if (mb_strlen($attachment->title) > 55)
+	    $title = mb_substr($attachment->title, 0, 52) . \'...\';
+	  else
+	    $title = $attachment->title;
+	} else {//desktop device
+	  if (mb_strlen($attachment->title) > 95)
+	    $title = mb_substr($attachment->title, 0, 92) . \'...\';
+	  else
+	    $title = $attachment->title;
+	}
+
+	$link = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment/\'.$attachment->nid;
+	print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
+      
+	//attachment text - if any
+	if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
+	  print \'<div class="attachment_text_container">\';
+
+	  print \'<div class="attachment_text_full_container ajax-progress bpa-\' . $meeting_id . \'-\' . $row->nid_1 . \'-\' . $attachment->nid . \'">\';
+	  print \'Vent venligst...<div class="throbber"></div>\';
+	  print \'</div>\';
+
+	  print \'</div>\';
+	}
+
+	print \'</li>\';
+      }
+    }
+
+    //going through all bilags
+    foreach ($bilags as $attachment){
+      print \'<li class="bilag">\';
       //print quick-annotate link only if text is not empty
-      if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){	
+      if (!empty($attachment->field_bpa_file_html[\'und\'][0])){	
 	$link_light = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment-light/\'.$attachment->nid . \'?destination=\' . \'meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1;
 	print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" target="_blank" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
       }
-	     
-      if (strlen($attachment->title) < 75)
-	$title = $attachment->title;
-      else 
-	$title = substr($attachment->title, 0, 75).\'...\';
+      
+      //logic for touch devices
+      if (os2dagsorden_access_helper_is_touch()){
+	if (mb_strlen($attachment->title) > 55)
+	  $title = mb_substr($attachment->title, 0, 52) . \'...\';
+	else
+	  $title = $attachment->title;
+      } else {//desktop device
+	if (mb_strlen($attachment->title) > 95)
+	  $title = mb_substr($attachment->title, 0, 92) . \'...\';
+	else
+	  $title = $attachment->title;
+      }
       $link = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment/\'.$attachment->nid;
-      print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
-     
+      print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" target="_blank" class="first-child last-child">\'.$title.\'</a>\';
+
       //attachment text - if any
-      if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
+      if (!empty($attachment->field_bpa_file_html[\'und\'][0])){
 	print \'<div class="attachment_text_container">\';
 
-	print \'<div class="attachment_text_full_container ajax-progress bpa-\' . $meeting_id . \'-\' . $row->nid_1 . \'-\' . $attachment->nid . \'">\';
+	print \'<div class="attachment_text_trimmed_container ajax-progress bpa-\' . $meeting_id . \'-\' . $row->nid_1 . \'-\' . $attachment->nid . \'">\';
+	
 	print \'Vent venligst...<div class="throbber"></div>\';
 	print \'</div>\';
+	print(\'<a class="first-child last-child" target="_blank" href="\'.$link.\'">Læs mere...</a>\');
 
 	print \'</div>\';
       }
-
       print \'</li>\';
     }
+    print \'</ul>\';
+    print \'</div>\';
+    print \'</td><td class="quick-annotate-container"></td></tr></table>\';
   }
-
-  //going through all bilags
-  foreach ($bilags as $attachment){
-    print \'<li class="bilag">\';
-    //print quick-annotate link only if text is not empty
-    if (!empty($attachment->field_bpa_file_html[\'und\'][0])){	
-      $link_light = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment-light/\'.$attachment->nid . \'?destination=\' . \'meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1;
-      print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" target="_blank" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
-    }
-    
-    if (strlen($attachment->title) < 75)
-      $title = $attachment->title;
-    else 
-      $title = substr($attachment->title, 0, 75).\'...\';
-    $link = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment/\'.$attachment->nid;
-    print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" target="_blank" class="first-child last-child">\'.$title.\'</a>\';
-
-    //attachment text - if any
-    if (!empty($attachment->field_bpa_file_html[\'und\'][0])){
-      print \'<div class="attachment_text_container">\';
-
-      print \'<div class="attachment_text_trimmed_container ajax-progress bpa-\' . $meeting_id . \'-\' . $row->nid_1 . \'-\' . $attachment->nid . \'">\';
-      
-      print \'Vent venligst...<div class="throbber"></div>\';
-      print \'</div>\';
-      print(\'<a class="first-child last-child" target="_blank" href="\'.$link.\'">Læs mere...</a>\');
-
-      print \'</div>\';
-    }
-    print \'</li>\';
-  }
-  print \'</ul>\';
-  print \'</div>\';
-  print \'</td><td class="quick-annotate-container"></td></tr></table>\';
-}
-?>';
+  ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['filters'] = FALSE;
