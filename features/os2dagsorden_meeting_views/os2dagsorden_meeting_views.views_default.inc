@@ -208,8 +208,8 @@ echo mb_substr($title, 0, 22) . \'...\';
 else
 echo $title;
 } else {//desktop device
-if (mb_strlen($title) > 55)
-echo mb_substr($title, 0, 52) . \'...\';
+if (mb_strlen($title) > 45)
+echo mb_substr($title, 0, 42) . \'...\';
 else
 echo $title;
 }
@@ -1055,8 +1055,8 @@ if (os2dagsorden_access_helper_is_touch()){
 if (mb_strlen($title) > 75)
 $title = mb_substr($title, 0, 72) . \'...\';
 } else {//desktop device
-if (mb_strlen($title) > 105)
-$title = mb_substr($title, 0, 102) . \'...\';
+if (mb_strlen($title) > 95)
+$title = mb_substr($title, 0, 92) . \'...\';
 }
 
 
@@ -1104,13 +1104,13 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	
 	//logic for touch devices
 	if (os2dagsorden_access_helper_is_touch()){
-	if (mb_strlen($attachment->title) > 55)
-	  $title = mb_substr($attachment->title, 0, 52) . \'...\';
+	if (mb_strlen($attachment->title) > 52)
+	  $title = mb_substr($attachment->title, 0, 49) . \'...\';
 	else
 	  $title = $attachment->title;
 	} else {//desktop device
-	if (mb_strlen($attachment->title) > 75)
-	  $title = mb_substr($attachment->title, 0, 72) . \'...\';
+	if (mb_strlen($attachment->title) > 70)
+	  $title = mb_substr($attachment->title, 0, 67) . \'...\';
 	else
 	  $title = $attachment->title;
 	}
@@ -1143,13 +1143,13 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
       
       //logic for touch devices
       if (os2dagsorden_access_helper_is_touch()){
-	if (mb_strlen($attachment->title) > 55)
-	  $title = mb_substr($attachment->title, 0, 52) . \'...\';
+	if (mb_strlen($attachment->title) > 70)
+	  $title = mb_substr($attachment->title, 0, 67) . \'...\';
 	else
 	  $title = $attachment->title;
       } else {//desktop device
-	if (mb_strlen($attachment->title) > 75)
-	  $title = mb_substr($attachment->title, 0, 72) . \'...\';
+	if (mb_strlen($attachment->title) > 95)
+	  $title = mb_substr($attachment->title, 0, 92) . \'...\';
 	else
 	  $title = $attachment->title;
       }
@@ -1490,8 +1490,8 @@ echo mb_substr($title, 0, 22) . \'...\';
 else
 echo $title;
 } else {//desktop device
-if (mb_strlen($title) > 55)
-echo mb_substr($title, 0, 52) . \'...\';
+if (mb_strlen($title) > 45)
+echo mb_substr($title, 0, 42) . \'...\';
 else
 echo $title;
 }
@@ -1874,8 +1874,8 @@ echo mb_substr($title, 0, 22) . \'...\';
 else
 echo $title;
 } else {//desktop device
-if (mb_strlen($title) > 55)
-echo mb_substr($title, 0, 52) . \'...\';
+if (mb_strlen($title) > 45)
+echo mb_substr($title, 0, 42) . \'...\';
 else
 echo $title;
 }
@@ -2312,8 +2312,8 @@ print \'<div class="indicator-has-notes"></div>\';
 	  else
 	    $title = $attachment->title;
 	} else {//desktop device
-	  if (mb_strlen($attachment->title) > 95)
-	    $title = mb_substr($attachment->title, 0, 92) . \'...\';
+	  if (mb_strlen($attachment->title) > 85)
+	    $title = mb_substr($attachment->title, 0, 82) . \'...\';
 	  else
 	    $title = $attachment->title;
 	}
@@ -2347,13 +2347,13 @@ print \'<div class="indicator-has-notes"></div>\';
       
       //logic for touch devices
       if (os2dagsorden_access_helper_is_touch()){
-	if (mb_strlen($attachment->title) > 55)
-	  $title = mb_substr($attachment->title, 0, 52) . \'...\';
+	if (mb_strlen($attachment->title) > 70)
+	  $title = mb_substr($attachment->title, 0, 67) . \'...\';
 	else
 	  $title = $attachment->title;
       } else {//desktop device
-	if (mb_strlen($attachment->title) > 95)
-	  $title = mb_substr($attachment->title, 0, 92) . \'...\';
+	if (mb_strlen($attachment->title) > 115)
+	  $title = mb_substr($attachment->title, 0, 112) . \'...\';
 	else
 	  $title = $attachment->title;
       }

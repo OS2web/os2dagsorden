@@ -544,6 +544,7 @@ function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) 
 	$result = $query->execute();
     
 	//if result is empty, then send the mail
+	print_r(strtotime("now - 1 hour"));
 	if (!$result->rowCount()){
 	  $user = user_load($uid);
 	  
