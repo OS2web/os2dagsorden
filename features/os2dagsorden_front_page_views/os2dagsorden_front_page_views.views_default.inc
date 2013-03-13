@@ -321,7 +321,7 @@ print $min->name;
   $handler->display->display_options['fields']['nothing']['label'] = '';
   $handler->display->display_options['fields']['nothing']['alter']['text'] = 'Log af';
   $handler->display->display_options['fields']['nothing']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['nothing']['alter']['path'] = 'user/logout';
+  $handler->display->display_options['fields']['nothing']['alter']['path'] = 'logout';
   $handler->display->display_options['fields']['nothing']['alter']['link_class'] = 'user-logout-btn button';
   $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
   /* Filter criterion: User: Active */
@@ -349,6 +349,7 @@ print $min->name;
     t('Desc'),
     t('Log af'),
     t('user/logout'),
+    t('logout'),
     t('Block'),
   );
   $export['user_logout_menu'] = $view;

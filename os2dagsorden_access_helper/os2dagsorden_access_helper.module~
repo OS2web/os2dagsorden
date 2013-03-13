@@ -39,7 +39,7 @@ function os2dagsorden_access_helper_menu() {
     
     $items['logout'] = array(
         'type' => MENU_CALLBACK,
-        'page callback' => 'os2dagsorden_access_helper_user_logout',
+        'page callback' => 'os2dagsorden_access_helper_logout',
         'access callback' => TRUE,
     );
     
@@ -364,14 +364,18 @@ function os2dagsorden_access_helper_get_client_ip() {
  *
  * @return none
  */
-function os2dagsorden_access_helper_user_logout() {
+function os2dagsorden_access_helper_logout() {
   // Destroy the current session, and reset $user to the anonymous user.
+  $show_message = TRUE;
+  if (strcasecmp($_SESSION['messages']['status'][0], 'You have been logged out due to inactivity.') == 0)
+    $show_message = FALSE;
   if (drupal_session_started()){
-    _drupal_session_destroy();
+    session_destroy();
   }
-    
+  
   unset($_GET['destination']);
-  drupal_set_message("Du har nu logget af OS2dagsorden. Vi anbefaler, at du lukker alle browservinduer.");
+  if ($show_message)
+    drupal_set_message("Du har nu logget af OS2dagsorden. Vi anbefaler, at du lukker alle browservinduer.");  
   drupal_goto();
 }
 
@@ -544,7 +548,6 @@ function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) 
 	$result = $query->execute();
     
 	//if result is empty, then send the mail
-	print_r(strtotime("now - 1 hour"));
 	if (!$result->rowCount()){
 	  $user = user_load($uid);
 	  
