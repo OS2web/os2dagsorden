@@ -464,6 +464,23 @@ $breadcrumb[] = l(\'Hjem\', $base_url);
 $breadcrumb[] .= \'<span class="breadcrumb-active">Mødedetaljer</span>\';
 drupal_set_breadcrumb($breadcrumb);
 ?>';
+  /* Header: agenda edit button */
+  $handler->display->display_options['header']['php_2']['id'] = 'php_2';
+  $handler->display->display_options['header']['php_2']['table'] = 'views';
+  $handler->display->display_options['header']['php_2']['field'] = 'php';
+  $handler->display->display_options['header']['php_2']['ui_name'] = 'agenda edit button';
+  $handler->display->display_options['header']['php_2']['empty'] = FALSE;
+  $handler->display->display_options['header']['php_2']['php_output'] = '<?php 
+global $base_url;
+$q = explode(\'/\',$_GET[\'q\']);
+$meeting_id = $q[1];
+if (module_exists(\'os2dagsorden_create_agenda\') && user_access(\'administer os2web\')){
+?>
+<div class="controls-right">
+<a href="<?php print($base_url . \'?q=agenda/meeting/\' . $meeting_id);?>" class="form-submit">Edit</a>
+</div>
+<div class="clearfix"></div>
+<?php }?>';
   /* Header: description download */
   $handler->display->display_options['header']['php_1']['id'] = 'php_1';
   $handler->display->display_options['header']['php_1']['table'] = 'views';
@@ -2040,7 +2057,16 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['header']['php_1']['field'] = 'php';
   $handler->display->display_options['header']['php_1']['ui_name'] = 'print and send to friend buttons';
   $handler->display->display_options['header']['php_1']['empty'] = FALSE;
-  $handler->display->display_options['header']['php_1']['php_output'] = '';
+  $handler->display->display_options['header']['php_1']['php_output'] = '<?php
+global $base_url;
+$q = explode(\'/\',$_GET[\'q\']);
+$meeting_id = $q[1];
+$bp_id = $q[3];
+?>
+<div class="controls-right" style="padding-top: 5px;">
+<a href="<?php print($base_url . \'?q=meeting/\' . $meeting_id . \'/bullet-point/\' . $bp_id . \'/send_to_friend_form\');?>" class="form-submit" rel="lightframe">Send til en ven</a><a href="<?php print($base_url . \'?q=/print/meeting/\' . $meeting_id . \'/bullet-point/\' . $bp_id . \'/print\'); ?>" class="form-submit next-control print-button" target="_blank">Print</a>
+</div>
+<div class="clearfix"></div>';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';

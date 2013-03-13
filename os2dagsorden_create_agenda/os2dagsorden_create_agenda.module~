@@ -31,14 +31,68 @@ function os2dagsorden_create_agenda_menu() {
   
   $items['agenda/meeting/%'] = array(
       'page callback' => 'os2dagsorden_create_agenda_meeting_page',
-      'access arguments' => array('administer os2web'),
+      'access callback' => '_os2dagsorden_create_agenda_meeting_access',
+      'access arguments' => array(2),
       'page arguments' => array(2),
       'type' => MENU_CALLBACK,
+  );
+  
+  $items['node/%/agenda'] = array(
+    'page callback' => '_os2dagsorden_create_agenda_redirect',
+    'access callback' => '_os2dagsorden_create_agenda_meeting_access',
+    'access arguments' => array(1),
+    'page arguments' => array(1),
+    'title' => 'Manually create agenda',
+    'type' => MENU_LOCAL_TASK,
+  );
+  
+  $items['admin/config/os2dagsorden/create_agenda'] = array(
+    'title' => 'OS2Dagsorden Manually create agenda',
+    'description' => 'Module that supports manual agenda creation',
+    'page callback' => '_os2dagsorden_create_agenda_redirect',
+    'access arguments' => array('administer os2web'),
+    'type' => MENU_NORMAL_ITEM | MENU_DEFAULT_LOCAL_TASK,
   );
   
   return $items;
 }
 
+/**
+ * Helper function, allows the menu hooks to be redirected to the correct links.
+ *
+ * @param int $meeing_id id of the meeting_id
+ *
+ * @return none
+ */
+function _os2dagsorden_create_agenda_redirect($meeting_id = null){
+  if (!$meeting_id)
+    drupal_goto('agenda/meeting');
+  else 
+    drupal_goto('agenda/meeting/' . $meeting_id);
+}
+
+/**
+ * Access callback. Returns the create meeeting form
+ *
+ * @param int $meeing_id id of the meeting
+ *
+ * @return form
+ */
 function os2dagsorden_create_agenda_meeting_page($meeting_id = null) {
   return drupal_get_form('os2dagsorden_create_agenda_meeting', $meeting_id);
+}
+
+/**
+ * Access callback. Show tab only on meeting pages, and if user has access.
+ *
+ * @param int $meeing_id id of the meeting
+ *
+ * @return true of false
+ */
+function _os2dagsorden_create_agenda_meeting_access($meeting_id){
+  $node = node_load($meeting_id);
+  if ($node->type != 'meeting') {
+    return FALSE;
+  }
+  return user_access('administer os2web');
 }
