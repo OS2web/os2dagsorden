@@ -81,7 +81,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     
     
     $node->title = $meeting['title'];
-    $node->field_meeting_acadre_version[$node->language][0]['value'] = $meeting['acadre_version'];//setting the acarde version of the meeting
+    $node->field_meeting_acadre_version[LANGUAGE_NONE][0]['value'] = $meeting['acadre_version'];//setting the acarde version of the meeting
     
     $node->field_date[LANGUAGE_NONE][0]['value'] = $meeting['meeting_date_start'];
     $node->field_date[LANGUAGE_NONE][0]['value2'] = $meeting['meeting_date_finish'];
@@ -106,7 +106,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     
     //Adding participants
     $part_names = array();
-    $node->field_meeting_participants[$node->language][0]['value'] = implode(', ', $meeting['participants']);
+    $node->field_meeting_participants[LANGUAGE_NONE][0]['value'] = implode(', ', $meeting['participants']);
      
     // Import items.
     if (is_array($meeting['items'])) {

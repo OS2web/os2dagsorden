@@ -346,7 +346,16 @@ function _os2dagsorden_adlib_api_do_processing($limit = FALSE) {
                 $old_file_mime = $upd_file->filemime;
                 $old_file_uri = $upd_file->uri;
                 
-                db_delete('file_managed')->condition('uri', $uri)->execute();
+                //if excel create the new file, keep the old one
+                if (os2dagsorden_adlib_api_is_excel($old_file_mime)){
+		    $upd_file = new stdClass();
+		    $upd_file->uid = 1;
+		    $upd_file->status = FILE_STATUS_PERMANENT;
+                } else {//delete the old file and replace it with new one
+		    db_delete('file_managed')->condition('uri', $uri)->execute();
+		    //deleting old file
+		    file_unmanaged_delete($old_file_uri);
+                }
                 $upd_file->uri = $uri;
                 $upd_file->filename = basename($uri);
                 $upd_file->display = 1;
@@ -356,21 +365,17 @@ function _os2dagsorden_adlib_api_do_processing($limit = FALSE) {
 		os2dagsorden_adlib_api_destroy_job($file->job_id);
                 drupal_write_record('os2web_adlib_api_doc_files', $record, array('fid', 'jobtype'));
                 $upd_file = file_save($upd_file);
-                //deleting old file
-                file_unmanaged_delete($old_file_uri);
-                
-                error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: File saved, file record updated.");
                 
                 $destination_node = node_load($file->did);
-
+                
                 if (strcmp($destination_node->type, 'bullet_point_attachment') == 0){//update bullet point attachment
 		    os2dagsorden_pdf2htmlex_schedule($upd_file->fid, $file->did);
 		    
-		    //resave file
-		    $destination_node->field_bpa_file[$node->language][0] = (array) $upd_file;
+		    //resave file only if not excel
+		    if (!os2dagsorden_adlib_api_is_excel($old_file_mime)){
+		      $destination_node->field_bpa_file[$node->language][0] = (array) $upd_file;
+		    }
 		 } else if (strcmp($destination_node->type, 'meeting') == 0){//meeting
-		    error_log("HERE: file->fid: " . $upd_file->fid . ' $destination_node->field_meeting_description_closed[$node->language][0][fid]: ' . $destination_node->field_meeting_description_closed[$destination_node->language][0]['fid']);
-		    error_log("HERE: file->fid: " . $upd_file->fid . ' $destination_node->field_meeting_description[$node->language][0][fid]: ' . $destination_node->field_meeting_description[$destination_node->language][0]['fid']);
 		    //resave file
 		    if ($upd_file->fid == $destination_node->field_meeting_description_closed[$destination_node->language][0]['fid'])//update closed file
 		      $destination_node->field_meeting_description_closed[$destination_node->language][0] = (array) $upd_file;
@@ -608,4 +613,18 @@ function os2dagsorden_adlib_api_destroy_job($job_id) {
     }
     watchdog('adlib_api', 'Deleted job for %fid', array('%fid' => $job_id));
   }
+}
+
+/**
+ * Function to determines if mime is excel file
+ *
+ * @param string $mime the mime of the file
+ *
+ * @return TRUE or FALSE
+ */
+function os2dagsorden_adlib_api_is_excel($mime){
+  if ($mime == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || $mime == "application/vnd.ms-excel")
+    return TRUE;
+  else 
+    return FALSE;
 }

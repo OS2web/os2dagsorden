@@ -49,20 +49,20 @@ function os2web_esdh_provider_menu() {
  * Implements hook_ctools_plugin_type().
  */
 function os2web_esdh_provider_ctools_plugin_type() {
-  $plugins['cm'] = array(
-    'cache' => TRUE,
-    'required methods' => array(
-      'get_document',
-      'get_document_file',
-      'get_case_docs',
-      'get_case_data',
-      'lookup_doc',
-      'lookup_case',
-    ),
-    'optional methods' => array(
-      'available',
-    )
-  );
+//   $plugins['cm'] = array(
+//     'cache' => TRUE,
+//     'required methods' => array(
+//       'get_document',
+//       'get_document_file',
+//       'get_case_docs',
+//       'get_case_data',
+//       'lookup_doc',
+//       'lookup_case',
+//     ),
+//     'optional methods' => array(
+//       'available',
+//     )
+//   );
   $plugins['mm'] = array(
     'cache' => TRUE,
     'required methods' => array(
@@ -74,15 +74,15 @@ function os2web_esdh_provider_ctools_plugin_type() {
       'available',
     )
   );
-  $plugins['cp'] = array(
-    'cache' => TRUE,
-    'required methods' => array(
-      'handle_request',
-    ),
-    'optional methods' => array(
-      'available',
-    )
-  );
+//   $plugins['cp'] = array(
+//     'cache' => TRUE,
+//     'required methods' => array(
+//       'handle_request',
+//     ),
+//     'optional methods' => array(
+//       'available',
+//     )
+//   );
   return $plugins;
 }
 
@@ -133,10 +133,10 @@ function os2web_esdh_provider_cron() {
     $queue = DrupalQueue::get('acadre_mm_import');
     //if ($queue->numberOfItems() == 0) {
       foreach ($meetings as $meeting) {
-        //$queue->createItem(array('meeting' => $meeting, 'force' => FALSE));
+        $queue->createItem(array('meeting' => $meeting, 'force' => FALSE));
         //to remove
-        module_load_include('inc', 'os2web_esdh_provider', 'os2web_esdh_provider.mmapi');
-	_os2web_esdh_provider_import_meeting($meeting, FALSE);
+        //module_load_include('inc', 'os2web_esdh_provider', 'os2web_esdh_provider.mmapi');
+	//_os2web_esdh_provider_import_meeting($meeting, FALSE);
       }
       //no postprocess, uncomment to activate
 //       if (os2web_esdh_provider_supports('mm', 'post_import_process')) {
