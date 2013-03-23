@@ -3056,6 +3056,62 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
     ),
   );
 
+  // Exported field: 'user-user-field_user_meetings_category'
+  $fields['user-user-field_user_meetings_category'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '2',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_user_meetings_category',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'pol' => 'Political',
+          'org' => 'Organizational',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'user',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 7,
+        ),
+      ),
+      'entity_type' => 'user',
+      'field_name' => 'field_user_meetings_category',
+      'label' => 'Meeting category',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => 0,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '5',
+      ),
+    ),
+  );
+
   // Exported field: 'user-user-field_user_positions'
   $fields['user-user-field_user_positions'] = array(
     'field_config' => array(
@@ -3147,6 +3203,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
   t('Is part of Committee');
   t('Lokation');
   t('Meeting Category');
+  t('Meeting category');
   t('Name Short');
   t('Number');
   t('Page amount');
