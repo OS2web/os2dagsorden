@@ -28,7 +28,7 @@ function os2dagsorden_automated_logout_configuration_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'autologout_message';
-  $strongarm->value = 'Du har været inaktiv i 60 minutter. Ønsker du at logge af eller forsætte med at anvende OS2dagsorden?';
+  $strongarm->value = 'Du har været inaktiv i 120 minutter. Ønsker du at logge af eller forsætte med at anvende OS2dagsorden?';
   $export['autologout_message'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -56,7 +56,7 @@ function os2dagsorden_automated_logout_configuration_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'autologout_role_2_timeout';
-  $strongarm->value = '3600';
+  $strongarm->value = '7200';
   $export['autologout_role_2_timeout'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -70,7 +70,7 @@ function os2dagsorden_automated_logout_configuration_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'autologout_role_3_timeout';
-  $strongarm->value = '61';
+  $strongarm->value = '7200';
   $export['autologout_role_3_timeout'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -84,7 +84,7 @@ function os2dagsorden_automated_logout_configuration_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'autologout_role_4_timeout';
-  $strongarm->value = '3600';
+  $strongarm->value = '7200';
   $export['autologout_role_4_timeout'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -98,7 +98,7 @@ function os2dagsorden_automated_logout_configuration_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'autologout_role_5_timeout';
-  $strongarm->value = '3600';
+  $strongarm->value = '7200';
   $export['autologout_role_5_timeout'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -112,7 +112,7 @@ function os2dagsorden_automated_logout_configuration_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'autologout_timeout';
-  $strongarm->value = '3600';
+  $strongarm->value = '7200';
   $export['autologout_timeout'] = $strongarm;
 
   $strongarm = new stdClass();

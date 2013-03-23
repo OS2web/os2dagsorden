@@ -34,8 +34,8 @@ function os2dagsorden_importer_menu() {
  * @return none
  */
 function os2dagsorden_importer_sync() {
-    os2dagsorden_importer_import_user_committees();
-    os2dagsorden_importer_import_committees();
+    //os2dagsorden_importer_import_user_committees();
+    //os2dagsorden_importer_import_committees();
     os2dagsorden_importer_import_meetings();
 }
 
@@ -152,6 +152,7 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
             'role' => (string) array_shift($row->xpath('Role')),
             'role_priority' => (int) array_shift($row->xpath('RolePriority')),
             'deactivated' => (int) array_shift($row->xpath('Deactivated')),
+            'meeting_category' => (string) array_shift($row->xpath('CalendarCategory')),
         );
 
         //getting user
@@ -256,7 +257,12 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
 		    $role_tid = _os2dagsorden_importer_create_user_role($xml_data, $com_tid);
 		    //update user if needed
 		    _os2dagsorden_importer_add_role_to_user($role_tid, $user);
-		} 
+		}
+		
+		//update meeting category
+		if (isset($xml_data['meeting_category'])) {
+		    _os2dagsorden_importer_update_meeting_category($user, $xml_data['meeting_category']);
+		}
             }
         }
         else {
@@ -297,6 +303,27 @@ function _os2dagsorden_importer_process_user_committees($xml_file) {
  */
 function _os2dagsorden_importer_set_user_fullname($user, $name) {
     $user->field_user_full_name['und'][0]['value'] = $name;
+    user_save($user);
+}
+
+/**
+ * Helper function. Will update user's meetings category
+ *
+ * @param mixed  $user user object  
+ * @param string $category meeting category
+ *
+ * @return none
+ */
+function _os2dagsorden_importer_update_meeting_category($user, $category) {
+    if (isset($user->field_user_meetings_category['und'])) {
+      foreach ($user->field_user_meetings_category['und'] as $user_category){
+	if (strcasecmp($user_category['value'], $category) == 0){//already has this category
+	  return $user;
+	}
+      }
+    }
+    $user->field_user_meetings_category['und'][]['value'] = strtolower($category);
+    
     user_save($user);
 }
 
@@ -723,7 +750,8 @@ function _os2dagsorden_importer_process_meetings($xml_file) {
             'hex_color' => (string) array_shift($row->xpath('HEXColorCode')),
             'deactivated' => (int) array_shift($row->xpath('Deactivated')),
             'cancelled' => (int) array_shift($row->xpath('Cancelled')),
-            'changed' => (int) array_shift($row->xpath('Changed')),            
+            'changed' => (int) array_shift($row->xpath('Changed')),
+            'meeting_category' => (string) array_shift($row->xpath('MeetingCategory')),
         );
 
         if ($xml_data['deactivated'] == 0) {
@@ -843,10 +871,12 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
     } else {//to represent that there is no end date
 	$node->field_date[$node->language][0]['value2'] = $xml_data['meeting_start_date'];
     }
-
+    $node->field_meeting_category[$node->language][0]['value'] = strtolower($xml_data['meeting_category']);
+    
     $node->field_hex[$node->language][0]['value'] = strtolower($xml_data['hex_color']);
 
     $node->field_committee[$node->language][0]['tid'] = $tid;
+    
 
     //node_submit($node);
     //node_save($node);

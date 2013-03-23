@@ -101,7 +101,9 @@ if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
 else 
   $title = $data->_field_data[\'nid\'][\'entity\']->title;
 
-echo \'<font color="\' . $row->field_hex . \'">\' . $title . \'</font>\';
+$meeting_category = strtoupper($data->_field_data[\'nid\'][\'entity\']->field_meeting_category[\'und\'][0][\'value\']);
+
+echo \'<font color="\' . $row->field_hex . \'">\' . \'[\' . $meeting_category . \'] \' . $title . \'</font>\';
 
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
@@ -135,6 +137,25 @@ echo \'<font color="\' . $row->field_hex . \'">\' . $title . \'</font>\';
   $handler->display->display_options['filters']['type']['value'] = array(
     'meeting' => 'meeting',
   );
+  /* Filter criterion: filter by meetings category */
+  $handler->display->display_options['filters']['php']['id'] = 'php';
+  $handler->display->display_options['filters']['php']['table'] = 'views';
+  $handler->display->display_options['filters']['php']['field'] = 'php';
+  $handler->display->display_options['filters']['php']['ui_name'] = 'filter by meetings category';
+  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php']['php_filter'] = 'global $user;
+$user_loaded = user_load($user->uid);
+
+$meeting = node_load($row->nid);
+$meeting_category = $meeting->field_meeting_category[\'und\'][0][\'value\'];
+if (isset($user_loaded->field_user_meetings_category[\'und\'])) {
+  foreach ($user_loaded->field_user_meetings_category[\'und\'] as $user_category){
+    if (strcasecmp($user_category[\'value\'], $meeting_category) == 0){
+      return FALSE;
+    }
+  }
+}
+return TRUE;';
 
   /* Display: Måned */
   $handler = $view->new_display('page', 'Måned', 'page_1');
@@ -236,7 +257,9 @@ if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
 else 
   $title = $data->_field_data[\'nid\'][\'entity\']->title;
 
-echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'und\'][0][\'value\'] . \'">\' . $title . \'</font>\';
+$meeting_category = strtoupper($data->_field_data[\'nid\'][\'entity\']->field_meeting_category[\'und\'][0][\'value\']);
+
+echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'und\'][0][\'value\'] . \'">\' . \'[\'. $meeting_category . \'] \' . $title . \'</font>\';
 
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
@@ -432,6 +455,13 @@ echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'un
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['hide_alter_empty'] = FALSE;
+  /* Field: Content: Nid */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
   /* Contextual filter: Date: Date (node) */
   $handler->display->display_options['arguments']['date_argument']['id'] = 'date_argument';

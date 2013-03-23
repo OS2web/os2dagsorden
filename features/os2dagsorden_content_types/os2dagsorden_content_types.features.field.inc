@@ -924,7 +924,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '8',
+        'weight' => '9',
       ),
     ),
   );
@@ -1006,7 +1006,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -1074,7 +1074,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '7',
+        'weight' => '8',
       ),
     ),
   );
@@ -1147,7 +1147,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '9',
+        'weight' => '10',
       ),
     ),
   );
@@ -1281,6 +1281,68 @@ function os2dagsorden_content_types_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-meeting-field_meeting_category'
+  $fields['node-meeting-field_meeting_category'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_meeting_category',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          'pol' => 'Political',
+          'org' => 'Organizational',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'meeting',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 24,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_meeting_category',
+      'label' => 'Meeting Category',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_buttons',
+        'weight' => '4',
+      ),
+    ),
+  );
+
   // Exported field: 'node-meeting-field_meeting_description'
   $fields['node-meeting-field_meeting_description'] = array(
     'field_config' => array(
@@ -1348,7 +1410,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '12',
+        'weight' => '13',
       ),
     ),
   );
@@ -1420,7 +1482,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '13',
+        'weight' => '14',
       ),
     ),
   );
@@ -1547,7 +1609,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '14',
+        'weight' => '15',
       ),
     ),
   );
@@ -1658,7 +1720,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '11',
+        'weight' => '12',
       ),
     ),
   );
@@ -1821,7 +1883,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'size' => 60,
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '10',
+        'weight' => '11',
       ),
     ),
   );
@@ -1889,7 +1951,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
@@ -2989,7 +3051,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '7',
+        'weight' => '8',
       ),
     ),
   );
@@ -3084,6 +3146,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
   t('Indhold');
   t('Is part of Committee');
   t('Lokation');
+  t('Meeting Category');
   t('Name Short');
   t('Number');
   t('Page amount');
