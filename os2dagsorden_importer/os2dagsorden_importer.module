@@ -34,8 +34,8 @@ function os2dagsorden_importer_menu() {
  * @return none
  */
 function os2dagsorden_importer_sync() {
-    //os2dagsorden_importer_import_user_committees();
-    //os2dagsorden_importer_import_committees();
+    os2dagsorden_importer_import_user_committees();
+    os2dagsorden_importer_import_committees();
     os2dagsorden_importer_import_meetings();
 }
 
@@ -827,6 +827,9 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
     //avoiding reimports, or value overriding
     if (!empty($node->field_meeting_acadre_version['und']['0']['value'])) {
 	
+	//updating meetings category
+	$node->field_meeting_category[$node->language][0]['value'] = strtolower($xml_data['meeting_category']);
+	
 	//updating the color
 	$need_to_update = FALSE;
 	if (strcmp($node->field_hex[$node->language][0]['value'], strtolower($xml_data['hex_color'])) != 0){
@@ -871,8 +874,8 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
     } else {//to represent that there is no end date
 	$node->field_date[$node->language][0]['value2'] = $xml_data['meeting_start_date'];
     }
-    $node->field_meeting_category[$node->language][0]['value'] = strtolower($xml_data['meeting_category']);
     
+    $node->field_meeting_category[$node->language][0]['value'] = strtolower($xml_data['meeting_category']);
     $node->field_hex[$node->language][0]['value'] = strtolower($xml_data['hex_color']);
 
     $node->field_committee[$node->language][0]['tid'] = $tid;
