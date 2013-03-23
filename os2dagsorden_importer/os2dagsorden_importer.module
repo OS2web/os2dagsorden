@@ -827,11 +827,15 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
     //avoiding reimports, or value overriding
     if (!empty($node->field_meeting_acadre_version['und']['0']['value'])) {
 	
+	$need_to_update = FALSE;
+	
 	//updating meetings category
-	$node->field_meeting_category[$node->language][0]['value'] = strtolower($xml_data['meeting_category']);
+	if (strcmp($node->field_meeting_category[$node->language][0]['value'], strtolower($xml_data['meeting_category'])) != 0){
+	  $node->field_meeting_category[$node->language][0]['value'] = strtolower($xml_data['meeting_category']);
+	  $need_to_update = TRUE;//setting to flag to update
+	}
 	
 	//updating the color
-	$need_to_update = FALSE;
 	if (strcmp($node->field_hex[$node->language][0]['value'], strtolower($xml_data['hex_color'])) != 0){
 	  $node->field_hex[$node->language][0]['value'] = strtolower($xml_data['hex_color']);
 	  $need_to_update = TRUE;//setting to flag to update
