@@ -101,7 +101,7 @@ if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
 else 
   $title = $data->_field_data[\'nid\'][\'entity\']->title;
 
-$meeting_category = strtoupper($data->_field_data[\'nid\'][\'entity\']->field_meeting_category[\'und\'][0][\'value\']);
+$meeting_category = substr(strtoupper($data->_field_data[\'nid\'][\'entity\']->field_meeting_category[\'und\'][0][\'value\']), 0, 1);
 
 echo \'<font color="\' . $row->field_hex . \'">\' . \'[\' . $meeting_category . \'] \' . $title . \'</font>\';
 
@@ -257,7 +257,7 @@ if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
 else 
   $title = $data->_field_data[\'nid\'][\'entity\']->title;
 
-$meeting_category = strtoupper($data->_field_data[\'nid\'][\'entity\']->field_meeting_category[\'und\'][0][\'value\']);
+$meeting_category = substr(strtoupper($data->_field_data[\'nid\'][\'entity\']->field_meeting_category[\'und\'][0][\'value\']), 0, 1);
 
 echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'und\'][0][\'value\'] . \'">\' . \'[\'. $meeting_category . \'] \' . $title . \'</font>\';
 
