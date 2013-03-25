@@ -56,7 +56,32 @@ function os2dagsorden_admin_suite_menu() {
         'access arguments' => array('administer os2web'),
     );
     
+    $items['os2dagsorden/admin_suite/resave_all_meetings'] = array(
+        'type' => MENU_CALLBACK,
+        'page callback' => 'os2dagsorden_admin_suite_resaved_all_meetings',
+        'access arguments' => array('administer os2web'),
+    );
+    
+    
     return $items;
+}
+
+/**
+ * Function to resave all the meetings.
+ */
+function os2dagsorden_admin_suite_resaved_all_meetings(){
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+      ->propertyCondition('type', array('meeting'));
+  
+  $result = $query->execute();
+  if (isset($result['node'])) {
+    $nids = array_keys($result['node']);
+    foreach ($nids as $nid){
+      node_save(node_load($nid));
+    }
+  }
+      
 }
 
 function os2dagsorden_admin_suite_calculate_damaged_meetings(){
@@ -72,11 +97,7 @@ function os2dagsorden_admin_suite_calculate_damaged_meetings(){
     foreach ($nids as $nid){
       $meeting = node_load($nid);
       foreach ($meeting->field_ref_bullet_points['und'] as $bullet_point) {
-      //print_r($bullet_point['target_id'] . "<br/>");
 	  $bp = node_load($bullet_point['target_id']);
-	  //print_r($bp);
-	  print_r("<br/>");
-	  
 	  if (empty($bp)){
 	    print_r($meeting->field_meeting_acadre_id['und'][0]['value']);
 	    print_r("<br/>");

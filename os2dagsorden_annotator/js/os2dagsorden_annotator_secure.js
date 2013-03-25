@@ -41,6 +41,12 @@ function add_annotator(meeting_id, bullet_point_id, bilag_id, element_to_annotat
 			  search:  'annotator/search'
 			}
 		});
+		var loadOptions = {
+		  'mode': 'user',
+		  'uri': [location.protocol, '//', location.host, location.pathname].join('')
+		}
+		console.log(jQuery(element_to_annotate).Annotator);
+		//Annotator.prototype.plugins.Store.loadAnnotationsFromSearch(loadOptions);
 	}); 
 }
 

@@ -489,6 +489,14 @@ if (module_exists(\'os2dagsorden_create_agenda\') && user_access(\'administer os
   $handler->display->display_options['header']['php_1']['empty'] = FALSE;
   $handler->display->display_options['header']['php_1']['php_output'] = '<div class="controls-right">
 <?php 
+//meeting all notes
+global $base_url;
+$q = explode(\'/\',$_GET[\'q\']);
+$meeting_id = $q[1];
+?>
+<a target="_blank" href="<?php print($base_url . \'?q=meeting/\' . $meeting_id . \'/notes\');?>" class="form-submit">Mødenoter</a>
+
+<?php
 //closed version - if not empty
 $nid = $results[0]->nid;
 $meeting = node_load($nid, null, TRUE);
@@ -1442,14 +1450,6 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Field: Content: Status */
-  $handler->display->display_options['fields']['field_meeting_status']['id'] = 'field_meeting_status';
-  $handler->display->display_options['fields']['field_meeting_status']['table'] = 'field_data_field_meeting_status';
-  $handler->display->display_options['fields']['field_meeting_status']['field'] = 'field_meeting_status';
-  $handler->display->display_options['fields']['field_meeting_status']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_meeting_status']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['field_meeting_status']['empty'] = '&nbsp;';
-  $handler->display->display_options['fields']['field_meeting_status']['hide_alter_empty'] = FALSE;
   /* Field: indicator - has speaker paper */
   $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
   $handler->display->display_options['fields']['php_1']['table'] = 'views';
@@ -1531,18 +1531,6 @@ echo $title;
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Field: Content: Lokation */
-  $handler->display->display_options['fields']['field_location']['id'] = 'field_location';
-  $handler->display->display_options['fields']['field_location']['table'] = 'field_data_field_location';
-  $handler->display->display_options['fields']['field_location']['field'] = 'field_location';
-  $handler->display->display_options['fields']['field_location']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_location']['alter']['path'] = 'meeting/[nid]';
-  $handler->display->display_options['fields']['field_location']['alter']['max_length'] = '15';
-  $handler->display->display_options['fields']['field_location']['alter']['word_boundary'] = FALSE;
-  $handler->display->display_options['fields']['field_location']['alter']['trim'] = TRUE;
-  $handler->display->display_options['fields']['field_location']['empty'] = '&nbsp;';
-  $handler->display->display_options['fields']['field_location']['hide_alter_empty'] = FALSE;
-  $handler->display->display_options['fields']['field_location']['type'] = 'taxonomy_term_reference_plain';
   /* Field: Content: Committee */
   $handler->display->display_options['fields']['field_committee']['id'] = 'field_committee';
   $handler->display->display_options['fields']['field_committee']['table'] = 'field_data_field_committee';
@@ -1568,6 +1556,58 @@ echo $title;
   $handler->display->display_options['fields']['field_name_short']['alter']['path'] = 'meeting/[nid]';
   $handler->display->display_options['fields']['field_name_short']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_name_short']['empty'] = '[field_committee]';
+  /* Field: Placering - php */
+  $handler->display->display_options['fields']['php_3']['id'] = 'php_3';
+  $handler->display->display_options['fields']['php_3']['table'] = 'views';
+  $handler->display->display_options['fields']['php_3']['field'] = 'php';
+  $handler->display->display_options['fields']['php_3']['ui_name'] = 'Placering - php';
+  $handler->display->display_options['fields']['php_3']['label'] = 'Placering';
+  $handler->display->display_options['fields']['php_3']['alter']['make_link'] = TRUE;
+  $handler->display->display_options['fields']['php_3']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['php_3']['empty_zero'] = TRUE;
+  $handler->display->display_options['fields']['php_3']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['php_3']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_3']['php_output'] = '<?php
+$search_param = $_GET[\'search_params\'];
+if (!empty($search_param)){
+  $meta_data = $data->_field_data[\'nid\'][\'entity\']->field_meeting_search_meta_date[\'und\'][0][\'value\'];
+
+  $search_param_pos_s = stripos($meta_data, $search_param);
+  $search_param_pos_e = $search_param_pos_s + strlen($search_param);
+  //part of the text before the found occurence
+  $meta_data = substr($meta_data, 0, $search_param_pos_e+1);
+
+  $search_token_pos_s = strripos($meta_data, \'[search_token]\');
+  $search_token_pos_e = $search_token_pos_s+strlen(\'[search_token]\');
+
+  $bullet_point_token_pos_s = strripos($meta_data, \'[bp]\');
+  $bullet_point_token_pos_e = $bullet_point_token_pos_s + strlen(\'[bp]\');
+
+  $bpa_token_pos_s = strripos($meta_data, \'[bpa]\');
+  $bpa_token_pos_e = $bpa_token_pos_s + strlen(\'[bpa]\');
+
+  if ($bullet_point_token_pos_s == $search_token_pos_e){//is in bullet point
+    $bullet_point_title = substr($meta_data, $bullet_point_token_pos_e+1, $bpa_token_pos_s-$bullet_point_token_pos_e-2);
+    $bpa_title = substr($meta_data, $bpa_token_pos_e+1, strripos($meta_data, \']\')-$bpa_token_pos_e-1);
+    $to_print = $bpa_title . \': [\' . $bullet_point_title . \']\';
+    if (os2dagsorden_access_helper_is_touch()){
+      if (mb_strlen($to_print) > 40)
+	$to_print = mb_substr($to_print, 0, 37) . \'...\';
+    } else {
+      if (mb_strlen($to_print) > 60)
+	$to_print = mb_substr($to_print, 0, 57) . \'...\';
+    }
+  }
+}
+if (!empty($to_print)){
+  print($to_print);
+}
+else {
+  print(\'&nbsp;\');
+}
+?>';
+  $handler->display->display_options['fields']['php_3']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_3']['php_click_sortable'] = '';
   /* Sort criterion: Content: Date -  start date (field_date) */
   $handler->display->display_options['sorts']['field_date_value']['id'] = 'field_date_value';
   $handler->display->display_options['sorts']['field_date_value']['table'] = 'field_data_field_date';
@@ -1686,14 +1726,13 @@ echo $title;
     t('<div class="help-button" title="Her vises de møder der indeholdt møder, punkter eller bilag der matchede dine søgekriterier. Søgeresultatet vises på mødeniveau i listen."></div>'),
     t('Ingen møder er fundet'),
     t('term from field_committee'),
-    t('Status'),
-    t('meeting/[nid]'),
-    t('&nbsp;'),
     t('Møde'),
+    t('meeting/[nid]'),
     t('Dato'),
-    t('Lokation'),
+    t('&nbsp;'),
     t('Udvalg'),
     t('[field_committee]'),
+    t('Placering'),
     t('Date -  start date (field_date)'),
     t('Page'),
     t('Fra dato:'),

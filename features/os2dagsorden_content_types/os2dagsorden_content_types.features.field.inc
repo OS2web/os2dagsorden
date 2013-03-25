@@ -900,7 +900,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 11,
+          'weight' => '11',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -974,7 +974,7 @@ function os2dagsorden_content_types_field_default_fields() {
             'multiple_to' => '',
           ),
           'type' => 'date_default',
-          'weight' => 16,
+          'weight' => '16',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1050,7 +1050,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 13,
+          'weight' => '13',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1123,7 +1123,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 14,
+          'weight' => '14',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1183,7 +1183,7 @@ function os2dagsorden_content_types_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 23,
+          'weight' => '23',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1252,7 +1252,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 20,
+          'weight' => '20',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1317,7 +1317,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'module' => 'list',
           'settings' => array(),
           'type' => 'list_default',
-          'weight' => 24,
+          'weight' => '24',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1383,7 +1383,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_default',
-          'weight' => 19,
+          'weight' => '19',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1455,7 +1455,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'module' => 'file',
           'settings' => array(),
           'type' => 'file_default',
-          'weight' => 22,
+          'weight' => '22',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1518,7 +1518,7 @@ function os2dagsorden_content_types_field_default_fields() {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 12,
+          'weight' => '12',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1585,7 +1585,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 21,
+          'weight' => '21',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1648,21 +1648,25 @@ if (is_array(field_get_items($entity_type, $entity, \'field_committee\'))){
    $committee = \' \'.taxonomy_term_load($committee_id)->name;
 }
 
-$entity_field[0][\'value\'] = $title.$abbr.$location.$committee;
+$entity_field[0][\'value\'] = \'[search_token][meeting] \' . $title . \' \' . $abbr . \' \'. $location . \' \' . $committee;
 
 //extracting data from bullet points
 if (isset($entity->field_ref_bullet_points[\'und\'])) {
   foreach ($entity->field_ref_bullet_points[\'und\'] as $bullet_point_tid) {
       $bullet_point = node_load($bullet_point_tid[\'target_id\']);
-      $entity_field[0][\'value\'] .= \' \'.$bullet_point->title;
-      
+
       //extracting data from bullet points attachments
       if (isset($bullet_point->field_ref_attachment[\'und\'])) {
         foreach ($bullet_point->field_ref_attachment[\'und\'] as $bpa_tid) {
 	    $bullet_point_attachment = node_load($bpa_tid[\'target_id\']);
 	    
-	    $entity_field[0][\'value\'] .= \' \'.$bullet_point_attachment->title;
-	    $entity_field[0][\'value\'] .= \' \'.strip_tags($bullet_point_attachment->field_bpa_body[\'und\'][0][\'safe_value\']);
+	    $entity_field[0][\'value\'] .= \' [search_token][bp][\' . $bullet_point->title . \']\';
+
+            $text = str_replace("\\r\\n", " ", strip_tags($bullet_point_attachment->field_bpa_body[\'und\'][0][\'safe_value\']));
+            $text = str_replace("\\n\\r", " ", $text);
+            $text = str_replace("\\n", " ", $text);
+            $text = str_replace("\\r", " ", $text);
+            $entity_field[0][\'value\'] .= \'[bpa][\' . $bullet_point_attachment->title . \'] \' . $bullet_point_attachment->title . \' \' . $text;
         }
       }
   }
@@ -1692,8 +1696,8 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'label' => 'above',
           'module' => 'computed_field',
           'settings' => array(),
-          'type' => 'computed_field_plain',
-          'weight' => 8,
+          'type' => 'computed_field_unsanitized',
+          'weight' => '8',
         ),
         'ical' => array(
           'label' => 'above',
@@ -1764,7 +1768,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 18,
+          'weight' => '18',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1852,7 +1856,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
             'link' => FALSE,
           ),
           'type' => 'entityreference_label',
-          'weight' => 9,
+          'weight' => '9',
         ),
         'ical' => array(
           'label' => 'above',
@@ -1927,7 +1931,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'module' => 'text',
           'settings' => array(),
           'type' => 'text_default',
-          'weight' => 15,
+          'weight' => '15',
         ),
         'teaser' => array(
           'label' => 'above',
