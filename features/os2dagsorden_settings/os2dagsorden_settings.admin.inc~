@@ -1,0 +1,84 @@
+<?php
+/**
+* os2dagsorden_settings
+*
+* PHP version 5
+*
+* @category OS2Dagsorden
+* @package  OS2Dagsorden_Settings
+* @file     Admin page file 
+* @author   Stanislav Kutasevits <stan@bellcom.dk>
+* @license  http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
+* @link     http://bellcom.dk
+*/
+
+define('ACADRE_MM_IMPORT_DIR', 'private://');
+
+/**
+ * Implementation of settings form specifically for OS2Dagsorden system.
+ *
+ * @param $form       the settings form
+ * @param $form_state the state of the form
+ *
+ * @return settings form.
+ */
+function os2dagsorden_settings_settings_form($form, $form_state) {
+  // SOFD Integration settings
+  $form['os2dagsorden_pws_sofd_group'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#title' => t('SOFD Integration settings'),
+  );
+  $form['os2dagsorden_pws_sofd_group']['os2dagsorden_pws_use_local_copy'] = array(
+      '#type' => 'checkbox',
+      '#default_value' => variable_get('os2dagsorden_pws_use_local_copy'),
+      '#title' => t('Use local XML files'), 
+      '#description' => variable_get('os2dagsorden_pws_use_local_copy') ? 'Diselect and click save to enable the fields below' : 'Selecting and clicking save will disable the textfields below'
+  );
+  $form['os2dagsorden_pws_sofd_group']['os2dagsorden_pws_v_meetings_url'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2dagsorden_pws_v_meetings_url'),
+      '#title' => t('Meeting (planned meetings) view url:'),
+      '#maxlength' => 256, 
+      '#disabled' => variable_get('os2dagsorden_pws_use_local_copy'),
+  );
+  $form['os2dagsorden_pws_sofd_group']['os2dagsorden_pws_v_meetinggroups_url'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2dagsorden_pws_v_meetinggroups_url'),
+      '#title' => t('Meeting groups (is member of/follows/follows+) view url:'),
+      '#maxlength' => 256, 
+      '#disabled' => variable_get('os2dagsorden_pws_use_local_copy'),
+  );
+  $form['os2dagsorden_pws_sofd_group']['os2dagsorden_pws_v_acadregroups_url'] = array(
+      '#type' => 'textfield',
+      '#default_value' => variable_get('os2dagsorden_pws_v_acadregroups_url'),
+      '#title' => t('Acadre groups (committees) url:'),
+      '#maxlength' => 256, 
+      '#disabled' => variable_get('os2dagsorden_pws_use_local_copy'),
+  );
+  
+  //this set up is now done in os2web_esdh_provider module
+//   //Import committees
+//   $form['os2dagsorden_import_committees'] = array(
+//       '#type' => 'fieldset',
+//       '#collapsible' => TRUE,
+//       '#title' => t('List of committees to import:'),
+//       '#description' => t('List of committees, which should be imported from Acadre/SOFD systems.'),
+//   );
+//   $form['os2dagsorden_import_committees']['os2dagsorden_meetings_path'] = array(
+//     '#type' => 'textfield',
+//     '#title' => 'Sti til acadre publish folder.',
+//     '#description' => 'Dette er stien hvor Acadre publisere .XML filer til.',
+//     '#default_value' => variable_get('os2dagsorden_meetings_path', ACADRE_MM_IMPORT_DIR),
+//   );
+//   $form['os2dagsorden_import_committees']['os2dagsorden_import_committees_list'] = array(
+//       '#type' => 'textarea',
+//       '#default_value' => variable_get('os2dagsorden_import_committees_list'),
+//       '#title' => t('Committees to import list:'),
+//       '#description' => t('Format the entry as <b>acadre_nr</b> of committee then <b>coma (,)</b> and then the <b>name of the committee</b>, separate the entries with <b>semicolon (;)</b> <br/> 
+//       Example:<br/>acadre_nr1,committee1;<br/>acadre_nr2,committee2;<br/>...')
+//   );
+//   
+  
+  return system_settings_form($form);
+}
