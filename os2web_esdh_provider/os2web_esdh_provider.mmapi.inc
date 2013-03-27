@@ -283,7 +283,8 @@ function _os2web_esdh_provider_import_bullets($bullets) {
 
     if (isset($result['node'])) {
 	//node exists, avoiding recreation
-	continue;
+	$all_nids = array_keys($result['node']);
+        $node = reset(entity_load('node', $all_nids));
     }
     else {
 	$node = new stdClass();
