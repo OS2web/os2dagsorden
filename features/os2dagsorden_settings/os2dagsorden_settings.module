@@ -40,6 +40,40 @@ function os2dagsorden_settings_menu() {
         'type' => MENU_NORMAL_ITEM | MENU_DEFAULT_LOCAL_TASK,
         'file' => 'os2dagsorden_settings.admin.inc',
     );
+    $items['admin/config/os2dagsorden/flush_calendar_preferences'] = array(
+        'title' => 'Calendar preferences flushing',
+        'description' => 'Clicking on this link all the calendar preferences (pol/org) will be flushed. The preferences are retrieved again from SOFD, once "Importer cron" is run',
+        'page callback' => 'os2dagsorden_settings_flush_calendar_preferences',
+        'access arguments' => array('administer os2web'),
+        'type' => MENU_NORMAL_ITEM,
+    );
     
     return $items;
+}
+
+function os2dagsorden_settings_flush_calendar_preferences(){
+    $users = db_select('users', 'u')
+	  ->fields('u', array('uid'))
+	  ->execute()
+	  ->fetchAll();
+    foreach ($users as $user) {
+      if ($user->uid == 0)
+	continue;
+      print_r($user->uid);
+      
+      $user = user_load($user->uid);
+      print_r($user);
+      print_r("<br/>");
+      $user->field_user_meetings_category['und'] = array();
+      
+//       if (isset($user->field_user_meetings_category['und'])) {
+//         foreach ($user->field_user_meetings_category['und'] as $user_category){
+// 	  if (strcasecmp($user_category['value'], $category) == 0){//already has this category
+// 	    return $user;
+// 	  }
+// 	}
+//       }
+//       }
+      //user_save($user);
+    }
 }
