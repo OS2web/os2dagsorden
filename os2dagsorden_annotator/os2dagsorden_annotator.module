@@ -667,7 +667,7 @@ function _os2dagsorden_annotator_meeting_all_notes_view($meeting_id){
 		  }
 		  
 		  if (!empty($annotation_list)){
-		    $html .= '<h3>' . $bilag->title . '</h3>';
+		    $html .= '<h3>' . $bilag->title . ': [' . $bullet_point->title . ']</h3>';
 		    $html .= $annotation_list . "<br/>";
 		  }
 	      }
