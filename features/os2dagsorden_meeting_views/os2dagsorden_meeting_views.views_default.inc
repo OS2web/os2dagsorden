@@ -487,32 +487,39 @@ if (module_exists(\'os2dagsorden_create_agenda\') && user_access(\'administer os
   $handler->display->display_options['header']['php_1']['field'] = 'php';
   $handler->display->display_options['header']['php_1']['ui_name'] = 'description download';
   $handler->display->display_options['header']['php_1']['empty'] = FALSE;
-  $handler->display->display_options['header']['php_1']['php_output'] = '<div class="controls-right">
-<?php 
+  $handler->display->display_options['header']['php_1']['php_output'] = '<div class="controls-left">
+<?php
 //meeting all notes
 global $base_url;
 $q = explode(\'/\',$_GET[\'q\']);
 $meeting_id = $q[1];
 ?>
 <a target="_blank" href="<?php print($base_url . \'?q=meeting/\' . $meeting_id . \'/notes\');?>" class="form-submit">Mødenoter</a>
-
+</div>
+<div class="controls-right">
 <?php
 //closed version - if not empty
 $nid = $results[0]->nid;
 $meeting = node_load($nid, null, TRUE);
 if (os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid)){
   if (!empty($meeting->field_meeting_description_closed[\'und\'][0][\'uri\'])){
-    print \'<input class="form-submit" type="button" onclick="window.open(\';
-    print(" \' " . file_create_url($meeting->field_meeting_description_closed[\'und\'][0][\'uri\']) . " \' ");
-    print \')" value="Hent samlet dokument i PDF (lukket version)">\';
+    //print \'<input class="form-submit" type="button" onclick="window.open(\';
+    //print(" \' " . file_create_url($meeting->field_meeting_description_closed[\'und\'][0][\'uri\']) . " \' ");
+    //print \')" value="Hent samlet dokument i PDF (lukket version)">\';
+?>
+    <a target="_blank" href="<?php print(file_create_url($meeting->field_meeting_description_closed[\'und\'][0][\'uri\']));?>" class="form-submit">Hent samlet dokument i PDF (lukket version)</a>
+<?php
   }
 }
 
 //opened version - if not empty
 if (!empty($meeting->field_meeting_description[\'und\'][0][\'uri\'])){
-  print \'<input class="form-submit next-control" type="button" onclick="window.open(\';
-  print(" \' " . file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\']) . " \' ");
-  print \')" value="Hent samlet dokument i PDF">\';
+  //print \'<input class="form-submit next-control" type="button" onclick="window.open(\';
+  //print(" \' " . file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\']) . " \' ");
+  //print \')" value="Hent samlet dokument i PDF">\';
+?>
+    <a target="_blank" href="<?php print(file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\'])); ?>" class="form-submit">Hent samlet dokument i PDF</a>
+<?php
 }
 ?>
 </div>
