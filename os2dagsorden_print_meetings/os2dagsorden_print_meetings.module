@@ -180,20 +180,29 @@ function _os2dagsorden_print_meetings_form_submit_2_half($form, &$form_state) {
  * @return generated table
  */
 function _os2dagsorden_print_meetings_get_table($from_month, $to_month) {
+    global $user;
+    $user = user_load($user->uid);
+    
     //selecting the node of type meetings
-    $query = db_select('node', 'n');
-    $query->join('field_data_field_date', 'f', 'n.nid = f.entity_id');
-    $results = $query->fields('n', array('nid'))
-            ->condition('f.field_date_value', date('Y') . '-' . $from_month . '-01 00:00:00', '>=')//selecting meetings from the from_month
-            ->condition('f.field_date_value', date('Y') . '-' . $to_month . '-31 23:59:59', '<=')//selecting meetings up to the to_month
-            ->orderBy('f.field_date_value', 'ASC')
-            ->execute()
-            ->fetchCol();
-
-    //loading meetings fields
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+      ->propertyCondition('type', array('meeting'))
+      ->fieldCondition('field_date', 'value', date('Y') . '-' . $from_month . '-01 00:00:00', '>=')//selecting meetings from the from_month
+      ->fieldCondition('field_date', 'value', date('Y') . '-' . $to_month . '-31 23:59:59', '<=')//selecting meetings up to the to_month
+      ->fieldOrderBy('field_date', 'value', 'ASC');
+    
+    if (!empty($user->field_user_meetings_category['und'])){
+      if (count($user->field_user_meetings_category['und']) != 2){//have to limit the results, because user should see only one type of meeting
+	$query->fieldCondition('field_meeting_category', 'value', $user->field_user_meetings_category['und'][0]['value'], '=');
+      }
+    }
+    $result = $query->execute();
+    
     $meetings = array();
-    if (!empty($results))
-        $meetings = node_load_multiple($results, array('type' => array('meeting')));
+    if (isset($result['node'])) {
+	  $results = array_keys($result['node']);
+	  $meetings = node_load_multiple($results, array('type' => array('meeting')));
+    }
 
     return _os2dagsorden_print_meetings_get_six_month_data($from_month, $to_month, $meetings);
 }
@@ -276,8 +285,12 @@ function os2dagsorden_print_meetings_generate_month($from_month, $to_month, $mee
 			 $title = $met->field_title_short['und'][0]['value'];
                     else
 			 $title = $met->title;
-                        
-                    $html .= '<a href="' . $link . '"><font color="' . $met->field_hex['und'][0]['value'] . '">' . $title . '</font></a>, ';    
+                    
+                    $category = $met->field_meeting_category['und'][0]['value'];
+                    $category_cut = substr($category,0,1);
+                    
+                    $html .= '<a href="' . $link . '"><font color="' . $met->field_hex['und'][0]['value'] . '">[' . 
+                    strtoupper($category_cut) . '] ' . $title . '</font></a>, ';    
                 }
             }
             //end of content
