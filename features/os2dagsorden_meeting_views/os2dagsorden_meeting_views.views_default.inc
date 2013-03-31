@@ -25,6 +25,7 @@ function os2dagsorden_meeting_views_views_default_views() {
   $handler->display->display_options['title'] = 'Kommende møder i mine udvalg';
   $handler->display->display_options['css_class'] = 'front-page-content-block';
   $handler->display->display_options['use_ajax'] = TRUE;
+  $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     2 => '2',
@@ -343,13 +344,16 @@ echo $title;
     t('Items per page'),
     t('- All -'),
     t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
     t('<div class=\'help-button\' title=\'Her vises de kommende 5 møder i "Mine udvalg". Det vil sige udvalg som man enten er medlem af eller følger. Udvalgene kan ses i boksene "Medlem af" og "Jeg følger" i højremenuen. Der er ikke en dagsorden tilgængelig før status er angivet til Dagsorden eller Dagsorden+.\'></div>'),
     t('term from field_committee'),
     t('field_user_committee'),
     t('field_follows_committee'),
     t('field_follows_committee_plus'),
     t('Status'),
-    t('meeting/[nid]'),
     t('&nbsp;'),
     t('Møde'),
     t('Dato'),
@@ -376,6 +380,7 @@ echo $title;
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Deltagerne';
+  $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     2 => '2',
@@ -469,7 +474,6 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['header']['php_2']['table'] = 'views';
   $handler->display->display_options['header']['php_2']['field'] = 'php';
   $handler->display->display_options['header']['php_2']['ui_name'] = 'agenda edit button';
-  $handler->display->display_options['header']['php_2']['empty'] = FALSE;
   $handler->display->display_options['header']['php_2']['php_output'] = '<?php 
 global $base_url;
 $q = explode(\'/\',$_GET[\'q\']);
@@ -486,7 +490,6 @@ if (module_exists(\'os2dagsorden_create_agenda\') && user_access(\'administer os
   $handler->display->display_options['header']['php_1']['table'] = 'views';
   $handler->display->display_options['header']['php_1']['field'] = 'php';
   $handler->display->display_options['header']['php_1']['ui_name'] = 'description download';
-  $handler->display->display_options['header']['php_1']['empty'] = FALSE;
   $handler->display->display_options['header']['php_1']['php_output'] = '<div class="controls-left">
 <?php
 //meeting all notes
@@ -708,6 +711,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_name_short']['relationship'] = 'field_committee_tid';
   $handler->display->display_options['fields']['field_name_short']['label'] = 'Udvalg';
   $handler->display->display_options['fields']['field_name_short']['empty'] = '[field_committee]';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -776,6 +780,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_location']['field'] = 'field_location';
   $handler->display->display_options['fields']['field_location']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_location']['type'] = 'taxonomy_term_reference_plain';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -818,6 +823,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['field_meeting_participants']['label'] = 'Deltagerne';
   $handler->display->display_options['fields']['field_meeting_participants']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_meeting_participants']['hide_empty'] = TRUE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -952,7 +958,6 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = FALSE;
   $handler->display->display_options['header']['area']['content'] = '<h3>Dagsorden:</h3>';
   $handler->display->display_options['header']['area']['format'] = 'full_html';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
@@ -1239,6 +1244,7 @@ else {
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -1307,6 +1313,7 @@ else {
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Mødesøgning';
   $handler->display->display_options['use_ajax'] = TRUE;
+  $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     2 => '2',
@@ -1443,7 +1450,6 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
-  $handler->display->display_options['empty']['area']['empty'] = FALSE;
   $handler->display->display_options['empty']['area']['content'] = 'Ingen møder er fundet';
   $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
   /* Relationship: Content: Committee (field_committee) */
@@ -1457,6 +1463,90 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  /* Field: bullet_point_id - php */
+  $handler->display->display_options['fields']['php_4']['id'] = 'php_4';
+  $handler->display->display_options['fields']['php_4']['table'] = 'views';
+  $handler->display->display_options['fields']['php_4']['field'] = 'php';
+  $handler->display->display_options['fields']['php_4']['ui_name'] = 'bullet_point_id - php';
+  $handler->display->display_options['fields']['php_4']['label'] = '';
+  $handler->display->display_options['fields']['php_4']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['php_4']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php_4']['hide_alter_empty'] = FALSE;
+  $handler->display->display_options['fields']['php_4']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_4']['php_setup'] = '$static = array();
+$static[] = "hello!";
+$static["test"] = "test2";';
+  $handler->display->display_options['fields']['php_4']['php_output'] = '<?php
+$search_param = $_GET[\'search_params\'];
+if (!empty($search_param)){
+  $meta_data = $data->_field_data[\'nid\'][\'entity\']->field_meeting_search_meta_date[\'und\'][0][\'value\'];
+
+  $search_param_pos_s = stripos($meta_data, $search_param);
+  $search_param_pos_e = $search_param_pos_s + strlen($search_param);
+  //part of the text before the found occurence
+  $meta_data = substr($meta_data, 0, $search_param_pos_e+1);
+
+  $search_token_pos_s = strripos($meta_data, \'[search_token]\');
+  $search_token_pos_e = $search_token_pos_s+strlen(\'[search_token]\');
+
+  $bullet_point_token_pos_s = strripos($meta_data, \'[bp]\');
+  $bullet_point_token_pos_e = $bullet_point_token_pos_s + strlen(\'[bp]\');
+
+  $bpa_token_pos_s = strripos($meta_data, \'[bpa]\');
+  $bpa_token_pos_e = $bpa_token_pos_s + strlen(\'[bpa]\');
+
+  if ($bullet_point_token_pos_s == $search_token_pos_e){//is in bullet point
+    $bullet_point_id = substr($meta_data, $bullet_point_token_pos_e+1, $bpa_token_pos_s-$bullet_point_token_pos_e-2);
+    if ($bullet_point_id){
+       print("/bullet-point/" . $bullet_point_id);
+    }
+
+  }
+}
+?>';
+  $handler->display->display_options['fields']['php_4']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_4']['php_click_sortable'] = '';
+  /* Field: bpa_id - php */
+  $handler->display->display_options['fields']['php_5']['id'] = 'php_5';
+  $handler->display->display_options['fields']['php_5']['table'] = 'views';
+  $handler->display->display_options['fields']['php_5']['field'] = 'php';
+  $handler->display->display_options['fields']['php_5']['ui_name'] = 'bpa_id - php';
+  $handler->display->display_options['fields']['php_5']['label'] = '';
+  $handler->display->display_options['fields']['php_5']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['php_5']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['php_5']['use_php_setup'] = 0;
+  $handler->display->display_options['fields']['php_5']['php_output'] = '<?php
+$search_param = $_GET[\'search_params\'];
+if (!empty($search_param)){
+  $meta_data = $data->_field_data[\'nid\'][\'entity\']->field_meeting_search_meta_date[\'und\'][0][\'value\'];
+
+  $search_param_pos_s = stripos($meta_data, $search_param);
+  $search_param_pos_e = $search_param_pos_s + strlen($search_param);
+  //part of the text before the found occurence
+  $meta_data = substr($meta_data, 0, $search_param_pos_e+1);
+
+  $search_token_pos_s = strripos($meta_data, \'[search_token]\');
+  $search_token_pos_e = $search_token_pos_s+strlen(\'[search_token]\');
+
+  $bullet_point_token_pos_s = strripos($meta_data, \'[bp]\');
+  $bullet_point_token_pos_e = $bullet_point_token_pos_s + strlen(\'[bp]\');
+
+  $bpa_token_pos_s = strripos($meta_data, \'[bpa]\');
+  $bpa_token_pos_e = $bpa_token_pos_s + strlen(\'[bpa]\');
+
+  if ($bullet_point_token_pos_s == $search_token_pos_e){//is in bullet point
+    $bullet_point_id = substr($meta_data, $bullet_point_token_pos_e+1, $bpa_token_pos_s-$bullet_point_token_pos_e-2);
+    $bullet_point = node_load($bullet_point_id);
+
+    $bpa_id = substr($meta_data, $bpa_token_pos_e+1, strripos($meta_data, \']\')-$bpa_token_pos_e-1);
+    if ($bpa_id){
+       print("/bullet-point-attachment/" . $bpa_id);
+    }
+  }
+}
+?>';
+  $handler->display->display_options['fields']['php_5']['use_php_click_sortable'] = '0';
+  $handler->display->display_options['fields']['php_5']['php_click_sortable'] = '';
   /* Field: indicator - has speaker paper */
   $handler->display->display_options['fields']['php_1']['id'] = 'php_1';
   $handler->display->display_options['fields']['php_1']['table'] = 'views';
@@ -1497,7 +1587,7 @@ print \'<div class="indicator-empty"></div>\';
   $handler->display->display_options['fields']['php_2']['ui_name'] = 'title - php';
   $handler->display->display_options['fields']['php_2']['label'] = 'Møde';
   $handler->display->display_options['fields']['php_2']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['php_2']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['php_2']['alter']['path'] = 'meeting/[nid][php_4][php_5]';
   $handler->display->display_options['fields']['php_2']['element_label_class'] = 'views-field-field-title-short';
   $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
@@ -1528,7 +1618,7 @@ echo $title;
   $handler->display->display_options['fields']['field_date']['field'] = 'field_date';
   $handler->display->display_options['fields']['field_date']['label'] = 'Dato';
   $handler->display->display_options['fields']['field_date']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_date']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['field_date']['alter']['path'] = 'meeting/[nid][php_4][php_5]';
   $handler->display->display_options['fields']['field_date']['empty'] = '&nbsp;';
   $handler->display->display_options['fields']['field_date']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['field_date']['settings'] = array(
@@ -1545,7 +1635,7 @@ echo $title;
   $handler->display->display_options['fields']['field_committee']['label'] = '';
   $handler->display->display_options['fields']['field_committee']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_committee']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_committee']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['field_committee']['alter']['path'] = 'meeting/[nid][php_4][php_5]';
   $handler->display->display_options['fields']['field_committee']['alter']['max_length'] = '20';
   $handler->display->display_options['fields']['field_committee']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['field_committee']['alter']['trim'] = TRUE;
@@ -1560,7 +1650,7 @@ echo $title;
   $handler->display->display_options['fields']['field_name_short']['relationship'] = 'field_committee_tid';
   $handler->display->display_options['fields']['field_name_short']['label'] = 'Udvalg';
   $handler->display->display_options['fields']['field_name_short']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['field_name_short']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['field_name_short']['alter']['path'] = 'meeting/[nid][php_4][php_5]';
   $handler->display->display_options['fields']['field_name_short']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_name_short']['empty'] = '[field_committee]';
   /* Field: Placering - php */
@@ -1570,7 +1660,7 @@ echo $title;
   $handler->display->display_options['fields']['php_3']['ui_name'] = 'Placering - php';
   $handler->display->display_options['fields']['php_3']['label'] = 'Placering';
   $handler->display->display_options['fields']['php_3']['alter']['make_link'] = TRUE;
-  $handler->display->display_options['fields']['php_3']['alter']['path'] = 'meeting/[nid]';
+  $handler->display->display_options['fields']['php_3']['alter']['path'] = 'meeting/[nid][php_4][php_5]';
   $handler->display->display_options['fields']['php_3']['empty_zero'] = TRUE;
   $handler->display->display_options['fields']['php_3']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['php_3']['use_php_setup'] = 0;
@@ -1594,9 +1684,13 @@ if (!empty($search_param)){
   $bpa_token_pos_e = $bpa_token_pos_s + strlen(\'[bpa]\');
 
   if ($bullet_point_token_pos_s == $search_token_pos_e){//is in bullet point
-    $bullet_point_title = substr($meta_data, $bullet_point_token_pos_e+1, $bpa_token_pos_s-$bullet_point_token_pos_e-2);
-    $bpa_title = substr($meta_data, $bpa_token_pos_e+1, strripos($meta_data, \']\')-$bpa_token_pos_e-1);
-    $to_print = $bpa_title . \': [\' . $bullet_point_title . \']\';
+    $bullet_point_id = substr($meta_data, $bullet_point_token_pos_e+1, $bpa_token_pos_s-$bullet_point_token_pos_e-2);
+    $bullet_point = node_load($bullet_point_id);
+
+    $bpa_id = substr($meta_data, $bpa_token_pos_e+1, strripos($meta_data, \']\')-$bpa_token_pos_e-1);
+    $bpa = node_load($bpa_id);
+
+    $to_print = $bpa->title . \': [\' . $bullet_point->title . \']\';
     if (os2dagsorden_access_helper_is_touch()){
       if (mb_strlen($to_print) > 40)
 	$to_print = mb_substr($to_print, 0, 37) . \'...\';
@@ -1649,6 +1743,7 @@ else {
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['defaults']['css_class'] = FALSE;
   $handler->display->display_options['exposed_block'] = TRUE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -1730,11 +1825,14 @@ else {
     t('Items per page'),
     t('- All -'),
     t('Offset'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
     t('<div class="help-button" title="Her vises de møder der indeholdt møder, punkter eller bilag der matchede dine søgekriterier. Søgeresultatet vises på mødeniveau i listen."></div>'),
     t('Ingen møder er fundet'),
     t('term from field_committee'),
     t('Møde'),
-    t('meeting/[nid]'),
     t('Dato'),
     t('&nbsp;'),
     t('Udvalg'),
@@ -1764,6 +1862,7 @@ else {
   $handler->display->display_options['title'] = 'Seneste 8 møder i alle udvalg';
   $handler->display->display_options['css_class'] = 'front-page-content-block';
   $handler->display->display_options['use_ajax'] = TRUE;
+  $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     2 => '2',
@@ -2041,7 +2140,6 @@ echo $title;
     t('term from field_committee'),
     t('field_user_committee'),
     t('Status'),
-    t('meeting/[nid]'),
     t('&nbsp;'),
     t('Møde'),
     t('Dato'),
@@ -2065,6 +2163,7 @@ echo $title;
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Dagsordenspunkt';
+  $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'php';
   $handler->display->display_options['access']['php_access'] = '$q = explode("/", $_GET[\'q\']);
 
@@ -2088,7 +2187,6 @@ return os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $
   $handler->display->display_options['header']['php']['table'] = 'views';
   $handler->display->display_options['header']['php']['field'] = 'php';
   $handler->display->display_options['header']['php']['ui_name'] = 'breadcrumb override';
-  $handler->display->display_options['header']['php']['empty'] = FALSE;
   $handler->display->display_options['header']['php']['php_output'] = '<?php 
 global $base_url;
 $q = explode(\'/\',$_GET[\'q\']);
@@ -2102,7 +2200,6 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['header']['php_1']['table'] = 'views';
   $handler->display->display_options['header']['php_1']['field'] = 'php';
   $handler->display->display_options['header']['php_1']['ui_name'] = 'print and send to friend buttons';
-  $handler->display->display_options['header']['php_1']['empty'] = FALSE;
   $handler->display->display_options['header']['php_1']['php_output'] = '<?php
 global $base_url;
 $q = explode(\'/\',$_GET[\'q\']);
@@ -2117,7 +2214,6 @@ $bp_id = $q[3];
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
-  $handler->display->display_options['empty']['area']['empty'] = FALSE;
   $handler->display->display_options['empty']['area']['content'] = '<?php
 global $base_url;
 $q = $_GET[\'q\'];
@@ -2453,6 +2549,7 @@ print \'<div class="indicator-has-notes"></div>\';
   ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -2479,7 +2576,6 @@ print \'<div class="indicator-has-notes"></div>\';
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
-  $handler->display->display_options['empty']['area']['empty'] = FALSE;
   $handler->display->display_options['empty']['area']['content'] = '<?php
 global $base_url;
 $q = $_GET[\'q\'];
@@ -2586,7 +2682,6 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
 ?>
 '),
     t('talepapir - [title_1]'),
-    t('#'),
     t('Talepapir -'),
   );
   $export['speaking_paper'] = $view;

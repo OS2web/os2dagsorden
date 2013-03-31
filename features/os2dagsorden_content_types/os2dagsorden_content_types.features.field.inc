@@ -1660,13 +1660,13 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
         foreach ($bullet_point->field_ref_attachment[\'und\'] as $bpa_tid) {
 	    $bullet_point_attachment = node_load($bpa_tid[\'target_id\']);
 	    
-	    $entity_field[0][\'value\'] .= \' [search_token][bp][\' . $bullet_point->title . \']\';
+	    $entity_field[0][\'value\'] .= \' [search_token][bp][\' . $bullet_point->nid . \']\';
 
             $text = str_replace("\\r\\n", " ", strip_tags($bullet_point_attachment->field_bpa_body[\'und\'][0][\'safe_value\']));
             $text = str_replace("\\n\\r", " ", $text);
             $text = str_replace("\\n", " ", $text);
             $text = str_replace("\\r", " ", $text);
-            $entity_field[0][\'value\'] .= \'[bpa][\' . $bullet_point_attachment->title . \'] \' . $bullet_point_attachment->title . \' \' . $text;
+            $entity_field[0][\'value\'] .= \'[bpa][\' . $bullet_point_attachment->nid . \'] \' . $bullet_point->title . \' \' . $bullet_point_attachment->title . \' \' . $text;
         }
       }
   }
