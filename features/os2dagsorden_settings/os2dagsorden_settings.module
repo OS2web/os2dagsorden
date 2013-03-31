@@ -59,21 +59,12 @@ function os2dagsorden_settings_flush_calendar_preferences(){
     foreach ($users as $user) {
       if ($user->uid == 0)
 	continue;
-      print_r($user->uid);
       
       $user = user_load($user->uid);
-      print_r($user);
-      print_r("<br/>");
       $user->field_user_meetings_category['und'] = array();
-      
-//       if (isset($user->field_user_meetings_category['und'])) {
-//         foreach ($user->field_user_meetings_category['und'] as $user_category){
-// 	  if (strcasecmp($user_category['value'], $category) == 0){//already has this category
-// 	    return $user;
-// 	  }
-// 	}
-//       }
-//       }
-      //user_save($user);
+      user_save($user);
     }
+    
+    drupal_set_message('All users calendar preferences have been flushed');
+    drupal_goto('admin/config');
 }
