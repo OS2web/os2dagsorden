@@ -13,7 +13,7 @@
  */
 require drupal_get_path('module', 'os2dagsorden_annotator') . '/includes/os2dagsorden_annotator.common.inc';
 define('IS_IPAD', (bool) strpos($_SERVER['HTTP_USER_AGENT'],'iPad'));
-define('ANNOTATOR_PAGES_PER_VIEW', (IS_IPAD) ? 2 : 5);
+define('ANNOTATOR_PAGES_PER_VIEW', (IS_IPAD) ? 3 : 5);
 
 /**
  * Implementation of hook_menu().
