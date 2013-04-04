@@ -1125,7 +1125,14 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
   }
   else {
     $bilags = array();
+    
+    $all_attachments = array();
     foreach($bullet_point->field_ref_attachment[\'und\'] as $attachment_id){
+      $hash = $attachment_id[\'target_id\'];
+      $all_attachments[$hash] = $attachment_id;
+    }
+
+    foreach($all_attachments as $attachment_id){
       $attachment = node_load($attachment_id[\'target_id\']);
 
       if (!empty($attachment->field_bpa_file[\'und\'])){// if is bilag
@@ -2459,7 +2466,14 @@ print \'<div class="indicator-has-notes"></div>\';
     print \'<ul class="ul-item-list-dagsordenspunkt">\';
 
     $bilags = array();
+
+    $all_attachments = array();
     foreach($bullet_point->field_ref_attachment[\'und\'] as $attachment_id){
+      $hash = $attachment_id[\'target_id\'];
+      $all_attachments[$hash] = $attachment_id;
+    }
+
+    foreach($all_attachments as $attachment_id){
       $attachment = node_load($attachment_id[\'target_id\']);
 
       if (!empty($attachment->field_bpa_file[\'und\'])){// if is bilag

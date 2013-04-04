@@ -312,6 +312,17 @@ function os2dagsorden_access_helper_check_bullet_point_is_part_of_meeting($meeti
 }
 
 /**
+ * Returns a meeting associated with this bullet point
+ *
+ * @param int $bullet_point_id ID of the bullet point
+ *
+ * @return meeting
+ */
+function os2dagsorden_access_helper_get_meeting_by_bullet_point($bullet_point_id){
+    $bullet_point = node_load($bullet_point_id);
+}
+
+/**
  * Checks if the bullet point attachment is actually part of the bullet point.
  *
  * @param int $bullet_point_id ID of the bullet point
@@ -602,5 +613,34 @@ function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) 
     
     return $node;
   }
+}
+
+/**
+ * Function determines whether user should or should not be shown a special Byradet link.
+ * Only members or followers+ will be shown the meeting
+ *
+ * @return boolean TRUE or FALSE
+ */
+function os2dagsorden_access_helper_show_byradet_menu(){
+    global $user;
+    $user = user_load($user->uid);
     
+    $term = _os2dagsorden_importer_get_committee_by_id(4);//Byradet committee only
+    
+    //hiding menu    
+    if (!empty($user->field_user_committee)) {  //is part of the committee
+	foreach ($user->field_user_committee['und'] as $user_committee_id) {
+	  if (intval($term->tid) == $user_committee_id['tid'])
+	      return TRUE;
+	}
+    }
+
+    if (!empty($user->field_follows_committee_plus)) {  //follows committee PLUS
+	foreach ($user->field_follows_committee_plus['und'] as $user_committee_id) {
+	  if (intval($term->tid) == $user_committee_id['tid'])
+	      return TRUE;
+	}
+    }
+    
+    return FALSE;
 }

@@ -24,6 +24,7 @@ function os2dagsorden_meetings_calendar_view_views_default_views() {
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Kalender';
   $handler->display->display_options['use_ajax'] = TRUE;
+  $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['link_display'] = 'page_1';
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
@@ -47,7 +48,6 @@ function os2dagsorden_meetings_calendar_view_views_default_views() {
   $handler->display->display_options['header']['php']['table'] = 'views';
   $handler->display->display_options['header']['php']['field'] = 'php';
   $handler->display->display_options['header']['php']['ui_name'] = 'breadcrumb override';
-  $handler->display->display_options['header']['php']['empty'] = FALSE;
   $handler->display->display_options['header']['php']['php_output'] = '<?php 
 global $base_url;
 $q = explode(\'/\',$_GET[\'q\']);
@@ -182,7 +182,6 @@ return TRUE;';
   $handler->display->display_options['header']['php']['table'] = 'views';
   $handler->display->display_options['header']['php']['field'] = 'php';
   $handler->display->display_options['header']['php']['ui_name'] = 'breadcrumb override';
-  $handler->display->display_options['header']['php']['empty'] = FALSE;
   $handler->display->display_options['header']['php']['php_output'] = '<?php 
 global $base_url;
 $q = explode(\'/\',$_GET[\'q\']);
@@ -196,7 +195,6 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['footer']['php']['table'] = 'views';
   $handler->display->display_options['footer']['php']['field'] = 'php';
   $handler->display->display_options['footer']['php']['ui_name'] = 'iCal export';
-  $handler->display->display_options['footer']['php']['empty'] = FALSE;
   $handler->display->display_options['footer']['php']['php_output'] = '<?php
 global $base_url;
 $q = $_GET[\'q\'];
@@ -468,7 +466,7 @@ echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'un
   $handler->display->display_options['arguments']['date_argument']['table'] = 'node';
   $handler->display->display_options['arguments']['date_argument']['field'] = 'date_argument';
   $handler->display->display_options['arguments']['date_argument']['default_action'] = 'default';
-  $handler->display->display_options['arguments']['date_argument']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['date_argument']['default_argument_type'] = 'php';
   $handler->display->display_options['arguments']['date_argument']['add_delta'] = 'yes';
   $handler->display->display_options['arguments']['date_argument']['date_fields'] = array(
     'field_data_field_date.field_date_value' => 'field_data_field_date.field_date_value',
@@ -487,6 +485,7 @@ echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'un
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['row_plugin'] = 'fields';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
@@ -515,7 +514,6 @@ echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'un
     t('Asc'),
     t('Desc'),
     t('yyy'),
-    t('meeting/[nid]'),
     t('All'),
     t('Måned'),
     t('Week'),
