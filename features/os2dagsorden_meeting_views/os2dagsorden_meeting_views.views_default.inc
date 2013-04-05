@@ -326,6 +326,7 @@ echo $title;
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'mini';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
@@ -617,6 +618,7 @@ if (!empty($meeting->field_meeting_description[\'und\'][0][\'uri\'])){
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Mødedetaljer';
   $handler->display->display_options['defaults']['css_class'] = FALSE;
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Committee (field_committee) */
   $handler->display->display_options['relationships']['field_committee_tid']['id'] = 'field_committee_tid';
@@ -733,6 +735,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler = $view->new_display('attachment', 'Lokation', 'attachment_3');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Lokation';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '0';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -804,6 +807,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
 
   /* Display: Deltagerne */
   $handler = $view->new_display('attachment', 'Deltagerne', 'attachment_2');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
@@ -849,6 +853,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler = $view->new_display('attachment', 'Print all speaker papers', 'attachment_print_all_speaker_papers');
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Print alle talepapirer';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
@@ -864,6 +869,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['title'] = 'Dagsorden';
   $handler->display->display_options['defaults']['css_class'] = FALSE;
   $handler->display->display_options['css_class'] = 'bullet-point-attachments';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '0';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -1140,11 +1146,6 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
 	$bilags[] = $attachment;
       } else {//not bilag
 	print \'<li class="non-bilag">\';
-	//print quick-annotate link only if text is not empty
-	if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){	
-	  $link_light = $base_url . \'/meeting/\' . $row->nid_1 . \'/bullet-point/\' . $row->nid . \'/bullet-point-attachment-light/\' . $attachment->nid . \'?destination=meeting/\' . $row->nid_1;
-	  print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" target="_blank" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
-	}
 	
 	//logic for touch devices
 	if (os2dagsorden_access_helper_is_touch()){
@@ -1179,11 +1180,6 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
     //going through all bilags
     foreach ($bilags as $attachment){
       print \'<li class="bilag">\';
-      //print quick-annotate link only if text is not empty
-      if (!empty($attachment->field_bpa_file_html[\'und\'][0])){	
-	$link_light = $base_url.\'/meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment-light/\'.$attachment->nid . \'?destination=meeting/\' . $row->nid_1;
-	print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" target="_blank" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
-      }
       
       //logic for touch devices
       if (os2dagsorden_access_helper_is_touch()){
@@ -1749,6 +1745,7 @@ else {
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
   $handler->display->display_options['defaults']['css_class'] = FALSE;
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['exposed_block'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
@@ -2134,6 +2131,7 @@ echo $title;
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $translatables['seneste_8_m_der_i_de_st_ende_politiske_udvalg_'] = array(
     t('Master'),
     t('Seneste 8 møder i alle udvalg'),
@@ -2311,6 +2309,7 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'table';
   $handler->display->display_options['style_options']['columns'] = array(
@@ -2583,6 +2582,7 @@ print \'<div class="indicator-has-notes"></div>\';
 
   /* Display: Speaker paper */
   $handler = $view->new_display('attachment', 'Speaker paper', 'attachment_1');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['empty'] = FALSE;
