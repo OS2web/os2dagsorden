@@ -2480,11 +2480,6 @@ print \'<div class="indicator-has-notes"></div>\';
 	$bilags[] = $attachment;
       } else {//not bilag
 	print \'<li class="non-bilag">\';      
-	//print quick-annotate link only if text is not empty
-	if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){	
-	  $link_light = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment-light/\'.$attachment->nid . \'?destination=\' . \'meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1;
-	  print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" target="_blank" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
-	}
 	      
 	//logic for touch devices
 	if (os2dagsorden_access_helper_is_touch()){
@@ -2520,11 +2515,6 @@ print \'<div class="indicator-has-notes"></div>\';
     //going through all bilags
     foreach ($bilags as $attachment){
       print \'<li class="bilag">\';
-      //print quick-annotate link only if text is not empty
-      if (!empty($attachment->field_bpa_file_html[\'und\'][0])){	
-	$link_light = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment-light/\'.$attachment->nid . \'?destination=\' . \'meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1;
-	print \'<div class="quick-annotate-button"><a href="\'.$link_light.\'" target="_blank" class="first-child last-child"><div class="indicator-create-note"></div>Annotér</a></div>\';
-      }
       
       //logic for touch devices
       if (os2dagsorden_access_helper_is_touch()){
@@ -2557,7 +2547,7 @@ print \'<div class="indicator-has-notes"></div>\';
     }
     print \'</ul>\';
     print \'</div>\';
-    print \'</td><td class="quick-annotate-container"></td></tr></table>\';
+    print \'</td></tr></table>\';
   }
   ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
