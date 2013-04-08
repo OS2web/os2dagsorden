@@ -1775,6 +1775,14 @@ else {
   $handler->display->display_options['filters']['field_date_value']['expose']['label'] = 'Fra dato:';
   $handler->display->display_options['filters']['field_date_value']['expose']['operator'] = 'field_date_value_op';
   $handler->display->display_options['filters']['field_date_value']['expose']['identifier'] = 'from_date';
+  $handler->display->display_options['filters']['field_date_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_date_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    4 => 0,
+    5 => 0,
+    3 => 0,
+  );
   $handler->display->display_options['filters']['field_date_value']['form_type'] = 'date_popup';
   $handler->display->display_options['filters']['field_date_value']['default_date'] = 'now';
   $handler->display->display_options['filters']['field_date_value']['year_range'] = '2011:+1';
@@ -1789,6 +1797,14 @@ else {
   $handler->display->display_options['filters']['field_date_value_1']['expose']['label'] = 'Til dato:';
   $handler->display->display_options['filters']['field_date_value_1']['expose']['operator'] = 'field_date_value_1_op';
   $handler->display->display_options['filters']['field_date_value_1']['expose']['identifier'] = 'to_date';
+  $handler->display->display_options['filters']['field_date_value_1']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_date_value_1']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    4 => 0,
+    5 => 0,
+    3 => 0,
+  );
   $handler->display->display_options['filters']['field_date_value_1']['form_type'] = 'date_popup';
   $handler->display->display_options['filters']['field_date_value_1']['default_date'] = 'now + 30 day';
   $handler->display->display_options['filters']['field_date_value_1']['year_range'] = '2011:+1';
@@ -1802,6 +1818,14 @@ else {
   $handler->display->display_options['filters']['field_committee_tid']['expose']['label'] = 'Udvalg:';
   $handler->display->display_options['filters']['field_committee_tid']['expose']['operator'] = 'field_committee_tid_op';
   $handler->display->display_options['filters']['field_committee_tid']['expose']['identifier'] = 'field_committee_tid';
+  $handler->display->display_options['filters']['field_committee_tid']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_committee_tid']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    4 => 0,
+    5 => 0,
+    3 => 0,
+  );
   $handler->display->display_options['filters']['field_committee_tid']['reduce_duplicates'] = TRUE;
   $handler->display->display_options['filters']['field_committee_tid']['type'] = 'select';
   $handler->display->display_options['filters']['field_committee_tid']['vocabulary'] = 'committee';
@@ -1816,6 +1840,14 @@ else {
   $handler->display->display_options['filters']['field_meeting_search_meta_date_value']['expose']['label'] = 'Fritekst:';
   $handler->display->display_options['filters']['field_meeting_search_meta_date_value']['expose']['operator'] = 'field_meeting_search_meta_date_value_op';
   $handler->display->display_options['filters']['field_meeting_search_meta_date_value']['expose']['identifier'] = 'search_params';
+  $handler->display->display_options['filters']['field_meeting_search_meta_date_value']['expose']['remember'] = TRUE;
+  $handler->display->display_options['filters']['field_meeting_search_meta_date_value']['expose']['remember_roles'] = array(
+    2 => '2',
+    1 => 0,
+    4 => 0,
+    5 => 0,
+    3 => 0,
+  );
   $handler->display->display_options['path'] = 'meetings-search';
   $translatables['meetings_search'] = array(
     t('Master'),
