@@ -186,6 +186,7 @@ function _os2dagsorden_print_meetings_get_table($from_month, $to_month) {
     //selecting the node of type meetings
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
+      ->propertyCondition('status', 1) // Getting published meetings only
       ->propertyCondition('type', array('meeting'))
       ->fieldCondition('field_date', 'value', date('Y') . '-' . $from_month . '-01 00:00:00', '>=')//selecting meetings from the from_month
       ->fieldCondition('field_date', 'value', date('Y') . '-' . $to_month . '-31 23:59:59', '<=')//selecting meetings up to the to_month
