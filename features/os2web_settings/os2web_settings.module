@@ -48,13 +48,6 @@ function os2web_settings_menu() {
         'access arguments' => array('administer os2web'),
         'type' => MENU_NORMAL_ITEM | MENU_LOCAL_TASK,
     );
-    $items['node/%/dump'] = array(
-        'title' => 'Node dump',
-        'page callback' => 'os2web_settings_nodedump',
-        'page arguments' => array(1),
-        'access arguments' => array('administer os2web'),
-        'type' => MENU_LOCAL_TASK,
-    );
     $items['os2web/settings/test'] = array(
         'title' => 'OS2web Test',
         'page callback' => 'drupal_get_form',
@@ -80,12 +73,6 @@ function os2web_settings_import_form($form, $form_state) {
         '#value' => t('Start import'),
     );
     return $form;
-}
-
-function os2web_settings_nodedump($nid) {
-    $node = node_load($nid);
-    $html = '<textarea rows="100">' . print_r($node, 1) . '</textarea>';
-    return $html;
 }
 
 // ---- batch update code

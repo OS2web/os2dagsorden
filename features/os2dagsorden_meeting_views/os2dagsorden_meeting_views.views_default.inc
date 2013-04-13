@@ -507,11 +507,8 @@ $nid = $results[0]->nid;
 $meeting = node_load($nid, null, TRUE);
 if (os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid)){
   if (!empty($meeting->field_meeting_description_closed[\'und\'][0][\'uri\'])){
-    //print \'<input class="form-submit" type="button" onclick="window.open(\';
-    //print(" \' " . file_create_url($meeting->field_meeting_description_closed[\'und\'][0][\'uri\']) . " \' ");
-    //print \')" value="Hent samlet dokument i PDF (lukket version)">\';
 ?>
-    <a target="_blank" href="<?php print(file_create_url($meeting->field_meeting_description_closed[\'und\'][0][\'uri\']));?>" class="form-submit">Hent samlet dokument i PDF (lukket version)</a>
+    <a target="_blank" href="<?php print(file_create_url($meeting->field_meeting_description_closed[\'und\'][0][\'uri\']));?>" class="form-submit">Hent samlet dokument i PDF (lukket)</a>
 <?php
   }
 }
@@ -564,7 +561,7 @@ if (!empty($meeting->field_meeting_description[\'und\'][0][\'uri\'])){
     if (os2dagsorden_access_helper_meeting_has_speaker_paper($row->nid)){
     global $base_url;
     print "<div class=\'speaker-paper-all-print\'>";
-    print \'<input class="form-submit" type="button" onclick="window.open(\';
+    print \'<input class="form-submit print-button" type="button" onclick="window.open(\';
     print(" \' " . $base_url . \'/print/meeting/\' . $row->nid . \'/speaker-papers/print\' . " \' ");
     print \')" value="Print Alle Talepapirer">\';
 
@@ -854,6 +851,11 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Print alle talepapirer';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    2 => '2',
+  );
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
@@ -1777,9 +1779,9 @@ else {
   $handler->display->display_options['filters']['field_date_value']['expose']['identifier'] = 'from_date';
   $handler->display->display_options['filters']['field_date_value']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_date_value']['expose']['remember_roles'] = array(
-    2 => '2',
+    2 => 0,
+    4 => '4',
     1 => 0,
-    4 => 0,
     5 => 0,
     3 => 0,
   );
@@ -1799,14 +1801,22 @@ else {
   $handler->display->display_options['filters']['field_date_value_1']['expose']['identifier'] = 'to_date';
   $handler->display->display_options['filters']['field_date_value_1']['expose']['remember'] = TRUE;
   $handler->display->display_options['filters']['field_date_value_1']['expose']['remember_roles'] = array(
-    2 => '2',
+    2 => 0,
+    4 => '4',
     1 => 0,
-    4 => 0,
     5 => 0,
     3 => 0,
   );
+  $handler->display->display_options['filters']['field_date_value_1']['group_info']['label'] = 'Date -  start date (field_date)';
+  $handler->display->display_options['filters']['field_date_value_1']['group_info']['identifier'] = 'field_date_value_1';
+  $handler->display->display_options['filters']['field_date_value_1']['group_info']['remember'] = FALSE;
+  $handler->display->display_options['filters']['field_date_value_1']['group_info']['group_items'] = array(
+    1 => array(),
+    2 => array(),
+    3 => array(),
+  );
   $handler->display->display_options['filters']['field_date_value_1']['form_type'] = 'date_popup';
-  $handler->display->display_options['filters']['field_date_value_1']['default_date'] = 'now + 30 day';
+  $handler->display->display_options['filters']['field_date_value_1']['default_date'] = 'now + 1 month';
   $handler->display->display_options['filters']['field_date_value_1']['year_range'] = '2011:+1';
   /* Filter criterion: Content: Committee (field_committee) */
   $handler->display->display_options['filters']['field_committee_tid']['id'] = 'field_committee_tid';
@@ -2649,10 +2659,9 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
     global $base_url;
     print "<div class=\'speaker-paper-print\'>";
-    print \'<input class="form-submit" type="button" onclick="window.open(\';
+    print \'<input class="form-submit print-button" type="button" onclick="window.open(\';
     print(" \' " . $base_url . \'/print/bullet-point/\' . $data->nid . \'/speaker-paper/\' . $row->body . \'/print\' . " \' ");
     print \')" value="Print Talepapir">\';
-
     print "</div>";
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';

@@ -59,7 +59,7 @@ function os2web_print_send_to_friend_menu() {
 function os2web_print_send_to_friend_print_bullet_point($bullet_point_id) {
   $bullet_point = node_load($bullet_point_id);
   if (strcmp($bullet_point->type, 'bullet_point') == 0) {
-    $html = '<h1>' . $bullet_point->title . '</h1>';
+    $html = '<h2>' . $bullet_point->title . '</h2>';
 
     foreach ($bullet_point->field_ref_attachment['und'] as $attachment_id) {
       $attachment = node_load($attachment_id['target_id']);
@@ -116,9 +116,8 @@ function os2web_print_send_to_friend_send_to_friend($bullet_point_id) {
   $to_email = check_plain($_POST['email']);
 
   $body = "<html><body>";
-  $body .= "Hej \n\n" . $name . " har sendt dig et dagsordenspunkt. \n\n";
 
-  $body .= "Med beskeden:\n" . $message . "\n\n";
+  $body .= $name . " har sendt dig et dagsordenspunkt med beskeden:<br/>" . $message . "<br/><br/>";
 
   $body .= os2web_print_send_to_friend_print_bullet_point($bullet_point_id);
   

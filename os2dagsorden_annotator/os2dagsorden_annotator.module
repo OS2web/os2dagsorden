@@ -345,6 +345,9 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 	  $file_name = explode('.', $file_name);
 	  $extention = strtoupper($file_name[1]);
 	  
+	  if (strpos($extention, 'xls') != -1 )//is excel file
+	    $extention = 'EXCEL';
+	  
 	  $html .= '<input class="form-submit" type="button" onclick="window.open(\'' . $download_pdf_link . '\')" value="Hent ' . $extention . '-version">';
 	  
 	  //composing the print link

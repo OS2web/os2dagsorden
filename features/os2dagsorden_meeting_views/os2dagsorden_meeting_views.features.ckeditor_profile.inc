@@ -35,11 +35,11 @@ function os2dagsorden_meeting_views_ckeditor_profile_defaults() {
         'custom_formatting' => 'f',
         'formatting' => array(
           'custom_formatting_options' => array(
-            'indent' => 'indent',
-            'breakBeforeOpen' => 'breakBeforeOpen',
-            'breakAfterOpen' => 'breakAfterOpen',
-            'breakAfterClose' => 'breakAfterClose',
+            'indent' => 0,
+            'breakBeforeOpen' => 0,
+            'breakAfterOpen' => 0,
             'breakBeforeClose' => 0,
+            'breakAfterClose' => 0,
             'pre_indent' => 0,
           ),
         ),
@@ -56,7 +56,19 @@ function os2dagsorden_meeting_views_ckeditor_profile_defaults() {
         'html_entities' => 't',
         'scayt_autoStartup' => 'f',
         'theme_config_js' => 'f',
-        'js_conf' => 'config.removePlugins = \'elementspath\';',
+        'js_conf' => 'config.removePlugins = \'elementspath\';
+
+CKEDITOR.on( \'instanceReady\', function( ev )
+	{
+		ev.editor.dataProcessor.writer.setRules( \'li\',
+			{
+				indent : false,
+				breakBeforeOpen : false,
+				breakAfterOpen : false,
+				breakBeforeClose : false,
+				breakAfterClose : false,
+			});
+	});',
         'loadPlugins' => array(
           'drupalbreaks' => array(
             'name' => 'drupalbreaks',

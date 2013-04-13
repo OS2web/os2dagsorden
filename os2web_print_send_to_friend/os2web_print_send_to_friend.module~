@@ -59,7 +59,7 @@ function os2web_print_send_to_friend_menu() {
 function os2web_print_send_to_friend_print_bullet_point($bullet_point_id) {
   $bullet_point = node_load($bullet_point_id);
   if (strcmp($bullet_point->type, 'bullet_point') == 0) {
-    $html = '<h1>' . $bullet_point->title . '</h1>';
+    $html = '<h2>' . $bullet_point->title . '</h2>';
 
     foreach ($bullet_point->field_ref_attachment['und'] as $attachment_id) {
       $attachment = node_load($attachment_id['target_id']);
@@ -93,7 +93,7 @@ function os2web_print_send_to_friend_send_to_friend_form($meeting_id, $bullet_po
   $html .= '<input type="hidden" name="base_url" id="field_base_url" value="' . $GLOBALS['base_url'] . '" />';
   $html .= '<input type="hidden" name="meeting_id" id="field_meeting_id" value="' . $meeting_id . '" />';
   $html .= '<input type="hidden" name="bullet_point_id" id="field_bullet_point_id" value="' . $bullet_point_id . '" />';
-  $html .= '<button type="submit" id="btn_send_to_friend">Send</button>';
+  $html .= '<button type="submit" class="form-submit" id="btn_send_to_friend">Send</button>';
   $html .= '<div class="throbber"></div>';
   $html .= '</form>';
 
@@ -116,9 +116,11 @@ function os2web_print_send_to_friend_send_to_friend($bullet_point_id) {
   $to_email = check_plain($_POST['email']);
 
   $body = "<html><body>";
-  $body .= "Hej \n\n" . $name . " har sendt dig et dagsordenspunkt. \n\n";
+  //$body .= "Hej \n\n" . $name . " har sendt dig et dagsordenspunkt. \n\n";
 
-  $body .= "Med beskeden:\n" . $message . "\n\n";
+  $body .= $name . " har sendt dig et dagsordenspunkt med beskeden:<br/>" . $message . "<br/><br/>";
+  
+  //$body .= "Med beskeden:\n" . $message . "\n\n";
 
   $body .= os2web_print_send_to_friend_print_bullet_point($bullet_point_id);
   
