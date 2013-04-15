@@ -22,7 +22,7 @@ function os2dagsorden_meeting_views_ckeditor_profile_defaults() {
 ',
         'uicolor_user' => 'default',
         'toolbar' => '[
-    [\'Bold\',\'Italic\',\'-\',\'NumberedList\',\'BulletedList\',\'Link\',\'Unlink\',\'PasteFromWord\']
+    [\'Bold\',\'Italic\',\'-\',\'NumberedList\',\'BulletedList\']
 ]',
         'expand' => 't',
         'width' => '100%',
