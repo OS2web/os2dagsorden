@@ -643,6 +643,7 @@ function _os2dagsorden_annotator_meeting_all_notes_view($meeting_id){
 	    $bullet_point = node_load($bullet_point['target_id']);
             if (isset($bullet_point->field_ref_attachment['und'])){
 	      //eliminating duplicates in bullet points attachments
+	      $attachments = array();
 	      foreach ($bullet_point->field_ref_attachment['und'] as $attachment_id){
 		$hash = $attachment_id['target_id'];
 		$attachments[$hash] = $attachment_id;
