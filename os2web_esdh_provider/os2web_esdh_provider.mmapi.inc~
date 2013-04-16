@@ -23,10 +23,15 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
   $nids = array();
   foreach ($meetings as $meeting) {
     //trying to get meeting from id
+    //$query = new EntityFieldQuery();
+    //$query->entityCondition('entity_type', 'node')
+    //    ->fieldCondition('field_meeting_acadre_id', 'value', $meeting_id['id'], '=');
+    
+    //trying to get meeting from sysid
     $query = new EntityFieldQuery();
     $query->entityCondition('entity_type', 'node')
-        ->fieldCondition('field_meeting_acadre_id', 'value', $meeting_id['id'], '=');
-
+        ->fieldCondition('field_meeting_sysid', 'value', $meeting['meeting_id'], '=');
+        
     $result = $query->execute();
     if (isset($result['node'])) {
         $nids = array_keys($result['node']);
@@ -72,16 +77,28 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     }
     //avoiding reimports
     if (isset($node->field_meeting_acadre_version[$node->language][0])) {
-      $old_version = $node->field_meeting_acadre_version[$node->language][0]['value'];
-      $new_version = $meeting['acadre_version'];
-      if (strcmp($old_version,$new_version) >= 0){//meeting is of the same version, no need to proceed
+      $contains_acadre_version = FALSE;
+      foreach($node->field_meeting_acadre_version[$node->language] as $field){
+	if (strcmp($field['value'], $meeting['acadre_version']) == 0){//meeting already has this acadre version, therefore aborting by continue
+	  $contains_acadre_version = TRUE;
+	  break;
+	} 
+      }
+      if ($contains_acadre_version){
 	continue;
       }
+      
+//       $old_version = $node->field_meeting_acadre_version[$node->language][0]['value'];
+//       $new_version = $meeting['acadre_version'];
+//       if (strcmp($old_version,$new_version) >= 0){
+// 	continue;
+//       }
     }
     
     
     $node->title = $meeting['title'];
     $node->field_meeting_acadre_version[LANGUAGE_NONE][0]['value'] = $meeting['acadre_version'];//setting the acarde version of the meeting
+    $node->field_meeting_sysid[LANGUAGE_NONE][0]['value'] = $meeting['meeting_id'];
     
     $node->field_date[LANGUAGE_NONE][0]['value'] = $meeting['meeting_date_start'];
     $node->field_date[LANGUAGE_NONE][0]['value2'] = $meeting['meeting_date_finish'];
@@ -181,7 +198,7 @@ function _os2web_esdh_provider_import_items($items) {
     } 
     
     //check the name
-    if (!stripos($item['agenda_type'], 'tillæg'))
+    if (!stripos($item['agenda_type'], 'tillæg') && stripos($item['agenda_type'], 'tillæg') !== 0)
       $node->title = $item['title'] . ' (' . $item['caseno'] . ')';
     else
      $node->title = 'Tillægsdagsorden: ' . $item['title'] . ' (' . $item['caseno'] . ')';
