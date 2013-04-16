@@ -2622,10 +2622,11 @@ print \'<div class="indicator-has-notes"></div>\';
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
   $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['empty'] = TRUE;
   $handler->display->display_options['empty']['area']['content'] = '<?php
 global $base_url;
 $q = $_GET[\'q\'];
-print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=%1 (!1)&destination=\' . $q . \'">Opret et nye talepapir</a>\';
+print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=%1 (!1)&destination=\' . $q . \'">Opret et nyt talepapir</a>\';
 
 //print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=%1 (!1)">test</a>\';
 ?>
@@ -2721,7 +2722,7 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
     t('<?php
 global $base_url;
 $q = $_GET[\'q\'];
-print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=%1 (!1)&destination=\' . $q . \'">Opret et nye talepapir</a>\';
+print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=%1 (!1)&destination=\' . $q . \'">Opret et nyt talepapir</a>\';
 
 //print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=%1 (!1)">test</a>\';
 ?>
