@@ -125,17 +125,11 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       $node->field_meeting_description[$node->language][0] = (array) $description;
     
     //change status to Dagsorden / Referat and force the email notification
-    if (strcmp($meeting['agenda_type'], 'Dagsorden') == 0)
-	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden');
-    else
-	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat');
+    $node = os2dagsorden_access_helper_set_meeting_status_and_save($node, $meeting['type']);
     
     //check if a meeting is in a fully converted state, then change status to Dagsorden+/Referat+ status
     if (os2dagsorden_access_helper_meeting_fully_converted($node)){
-      if (strcmp($meeting['agenda_type'], 'Dagsorden') == 0)
-	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Dagsorden+');
-      else
-	$node = os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Referat+');
+      $node = os2dagsorden_access_helper_set_meeting_status_and_save($node, $meeting['type'] . '+');
     }
       
     watchdog('ESDH', 'Imported agenda id: %aid (Meeting: %mid) into node %nid .', array(
@@ -187,7 +181,7 @@ function _os2web_esdh_provider_import_items($items) {
     } 
     
     //check the name
-    if (strcmp($item['agenda_type'], 'Tillægsreferat') != 0)
+    if (!stripos($item['agenda_type'], 'tillæg') && stripos($item['agenda_type'], 'tillæg') !== 0)
       $node->title = $item['title'] . ' (' . $item['caseno'] . ')';
     else
      $node->title = 'Tillægsdagsorden: ' . $item['title'] . ' (' . $item['caseno'] . ')';
