@@ -62,8 +62,98 @@ function os2dagsorden_admin_suite_menu() {
         'access arguments' => array('administer os2web'),
     );
     
+    $items['os2dagsorden/admin_suite/update_meetings_sysid'] = array(
+        'type' => MENU_CALLBACK,
+        'page callback' => 'os2dagsorden_admin_suite_update_meetings_sysid',
+        'access arguments' => array('administer os2web'),
+    );
+    
     
     return $items;
+}
+
+function os2dagsorden_admin_suite_update_meetings_sysid(){
+  $meetings = os2web_esdh_provider_invoke('mm', 'get_import_list');
+  foreach ($meetings as $meeting_id){
+    //print_r($meeting_id);
+    $meeting_versions = os2web_esdh_provider_invoke('mm', 'import_meeting', $meeting_id);
+    foreach ($meeting_versions as $meeting_version){      
+      //trying to get meeting from id
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+	  ->fieldCondition('field_meeting_acadre_id', 'value', $meeting_id['id'], '=');
+
+      $result = $query->execute();
+      if (isset($result['node'])) {
+	  $nids = array_keys($result['node']);
+	  $node = reset(entity_load('node', $nids));
+      }
+      else {//if fails, trying to get meeting from date and committe combination. Assuming this is unique
+	  //getting committee tid
+	  $vid = db_select('taxonomy_vocabulary', 'tv')->fields('tv', array('vid'))->condition('machine_name', 'committee')->execute()->fetchField();
+
+	  $query = new EntityFieldQuery();
+	  $query->entityCondition('entity_type', 'taxonomy_term')
+	      ->propertyCondition('vid', $vid)
+	      ->fieldCondition('field_committee_acadre_id', 'value', $meeting_version['committee_id'], '=');
+
+	  $result = $query->execute();
+	  if (isset($result['taxonomy_term'])) {
+	      $tids = array_keys($result['taxonomy_term']);
+	      $com_tid = reset($tids);
+	  }
+
+	  //getting meeting
+	  $meeting_start_date_0000 = date('Y-m-d 00:00:00', strtotime($meeting_version['meeting_date_start']));
+	  $meeting_start_date_2359 = date('Y-m-d 23:59:59', strtotime($meeting_version['meeting_date_start']));
+
+	  $query = new EntityFieldQuery();
+	  $query->entityCondition('entity_type', 'node')
+	      ->fieldCondition('field_date', 'value', $meeting_start_date_0000, '>=')
+	      ->fieldCondition('field_date', 'value', $meeting_start_date_2359, '<=')
+	      ->fieldCondition('field_committee', 'tid', $com_tid, '=');
+	  $result = $query->execute();
+
+	  if (isset($result['node'])) {
+	      $nids = array_keys($result['node']);
+	      $node = reset(entity_load('node', $nids));
+	  }
+	  else {//if fails, creating a new meeting
+	      print_r('could not be found: ' . $meeting_id['id']);
+	      print_r("<br/>");
+	  }
+      }
+      //if (!empty($node->field_meeting_sysid['und'][0]))//break if already filled
+	//continue;
+	  
+      //setting sysid
+      $node->field_meeting_sysid['und'][0]['value'] = $meeting_version['meeting_id'];
+      
+      $contains_acadre_version = FALSE;
+      //updating acadre versions
+      if (isset($node->field_meeting_acadre_version['und'])){
+	foreach($node->field_meeting_acadre_version['und'] as $field){
+	  //print_r($field);
+	  //print_r($meeting_version['acadre_version']);
+	  if (strcmp($field['value'], $meeting_version['acadre_version']) == 0){
+	    $contains_acadre_version = TRUE;
+	    break;
+	  } 
+	} 
+      }
+      
+      if (!$contains_acadre_version){
+	$node->field_meeting_acadre_version['und'][]['value'] = $meeting_version['acadre_version'];
+      }
+	
+      print_r("Found nid: " . $node->nid);
+      print_r("<br/>");
+      //print_r($node);
+      print_r("<br/>");
+      
+      node_save($node);
+    }
+  }
 }
 
 /**

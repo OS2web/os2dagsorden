@@ -924,7 +924,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '9',
+        'weight' => '10',
       ),
     ),
   );
@@ -1006,7 +1006,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
@@ -1074,7 +1074,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '8',
+        'weight' => '9',
       ),
     ),
   );
@@ -1147,7 +1147,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '10',
+        'weight' => '11',
       ),
     ),
   );
@@ -1208,7 +1208,7 @@ function os2dagsorden_content_types_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );
@@ -1217,7 +1217,7 @@ function os2dagsorden_content_types_field_default_fields() {
   $fields['node-meeting-field_meeting_acadre_version'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_meeting_acadre_version',
@@ -1276,7 +1276,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -1338,7 +1338,7 @@ function os2dagsorden_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -1410,7 +1410,79 @@ function os2dagsorden_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '13',
+        'weight' => '14',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-meeting-field_meeting_description_add'
+  $fields['node-meeting-field_meeting_description_add'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_meeting_description_add',
+      'foreign keys' => array(
+        'fid' => array(
+          'columns' => array(
+            'fid' => 'fid',
+          ),
+          'table' => 'file_managed',
+        ),
+      ),
+      'indexes' => array(
+        'fid' => array(
+          0 => 'fid',
+        ),
+      ),
+      'module' => 'file',
+      'settings' => array(
+        'display_default' => 0,
+        'display_field' => 0,
+        'uri_scheme' => 'public',
+      ),
+      'translatable' => '0',
+      'type' => 'file',
+    ),
+    'field_instance' => array(
+      'bundle' => 'meeting',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'file',
+          'settings' => array(),
+          'type' => 'file_default',
+          'weight' => 25,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_meeting_description_add',
+      'label' => 'Description Additional',
+      'required' => 0,
+      'settings' => array(
+        'description_field' => 0,
+        'file_directory' => '',
+        'file_extensions' => 'doc pdf',
+        'max_filesize' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'file',
+        'settings' => array(
+          'progress_indicator' => 'throbber',
+        ),
+        'type' => 'file_generic',
+        'weight' => '16',
       ),
     ),
   );
@@ -1482,7 +1554,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '14',
+        'weight' => '15',
       ),
     ),
   );
@@ -1609,7 +1681,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '15',
+        'weight' => '17',
       ),
     ),
   );
@@ -1724,7 +1796,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
         'module' => 'computed_field',
         'settings' => array(),
         'type' => 'computed',
-        'weight' => '12',
+        'weight' => '13',
       ),
     ),
   );
@@ -1792,7 +1864,68 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '3',
+        'weight' => '4',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-meeting-field_meeting_sysid'
+  $fields['node-meeting-field_meeting_sysid'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_meeting_sysid',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'number',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'number_integer',
+    ),
+    'field_instance' => array(
+      'bundle' => 'meeting',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'number',
+          'settings' => array(
+            'decimal_separator' => '.',
+            'prefix_suffix' => TRUE,
+            'scale' => 0,
+            'thousand_separator' => ' ',
+          ),
+          'type' => 'number_integer',
+          'weight' => 26,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_meeting_sysid',
+      'label' => 'Sysid',
+      'required' => 0,
+      'settings' => array(
+        'max' => '',
+        'min' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'number',
+        'settings' => array(),
+        'type' => 'number',
+        'weight' => '1',
       ),
     ),
   );
@@ -1887,7 +2020,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'size' => 60,
         ),
         'type' => 'entityreference_autocomplete',
-        'weight' => '11',
+        'weight' => '12',
       ),
     ),
   );
@@ -1955,7 +2088,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '7',
+        'weight' => '8',
       ),
     ),
   );
@@ -3193,6 +3326,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
   t('Date');
   t('Date valid');
   t('Description');
+  t('Description Additional');
   t('Description Closed');
   t('Enclosures');
   t('File');
@@ -3221,6 +3355,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
   t('Search meta data');
   t('Short title');
   t('Status');
+  t('Sysid');
   t('User positions');
   t('a list of all acadre id\'s, that are connected to that committee group');
   t('represents the committees the user is a part of');
