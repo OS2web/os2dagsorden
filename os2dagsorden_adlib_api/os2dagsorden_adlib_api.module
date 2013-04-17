@@ -379,8 +379,13 @@ function _os2dagsorden_adlib_api_do_processing($limit = FALSE) {
 		    //resave file
 		    if ($upd_file->fid == $destination_node->field_meeting_description_closed[$destination_node->language][0]['fid'])//update closed file
 		      $destination_node->field_meeting_description_closed[$destination_node->language][0] = (array) $upd_file;
-		    else //update opened file
-		      $destination_node->field_meeting_description[$destination_node->language][0] = (array) $upd_file;	
+		    else if ($upd_file->fid == $destination_node->field_meeting_description[$destination_node->language][0]['fid'])//update opened file
+		      $destination_node->field_meeting_description[$destination_node->language][0] = (array) $upd_file;
+		    else if ($upd_file->fid == $destination_node->field_meeting_description_add_c[$destination_node->language][0]['fid'])//update closed additional agenda
+		      $destination_node->field_meeting_description_add_c[$destination_node->language][0] = (array) $upd_file;
+		    else 
+		      $destination_node->field_meeting_description_add[$destination_node->language][0] = (array) $upd_file;//update opened additional agenda
+		      
 		 }
 		 node_save($destination_node);	
               } else {

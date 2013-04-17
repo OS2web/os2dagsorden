@@ -130,10 +130,31 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     //adding description
     $description = _os2web_esdh_provider_import_file($meeting['full_doc']);
     
-    if (strcmp($meeting['agenda_access'], 'Lukket') == 0) 
-      $node->field_meeting_description_closed[$node->language][0] = (array) $description;
-    else 
-      $node->field_meeting_description[$node->language][0] = (array) $description;
+    if (strcmp($meeting['agenda_access'], 'Lukket') == 0){
+      if (!stripos($meeting['agenda_type'], 'tillæg') && stripos($meeting['agenda_type'], 'tillæg') !== 0){//not additional agenda
+	$file_field = $node->field_meeting_description_closed;
+	if (os2web_esdh_provider_should_import_description($file_field, $meeting['acadre_version'])){
+	  $node->field_meeting_description_closed[$node->language][0] = (array) $description;
+	}	  
+      } else {
+	$file_field = $node->field_meeting_description_add_c;
+	if (os2web_esdh_provider_should_import_description($file_field, $meeting['acadre_version'])){
+	  $node->field_meeting_description_add_c[$node->language][0] = (array) $description;
+	}  
+      }
+    } else {
+      if (!stripos($meeting['agenda_type'], 'tillæg') && stripos($meeting['agenda_type'], 'tillæg') !== 0){//not additional agenda
+	$file_field = $node->field_meeting_description;
+	if (os2web_esdh_provider_should_import_description($file_field, $meeting['acadre_version'])){
+	  $node->field_meeting_description[$node->language][0] = (array) $description;
+	}
+      } else {
+	$file_field = $node->field_meeting_description_add;
+	if (os2web_esdh_provider_should_import_description($file_field, $meeting['acadre_version'])){
+	  $node->field_meeting_description_add[$node->language][0] = (array) $description;
+	}
+      }
+    }
     
     //change status to Dagsorden / Referat and force the email notification
     $node = os2dagsorden_access_helper_set_meeting_status_and_save($node, $meeting['type']);
@@ -158,6 +179,28 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
   }
   lock_release(__FUNCTION__ . $meeting_id['id']);
   return $nids;
+}
+
+/**
+ * Checks if a given field version (part of the filename) is below the acadre version, that is currently being imported.
+ * If that is the case - TRUE is returned, otherwise FALSE is returned
+ *
+ * @param mixed  $file_field     the filed where the file is stored
+ * @param string $acadre_version the current number of acadre
+ *
+ * @return TRUE or FALSE
+ */
+function os2web_esdh_provider_should_import_description($file_field, $acadre_version){
+  if (isset($file_field[LANGUAGE_NONE][0])){
+    $file = $file_field[LANGUAGE_NONE][0];
+    $ext = explode('.', $file['filename']);
+    if (intval($ext[0]) < intval($acadre_version))
+      return TRUE;
+    else 
+      return FALSE;
+  } else {
+    return TRUE;
+  }
 }
 
 /**

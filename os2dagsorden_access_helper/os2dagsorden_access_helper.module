@@ -140,11 +140,17 @@ function os2dagsorden_access_helper_file_download ($uri){
         ->fieldCondition('field_meeting_description_closed', 'fid', $file->fid, '=');
     
     $result = $query->execute();
+    if (!isset($result['node'])){//not found, try to find by additional agenda
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node')
+        ->fieldCondition('field_meeting_description_add_c', 'fid', $file->fid, '=');
+    }
+    
     if (isset($result['node'])) {//if meeting is found - meaning that the file is closed. Perform deep check
         $nids = array_keys($result['node']);
         $meeting = reset(entity_load('node', $nids));
         
-        if (os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid)){  
+        if (os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid)){
 	  return array(
 	    'Content-Type' => $file->filemime,
 	    'Content-Length' => $file->filesize,

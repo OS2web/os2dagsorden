@@ -515,11 +515,27 @@ if (os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid)){
 
 //opened version - if not empty
 if (!empty($meeting->field_meeting_description[\'und\'][0][\'uri\'])){
-  //print \'<input class="form-submit next-control" type="button" onclick="window.open(\';
-  //print(" \' " . file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\']) . " \' ");
-  //print \')" value="Hent samlet dokument i PDF">\';
 ?>
     <a target="_blank" href="<?php print(file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\'])); ?>" class="form-submit">Hent samlet dokument i PDF</a>
+<?php
+}
+?>
+</div>
+<div class="clearfix"></div>
+<div class="controls-right">
+<?php
+if (os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid)){
+  if (!empty($meeting->field_meeting_description_add_c[\'und\'][0][\'uri\'])){
+?>
+    <a target="_blank" href="<?php print(file_create_url($meeting->field_meeting_description_add_c[\'und\'][0][\'uri\']));?>" class="form-submit">Hent tillægsdokument i PDF (lukket)</a>
+<?php
+  }
+}
+
+//opened version - if not empty
+if (!empty($meeting->field_meeting_description_add[\'und\'][0][\'uri\'])){
+?>
+    <a target="_blank" href="<?php print(file_create_url($meeting->field_meeting_description_add[\'und\'][0][\'uri\'])); ?>" class="form-submit">Hent tillægsdokument i PDF</a>
 <?php
 }
 ?>
