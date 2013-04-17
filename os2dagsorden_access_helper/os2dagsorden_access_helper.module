@@ -144,6 +144,8 @@ function os2dagsorden_access_helper_file_download ($uri){
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'node')
         ->fieldCondition('field_meeting_description_add_c', 'fid', $file->fid, '=');
+        
+      $result = $query->execute();
     }
     
     if (isset($result['node'])) {//if meeting is found - meaning that the file is closed. Perform deep check
