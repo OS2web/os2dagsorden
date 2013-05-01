@@ -129,6 +129,8 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
     
     //adding description
     $description = _os2web_esdh_provider_import_file($meeting['full_doc']);
+    $description->description = $meeting_id['id'];
+    $description = file_save($description);
     
     if (strcmp($meeting['agenda_access'], 'Lukket') == 0){
       if (!stripos($meeting['agenda_type'], 'tillæg') && stripos($meeting['agenda_type'], 'tillæg') !== 0){//not additional agenda
@@ -136,11 +138,19 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
 	if (os2web_esdh_provider_should_import_description($file_field, $meeting['acadre_version'])){
 	  $node->field_meeting_description_closed[$node->language][0] = (array) $description;
 	}	  
-      } else {
-	$file_field = $node->field_meeting_description_add_c;
-	if (os2web_esdh_provider_should_import_description($file_field, $meeting['acadre_version'])){
-	  $node->field_meeting_description_add_c[$node->language][0] = (array) $description;
-	}  
+      } else {//is additional agenda
+	$imported = FALSE;
+	if (isset($node->field_meeting_description_add_c)){
+	  foreach($node->field_meeting_description_add_c as $index => $description_field){    
+	    if ($description_field['description'] === $meeting_id['id']){//same acadre id, replace the description
+		$node->field_meeting_description_add_c[$node->language][$index] = (array) $description;
+		$imported = TRUE;
+		break;
+	    }
+	  }
+	}
+	if (!$imported)
+	  $node->field_meeting_description_add_c[$node->language][] = (array) $description;
       }
     } else {
       if (!stripos($meeting['agenda_type'], 'tillæg') && stripos($meeting['agenda_type'], 'tillæg') !== 0){//not additional agenda
@@ -148,11 +158,19 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
 	if (os2web_esdh_provider_should_import_description($file_field, $meeting['acadre_version'])){
 	  $node->field_meeting_description[$node->language][0] = (array) $description;
 	}
-      } else {
-	$file_field = $node->field_meeting_description_add;
-	if (os2web_esdh_provider_should_import_description($file_field, $meeting['acadre_version'])){
-	  $node->field_meeting_description_add[$node->language][0] = (array) $description;
+      } else {//is additional agenda
+	$imported = FALSE;
+	if (isset($node->field_meeting_description_add)){
+	  foreach($node->field_meeting_description_add as $index => $description_field){    
+	    if ($description_field['description'] === $meeting_id['id']){//same acadre id, replace the description
+		$node->field_meeting_description_add[$node->language][$index] = (array) $description;
+		$imported = TRUE;
+		break;
+	    }
+	  }
 	}
+	if (!$imported)
+	  $node->field_meeting_description_add[$node->language][] = (array) $description;
       }
     }
     
@@ -224,6 +242,7 @@ function _os2web_esdh_provider_import_items($items) {
     if (isset($result['node'])) {
         $all_nids = array_keys($result['node']);
         $node = reset(entity_load('node', $all_nids));
+        $bulle_point_exists = TRUE;//already existing in the system
     }
     else {
         $node = new stdClass();
@@ -305,7 +324,8 @@ function _os2web_esdh_provider_import_items($items) {
     
     node_submit($node);
     node_save($node);
-    $nids[] = $node->nid;
+    if (!$bulle_point_exists)//only add it if it is not existing in the system, avoiding readding the same node to the meeting
+      $nids[] = $node->nid;
   }
   return $nids;
 }

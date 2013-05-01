@@ -491,56 +491,71 @@ if (module_exists(\'os2dagsorden_create_agenda\') && user_access(\'administer os
   $handler->display->display_options['header']['php_1']['table'] = 'views';
   $handler->display->display_options['header']['php_1']['field'] = 'php';
   $handler->display->display_options['header']['php_1']['ui_name'] = 'description download';
-  $handler->display->display_options['header']['php_1']['php_output'] = '<div class="controls-left">
-<?php
-//meeting all notes
+  $handler->display->display_options['header']['php_1']['php_output'] = '<?php
 global $base_url;
 $q = explode(\'/\',$_GET[\'q\']);
 $meeting_id = $q[1];
-?>
-<a target="_blank" href="<?php print($base_url . \'?q=meeting/\' . $meeting_id . \'/notes\');?>" class="form-submit">Mødenoter</a>
-</div>
-<div class="controls-right">
-<?php
+
+//meeting all notes
+echo \'<div class="controls-left">\';
+echo \'<a target="_blank" href="\' . $base_url . \'?q=meeting/\' . $meeting_id . \'/notes" class="form-submit">Mødenoter</a>\';
+echo \'</div>\';
+
+///////////////////////descriptions (not additional)
+echo \'<div class="controls-right">\';
 //closed version - if not empty
 $nid = $results[0]->nid;
 $meeting = node_load($nid, null, TRUE);
-if (os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid)){
+$user_can_see_closed_agendas = os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid);
+
+if ($user_can_see_closed_agendas){
   if (!empty($meeting->field_meeting_description_closed[\'und\'][0][\'uri\'])){
-?>
-    <a target="_blank" href="<?php print(file_create_url($meeting->field_meeting_description_closed[\'und\'][0][\'uri\']));?>" class="form-submit">Hent samlet dokument i PDF (lukket)</a>
-<?php
+    echo \'<a target="_blank" href="\' . file_create_url($meeting->field_meeting_description_closed[\'und\'][0][\'uri\']) . 
+    \'" class="form-submit">Hent samlet dokument i PDF (lukket)</a>\';
   }
 }
 
 //opened version - if not empty
 if (!empty($meeting->field_meeting_description[\'und\'][0][\'uri\'])){
-?>
-    <a target="_blank" href="<?php print(file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\'])); ?>" class="form-submit">Hent samlet dokument i PDF</a>
-<?php
+    echo \'<a target="_blank" href="\' . file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\']) . 
+    \'" class="form-submit">Hent samlet dokument i PDF</a>\';
 }
-?>
-</div>
-<div class="clearfix"></div>
-<div class="controls-right">
-<?php
-if (os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid)){
-  if (!empty($meeting->field_meeting_description_add_c[\'und\'][0][\'uri\'])){
-?>
-    <a target="_blank" href="<?php print(file_create_url($meeting->field_meeting_description_add_c[\'und\'][0][\'uri\']));?>" class="form-submit">Hent tillægsdokument i PDF (lukket)</a>
-<?php
+echo \'</div>\';
+echo \'<div class="clearfix"></div>\';
+
+///////////////////////descriptions (additional)
+$additional_descriptions = array();
+if (!empty($meeting->field_meeting_description_add_c[\'und\'])){
+  foreach ($meeting->field_meeting_description_add_c[\'und\'] as $file){
+      $additional_descriptions[$file[\'description\']][\'closed\'] = $file;
+  }
+}
+if (!empty($meeting->field_meeting_description_add[\'und\'])){
+  foreach ($meeting->field_meeting_description_add[\'und\'] as $file){
+      $additional_descriptions[$file[\'description\']][\'opened\'] = $file;
   }
 }
 
-//opened version - if not empty
-if (!empty($meeting->field_meeting_description_add[\'und\'][0][\'uri\'])){
-?>
-    <a target="_blank" href="<?php print(file_create_url($meeting->field_meeting_description_add[\'und\'][0][\'uri\'])); ?>" class="form-submit">Hent tillægsdokument i PDF</a>
-<?php
+ksort($additional_descriptions);
+
+foreach ($additional_descriptions as $add_desc){
+  echo \'<div class="controls-right">\';  
+  //closed version additional - if not empty
+  if ($user_can_see_closed_agendas){
+    if (!empty($add_desc[\'closed\'])){
+      echo \'<a target="_blank" href="\' . file_create_url($add_desc[\'closed\'][\'uri\']) .
+      \'" class="form-submit">Hent tillægsdokument i PDF (lukket)</a> \';
+    }
+  }
+  //opened version additional - if not empty
+  if (!empty($add_desc[\'opened\'])){
+      echo \'<a target="_blank" href="\' . file_create_url($add_desc[\'opened\'][\'uri\']) . 
+      \'" class="form-submit">Hent tillægsdokument i PDF</a>\';
+  }
+  echo \'</div>\';
+  echo \'<div class="clearfix"></div>\';
 }
-?>
-</div>
-<div class="clearfix"></div>';
+?>';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_ref_bullet_points_target_id']['id'] = 'field_ref_bullet_points_target_id';
   $handler->display->display_options['relationships']['field_ref_bullet_points_target_id']['table'] = 'field_data_field_ref_bullet_points';

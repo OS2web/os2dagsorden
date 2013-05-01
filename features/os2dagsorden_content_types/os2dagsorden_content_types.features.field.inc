@@ -1208,7 +1208,7 @@ function os2dagsorden_content_types_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -1276,7 +1276,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -1338,7 +1338,7 @@ function os2dagsorden_content_types_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -1419,7 +1419,7 @@ function os2dagsorden_content_types_field_default_fields() {
   $fields['node-meeting-field_meeting_description_add'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_meeting_description_add',
@@ -1491,7 +1491,7 @@ function os2dagsorden_content_types_field_default_fields() {
   $fields['node-meeting-field_meeting_description_add_c'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_meeting_description_add_c',
@@ -1554,7 +1554,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'progress_indicator' => 'throbber',
         ),
         'type' => 'file_generic',
-        'weight' => '18',
+        'weight' => '17',
       ),
     ),
   );
@@ -1687,7 +1687,7 @@ function os2dagsorden_content_types_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '0',
+        'weight' => '1',
       ),
     ),
   );
@@ -1753,7 +1753,7 @@ function os2dagsorden_content_types_field_default_fields() {
           'rows' => '5',
         ),
         'type' => 'text_textarea',
-        'weight' => '17',
+        'weight' => '18',
       ),
     ),
   );
@@ -1936,7 +1936,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -1997,7 +1997,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );

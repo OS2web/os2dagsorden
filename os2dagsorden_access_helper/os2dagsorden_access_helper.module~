@@ -144,6 +144,8 @@ function os2dagsorden_access_helper_file_download ($uri){
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'node')
         ->fieldCondition('field_meeting_description_add_c', 'fid', $file->fid, '=');
+        
+      $result = $query->execute();
     }
     
     if (isset($result['node'])) {//if meeting is found - meaning that the file is closed. Perform deep check
@@ -448,15 +450,12 @@ function os2dagsorden_access_helper_delete_user_rights() {
 }
 
 /**
-  * Checks if all of the meeitng bullet point bilga were converted
+  * Checks if all of the meeitng bullet point bilag were converted to pdf/html and all the meetings descriptions have been converted to pdf
   *
-  * @return none
+  * @return TRUE or FALSE
   */
 function os2dagsorden_access_helper_meeting_fully_converted($meeting){
-  //assuming that all attachmens are converted, will be examined above
-  $all_attachments_converted = TRUE;
-
-  //goint through all the meetings bullet points
+  //going through all the meetings bullet points
   if (!empty($meeting->field_ref_bullet_points['und'])) {
       foreach ($meeting->field_ref_bullet_points['und'] as $ref_bullet_point) {
 	  $bullet_point = node_load($ref_bullet_point['target_id']);
@@ -465,16 +464,48 @@ function os2dagsorden_access_helper_meeting_fully_converted($meeting){
 	  if (!empty($bullet_point->field_ref_attachment['und'])) {
 	      foreach ($bullet_point->field_ref_attachment['und'] as $ref_bullet_point_attachment) {
 		  $attachment = node_load($ref_bullet_point_attachment['target_id']);
-		  
-		  if (empty($attachment->field_bpa_body['und'][0]['value']) && empty($attachment->field_bpa_file_html['und'][0])){
-		    $all_attachments_converted = FALSE;
-		    break;
-		  }
+		  if (empty($attachment->field_bpa_body['und'][0]['value']) && empty($attachment->field_bpa_file_html['und'][0]))
+		    return FALSE;
 	      }
 	  }
       }
   }
-  return $all_attachments_converted;
+  
+  //going through all the descriptions
+  if (isset($meeting->field_meeting_description_closed[$meeting->language])){//closed agenda
+    $file_name = $meeting->field_meeting_description_closed[$meeting->language][0]['filename'];
+    $file_name = explode('.', $file_name);
+    $extention = strtoupper($file_name[1]);
+    if (stripos($extention, 'pdf') !== 0)
+      return FALSE;
+  } 
+  if (isset($meeting->field_meeting_description[$meeting->language])){//opened agenda
+    $file_name = $meeting->field_meeting_description[$meeting->language][0]['filename'];
+    $file_name = explode('.', $file_name);
+    $extention = strtoupper($file_name[1]);
+    if (stripos($extention, 'pdf') !== 0)
+      return FALSE;
+  }
+  if (isset($meeting->field_meeting_description_add_c[$meeting->language])){//additional closed agenda
+    foreach($meeting->field_meeting_description_add_c as $description_field){
+      $file_name = $description_field['filename'];
+      $file_name = explode('.', $file_name);
+      $extention = strtoupper($file_name[1]);
+      if (stripos($extention, 'pdf') !== 0)
+	return FALSE;
+    }
+  }
+  if (isset($meeting->field_meeting_description_add[$meeting->language])){//additional opened agenda
+    foreach($meeting->field_meeting_description_add as $description_field){
+      $file_name = $description_field['filename'];
+      $file_name = explode('.', $file_name);
+      $extention = strtoupper($file_name[1]);
+      if (stripos($extention, 'pdf') !== 0)
+	return FALSE;
+    }
+  }
+  
+  return TRUE;
 }
 
 /**

@@ -381,13 +381,39 @@ function _os2dagsorden_adlib_api_do_processing($limit = FALSE) {
 		      $destination_node->field_meeting_description_closed[$destination_node->language][0] = (array) $upd_file;
 		    else if ($upd_file->fid == $destination_node->field_meeting_description[$destination_node->language][0]['fid'])//update opened file
 		      $destination_node->field_meeting_description[$destination_node->language][0] = (array) $upd_file;
-		    else if ($upd_file->fid == $destination_node->field_meeting_description_add_c[$destination_node->language][0]['fid'])//update closed additional agenda
-		      $destination_node->field_meeting_description_add_c[$destination_node->language][0] = (array) $upd_file;
-		    else 
-		      $destination_node->field_meeting_description_add[$destination_node->language][0] = (array) $upd_file;//update opened additional agenda
-		      
+		    else {//go through addtional agendas to replace the right file
+		      $imported = FALSE;
+		      if (isset($destination_node->field_meeting_description_add_c)){//closed agenda
+			foreach($destination_node->field_meeting_description_add_c as $index => $description_field){    
+			  if ($upd_file->fid == $description_field['fid']){//same file id, replace the description
+			      $destination_node->field_meeting_description_add_c[$destination_node->language][$index] = (array) $upd_file;
+			      $imported = TRUE;
+			      break;
+			  }
+			}
+		      }
+		      if (!$imported){
+			if (isset($destination_node->field_meeting_description_add)){//opened agenda
+			  foreach($destination_node->field_meeting_description_add as $index => $description_field){    
+			    if ($upd_file->fid == $description_field['fid']){//same file id, replace the description
+				$destination_node->field_meeting_description_add[$destination_node->language][$index] = (array) $upd_file;
+				$imported = TRUE;
+				break;
+			    }
+			  }
+			}
+		      }
+		    }
 		 }
-		 node_save($destination_node);	
+		  if (os2dagsorden_access_helper_meeting_fully_converted($destination_node)){//save with status+
+		      if (strcmp($destination_node->field_meeting_status['und'][0]['value'], 'Dagsorden') == 0)
+			os2dagsorden_access_helper_set_meeting_status_and_save($destination_node, 'Dagsorden+');
+		      else
+			os2dagsorden_access_helper_set_meeting_status_and_save($destination_node, 'Referat+');
+		  } else {//save with the same status
+		    os2dagsorden_access_helper_set_meeting_status_and_save($destination_node, $destination_node->field_meeting_status['und'][0]['value']);
+		  }
+	
               } else {
                 error_log(basename(__FILE__) . ':' . __LINE__ . " jm@bellcom.dk: Filesize was 0. Aborting update.");
               }
