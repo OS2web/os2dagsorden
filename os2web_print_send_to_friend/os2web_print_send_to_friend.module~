@@ -116,11 +116,8 @@ function os2web_print_send_to_friend_send_to_friend($bullet_point_id) {
   $to_email = check_plain($_POST['email']);
 
   $body = "<html><body>";
-  //$body .= "Hej \n\n" . $name . " har sendt dig et dagsordenspunkt. \n\n";
 
   $body .= $name . " har sendt dig et dagsordenspunkt med beskeden:<br/>" . $message . "<br/><br/>";
-  
-  //$body .= "Med beskeden:\n" . $message . "\n\n";
 
   $body .= os2web_print_send_to_friend_print_bullet_point($bullet_point_id);
   
