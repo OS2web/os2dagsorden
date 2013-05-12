@@ -13,6 +13,7 @@
 */
 
 define('ACADRE_MM_IMPORT_DIR', 'private://');
+define('OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE', '28');
 
 /**
  * Implementation of settings form specifically for OS2Dagsorden system.
@@ -55,6 +56,14 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#title' => t('Acadre groups (committees) url:'),
       '#maxlength' => 256, 
       '#disabled' => variable_get('os2dagsorden_pws_use_local_copy'),
+  );
+     
+  $form['os2dagsorden_hidden_agenda_committee'] = array(
+    '#type' => 'textfield',
+    '#title' => 'List of committees which agenda is completely hidden to those without the rights',
+    '#maxlength' => 200,
+    '#description' => 'Comma-separated list of committees ID which agenda and the summary (samlet dokument) is hidden to those without the rights',
+    '#default_value' => variable_get('os2dagsorden_hidden_agenda_committee', OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE),
   );
   
   //this set up is now done in os2web_esdh_provider module

@@ -382,10 +382,12 @@ echo $title;
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Deltagerne';
   $handler->display->display_options['use_more_always'] = FALSE;
-  $handler->display->display_options['access']['type'] = 'role';
-  $handler->display->display_options['access']['role'] = array(
-    2 => '2',
-  );
+  $handler->display->display_options['access']['type'] = 'php';
+  $handler->display->display_options['access']['php_access'] = '$q = $_GET[\'q\'];
+$q = explode(\'/\', $q);
+$meeting_id = $q[1];
+
+return os2dagsorden_access_helper_check_user_can_see_meeting_agenda($meeting_id);';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['distinct'] = TRUE;
@@ -496,6 +498,10 @@ global $base_url;
 $q = explode(\'/\',$_GET[\'q\']);
 $meeting_id = $q[1];
 
+//user has no access to agenda
+if (!os2dagsorden_access_helper_check_user_can_see_meeting_agenda($meeting_id))
+  return;
+
 //meeting all notes
 echo \'<div class="controls-left">\';
 echo \'<a target="_blank" href="\' . $base_url . \'?q=meeting/\' . $meeting_id . \'/notes" class="form-submit">Mødenoter</a>\';
@@ -544,7 +550,7 @@ foreach ($additional_descriptions as $add_desc){
   if ($user_can_see_closed_agendas){
     if (!empty($add_desc[\'closed\'])){
       echo \'<a target="_blank" href="\' . file_create_url($add_desc[\'closed\'][\'uri\']) .
-      \'" class="form-submit">Hent tillægsdokument i PDF (lukket)</a> \';
+      \'" class="form-submit">Hent tillægsdokument i PDF (lukket)</a>\';
     }
   }
   //opened version additional - if not empty
@@ -647,6 +653,11 @@ foreach ($additional_descriptions as $add_desc){
   $handler->display->display_options['title'] = 'Mødedetaljer';
   $handler->display->display_options['defaults']['css_class'] = FALSE;
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    2 => '2',
+  );
   $handler->display->display_options['defaults']['relationships'] = FALSE;
   /* Relationship: Content: Committee (field_committee) */
   $handler->display->display_options['relationships']['field_committee_tid']['id'] = 'field_committee_tid';
@@ -764,6 +775,11 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Lokation';
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    2 => '2',
+  );
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '0';
   $handler->display->display_options['pager']['options']['offset'] = '0';
@@ -836,6 +852,11 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   /* Display: Deltagerne */
   $handler = $view->new_display('attachment', 'Deltagerne', 'attachment_2');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['defaults']['access'] = FALSE;
+  $handler->display->display_options['access']['type'] = 'role';
+  $handler->display->display_options['access']['role'] = array(
+    2 => '2',
+  );
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['defaults']['header'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
