@@ -205,26 +205,24 @@ function os2dagsorden_access_helper_file_download ($uri){
  * @return true of false
  */
 function os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting_id){
-    global $user;
-
-    if (!$user->uid)
-        return FALSE;
-
-    $user_ent = entity_load('user', array($user->uid));
+    $user_ent = os2dagsorden_access_helper_get_user();
+    if (!$user_ent->uid){
+	return FALSE;
+    }
 
     $meetings = entity_load('node', array($meeting_id), array('type' => 'meeting'));
     $meeting_committee_id = $meetings[$meeting_id]->field_committee['und'][0]['tid'];
 
-    if (!empty($user_ent[$user->uid]->field_user_committee)) {  //is part of the committee
-	foreach ($user_ent[$user->uid]->field_user_committee['und'] as $user_committee_id) {
+    if (!empty($user_ent->field_user_committee)) {  //is part of the committee
+	foreach ($user_ent->field_user_committee['und'] as $user_committee_id) {
 	    if (intval($meeting_committee_id) == $user_committee_id['tid']) {
 		return TRUE;
 	    }
 	}
     }
 
-    if (!empty($user_ent[$user->uid]->field_follows_committee_plus)) {  //follows committee PLUS
-	foreach ($user_ent[$user->uid]->field_follows_committee_plus['und'] as $user_committee_id) {
+    if (!empty($user_ent->field_follows_committee_plus)) {  //follows committee PLUS
+	foreach ($user_ent->field_follows_committee_plus['und'] as $user_committee_id) {
 	    if (intval($meeting_committee_id) == $user_committee_id['tid']) {
 		return TRUE;
 	    }
@@ -263,9 +261,9 @@ function os2dagsorden_access_helper_bullet_point_has_speaker_paper($bullet_point
  * @return true of false
  */
 function os2dagsorden_access_helper_check_user_can_see_meeting_agenda($meeting_id) {
-  global $user;
+  $user_ent = os2dagsorden_access_helper_get_user();
 
-  if (!$user->uid)
+  if (!$user_ent->uid)
       return FALSE;
 	  
   $meeting = node_load($meeting_id);
@@ -285,18 +283,16 @@ function os2dagsorden_access_helper_check_user_can_see_meeting_agenda($meeting_i
   }
     
   if ($in_hidden_list) {
-      $user_ent = entity_load('user', array($user->uid));
-      
-      if (!empty($user_ent[$user->uid]->field_user_committee)) {  //is part of the committee
-	      foreach ($user_ent[$user->uid]->field_user_committee['und'] as $user_committee_id) {
+      if (!empty($user_ent->field_user_committee)) {  //is part of the committee
+	      foreach ($user_ent->field_user_committee['und'] as $user_committee_id) {
 		  if (intval($meeting_committee_id) == $user_committee_id['tid']) {
 		      return TRUE;
 		  }
 	      }
       }
 
-      if (!empty($user_ent[$user->uid]->field_follows_committee_plus)) {  //follows committee PLUS
-	  foreach ($user_ent[$user->uid]->field_follows_committee_plus['und'] as $user_committee_id) {
+      if (!empty($user_ent->field_follows_committee_plus)) {  //follows committee PLUS
+	  foreach ($user_ent->field_follows_committee_plus['und'] as $user_committee_id) {
 	      if (intval($meeting_committee_id) == $user_committee_id['tid']) {
 		  return TRUE;
 	      }
@@ -318,9 +314,9 @@ function os2dagsorden_access_helper_check_user_can_see_meeting_agenda($meeting_i
  * @return true of false
  */
 function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bullet_point_id) {
-    global $user;
-
-    if (!$user->uid)
+    $user_ent = os2dagsorden_access_helper_get_user();
+     
+    if (!$user_ent->uid)
         return FALSE;
     
     if (!os2dagsorden_access_helper_check_user_can_see_meeting_agenda($meeting_id))
@@ -335,21 +331,19 @@ function os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id,
             return TRUE;
         }
         else { //is closed or personal
-            $user_ent = entity_load('user', array($user->uid));
-
             $meetings = entity_load('node', array($meeting_id), array('type' => 'meeting'));
             $meeting_committee_id = $meetings[$meeting_id]->field_committee['und'][0]['tid'];
 
-            if (!empty($user_ent[$user->uid]->field_user_committee)) {  //is part of the committee
-                foreach ($user_ent[$user->uid]->field_user_committee['und'] as $user_committee_id) {
+            if (!empty($user_ent->field_user_committee)) {  //is part of the committee
+                foreach ($user_ent->field_user_committee['und'] as $user_committee_id) {
                     if (intval($meeting_committee_id) == $user_committee_id['tid']) {
                         return TRUE;
                     }
                 }
             }
 
-            if (!empty($user_ent[$user->uid]->field_follows_committee_plus)) {  //follows committee PLUS
-                foreach ($user_ent[$user->uid]->field_follows_committee_plus['und'] as $user_committee_id) {
+            if (!empty($user_ent->field_follows_committee_plus)) {  //follows committee PLUS
+                foreach ($user_ent->field_follows_committee_plus['und'] as $user_committee_id) {
                     if (intval($meeting_committee_id) == $user_committee_id['tid']) {
                         return TRUE;
                     }
@@ -742,8 +736,7 @@ function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) 
  * @return boolean TRUE or FALSE
  */
 function os2dagsorden_access_helper_show_byradet_menu(){
-    global $user;
-    $user = user_load($user->uid);
+    $user = os2dagsorden_access_helper_get_user();
     
     $term = _os2dagsorden_importer_get_committee_by_id(4);//Byradet committee only
     
@@ -763,4 +756,13 @@ function os2dagsorden_access_helper_show_byradet_menu(){
     }
     
     return FALSE;
+}
+
+function os2dagsorden_access_helper_get_user(){
+  if (!isset($GLOBALS['full_user'])){
+    global $user;
+    $GLOBALS['full_user'] = user_load($user->uid);
+  }
+  
+  return $GLOBALS['full_user'];
 }
