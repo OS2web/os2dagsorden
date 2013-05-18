@@ -24,6 +24,7 @@ function os2dagsorden_front_page_views_views_default_views() {
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Medlem af';
   $handler->display->display_options['css_class'] = 'front-page-info-block';
+  $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     2 => '2',
@@ -44,9 +45,10 @@ function os2dagsorden_front_page_views_views_default_views() {
   $handler->display->display_options['header']['area']['id'] = 'area';
   $handler->display->display_options['header']['area']['table'] = 'views';
   $handler->display->display_options['header']['area']['field'] = 'area';
-  $handler->display->display_options['header']['area']['empty'] = FALSE;
-  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title="Her kan du se de udvalg du er medlem af. Ret henvendelse til Direktionssekretariatet hvis du mener det skal ændres."></div>';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  $handler->display->display_options['header']['area']['content'] = '<?php
+os2dagsorden_front_page_views_user_committees_help_text();
+?>';
+  $handler->display->display_options['header']['area']['format'] = 'php_code';
   /* Relationship: Taxonomy term: User using Is part of Committee */
   $handler->display->display_options['relationships']['reverse_field_user_committee_user']['id'] = 'reverse_field_user_committee_user';
   $handler->display->display_options['relationships']['reverse_field_user_committee_user']['table'] = 'taxonomy_term_data';
@@ -77,6 +79,7 @@ function os2dagsorden_front_page_views_views_default_views() {
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block_1');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $translatables['user_committee'] = array(
     t('Master'),
     t('Medlem af'),
@@ -89,7 +92,13 @@ function os2dagsorden_front_page_views_views_default_views() {
     t('Items per page'),
     t('- All -'),
     t('Offset'),
-    t('<div class="help-button" title="Her kan du se de udvalg du er medlem af. Ret henvendelse til Direktionssekretariatet hvis du mener det skal ændres."></div>'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('<?php
+os2dagsorden_front_page_views_user_committees_help_text();
+?>'),
     t('field_user_committee'),
     t('[name]'),
     t('Block'),
@@ -110,6 +119,7 @@ function os2dagsorden_front_page_views_views_default_views() {
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['title'] = 'Jeg følger';
   $handler->display->display_options['css_class'] = 'front-page-info-block';
+  $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     2 => '2',
@@ -134,39 +144,17 @@ function os2dagsorden_front_page_views_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['ui_name'] = 'help text';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title="Her kan du se de udvalg du er sat op til at følge. Følger betyder at du kun kan se åbne punkter og Følger+ betyder at du også kan se lukkede punkter. Ret henvendelse til Direktionssekretariatet hvis du mener det skal ændres."></div>';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  $handler->display->display_options['header']['area']['content'] = '<?php
+os2dagsorden_front_page_views_user_follows_committees_help_text();
+?>';
+  $handler->display->display_options['header']['area']['format'] = 'php_code';
   /* No results behavior: Global: PHP */
   $handler->display->display_options['empty']['php']['id'] = 'php';
   $handler->display->display_options['empty']['php']['table'] = 'views';
   $handler->display->display_options['empty']['php']['field'] = 'php';
-  $handler->display->display_options['empty']['php']['empty'] = FALSE;
+  $handler->display->display_options['empty']['php']['empty'] = TRUE;
   $handler->display->display_options['empty']['php']['php_output'] = '<?php
-global $user;
-$full_user = user_load($user->uid);
-if (isset($full_user->field_follows_committee_plus[\'und\'])){
-  foreach ($full_user->field_follows_committee_plus[\'und\'] as $com){
-    $com_term = taxonomy_term_load($com[\'tid\']);
-    if (isset($com_term->field_name_short))
-      print($com_term->field_name_short[\'und\'][0][\'value\']);
-    else
-      print($com_term->name);
-    
-    print(\'<b>+</b><br/>\');
-  }
-}
-if (isset($full_user->field_follows_committee[\'und\'])){
-  foreach ($full_user->field_follows_committee[\'und\'] as $com){
-    $com_term = taxonomy_term_load($com[\'tid\']);
-    if (isset($com_term->field_name_short))
-      print($com_term->field_name_short[\'und\'][0][\'value\']);
-    else
-      print($com_term->name);
-
-    print(\'<br/>\');
-  }
-}
-
+os2dagsorden_front_page_views_user_follows_committees_fields_print_committees();
 ?>';
   /* Field: Prints Follows+ committees with a plus sign, prints follows committees */
   $handler->display->display_options['fields']['php']['id'] = 'php';
@@ -177,31 +165,7 @@ if (isset($full_user->field_follows_committee[\'und\'])){
   $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
-global $user;
-$full_user = user_load($user->uid);
-if (isset($full_user->field_follows_committee_plus[\'und\'])){
-  foreach ($full_user->field_follows_committee_plus[\'und\'] as $com){
-    $com_term = taxonomy_term_load($com[\'tid\']);
-    if (isset($com_term->field_name_short))
-      print($com_term->field_name_short[\'und\'][0][\'value\']);
-    else
-      print($com_term->name);
-    
-    print(\'<b>+</b><br/>\');
-  }
-}
-
-if (isset($full_user->field_follows_committee[\'und\'])){
-  foreach ($full_user->field_follows_committee[\'und\'] as $com){
-    $com_term = taxonomy_term_load($com[\'tid\']);
-    if (isset($com_term->field_name_short))
-      print($com_term->field_name_short[\'und\'][0][\'value\']);
-    else
-      print($com_term->name);
-
-    print(\'<br/>\');
-  }
-}
+os2dagsorden_front_page_views_user_follows_committees_fields_print_committees();
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -211,6 +175,7 @@ if (isset($full_user->field_follows_committee[\'und\'])){
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block_1');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $translatables['user_follow_committees'] = array(
     t('Master'),
     t('Jeg følger'),
@@ -223,7 +188,13 @@ if (isset($full_user->field_follows_committee[\'und\'])){
     t('Items per page'),
     t('- All -'),
     t('Offset'),
-    t('<div class="help-button" title="Her kan du se de udvalg du er sat op til at følge. Følger betyder at du kun kan se åbne punkter og Følger+ betyder at du også kan se lukkede punkter. Ret henvendelse til Direktionssekretariatet hvis du mener det skal ændres."></div>'),
+    t('« first'),
+    t('‹ previous'),
+    t('next ›'),
+    t('last »'),
+    t('<?php
+os2dagsorden_front_page_views_user_follows_committees_help_text();
+?>'),
     t('Block'),
   );
   $export['user_follow_committees'] = $view;
@@ -241,6 +212,7 @@ if (isset($full_user->field_follows_committee[\'und\'])){
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
   $handler->display->display_options['css_class'] = 'user-logout-block';
+  $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'role';
   $handler->display->display_options['access']['role'] = array(
     2 => '2',
@@ -279,24 +251,7 @@ if (isset($full_user->field_follows_committee[\'und\'])){
   $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
-global $user;
-$users = entity_load(\'user\', array($user->uid));
-$full_user = $users[$user->uid];
-
-if (isset($full_user->field_user_positions[\'und\'])){
-$tids = array();
-foreach ($full_user->field_user_positions[\'und\'] as $item){
-$tids[] = $item[\'tid\'];
-}
-$terms = entity_load(\'taxonomy_term\', $tids, array());
-$min = $terms[$tids[0]];
-
-foreach ($terms as $term){
-  if ($term->field_priority[\'und\'][0][\'value\'] <  $min->field_priority[\'und\'][0][\'value\'])
-    $min = $term;
-}
-print $min->name;
-}
+os2dagsorden_front_page_views_log_out_menu_fields_user_position();
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -339,6 +294,8 @@ print $min->name;
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['block_caching'] = '-1';
   $translatables['user_logout_menu'] = array(
     t('Master'),
     t('more'),
@@ -348,8 +305,6 @@ print $min->name;
     t('Asc'),
     t('Desc'),
     t('Log af'),
-    t('user/logout'),
-    t('logout'),
     t('Block'),
   );
   $export['user_logout_menu'] = $view;

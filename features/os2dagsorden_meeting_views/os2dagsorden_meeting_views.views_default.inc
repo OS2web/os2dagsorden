@@ -115,8 +115,10 @@ function os2dagsorden_meeting_views_views_default_views() {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['ui_name'] = 'help text';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<div class=\'help-button\' title=\'Her vises de kommende 5 møder i "Mine udvalg". Det vil sige udvalg som man enten er medlem af eller følger. Udvalgene kan ses i boksene "Medlem af" og "Jeg følger" i højremenuen. Der er ikke en dagsorden tilgængelig før status er angivet til Dagsorden eller Dagsorden+.\'></div>';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  $handler->display->display_options['header']['area']['content'] = '<?php
+os2dagsorden_meeting_views_coming_meetings_help_text();
+?>';
+  $handler->display->display_options['header']['area']['format'] = 'php_code';
   /* Relationship: Content: Committee (field_committee) */
   $handler->display->display_options['relationships']['field_committee_tid']['id'] = 'field_committee_tid';
   $handler->display->display_options['relationships']['field_committee_tid']['table'] = 'field_data_field_committee';
@@ -161,10 +163,7 @@ function os2dagsorden_meeting_views_views_default_views() {
   $handler->display->display_options['fields']['php_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
-if (os2dagsorden_access_helper_meeting_has_speaker_paper($row->nid))
-print \'<div class="indicator-has-speaker-paper"></div>\';
-else
-print \'<div class="indicator-empty"></div>\';
+os2dagsorden_meeting_views_coming_meetings_fields_meeting_has_sp($row_nid);
 ?>';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
@@ -177,11 +176,7 @@ print \'<div class="indicator-empty"></div>\';
   $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
-$annotations = os2dagsorden_annotator_get_notes_by_meeting_id($row->nid);
-if (!empty($annotations))
-print \'<div class="indicator-has-notes"></div>\';
-else 
-print \'<div class="indicator-empty"></div>\';
+os2dagsorden_meeting_views_coming_meetings_fields_meeting_has_notes($row->nid);
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -196,24 +191,7 @@ print \'<div class="indicator-empty"></div>\';
   $handler->display->display_options['fields']['php_2']['element_class'] = 'views-field-field-title-short';
   $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
-$title = \'\';
-if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
-  $title = $data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\'][0][\'value\'];
-else 
-  $title = $data->_field_data[\'nid\'][\'entity\']->title;
-
-//logic for touch devices
-if (os2dagsorden_access_helper_is_touch()){
-if (mb_strlen($title) > 25)
-echo mb_substr($title, 0, 22) . \'...\';
-else
-echo $title;
-} else {//desktop device
-if (mb_strlen($title) > 45)
-echo mb_substr($title, 0, 42) . \'...\';
-else
-echo $title;
-}
+os2dagsorden_meeting_views_coming_meetings_fields_meeting_title($data);
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
@@ -349,7 +327,9 @@ echo $title;
     t('‹ previous'),
     t('next ›'),
     t('last »'),
-    t('<div class=\'help-button\' title=\'Her vises de kommende 5 møder i "Mine udvalg". Det vil sige udvalg som man enten er medlem af eller følger. Udvalgene kan ses i boksene "Medlem af" og "Jeg følger" i højremenuen. Der er ikke en dagsorden tilgængelig før status er angivet til Dagsorden eller Dagsorden+.\'></div>'),
+    t('<?php
+os2dagsorden_meeting_views_coming_meetings_help_text();
+?>'),
     t('term from field_committee'),
     t('field_user_committee'),
     t('field_follows_committee'),
@@ -383,11 +363,7 @@ echo $title;
   $handler->display->display_options['title'] = 'Deltagerne';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'php';
-  $handler->display->display_options['access']['php_access'] = '$q = $_GET[\'q\'];
-$q = explode(\'/\', $q);
-$meeting_id = $q[1];
-
-return os2dagsorden_access_helper_check_user_can_see_meeting_agenda($meeting_id);';
+  $handler->display->display_options['access']['php_access'] = 'return os2dagsorden_meeting_views_meeting_details_dagsorden_access();';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['distinct'] = TRUE;
@@ -467,100 +443,24 @@ return os2dagsorden_access_helper_check_user_can_see_meeting_agenda($meeting_id)
   $handler->display->display_options['header']['php']['field'] = 'php';
   $handler->display->display_options['header']['php']['ui_name'] = 'breadcrumb override';
   $handler->display->display_options['header']['php']['empty'] = TRUE;
-  $handler->display->display_options['header']['php']['php_output'] = '<?php global $base_url;
-$breadcrumb[] = l(\'Hjem\', $base_url);
-$breadcrumb[] .= \'<span class="breadcrumb-active">Mødedetaljer</span>\';
-drupal_set_breadcrumb($breadcrumb);
+  $handler->display->display_options['header']['php']['php_output'] = '<?php
+os2dagsorden_meeting_views_meeting_details_breadcrumb();
 ?>';
   /* Header: agenda edit button */
   $handler->display->display_options['header']['php_2']['id'] = 'php_2';
   $handler->display->display_options['header']['php_2']['table'] = 'views';
   $handler->display->display_options['header']['php_2']['field'] = 'php';
   $handler->display->display_options['header']['php_2']['ui_name'] = 'agenda edit button';
-  $handler->display->display_options['header']['php_2']['php_output'] = '<?php 
-global $base_url;
-$q = explode(\'/\',$_GET[\'q\']);
-$meeting_id = $q[1];
-if (module_exists(\'os2dagsorden_create_agenda\') && user_access(\'administer os2web\')){
-?>
-<div class="controls-right">
-<a href="<?php print($base_url . \'?q=agenda/meeting/\' . $meeting_id);?>" class="form-submit">Edit</a>
-</div>
-<div class="clearfix"></div>
-<?php }?>';
+  $handler->display->display_options['header']['php_2']['php_output'] = '<?php
+os2dagsorden_meeting_views_meeting_details_agenda_and_edit_button();
+?>';
   /* Header: description download */
   $handler->display->display_options['header']['php_1']['id'] = 'php_1';
   $handler->display->display_options['header']['php_1']['table'] = 'views';
   $handler->display->display_options['header']['php_1']['field'] = 'php';
   $handler->display->display_options['header']['php_1']['ui_name'] = 'description download';
   $handler->display->display_options['header']['php_1']['php_output'] = '<?php
-global $base_url;
-$q = explode(\'/\',$_GET[\'q\']);
-$meeting_id = $q[1];
-
-//user has no access to agenda
-if (!os2dagsorden_access_helper_check_user_can_see_meeting_agenda($meeting_id))
-  return;
-
-//meeting all notes
-echo \'<div class="controls-left">\';
-echo \'<a target="_blank" href="\' . $base_url . \'?q=meeting/\' . $meeting_id . \'/notes" class="form-submit">Mødenoter</a>\';
-echo \'</div>\';
-
-///////////////////////descriptions (not additional)
-echo \'<div class="controls-right">\';
-//closed version - if not empty
-$nid = $results[0]->nid;
-$meeting = node_load($nid, null, TRUE);
-$user_can_see_closed_agendas = os2dagsorden_access_helper_check_user_can_see_closed_agenda($meeting->nid);
-
-if ($user_can_see_closed_agendas){
-  if (!empty($meeting->field_meeting_description_closed[\'und\'][0][\'uri\'])){
-    echo \'<a target="_blank" href="\' . file_create_url($meeting->field_meeting_description_closed[\'und\'][0][\'uri\']) . 
-    \'" class="form-submit">Hent samlet dokument i PDF (lukket)</a>\';
-  }
-}
-
-//opened version - if not empty
-if (!empty($meeting->field_meeting_description[\'und\'][0][\'uri\'])){
-    echo \'<a target="_blank" href="\' . file_create_url($meeting->field_meeting_description[\'und\'][0][\'uri\']) . 
-    \'" class="form-submit">Hent samlet dokument i PDF</a>\';
-}
-echo \'</div>\';
-echo \'<div class="clearfix"></div>\';
-
-///////////////////////descriptions (additional)
-$additional_descriptions = array();
-if (!empty($meeting->field_meeting_description_add_c[\'und\'])){
-  foreach ($meeting->field_meeting_description_add_c[\'und\'] as $file){
-      $additional_descriptions[$file[\'description\']][\'closed\'] = $file;
-  }
-}
-if (!empty($meeting->field_meeting_description_add[\'und\'])){
-  foreach ($meeting->field_meeting_description_add[\'und\'] as $file){
-      $additional_descriptions[$file[\'description\']][\'opened\'] = $file;
-  }
-}
-
-ksort($additional_descriptions);
-
-foreach ($additional_descriptions as $add_desc){
-  echo \'<div class="controls-right">\';  
-  //closed version additional - if not empty
-  if ($user_can_see_closed_agendas){
-    if (!empty($add_desc[\'closed\'])){
-      echo \'<a target="_blank" href="\' . file_create_url($add_desc[\'closed\'][\'uri\']) .
-      \'" class="form-submit">Hent tillægsdokument i PDF (lukket)</a>\';
-    }
-  }
-  //opened version additional - if not empty
-  if (!empty($add_desc[\'opened\'])){
-      echo \'<a target="_blank" href="\' . file_create_url($add_desc[\'opened\'][\'uri\']) . 
-      \'" class="form-submit">Hent tillægsdokument i PDF</a>\';
-  }
-  echo \'</div>\';
-  echo \'<div class="clearfix"></div>\';
-}
+os2dagsorden_meeting_views_meeting_details_description_download();
 ?>';
   /* Relationship: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_ref_bullet_points_target_id']['id'] = 'field_ref_bullet_points_target_id';
@@ -595,15 +495,7 @@ foreach ($additional_descriptions as $add_desc){
   $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
-    if (os2dagsorden_access_helper_meeting_has_speaker_paper($row->nid)){
-    global $base_url;
-    print "<div class=\'speaker-paper-all-print\'>";
-    print \'<input class="form-submit print-button" type="button" onclick="window.open(\';
-    print(" \' " . $base_url . \'/print/meeting/\' . $row->nid . \'/speaker-papers/print\' . " \' ");
-    print \')" value="Print Alle Talepapirer">\';
-
-    print "</div>";
-    }
+    os2dagsorden_meeting_views_meeting_details_fields_print_all_speaker_papers($row->nid);
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -680,9 +572,7 @@ foreach ($additional_descriptions as $add_desc){
   $handler->display->display_options['fields']['php_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
-if (os2dagsorden_access_helper_meeting_has_speaker_paper($row->nid)){
-print "<div class=\\"indicator-has-speaker-paper\\"></div>";
-}
+os2dagsorden_meeting_views_meeting_details_fields_indicator_meeting_has_sp($row->nid);
 ?>';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
@@ -695,9 +585,7 @@ print "<div class=\\"indicator-has-speaker-paper\\"></div>";
   $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
-$annotations = os2dagsorden_annotator_get_notes_by_meeting_id($row->nid);
-if (!empty($annotations))
-print("<div class=\\"indicator-has-notes\\"></div>");
+os2dagsorden_meeting_views_meeting_details_fields_indicator_meeting_has_notes($row->nid);
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -1099,8 +987,7 @@ print("<div class=\\"indicator-has-notes\\"></div>");
   $handler->display->display_options['fields']['php_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
-if(os2dagsorden_access_helper_bullet_point_has_speaker_paper($row->nid))
-print \'<div class="indicator-has-speaker-paper"></div>\';
+os2dagsorden_meeting_views_meeting_details_fields_indicator_bullet_point_has_sp($row->nid);
 ?>';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
@@ -1113,13 +1000,10 @@ print \'<div class="indicator-has-speaker-paper"></div>\';
   $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
-$annotations = os2dagsorden_annotator_get_notes_by_bullet_point_id($row->nid);
 $is_closed = $data->_field_data[\'node_field_data_field_ref_bullet_points_nid\'][\'entity\']->field_bul_point_closed[\'und\'][0][\'value\'];
 $is_personal = $data->_field_data[\'node_field_data_field_ref_bullet_points_nid\'][\'entity\']->field_bul_point_personal[\'und\'][0][\'value\'];
-if (!empty($annotations))
-print \'<div class="indicator-has-notes"></div>\';
-else if(!os2dagsorden_access_helper_bullet_point_has_speaker_paper($row->nid) && !$is_closed && !$is_personal)
-print \'<div class="indicator-empty"></div>\';
+
+os2dagsorden_meeting_views_meeting_details_fields_indicator_bullet_point_has_notes($row->nid, $is_closed, $is_personal);
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -1142,25 +1026,11 @@ print \'<div class="indicator-empty"></div>\';
   $handler->display->display_options['fields']['php_4']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_4']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_4']['php_output'] = '<?php
-global $base_url;
 $title = $data->_field_data[\'node_field_data_field_ref_bullet_points_nid\'][\'entity\']->title;
 $meeting_id = $row->nid_1;
 $bp_id = $row->nid;
 
-//logic for touch devices
-if (os2dagsorden_access_helper_is_touch()){
-if (mb_strlen($title) > 75)
-$title = mb_substr($title, 0, 72) . \'...\';
-} else {//desktop device
-if (mb_strlen($title) > 95)
-$title = mb_substr($title, 0, 92) . \'...\';
-}
-
-
-if (os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bp_id))
-print \'<a href="\' . $base_url . \'/meeting/\' . $meeting_id . \'/bullet-point/\' . $bp_id . \'" class="first-child">\' . $title . \'</a>\';
-else 
-print \'<a class="first-child">\' . $title . \'</a>\';
+os2dagsorden_meeting_views_meeting_details_fields_bullet_point_title($title, $meeting_id, $bp_id);
 ?>';
   $handler->display->display_options['fields']['php_4']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_4']['php_click_sortable'] = '';
@@ -1173,102 +1043,10 @@ print \'<a class="first-child">\' . $title . \'</a>\';
   $handler->display->display_options['fields']['php_3']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_3']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_3']['php_output'] = '<?php
-global $user, $base_url;
-$bullet_point = node_load($row->nid);
-if (isset($bullet_point->field_ref_attachment[\'und\'])){
-  print \'<div class="item-list">\';
-  print \'<ul class="ul-item-list-dagsordenspunkt">\';
-  if ($bullet_point->field_bul_point_closed[\'und\'][0][\'value\'] == 1){
-    print "<i>Dagsordenpunktets indhold er skjult fordi dagsordenspunktet er lukket. Klik på dagsordenspunktets overskrift for at få indeholdet frem.</i>";
-  } else if ($bullet_point->field_bul_point_personal[\'und\'][0][\'value\'] == 1) {
-    print "<i>Dagsordenpunktets indhold er skjult fordi dagsordenspunktet er et personpunkt. Klik på dagsordenspunktets overskrift for at få indeholdet frem.</i>";
-  }
-  else {
-    $bilags = array();
-    
-    $all_attachments = array();
-    foreach($bullet_point->field_ref_attachment[\'und\'] as $attachment_id){
-      $hash = $attachment_id[\'target_id\'];
-      $all_attachments[$hash] = $attachment_id;
-    }
+$meeting_id = $row->nid_1;
+$bp_id = $row->nid;
 
-    foreach($all_attachments as $attachment_id){
-      $attachment = node_load($attachment_id[\'target_id\']);
-
-      if (!empty($attachment->field_bpa_file[\'und\'])){// if is bilag
-	//saving bilags to the end
-	$bilags[] = $attachment;
-      } else {//not bilag
-	print \'<li class="non-bilag">\';
-	
-	//logic for touch devices
-	if (os2dagsorden_access_helper_is_touch()){
-	if (mb_strlen($attachment->title) > 52)
-	  $title = mb_substr($attachment->title, 0, 49) . \'...\';
-	else
-	  $title = $attachment->title;
-	} else {//desktop device
-	if (mb_strlen($attachment->title) > 70)
-	  $title = mb_substr($attachment->title, 0, 67) . \'...\';
-	else
-	  $title = $attachment->title;
-	}
-	
-	$link = $base_url.\'/meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment/\'.$attachment->nid;
-	print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
-
-	//attachment text - if any
-	if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){	
-	  print \'<div class="attachment_text_container">\';
-
-	  print \'<div class="attachment_text_full_container ajax-progress bpa-\' . $row->nid_1 . \'-\' . $row->nid . \'-\' . $attachment->nid . \'">\';
-	  print \'Vent venligst...<div class="throbber"></div>\';
-	  print \'</div>\';
-
-	  print \'</div>\';
-	}
-	print \'</li>\';
-      }
-    }
-
-    //going through all bilags
-    foreach ($bilags as $attachment){
-      print \'<li class="bilag">\';
-      
-      //logic for touch devices
-      if (os2dagsorden_access_helper_is_touch()){
-	if (mb_strlen($attachment->title) > 70)
-	  $title = mb_substr($attachment->title, 0, 67) . \'...\';
-	else
-	  $title = $attachment->title;
-      } else {//desktop device
-	if (mb_strlen($attachment->title) > 95)
-	  $title = mb_substr($attachment->title, 0, 92) . \'...\';
-	else
-	  $title = $attachment->title;
-      }
-      
-      $link = $base_url.\'/meeting/\'.$row->nid_1.\'/bullet-point/\'.$row->nid.\'/bullet-point-attachment/\'.$attachment->nid;
-      print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" target="_blank" class="first-child last-child">\'.$title.\'</a>\';
-
-      //attachment text - if any
-      if (!empty($attachment->field_bpa_file_html[\'und\'][0])){	  
-	print \'<div class="attachment_text_container">\';
-
-	print \'<div class="attachment_text_trimmed_container ajax-progress bpa-\' . $row->nid_1 . \'-\' . $row->nid . \'-\' . $attachment->nid . \'">\';
-
-	print \'Vent venligst...<div class="throbber"></div>\';
-	print \'</div>\';
-	print(\'<a class="first-child last-child" href="\'.$link.\'" target="_blank">Læs mere...</a>\');
-
-	print \'</div>\';
-      }
-      print \'</li>\';
-    }
-  }
-  print \'</ul>\';
-  print \'</div>\';
-}
+os2dagsorden_meeting_views_meeting_details_fields_bullet_point_attachments_with_text($meeting_id, $bp_id);
 ?>';
   $handler->display->display_options['fields']['php_3']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_3']['php_click_sortable'] = '';
@@ -1282,22 +1060,11 @@ if (isset($bullet_point->field_ref_attachment[\'und\'])){
   $handler->display->display_options['fields']['php_2']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
-global $base_url;
 $meeting_id = $row->nid_1;
 $bp_id = $row->nid;
-if (!os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bp_id)){
-  print "<a>&nbsp;</a>";
-}
-else {
-  if (os2dagsorden_access_helper_bullet_point_has_speaker_paper($bp_id)){
-  $link = $base_url . \'?q=meeting/\' . $meeting_id . \'/bullet-point/\' . $bp_id;
-  print \'<a href="\' . $link . \'"><div class="indicator-has-speaker-paper"></div>Talepapir</a>\';
-  } else {
-  $q = $_GET[\'q\'];
-  $link = $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=\' . $row->title . \' (\' . $bp_id . \')\' . \'&destination=\' . $q;
-  print \'<a href="\' . $link . \'"><div class="indicator-create-speaker-paper"></div>Nyt talepapir</a>\';
-  }
-}
+$bp_title = $row->title;
+
+os2dagsorden_meeting_views_meeting_details_fields_speaker_paper_link($meeting_id, $bp_id, $bp_title);
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
@@ -1488,8 +1255,10 @@ else {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['ui_name'] = 'help text';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title="Her vises de møder der indeholdt møder, punkter eller bilag der matchede dine søgekriterier. Søgeresultatet vises på mødeniveau i listen."></div>';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  $handler->display->display_options['header']['area']['content'] = '<?php
+os2dagsorden_meeting_views_meetings_search_help_text();
+?>';
+  $handler->display->display_options['header']['area']['format'] = 'php_code';
   /* Header: breadcrumb override */
   $handler->display->display_options['header']['php']['id'] = 'php';
   $handler->display->display_options['header']['php']['table'] = 'views';
@@ -1497,11 +1266,7 @@ else {
   $handler->display->display_options['header']['php']['ui_name'] = 'breadcrumb override';
   $handler->display->display_options['header']['php']['empty'] = TRUE;
   $handler->display->display_options['header']['php']['php_output'] = '<?php 
-global $base_url;
-$q = explode(\'/\',$_GET[\'q\']);
-$breadcrumb[] = l(\'Hjem\', $base_url);
-$breadcrumb[] .= \'<span class="breadcrumb-active">Møde søgning</span>\';
-drupal_set_breadcrumb($breadcrumb);
+os2dagsorden_meeting_views_meetings_search_breadcrumb();
 ?>';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
@@ -1534,32 +1299,9 @@ drupal_set_breadcrumb($breadcrumb);
 $static[] = "hello!";
 $static["test"] = "test2";';
   $handler->display->display_options['fields']['php_4']['php_output'] = '<?php
-$search_param = $_GET[\'search_params\'];
-if (!empty($search_param)){
-  $meta_data = $data->_field_data[\'nid\'][\'entity\']->field_meeting_search_meta_date[\'und\'][0][\'value\'];
+$meta_data = $data->_field_data[\'nid\'][\'entity\']->field_meeting_search_meta_date[\'und\'][0][\'value\'];
 
-  $search_param_pos_s = stripos($meta_data, $search_param);
-  $search_param_pos_e = $search_param_pos_s + strlen($search_param);
-  //part of the text before the found occurence
-  $meta_data = substr($meta_data, 0, $search_param_pos_e+1);
-
-  $search_token_pos_s = strripos($meta_data, \'[search_token]\');
-  $search_token_pos_e = $search_token_pos_s+strlen(\'[search_token]\');
-
-  $bullet_point_token_pos_s = strripos($meta_data, \'[bp]\');
-  $bullet_point_token_pos_e = $bullet_point_token_pos_s + strlen(\'[bp]\');
-
-  $bpa_token_pos_s = strripos($meta_data, \'[bpa]\');
-  $bpa_token_pos_e = $bpa_token_pos_s + strlen(\'[bpa]\');
-
-  if ($bullet_point_token_pos_s == $search_token_pos_e){//is in bullet point
-    $bullet_point_id = substr($meta_data, $bullet_point_token_pos_e+1, $bpa_token_pos_s-$bullet_point_token_pos_e-2);
-    if ($bullet_point_id){
-       print("/bullet-point/" . $bullet_point_id);
-    }
-
-  }
-}
+os2dagsorden_meeting_views_meetings_search_fields_bp_id($meta_data);
 ?>';
   $handler->display->display_options['fields']['php_4']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_4']['php_click_sortable'] = '';
@@ -1573,34 +1315,9 @@ if (!empty($search_param)){
   $handler->display->display_options['fields']['php_5']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_5']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_5']['php_output'] = '<?php
-$search_param = $_GET[\'search_params\'];
-if (!empty($search_param)){
-  $meta_data = $data->_field_data[\'nid\'][\'entity\']->field_meeting_search_meta_date[\'und\'][0][\'value\'];
+$meta_data = $data->_field_data[\'nid\'][\'entity\']->field_meeting_search_meta_date[\'und\'][0][\'value\'];
 
-  $search_param_pos_s = stripos($meta_data, $search_param);
-  $search_param_pos_e = $search_param_pos_s + strlen($search_param);
-  //part of the text before the found occurence
-  $meta_data = substr($meta_data, 0, $search_param_pos_e+1);
-
-  $search_token_pos_s = strripos($meta_data, \'[search_token]\');
-  $search_token_pos_e = $search_token_pos_s+strlen(\'[search_token]\');
-
-  $bullet_point_token_pos_s = strripos($meta_data, \'[bp]\');
-  $bullet_point_token_pos_e = $bullet_point_token_pos_s + strlen(\'[bp]\');
-
-  $bpa_token_pos_s = strripos($meta_data, \'[bpa]\');
-  $bpa_token_pos_e = $bpa_token_pos_s + strlen(\'[bpa]\');
-
-  if ($bullet_point_token_pos_s == $search_token_pos_e){//is in bullet point
-    $bullet_point_id = substr($meta_data, $bullet_point_token_pos_e+1, $bpa_token_pos_s-$bullet_point_token_pos_e-2);
-    $bullet_point = node_load($bullet_point_id);
-
-    $bpa_id = substr($meta_data, $bpa_token_pos_e+1, strripos($meta_data, \']\')-$bpa_token_pos_e-1);
-    if ($bpa_id){
-       print("/bullet-point-attachment/" . $bpa_id);
-    }
-  }
-}
+os2dagsorden_meeting_views_meetings_search_fields_bpa_id($meta_data);
 ?>';
   $handler->display->display_options['fields']['php_5']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_5']['php_click_sortable'] = '';
@@ -1613,10 +1330,7 @@ if (!empty($search_param)){
   $handler->display->display_options['fields']['php_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
-if (os2dagsorden_access_helper_meeting_has_speaker_paper($row->nid))
-print \'<div class="indicator-has-speaker-paper"></div>\';
-else
-print \'<div class="indicator-empty"></div>\';
+os2dagsorden_meeting_views_meetings_search_fields_meeting_has_sp($row->nid);
 ?>';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
@@ -1629,11 +1343,7 @@ print \'<div class="indicator-empty"></div>\';
   $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
-$annotations = os2dagsorden_annotator_get_notes_by_meeting_id($row->nid);
-if (!empty($annotations))
-print \'<div class="indicator-has-notes"></div>\';
-else 
-print \'<div class="indicator-empty"></div>\';
+os2dagsorden_meeting_views_meetings_search_fields_meeting_has_notes($row->nid);
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -1648,24 +1358,7 @@ print \'<div class="indicator-empty"></div>\';
   $handler->display->display_options['fields']['php_2']['element_label_class'] = 'views-field-field-title-short';
   $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
-$title = \'\';
-if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
-  $title = $data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\'][0][\'value\'];
-else 
-  $title = $data->_field_data[\'nid\'][\'entity\']->title;
-
-//logic for touch devices
-if (os2dagsorden_access_helper_is_touch()){
-if (mb_strlen($title) > 25)
-echo mb_substr($title, 0, 22) . \'...\';
-else
-echo $title;
-} else {//desktop device
-if (mb_strlen($title) > 45)
-echo mb_substr($title, 0, 42) . \'...\';
-else
-echo $title;
-}
+os2dagsorden_meeting_views_meetings_search_fields_meeting_title($data);
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
@@ -1722,47 +1415,9 @@ echo $title;
   $handler->display->display_options['fields']['php_3']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['php_3']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_3']['php_output'] = '<?php
-$search_param = $_GET[\'search_params\'];
-if (!empty($search_param)){
-  $meta_data = $data->_field_data[\'nid\'][\'entity\']->field_meeting_search_meta_date[\'und\'][0][\'value\'];
+$meta_data = $data->_field_data[\'nid\'][\'entity\']->field_meeting_search_meta_date[\'und\'][0][\'value\'];
 
-  $search_param_pos_s = stripos($meta_data, $search_param);
-  $search_param_pos_e = $search_param_pos_s + strlen($search_param);
-  //part of the text before the found occurence
-  $meta_data = substr($meta_data, 0, $search_param_pos_e+1);
-
-  $search_token_pos_s = strripos($meta_data, \'[search_token]\');
-  $search_token_pos_e = $search_token_pos_s+strlen(\'[search_token]\');
-
-  $bullet_point_token_pos_s = strripos($meta_data, \'[bp]\');
-  $bullet_point_token_pos_e = $bullet_point_token_pos_s + strlen(\'[bp]\');
-
-  $bpa_token_pos_s = strripos($meta_data, \'[bpa]\');
-  $bpa_token_pos_e = $bpa_token_pos_s + strlen(\'[bpa]\');
-
-  if ($bullet_point_token_pos_s == $search_token_pos_e){//is in bullet point
-    $bullet_point_id = substr($meta_data, $bullet_point_token_pos_e+1, $bpa_token_pos_s-$bullet_point_token_pos_e-2);
-    $bullet_point = node_load($bullet_point_id);
-
-    $bpa_id = substr($meta_data, $bpa_token_pos_e+1, strripos($meta_data, \']\')-$bpa_token_pos_e-1);
-    $bpa = node_load($bpa_id);
-
-    $to_print = $bpa->title . \': [\' . $bullet_point->title . \']\';
-    if (os2dagsorden_access_helper_is_touch()){
-      if (mb_strlen($to_print) > 40)
-	$to_print = mb_substr($to_print, 0, 37) . \'...\';
-    } else {
-      if (mb_strlen($to_print) > 60)
-	$to_print = mb_substr($to_print, 0, 57) . \'...\';
-    }
-  }
-}
-if (!empty($to_print)){
-  print($to_print);
-}
-else {
-  print(\'&nbsp;\');
-}
+os2dagsorden_meeting_views_meetings_search_fields_placering($meta_data);
 ?>';
   $handler->display->display_options['fields']['php_3']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_3']['php_click_sortable'] = '';
@@ -1927,7 +1582,9 @@ else {
     t('‹ previous'),
     t('next ›'),
     t('last »'),
-    t('<div class="help-button" title="Her vises de møder der indeholdt møder, punkter eller bilag der matchede dine søgekriterier. Søgeresultatet vises på mødeniveau i listen."></div>'),
+    t('<?php
+os2dagsorden_meeting_views_meetings_search_help_text();
+?>'),
     t('Ingen møder er fundet'),
     t('term from field_committee'),
     t('Møde'),
@@ -2050,8 +1707,10 @@ else {
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['ui_name'] = 'help button';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<div class="help-button" title=\'Her vises de seneste 8 møder i alle mødefora. Der er ikke et referat tilgængeligt før status er angivet til Referat eller Referat+.\'></div>';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  $handler->display->display_options['header']['area']['content'] = '<?php
+os2dagsorden_meeting_views_last_8_meetings_help_text();
+?>';
+  $handler->display->display_options['header']['area']['format'] = 'php_code';
   /* Relationship: Content: Committee (field_committee) */
   $handler->display->display_options['relationships']['field_committee_tid']['id'] = 'field_committee_tid';
   $handler->display->display_options['relationships']['field_committee_tid']['table'] = 'field_data_field_committee';
@@ -2085,10 +1744,7 @@ else {
   $handler->display->display_options['fields']['php_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_1']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_1']['php_output'] = '<?php
-if (os2dagsorden_access_helper_meeting_has_speaker_paper($row->nid))
-print \'<div class="indicator-has-speaker-paper"></div>\';
-else
-print \'<div class="indicator-empty"></div>\';
+os2dagsorden_meeting_views_last_8_meetings_fields_meeting_has_sp($row->nid);
 ?>';
   $handler->display->display_options['fields']['php_1']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_1']['php_click_sortable'] = '';
@@ -2101,11 +1757,7 @@ print \'<div class="indicator-empty"></div>\';
   $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
-$annotations = os2dagsorden_annotator_get_notes_by_meeting_id($row->nid);
-if (!empty($annotations))
-print \'<div class="indicator-has-notes"></div>\';
-else 
-print \'<div class="indicator-empty"></div>\';
+os2dagsorden_meeting_views_last_8_meetings_fields_meeting_has_notes($row->nid);
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -2121,24 +1773,7 @@ print \'<div class="indicator-empty"></div>\';
   $handler->display->display_options['fields']['php_2']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
-$title = \'\';
-if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
-  $title = $data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\'][0][\'value\'];
-else 
-  $title = $data->_field_data[\'nid\'][\'entity\']->title;
-
-//logic for touch devices
-if (os2dagsorden_access_helper_is_touch()){
-if (mb_strlen($title) > 25)
-echo mb_substr($title, 0, 22) . \'...\';
-else
-echo $title;
-} else {//desktop device
-if (mb_strlen($title) > 45)
-echo mb_substr($title, 0, 42) . \'...\';
-else
-echo $title;
-}
+os2dagsorden_meeting_views_last_8_meetings_fields_meeting_title($data);
 ?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
@@ -2235,7 +1870,9 @@ echo $title;
     t('Sort by'),
     t('Asc'),
     t('Desc'),
-    t('<div class="help-button" title=\'Her vises de seneste 8 møder i alle mødefora. Der er ikke et referat tilgængeligt før status er angivet til Referat eller Referat+.\'></div>'),
+    t('<?php
+os2dagsorden_meeting_views_last_8_meetings_help_text();
+?>'),
     t('term from field_committee'),
     t('field_user_committee'),
     t('Status'),
@@ -2264,12 +1901,7 @@ echo $title;
   $handler->display->display_options['title'] = 'Dagsordenspunkt';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'php';
-  $handler->display->display_options['access']['php_access'] = '$q = explode("/", $_GET[\'q\']);
-
-$meeting_id =  $q[1];
-$bullet_point_id = $q[3];
-
-return os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $bullet_point_id);';
+  $handler->display->display_options['access']['php_access'] = 'return os2dagsorden_meeting_views_bullet_point_page_access();';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
   $handler->display->display_options['query']['options']['distinct'] = TRUE;
@@ -2287,12 +1919,7 @@ return os2dagsorden_access_helper_check_user_can_see_bullet_point($meeting_id, $
   $handler->display->display_options['header']['php']['field'] = 'php';
   $handler->display->display_options['header']['php']['ui_name'] = 'breadcrumb override';
   $handler->display->display_options['header']['php']['php_output'] = '<?php 
-global $base_url;
-$q = explode(\'/\',$_GET[\'q\']);
-$breadcrumb[] = l(\'Hjem\', $base_url);
-$breadcrumb[] .= l(\'Mødedetaljer\', \'meeting/\'.$q[1]);
-$breadcrumb[] .= \'<span class="breadcrumb-active">Dagsordenspunkt</span>\';
-drupal_set_breadcrumb($breadcrumb);
+os2dagsorden_meeting_views_bullet_point_breadcrumb();
 ?>';
   /* Header: print and send to friend buttons */
   $handler->display->display_options['header']['php_1']['id'] = 'php_1';
@@ -2300,15 +1927,8 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['header']['php_1']['field'] = 'php';
   $handler->display->display_options['header']['php_1']['ui_name'] = 'print and send to friend buttons';
   $handler->display->display_options['header']['php_1']['php_output'] = '<?php
-global $base_url;
-$q = explode(\'/\',$_GET[\'q\']);
-$meeting_id = $q[1];
-$bp_id = $q[3];
-?>
-<div class="controls-right" style="padding-top: 5px;">
-<a href="<?php print($base_url . \'?q=meeting/\' . $meeting_id . \'/bullet-point/\' . $bp_id . \'/send_to_friend_form\');?>" class="form-submit" rel="lightframe">Send til en ven</a><a href="<?php print($base_url . \'?q=/print/meeting/\' . $meeting_id . \'/bullet-point/\' . $bp_id . \'/print\'); ?>" class="form-submit next-control print-button" target="_blank">Print</a>
-</div>
-<div class="clearfix"></div>';
+os2dagsorden_meeting_views_bullet_point_print_send_to_friend();
+?>';
   /* No results behavior: Global: Text area */
   $handler->display->display_options['empty']['area']['id'] = 'area';
   $handler->display->display_options['empty']['area']['table'] = 'views';
@@ -2527,9 +2147,7 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
   $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
-$annotations = os2dagsorden_annotator_get_notes_by_bullet_point_id($row->nid_1);
-if (!empty($annotations))
-print \'<div class="indicator-has-notes"></div>\';
+os2dagsorden_meeting_views_bullet_point_fields_indicator_bullet_point_has_notes($row->nid_1);
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -2547,103 +2165,13 @@ print \'<div class="indicator-has-notes"></div>\';
   $handler->display->display_options['fields']['php_2']['label'] = '';
   $handler->display->display_options['fields']['php_2']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php_2']['use_php_setup'] = 0;
-  $handler->display->display_options['fields']['php_2']['php_output'] = '  <?php
-  $q = explode(\'/\',$_GET[\'q\']);
-  $meeting_id = $q[\'1\'];
+  $handler->display->display_options['fields']['php_2']['php_output'] = '<?php
+$q = explode(\'/\',$_GET[\'q\']);
+$meeting_id = $q[\'1\'];
+$bp_id = $row->nid_1;
 
-  global $base_url;
-  $bullet_point = node_load($row->nid_1);
-  if (isset($bullet_point->field_ref_attachment[\'und\'])){
-    print \'<table><tr><td>\';
-    print \'<div class="item-list item-list-dagsordenspunkt">\';
-    print \'<ul class="ul-item-list-dagsordenspunkt">\';
-
-    $bilags = array();
-
-    $all_attachments = array();
-    foreach($bullet_point->field_ref_attachment[\'und\'] as $attachment_id){
-      $hash = $attachment_id[\'target_id\'];
-      $all_attachments[$hash] = $attachment_id;
-    }
-
-    foreach($all_attachments as $attachment_id){
-      $attachment = node_load($attachment_id[\'target_id\']);
-
-      if (!empty($attachment->field_bpa_file[\'und\'])){// if is bilag
-	//saving bilags to the end
-	$bilags[] = $attachment;
-      } else {//not bilag
-	print \'<li class="non-bilag">\';      
-	      
-	//logic for touch devices
-	if (os2dagsorden_access_helper_is_touch()){
-	  if (mb_strlen($attachment->title) > 55)
-	    $title = mb_substr($attachment->title, 0, 52) . \'...\';
-	  else
-	    $title = $attachment->title;
-	} else {//desktop device
-	  if (mb_strlen($attachment->title) > 85)
-	    $title = mb_substr($attachment->title, 0, 82) . \'...\';
-	  else
-	    $title = $attachment->title;
-	}
-
-	$link = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment/\'.$attachment->nid;
-	print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" class="first-child last-child">\'.$title.\'</a>\';
-      
-	//attachment text - if any
-	if (!empty($attachment->field_bpa_body[\'und\'][0][\'safe_value\'])){
-	  print \'<div class="attachment_text_container">\';
-
-	  print \'<div class="attachment_text_full_container ajax-progress bpa-\' . $meeting_id . \'-\' . $row->nid_1 . \'-\' . $attachment->nid . \'">\';
-	  print \'Vent venligst...<div class="throbber"></div>\';
-	  print \'</div>\';
-
-	  print \'</div>\';
-	}
-
-	print \'</li>\';
-      }
-    }
-
-    //going through all bilags
-    foreach ($bilags as $attachment){
-      print \'<li class="bilag">\';
-      
-      //logic for touch devices
-      if (os2dagsorden_access_helper_is_touch()){
-	if (mb_strlen($attachment->title) > 70)
-	  $title = mb_substr($attachment->title, 0, 67) . \'...\';
-	else
-	  $title = $attachment->title;
-      } else {//desktop device
-	if (mb_strlen($attachment->title) > 115)
-	  $title = mb_substr($attachment->title, 0, 112) . \'...\';
-	else
-	  $title = $attachment->title;
-      }
-      $link = $base_url.\'/meeting/\'.$meeting_id.\'/bullet-point/\'.$row->nid_1.\'/bullet-point-attachment/\'.$attachment->nid;
-      print \'<div id="\'.$attachment->nid.\'" class="indicator-has-no-notes"></div><a href="\'.$link.\'" target="_blank" class="first-child last-child">\'.$title.\'</a>\';
-
-      //attachment text - if any
-      if (!empty($attachment->field_bpa_file_html[\'und\'][0])){
-	print \'<div class="attachment_text_container">\';
-
-	print \'<div class="attachment_text_trimmed_container ajax-progress bpa-\' . $meeting_id . \'-\' . $row->nid_1 . \'-\' . $attachment->nid . \'">\';
-	
-	print \'Vent venligst...<div class="throbber"></div>\';
-	print \'</div>\';
-	print(\'<a class="first-child last-child" target="_blank" href="\'.$link.\'">Læs mere...</a>\');
-
-	print \'</div>\';
-      }
-      print \'</li>\';
-    }
-    print \'</ul>\';
-    print \'</div>\';
-    print \'</td></tr></table>\';
-  }
-  ?>';
+os2dagsorden_meeting_views_bullet_point_fields_attachments_and_content($meeting_id, $bp_id);
+?>';
   $handler->display->display_options['fields']['php_2']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php_2']['php_click_sortable'] = '';
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
@@ -2679,10 +2207,7 @@ print \'<div class="indicator-has-notes"></div>\';
 global $base_url;
 $q = $_GET[\'q\'];
 print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=%1 (!1)&destination=\' . $q . \'">Opret et nyt talepapir</a>\';
-
-//print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=%1 (!1)">test</a>\';
-?>
-';
+?>';
   $handler->display->display_options['empty']['area']['format'] = 'php_code';
   $handler->display->display_options['empty']['area']['tokenize'] = TRUE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
@@ -2710,12 +2235,10 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
   $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
-    global $base_url;
-    print "<div class=\'speaker-paper-print\'>";
-    print \'<input class="form-submit print-button" type="button" onclick="window.open(\';
-    print(" \' " . $base_url . \'/print/bullet-point/\' . $data->nid . \'/speaker-paper/\' . $row->body . \'/print\' . " \' ");
-    print \')" value="Print Talepapir">\';
-    print "</div>";
+$bp_id = $data->nid;
+$sp_id = $row->body;
+
+os2dagsorden_meeting_views_bullet_point_fields_print_link($bp_id, $sp_id);
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -2775,10 +2298,7 @@ print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bul
 global $base_url;
 $q = $_GET[\'q\'];
 print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=%1 (!1)&destination=\' . $q . \'">Opret et nyt talepapir</a>\';
-
-//print \'<a href="\' . $base_url . \'?q=node/add/speaker-paper&edit[field_ref_bullet_point][und][0][target_id]=%1 (!1)">test</a>\';
-?>
-'),
+?>'),
     t('talepapir - [title_1]'),
     t('Talepapir -'),
   );

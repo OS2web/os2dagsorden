@@ -49,11 +49,7 @@ function os2dagsorden_meetings_calendar_view_views_default_views() {
   $handler->display->display_options['header']['php']['field'] = 'php';
   $handler->display->display_options['header']['php']['ui_name'] = 'breadcrumb override';
   $handler->display->display_options['header']['php']['php_output'] = '<?php 
-global $base_url;
-$q = explode(\'/\',$_GET[\'q\']);
-$breadcrumb[] = l(\'Hjem\', $base_url);
-$breadcrumb[] .= \'<span class="breadcrumb-active">Kalender</span>\';
-drupal_set_breadcrumb($breadcrumb);
+os2dagsorden_meetings_calendar_view_breadcrumb();
 ?>';
   /* Field: meeting hex color - hidden */
   $handler->display->display_options['fields']['field_hex']['id'] = 'field_hex';
@@ -95,16 +91,7 @@ drupal_set_breadcrumb($breadcrumb);
   $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
-$title = \'\';
-if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
-  $title = $data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\'][0][\'value\'];
-else 
-  $title = $data->_field_data[\'nid\'][\'entity\']->title;
-
-$meeting_category = substr(strtoupper($data->_field_data[\'nid\'][\'entity\']->field_meeting_category[\'und\'][0][\'value\']), 0, 1);
-
-echo \'<font color="\' . $row->field_hex . \'">\' . \'[\' . $meeting_category . \'] \' . $title . \'</font>\';
-
+os2dagsorden_meetings_calendar_view_fields_title($data);
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -143,22 +130,11 @@ echo \'<font color="\' . $row->field_hex . \'">\' . \'[\' . $meeting_category . 
   $handler->display->display_options['filters']['php']['field'] = 'php';
   $handler->display->display_options['filters']['php']['ui_name'] = 'filter by meetings category';
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
-  $handler->display->display_options['filters']['php']['php_filter'] = 'global $user;
-$user_loaded = user_load($user->uid);
-
-$meeting = node_load($row->nid);
-$meeting_category = $meeting->field_meeting_category[\'und\'][0][\'value\'];
-if (isset($user_loaded->field_user_meetings_category[\'und\'])) {
-  foreach ($user_loaded->field_user_meetings_category[\'und\'] as $user_category){
-    if (strcasecmp($user_category[\'value\'], $meeting_category) == 0){
-      return FALSE;
-    }
-  }
-}
-return TRUE;';
+  $handler->display->display_options['filters']['php']['php_filter'] = 'return os2dagsorden_meetings_calendar_view_fields_filter_by_meeting_category($row->nid);';
 
   /* Display: Måned */
   $handler = $view->new_display('page', 'Måned', 'page_1');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'date_views_pager';
   $handler->display->display_options['pager']['options']['date_id'] = 'month';
@@ -183,11 +159,7 @@ return TRUE;';
   $handler->display->display_options['header']['php']['field'] = 'php';
   $handler->display->display_options['header']['php']['ui_name'] = 'breadcrumb override';
   $handler->display->display_options['header']['php']['php_output'] = '<?php 
-global $base_url;
-$q = explode(\'/\',$_GET[\'q\']);
-$breadcrumb[] = l(\'Hjem\', $base_url);
-$breadcrumb[] .= \'<span class="breadcrumb-active">Kalender</span>\';
-drupal_set_breadcrumb($breadcrumb);
+os2dagsorden_meetings_calendar_view_breadcrumb();
 ?>';
   $handler->display->display_options['defaults']['footer'] = FALSE;
   /* Footer: iCal export */
@@ -249,16 +221,7 @@ $date = date(\'Y-m\');
   $handler->display->display_options['fields']['php']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['php']['use_php_setup'] = 0;
   $handler->display->display_options['fields']['php']['php_output'] = '<?php
-$title = \'\';
-if (isset($data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\']))
-  $title = $data->_field_data[\'nid\'][\'entity\']->field_title_short[\'und\'][0][\'value\'];
-else 
-  $title = $data->_field_data[\'nid\'][\'entity\']->title;
-
-$meeting_category = substr(strtoupper($data->_field_data[\'nid\'][\'entity\']->field_meeting_category[\'und\'][0][\'value\']), 0, 1);
-
-echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'und\'][0][\'value\'] . \'">\' . \'[\'. $meeting_category . \'] \' . $title . \'</font>\';
-
+os2dagsorden_meetings_calendar_view_fields_title($data);
 ?>';
   $handler->display->display_options['fields']['php']['use_php_click_sortable'] = '0';
   $handler->display->display_options['fields']['php']['php_click_sortable'] = '';
@@ -273,6 +236,29 @@ echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'un
   $handler->display->display_options['arguments']['date_argument']['date_fields'] = array(
     'field_data_field_date.field_date_value' => 'field_data_field_date.field_date_value',
   );
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filter criterion: Content: Published */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 0;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filter criterion: Content: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'meeting' => 'meeting',
+  );
+  /* Filter criterion: filter by meetings category */
+  $handler->display->display_options['filters']['php']['id'] = 'php';
+  $handler->display->display_options['filters']['php']['table'] = 'views';
+  $handler->display->display_options['filters']['php']['field'] = 'php';
+  $handler->display->display_options['filters']['php']['ui_name'] = 'filter by meetings category';
+  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php']['php_filter'] = 'return os2dagsorden_meetings_calendar_view_fields_filter_by_meeting_category($row->nid);';
   $handler->display->display_options['path'] = 'calendar-field-date/month';
   $handler->display->display_options['menu']['title'] = 'Month';
   $handler->display->display_options['menu']['weight'] = '0';
@@ -283,6 +269,7 @@ echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'un
   /* Display: Week */
   $handler = $view->new_display('page', 'Week', 'page_2');
   $handler->display->display_options['enabled'] = FALSE;
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'date_views_pager';
   $handler->display->display_options['pager']['options']['date_id'] = 'week';
@@ -318,6 +305,7 @@ echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'un
 
   /* Display: Dag */
   $handler = $view->new_display('page', 'Dag', 'page_3');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'date_views_pager';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
@@ -357,6 +345,7 @@ echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'un
   /* Display: Year */
   $handler = $view->new_display('page', 'Year', 'page');
   $handler->display->display_options['enabled'] = FALSE;
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'date_views_pager';
   $handler->display->display_options['pager']['options']['date_id'] = 'year';
@@ -392,6 +381,7 @@ echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'un
 
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block_1');
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['link_display'] = FALSE;
   $handler->display->display_options['link_display'] = 'page_1';
   $handler->display->display_options['defaults']['pager'] = FALSE;
@@ -425,8 +415,10 @@ echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'un
   $handler->display->display_options['header']['area']['field'] = 'area';
   $handler->display->display_options['header']['area']['ui_name'] = 'help text';
   $handler->display->display_options['header']['area']['empty'] = TRUE;
-  $handler->display->display_options['header']['area']['content'] = '<div class=\'help-button\' title=\'Her findes en dags- eller månedskalender med links til dagsordner og referater hvis de er publicerede. Det er muligt at eksportere møderne til en fil, som så kan importeres til egen kalender, eks. i Outlook.\'></div>';
-  $handler->display->display_options['header']['area']['format'] = 'full_html';
+  $handler->display->display_options['header']['area']['content'] = '<?php
+os2dagsorden_meetings_calendar_view_block_help_text();
+?>';
+  $handler->display->display_options['header']['area']['format'] = 'php_code';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Field: Content: Date */
   $handler->display->display_options['fields']['field_date_1']['id'] = 'field_date_1';
@@ -475,6 +467,7 @@ echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'un
   /* Display: Upcoming */
   $handler = $view->new_display('block', 'Upcoming', 'block_2');
   $handler->display->display_options['display_description'] = 'Upcoming events block';
+  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
@@ -520,7 +513,9 @@ echo \'<font color="\' . $data->_field_data[\'nid\'][\'entity\']->field_hex[\'un
     t('Dag'),
     t('Year'),
     t('Block'),
-    t('<div class=\'help-button\' title=\'Her findes en dags- eller månedskalender med links til dagsordner og referater hvis de er publicerede. Det er muligt at eksportere møderne til en fil, som så kan importeres til egen kalender, eks. i Outlook.\'></div>'),
+    t('<?php
+os2dagsorden_meetings_calendar_view_block_help_text();
+?>'),
     t('ggggggggggggggggggggggg'),
     t('Upcoming'),
     t('Upcoming events block'),
