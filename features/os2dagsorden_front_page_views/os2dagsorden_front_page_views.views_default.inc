@@ -176,6 +176,7 @@ os2dagsorden_front_page_views_user_follows_committees_fields_print_committees();
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block_1');
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
+  $handler->display->display_options['block_caching'] = '-1';
   $translatables['user_follow_committees'] = array(
     t('Master'),
     t('Jeg følger'),
