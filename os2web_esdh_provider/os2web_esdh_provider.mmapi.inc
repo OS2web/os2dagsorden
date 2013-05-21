@@ -44,6 +44,8 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'taxonomy_term')
             ->propertyCondition('vid', $vid)
+            //no meeting sysID - avoiding overlapping meetings of same committee on the same date
+            ->fieldCondition('field_meeting_sysid', 'value', '', '=')
             ->fieldCondition('field_committee_acadre_id', 'value', $meeting['committee_id'], '=');
 
         $result = $query->execute();
@@ -242,7 +244,7 @@ function _os2web_esdh_provider_import_items($items) {
     if (isset($result['node'])) {
         $all_nids = array_keys($result['node']);
         $node = reset(entity_load('node', $all_nids));
-        $bulle_point_exists = TRUE;//already existing in the system
+        $bullet_point_exists = TRUE;//already existing in the system
     }
     else {
         $node = new stdClass();
@@ -324,7 +326,7 @@ function _os2web_esdh_provider_import_items($items) {
     
     node_submit($node);
     node_save($node);
-    if (!$bulle_point_exists)//only add it if it is not existing in the system, avoiding readding the same node to the meeting
+    if (!$bullet_point_exists)//only add it if it is not existing in the system, avoiding readding the same node to the meeting
       $nids[] = $node->nid;
   }
   return $nids;
