@@ -104,6 +104,13 @@ function os2dagsorden_annotator_menu() {
         'page callback' => '_os2dagsorden_annotator_search',
 	'access arguments' => array('access content')
     );
+    
+    $items['annotator/update'] = array(
+        'title' => 'Creating note',
+        'type' => MENU_CALLBACK,
+        'page callback' => '_os2dagsorden_annotator_dummy',
+	'access arguments' => array('access content')
+    );
 
     return $items;
 }
@@ -260,6 +267,14 @@ function _os2dagsorden_annotator_search() {
     //end of json
     print(']
 	    }');
+}
+
+/**
+ * Dummy function, in order to make annotate not throw the exception, when using Touch Plugin on Desktop device
+ * For some undiscovered reasons, annotator is making request to /annotator/update url, and throws an error if that url does not exist.
+ *
+ */
+function _os2dagsorden_annotator_dummy(){
 }
 
 /**
@@ -483,7 +498,7 @@ function _os2dagsorden_annotator_view_raw($meeting_id, $bullet_point_id, $bilag_
 	  $html = $text;
 	}
     }
-    header('Content-Type: text/html; charset=utf-8');            
+    header('Content-Type: text/html; charset=utf-8');
     print $html;
 }
 
