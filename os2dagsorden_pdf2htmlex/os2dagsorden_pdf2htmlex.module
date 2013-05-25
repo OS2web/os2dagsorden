@@ -67,7 +67,7 @@ function os2dagsorden_pdf2htmlex_schedule($fid, $did) {
 
 /**
  * Cron implementation.
- * Goes through the enrties in database table, converts the new records,
+ * Goes through the entries in database table, converts the new records,
  * also updates the destination node with the html taken from converted file.
  * When node is updated, the database entry progress field is changed to Complete.
  *
@@ -84,7 +84,6 @@ function os2dagsorden_pdf2htmlex_cron() {
     $result = $query->execute();
 
     while($record = $result->fetchAssoc()) {
-    error_log($record['fid']);
         os2dagsorden_pdf2htmlex_convert($record['fid'], $record['did']);
     }
     
@@ -314,7 +313,7 @@ function _os2dagsorden_pdf2htmlex_set_status_published_plus($node) {
 function os2dagsorden_pdf2htmlex_print_first_page($html, $meeting_id, $bullet_point_id, $bilag_id){
     $doc = new DOMDocument();
     libxml_use_internal_errors(true);
-    $doc->loadHTML('<?xml encoding="UTF-8"><div class="indicator-preview"></div>' . $html);
+    $doc->loadHTML('<?xml encoding="UTF-8">' . $html);
     libxml_clear_errors();
     
     $finder = new DomXPath($doc);

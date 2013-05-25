@@ -32,15 +32,6 @@ function os2dagsorden_annotator_menu() {
         'page arguments' => array(1, 3, 5)
     );
     
-    $items['meeting/%/bullet-point/%/bullet-point-attachment-light/%'] = array(
-        'title' => 'Bilag',
-        'type' => MENU_CALLBACK,
-        'page callback' => '_os2dagsorden_annotator_view_light',
-        'access arguments' => array(1, 3, 5),
-        'access callback' => '_os2dagsorden_annotator_check_permission',
-        'page arguments' => array(1, 3, 5)
-    );
-
     $items['meeting/%/bullet-point/%/bullet-point-attachment/%/print'] = array(
         'title' => 'Bilag Print Version',
         'type' => MENU_CALLBACK,
@@ -373,7 +364,7 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 		'<input class="form-submit next-control print-button" type="button" onclick="window.open(\'' . $print_link . '\')" value="Print noter">' .
 		'</div>' . '<div class="clearfix"></div>' . 
 		_os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) . 
-		'<div id="content">' . $text . '</div>' . 
+		'<div id="content"><div class="attachment-text">' . $text . '</div></div>' . 
 		_os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount) .
 		'</div>';
 	} else {//is not an actual bilag
@@ -382,7 +373,7 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 	  drupal_set_breadcrumb($breadcrumb);
 	  
 	  //getting text
-	  $text = $bilag->field_bpa_body['und'][0]['value'];
+	  $text = '<div class="attachment-text">' . $bilag->field_bpa_body['und'][0]['value'] . '</div>';
 	  
 	  //composing the print link
 	  $print_link = $GLOBALS['base_url'] . '/print/meeting/' . $meeting_id . '/bullet-point/' . $bullet_point_id . '/bullet-point-attachment/' . $bilag_id . '/print';
@@ -395,79 +386,6 @@ function _os2dagsorden_annotator_view($meeting_id, $bullet_point_id, $bilag_id) 
 	}
     }
 
-    return $html;
-}
-
-/**
- * Serves the attachment with annotating option in light mode - is used in overlay window.
- *
- * @param int $meeting_id      ID of the meeting
- * @param int $bullet_point_id ID of the bullet point
- * @param int $bilag_id        ID of the attachment (bilag)
- *
- * @return the html code of the specific attachment with annotating option.
- */
-function _os2dagsorden_annotator_view_light($meeting_id, $bullet_point_id, $bilag_id){
-    $bilag = node_load($bilag_id);
-    if (strcmp($bilag->type, 'bullet_point_attachment') == 0) {
-        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.js');
-        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.min.js');
-        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/json2.js');
-
-        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_secure.js');
-        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/XPath.js');
-        
-        //floating scrollbar
-        drupal_add_js(drupal_get_path('module', 'os2dagsorden_annotator') . '/js/os2dagsorden_annotator_floatingscrollbar.min.js');
-	drupal_add_js('annotator_add_floatinscrollbar();', 'inline');
-
-        global $base_path, $user;
-        drupal_add_js('add_annotator(' . $meeting_id . ',' . $bullet_point_id . ',' . $bilag_id . ',"#content","' . $base_path . '?q=", false, "' . $user->name . '");', 'inline');
- 
-        drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/annotator-full.min.css');
-        drupal_add_css(drupal_get_path('module', 'os2dagsorden_annotator') . '/lib/touch-plugin/annotator.touch.css');
-        
-	//overriding title for bilag
-	drupal_set_title($bilag->title);
-	
-	$html = '<div class="node"><div class="close-overlay-bilag-link"><a class="form-submit" onclick="window.opener.document.location.reload(true); window.close(); return false;" href="">Luk vinduet [X]</a></div>';
-	
-	if (!empty($bilag->field_bpa_file['und'][0]['uri'])){//is an actual bilag
-	  
-	  //preparing the pager
-	  $pageStart = intval($_GET['page'])+1;
-	  $pageEnd = intval($_GET['page'])+ ANNOTATOR_PAGES_PER_VIEW;
-    
-	  //bilag has converter to HTML version of file, getting the text out of it
-	  if (!empty($bilag->field_bpa_file_html['und'][0])){
-	    $file_uri = $bilag->field_bpa_file_html['und'][0]['uri'];
-	    $body_file = file_get_contents($file_uri);
-	    $text = os2dagsorden_pdf2htmlex_hide_unused_pages($body_file, $pageStart, $pageEnd);
-	    $pageAmount = $bilag->field_bpa_page_amount['und'][0]['value'];
-	  }
-	  
-	  //composing html output
-	  $html .=  
-		_os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount, TRUE) . 
-		'<div id="content">' . $text . '</div>' . 
-		_os2dagsorden_annotator_get_pager_html($meeting_id, $bullet_point_id, $bilag_id, $pageAmount, TRUE) .
-		'</div>';
-	} else {//is not an actual bilag
-	  	  
-	  //getting text
-	  $text = $bilag->field_bpa_body['und'][0]['value'];
-	 
-	  //composing html output
-	  $html .= '<div id="content">' . $text . '</div>' . 
-		  '</div>';
-	}
-    }
-    
-    //hiding unneeded regions
-    drupal_add_js("jQuery(document).ready(function(){jQuery('#section-header').hide();});","inline");
-    drupal_add_js("jQuery(document).ready(function(){jQuery('#breadcrumb').hide();});","inline");
-    drupal_add_js("jQuery(document).ready(function(){jQuery('#zone-postscript-wrapper').hide();});","inline");
-    
     return $html;
 }
 
@@ -487,19 +405,15 @@ function _os2dagsorden_annotator_view_raw($meeting_id, $bullet_point_id, $bilag_
 	  if (!empty($bilag->field_bpa_file_html['und'][0])){
 	    $file_uri = $bilag->field_bpa_file_html['und'][0]['uri'];
 	    $body_file = file_get_contents($file_uri);
-	    $text = os2dagsorden_pdf2htmlex_print_first_page($body_file, $meeting_id, $bullet_point_id, $bilag_id);
-	    $html = $text;
+	    $html = os2dagsorden_pdf2htmlex_print_first_page($body_file, $meeting_id, $bullet_point_id, $bilag_id);
 	  }
 	} else {//is not an actual bilag	  
 	  //getting text
-	  $text = $bilag->field_bpa_body['und'][0]['value'];
-	 
-	  //composing html output
-	  $html = $text;
+	  $html = $bilag->field_bpa_body['und'][0]['value'];
 	}
     }
     header('Content-Type: text/html; charset=utf-8');
-    print $html;
+    print '<div class="attachment-text">' . $html . '</div>';
 }
 
 /**
