@@ -44,8 +44,6 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
         $query = new EntityFieldQuery();
         $query->entityCondition('entity_type', 'taxonomy_term')
             ->propertyCondition('vid', $vid)
-            //no meeting sysID - avoiding overlapping meetings of same committee on the same date
-            ->fieldCondition('field_meeting_sysid', 'value', '', '=')
             ->fieldCondition('field_committee_acadre_id', 'value', $meeting['committee_id'], '=');
 
         $result = $query->execute();
@@ -62,6 +60,8 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
         $query->entityCondition('entity_type', 'node')
             ->fieldCondition('field_date', 'value', $meeting_start_date_0000, '>=')
             ->fieldCondition('field_date', 'value', $meeting_start_date_2359, '<=')
+            //no meeting sysID - avoiding overlapping meetings of same committee on the same date
+            ->fieldCondition('field_meeting_sysid', 'value', '0', '=')
             ->fieldCondition('field_committee', 'tid', $com_tid, '=');
         $result = $query->execute();
 

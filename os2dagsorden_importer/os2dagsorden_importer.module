@@ -35,8 +35,8 @@ function os2dagsorden_importer_menu() {
  */
 function os2dagsorden_importer_sync() {
     os2dagsorden_importer_import_user_committees();
-    os2dagsorden_importer_import_committees();
-    os2dagsorden_importer_import_meetings();
+    //os2dagsorden_importer_import_committees();
+    //os2dagsorden_importer_import_meetings();
 }
 
 /**
@@ -793,7 +793,7 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
         $nids = array_keys($result['node']);
         $node = reset(entity_load('node', $nids));
     }
-    else {//if fails, trying to get meeting from date and committe combination. Assuming this is unique
+    else {//if fails, trying to get meeting from date and committee combination. Assuming this is unique
         //getting meeting
         $meeting_start_date_0000 = date('Y-m-d 00:00:00', strtotime($xml_data['meeting_start_date']));
         $meeting_start_date_2359 = date('Y-m-d 23:59:59', strtotime($xml_data['meeting_start_date']));
@@ -868,6 +868,7 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
     }
 
     $node->field_meeting_id[$node->language][0]['value'] = $xml_data['meeting_id']; 
+    $node->field_meeting_sysid[$node->language][0]['value'] = '0';
 
     if (!empty($xml_data['meeting_start_date'])) {
         $node->field_date[$node->language][0]['value'] = $xml_data['meeting_start_date'];
@@ -884,20 +885,13 @@ function _os2dagsorden_importer_create_meeting($xml_data, $tid) {
 
     $node->field_committee[$node->language][0]['tid'] = $tid;
     
-
-    //node_submit($node);
-    //node_save($node);
-    
     if ($xml_data['cancelled'] == 1){
       os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Aflyst');
-      //$node->field_meeting_status[$node->language][0]['value'] = 'Aflyst';
     } else if ($xml_data['changed'] == 1){
       os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Ændret');
-      //$node->field_meeting_status[$node->language][0]['value'] = 'Ændret';
     }
     else {
       os2dagsorden_access_helper_set_meeting_status_and_save($node, 'Planlagt');
-      //$node->field_meeting_status[$node->language][0]['value'] = 'Planlagt';
     }
 }
 
