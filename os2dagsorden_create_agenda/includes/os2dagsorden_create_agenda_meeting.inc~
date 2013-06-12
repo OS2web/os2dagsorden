@@ -12,6 +12,14 @@
  * @link     http://bellcom.dk
  */
 
+ /**
+ * Generates the form for meeting creating/modifying
+ *
+ * @param $form       the form to be created
+ * @param $form_state the current state of the form
+ *
+ * @return $form the created form
+*/
 function os2dagsorden_create_agenda_meeting($form, $form_state, $meeting_id) {
   if (!empty($form_state['page_num']) && $form_state['page_num'] == 2) {
     return os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_point_id);
@@ -23,104 +31,11 @@ function os2dagsorden_create_agenda_meeting($form, $form_state, $meeting_id) {
   $form[] = array(
     '#markup' => '<h1 class="title">' . t('Meeting') . '</h1>',
   );
-  $form[] = array(
-    '#markup' => '<div class="node">',
-  );
-
-  $form['title'] = array(
-    '#type' => 'textfield', 
-    '#title' => t('Title:'), 
-    '#size' => 60, 
-    '#maxlength' => 128, 
-    '#required' => TRUE,
-    '#description' => 'Full title of the meeting',
-  );
   
-  $form['short_title'] = array(
-    '#type' => 'textfield', 
-    '#title' => t('Short title:'), 
-    '#size' => 40, 
-    '#maxlength' => 35, 
-    '#required' => TRUE,
-    '#description' => 'Maximum 35 characters. <br/>Short title will be used in places with limited contatiner width, e.g, front page views',
-  );
-  $form['status'] = array(
-    '#type' => 'select',
-    '#title' => t('Status:'), 
-    '#required' => TRUE,
-    '#options' => array(
-	'Planlagt' => t('Planlagt'),
-	'Ændret' => t('Ændret'),
-	'Aflyst' => t('Aflyst'),
-	'Referat' => t('Referat'),
-	'Dagsorden' => t('Dagsorden'),
-    ),
-    '#multiple' => FALSE,
-  );
-  $form['hex_color'] = array(
-    '#type' => 'textfield', 
-    '#field_prefix' => '#',
-    '#title' => t('HEX color code:'), 
-    '#size' => 5, 
-    '#maxlength' => 6, 
-    '#required' => FALSE,
-    '#description' => 'Maximum six characters. <br/>Will be used for changing the color of the meeting title. E.g., FF0000 - for red',
-  );
-  $form[] = array(
-    '#markup' => '<div class="clearfix">',
-  );
-  $form['start_date'] = array(
-    '#type' => 'date_popup',
-    '#title' => t('Start Date:'), 
-    '#size' => 10, 
-    '#required' => TRUE,
-    '#date_format' => 'd/m/Y H:i',
-  );
-  $form['end_date'] = array(
-    '#type' => 'date_popup',
-    '#title' => t('End Date:'), 
-    '#size' => 10, 
-    '#required' => FALSE,
-    '#date_format' => 'd/m/Y H:i',
-  );
-  $form[] = array(
-    '#markup' => '</div>',
-  );
+  //adding general fields
+  $form = os2dagsorden_create_agenda_meeting_form_add_general_fields($form);
   
-  $loc_voc = taxonomy_vocabulary_machine_name_load('lokation');
-  $loc_terms = taxonomy_get_tree($loc_voc->vid);
-  $loc_select = array();
-  foreach ($loc_terms as $loc_term) {
-    $loc_select[$loc_term->tid] = $loc_term->name;
-  }
-  $form['location'] = array(
-    '#type' => 'select',
-    '#title' => t('Location:'), 
-    '#required' => FALSE,
-    '#options' => $loc_select,
-    '#multiple' => FALSE,
-    '#empty_value' => 0,
-  );
-  
-  $com_voc = taxonomy_vocabulary_machine_name_load('committee');
-  $com_terms = taxonomy_get_tree($com_voc->vid);
-  $com_select = array();
-  foreach ($com_terms as $com_term) {
-    $com_select[$com_term->tid] = $com_term->name;
-  }
-  $form['committee'] = array(
-    '#type' => 'select',
-    '#title' => t('Committee:'), 
-    '#required' => TRUE,
-    '#options' => $com_select,
-    '#multiple' => FALSE,
-  );
-  
-  $form['participants'] = array(
-    '#title' => t('Participants'),
-    '#type' => 'textarea',
-    '#rows' => 2,
-  );
+  //adding other fields
   $form['description_opened'] = array(
     '#title' => t('Description opened:'),
     '#type' => 'managed_file',
@@ -157,35 +72,11 @@ function os2dagsorden_create_agenda_meeting($form, $form_state, $meeting_id) {
     $form_state['meeting_id'] = $meeting_id;//saving for usage in the submit function
     
     $node = node_load($meeting_id);
-    $form['title']['#default_value'] = $node->title;
     
-    if (field_get_items('node', $node, 'field_title_short')){
-      $short_title_field = array_pop(field_get_items('node', $node, 'field_title_short'));
-      $form['short_title']['#default_value'] = $short_title_field['safe_value'];
-    }
+    //filling general fields
+    $form = os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $node);
     
-    $status_field = array_pop(field_get_items('node', $node, 'field_meeting_status'));
-    $form['status']['#default_value'] = $status_field['safe_value'];
-    
-    if (field_get_items('node', $node, 'field_hex')){
-      $hex_field = array_pop(field_get_items('node', $node, 'field_hex'));
-      $form['hex_color']['#default_value'] = $hex_field['safe_value'];
-    }
-    
-    $date_field = array_pop(field_get_items('node', $node, 'field_date'));
-    $form['start_date']['#default_value'] = $date_field['value'];
-    if ($date_field['value2'] != $date_field['value'])
-      $form['end_date']['#default_value'] = $date_field['value2'];
-    
-    $location_field = array_pop(field_get_items('node', $node, 'field_location'));
-    $form['location']['#default_value'] = $location_field['tid'];
-    
-    $committee_field = array_pop(field_get_items('node', $node, 'field_committee'));
-    $form['committee']['#default_value'] = $committee_field['tid'];
-    
-    $participants_field = array_pop(field_get_items('node', $node, 'field_meeting_participants'));
-    $form['participants']['#default_value'] = $participants_field['safe_value'];
-    
+    //filling other fields
     if (field_get_items('node', $node, 'field_meeting_description')){
       $description_opened_field = array_pop(field_get_items('node', $node, 'field_meeting_description'));
       $form['description_opened']['#default_value'] = $description_opened_field['fid'];
@@ -221,7 +112,6 @@ function os2dagsorden_create_agenda_meeting($form, $form_state, $meeting_id) {
 	  '#name' => 'delete_' . $bp->nid,
 	  '#submit' => array('os2dagsorden_create_agenda_meeting_submit_delete_bullet_point'),
 	  '#bp_nid' => $bp->nid,
-	  '#attributes' => array('class' => array('bp_delete')),
 	  '#ajax' => array(
 	    'callback' => 'os2dagsorden_create_agenda_bullet_point_delete_ajax',
 	    'wrapper' => 'edit-agenda',
@@ -305,61 +195,34 @@ function os2dagsorden_create_agenda_meeting($form, $form_state, $meeting_id) {
   return $form;
 }
 
+/**
+ * Callback for deleting bullet point
+ *
+ * @param $form       the form
+ * @param $form_state the current state of the form
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_bullet_point_delete_ajax($form, $form_state) {
   return $form['agenda'];
 }
 
-function os2dagsorden_create_agenda_save_meeting($form, &$form_state){
-  $input = $form_state['input'];
+/**
+ * Saves the meeting - either by creating new or modifying the existing
+ *
+ * @param $form       the form
+ * @param $form_state the current state of the form
+ *
+ * @return $node meeting
+*/
+function os2dagsorden_create_agenda_save_meeting($form, $form_state){
+  $node = os2dagsorden_create_agenda_populate_meeting_general($form, $form_state);
   
-  //input extraction
-  $title = $input['title'];
-  $short_title = $input['short_title'];
-  $status = $input['status'];
-  $hex_color = $input['hex_color'];
-  $start_date = $input['start_date']['date'];
-  $start_time = $input['start_date']['time'];
-  $end_date = $input['end_date']['date'];
-  $end_time = $input['end_date']['time'];
-  $loc_tid = $input['location'];
-  $com_tid = $input['committee'];
-  $participants = $input['participants'];
+  $input = $form_state['input'];
   //file extraction
   $description_opened = $form_state['values']['description_opened'];
   $description_closed = $form_state['values']['description_closed'];
   
-  if (!$form_state['meeting_id']){
-    //node creating
-    $node = new stdClass();
-    $node->type = "meeting";
-    $node->language = LANGUAGE_NONE;
-    node_object_prepare($node);    
-  } else {
-    $node = node_load($form_state['meeting_id']);
-  }
-  
-  //node population
-  $node->title = $title;
-  $node->field_title_short['und'][0]['value'] = $short_title;
-  $node->field_meeting_status['und'][0]['value'] = $status;
-  $start_datetime = date_create_from_format("d/m/Y H:i", $start_date . ' ' . $start_time);
-  $node->field_date['und'][0]['value'] = $start_datetime->format('Y-m-d H:i:s');
-  $node->field_committee['und'][0]['tid'] = $com_tid;
-  
-  
-  $node->field_hex['und'][0]['value'] = $hex_color;
-  
-  if (!empty($end_date)){
-    $end_datetime = date_create_from_format("d/m/Y H:i", $end_date . ' ' . $end_time);
-    $node->field_date['und'][0]['value2'] = $end_datetime->format('Y-m-d H:i:s');
-  } else {//same as start date - default
-    $node->field_date['und'][0]['value2'] = $start_datetime->format('Y-m-d H:i:s');
-  }
-  
-  $node->field_location['und'][0]['tid'] = $loc_tid;
-  
-  $node->field_meeting_participants['und'][0]['value'] = $participants;  
- 
   if($description_opened != 0){
     //resaving file permanently
     $description_opened = file_load($description_opened);
@@ -399,6 +262,14 @@ function os2dagsorden_create_agenda_save_meeting($form, &$form_state){
   return $node;
 }
 
+/**
+ * Helper functions, meeting form submit. Calls meeting save and redirects to the calendar view.
+ *
+ * @param $form       the form
+ * @param $form_state the current state of the form
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_meeting_submit($form, &$form_state) {  
   $node = os2dagsorden_create_agenda_save_meeting($form, $form_state);
   $start_date = $form_state['input']['start_date']['date'];
@@ -407,6 +278,14 @@ function os2dagsorden_create_agenda_meeting_submit($form, &$form_state) {
   $form_state['redirect'] = 'calendar-field-date/month/' . $start_date->format('Y') . '-' . $start_date->format('m');
 }
 
+/**
+ * Calls os2dagsorden_create_agenda_save_meeting and redirects to bullet point creation/modification page.
+ *
+ * @param $bullet_point_id id of the bullet point
+ * @param $bpa_id          id of the bullet point attachment
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_meeting_submit_add_edit_bullet_point($form, &$form_state) {
   $node = os2dagsorden_create_agenda_save_meeting($form, $form_state);
   
@@ -418,6 +297,14 @@ function os2dagsorden_create_agenda_meeting_submit_add_edit_bullet_point($form, 
   $form_state['rebuild'] = TRUE;
 }
 
+/**
+ * Helper functions to delete bullet point.
+ *
+ * @param $form       the form
+ * @param $form_state the current state of the form
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_meeting_submit_delete_bullet_point($form, &$form_state) {
   $node = os2dagsorden_create_agenda_save_meeting($form, $form_state);
   
@@ -430,6 +317,14 @@ function os2dagsorden_create_agenda_meeting_submit_delete_bullet_point($form, &$
   $form_state['rebuild'] = TRUE;
 }
 
+/**
+ * Removes the bullet point from the meeting
+ *
+ * @param $bullet_point_id id of the bullet point
+ * @param $bpa_id          id of the bullet point attachment
+ *
+ * @return $meeting meeting
+*/
 function os2dagsorden_create_agenda_remove_bullet_point_from_meeting($meeting_id, $bullet_point_id){
   $meeting = node_load($meeting_id);
   if (field_get_items('node', $meeting, 'field_ref_bullet_points')){

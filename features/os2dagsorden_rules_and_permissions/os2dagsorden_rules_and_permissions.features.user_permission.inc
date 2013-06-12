@@ -418,6 +418,7 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'name' => 'administer taxonomy',
     'roles' => array(
       0 => 'administrator',
+      1 => 'os2dagsorden admin',
     ),
     'module' => 'taxonomy',
   );
@@ -454,6 +455,7 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'name' => 'administer users',
     'roles' => array(
       0 => 'administrator',
+      1 => 'os2dagsorden admin',
     ),
     'module' => 'user',
   );
@@ -639,14 +641,18 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
   // Exported permission: delete terms in 3
   $permissions['delete terms in 3'] = array(
     'name' => 'delete terms in 3',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'os2dagsorden admin',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: delete terms in 5
   $permissions['delete terms in 5'] = array(
     'name' => 'delete terms in 5',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'os2dagsorden admin',
+    ),
     'module' => 'taxonomy',
   );
 
@@ -759,14 +765,18 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
   // Exported permission: edit terms in 3
   $permissions['edit terms in 3'] = array(
     'name' => 'edit terms in 3',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'os2dagsorden admin',
+    ),
     'module' => 'taxonomy',
   );
 
   // Exported permission: edit terms in 5
   $permissions['edit terms in 5'] = array(
     'name' => 'edit terms in 5',
-    'roles' => array(),
+    'roles' => array(
+      0 => 'os2dagsorden admin',
+    ),
     'module' => 'taxonomy',
   );
 

@@ -12,6 +12,14 @@
  * @link     http://bellcom.dk
  */
 
+/**
+ * Generates the form for bullet point attachment creating/modifying
+ *
+ * @param $form       the form to be created
+ * @param $form_state the current state of the form
+ *
+ * @return $form the created form
+*/
 function os2dagsorden_create_agenda_bpa($form, $form_state){  
   $form[] = array(
     '#markup' => '<h1 class="title">' . t('Bullet point attachment') . '</h1>',
@@ -113,6 +121,15 @@ function os2dagsorden_create_agenda_bpa($form, $form_state){
   return $form;
 }
 
+/**
+ * Custom validation of bullet point attachment form. Validates that only one of the option 
+ * is chosen  - either file is uploaded or body of the bullet point attachmet is filled.
+ *
+ * @param $form       the form
+ * @param $form_state the current state of the form
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_bpa_validate($form, &$form_state) {
   $input = $form_state['input'];
   
@@ -121,9 +138,17 @@ function os2dagsorden_create_agenda_bpa_validate($form, &$form_state) {
   if (!empty($body) && $bilag != 0) {
     form_set_error('body', t('You cannot provide both file and the body text.<br/>Please choose one of the options.'));
   }
-
 } 
 
+/**
+ * Saves the bullet point attachment - either by creating new or modifying the existing.
+ * Performs call to os2dagsorden_create_agenda_add_bpa_to_bullet_point
+ *
+ * @param $form       the form
+ * @param $form_state the current state of the form
+ *
+ * @return $node bullet point attachment
+*/
 function os2dagsorden_create_agenda_save_bpa($form, &$form_state){
   $input = $form_state['input'];
   
@@ -168,6 +193,14 @@ function os2dagsorden_create_agenda_save_bpa($form, &$form_state){
   return $node;
 }
 
+/**
+ * Adds the bullet points attachment to the bullet point, if it has not been added before.
+ *
+ * @param $bullet_point_id id of the bullet point
+ * @param $bpa_id          id of the bullet point attachment
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_add_bpa_to_bullet_point($bullet_point_id, $bpa_id){
   $bullet_point = node_load($bullet_point_id);
   if (field_get_items('node', $bullet_point, 'field_ref_attachment')){
@@ -182,6 +215,15 @@ function os2dagsorden_create_agenda_add_bpa_to_bullet_point($bullet_point_id, $b
   node_save($bullet_point);
 }
 
+/**
+ * Helper functions, bullet point attachment form submit. Calls os2dagsorden_create_agenda_save_bpa
+ * returns to the previous page of multiform (bullet point creation/modification).
+ *
+ * @param $form       the form to be created
+ * @param $form_state the current state of the form
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_bpa_submit($form, &$form_state){
   os2dagsorden_create_agenda_save_bpa($form, $form_state);
   
@@ -189,6 +231,14 @@ function os2dagsorden_create_agenda_bpa_submit($form, &$form_state){
   $form_state['rebuild'] = TRUE;
 }
 
+/**
+ * Helper functions, returns to the previous page of multiform (bullet point creation/modification).
+ *
+ * @param $form       the form to be created
+ * @param $form_state the current state of the form
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_bpa_back($form, &$form_state){
   $form_state['page_num'] = 2;
   $form_state['rebuild'] = TRUE;

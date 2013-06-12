@@ -1,5 +1,7 @@
 #os2dagsorden-create-agenda-meeting .container-inline-date .form-item, 
-#os2dagsorden-create-agenda-meeting .container-inline-date .form-item input {
+#os2dagsorden-create-agenda-meeting .container-inline-date .form-item input,
+#os2dagsorden-create-agenda-meeting-simple .container-inline-date .form-item, 
+#os2dagsorden-create-agenda-meeting-simple .container-inline-date .form-item input {
     width: auto;
     padding-left: 5px;
 }
@@ -7,17 +9,4 @@
 #os2dagsorden-create-agenda-meeting .container-inline-date {
     clear: none;
     float: left;
-}
-
-.indicator-personal {
-    background: url("../img/icon_personal.png") no-repeat scroll 50% top transparent;
-    display: inline;
-    height: 16px;
-    min-height: 16px;
-    min-width: 16px;
-    padding-left: 16px;
-    padding-right: 3px;
-    position: relative;
-    width: 16px;
-    z-index: 1;
 }

@@ -2387,7 +2387,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '6',
+        'weight' => '1',
       ),
     ),
   );
@@ -2449,7 +2449,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '5',
+        'weight' => '3',
       ),
     ),
   );
@@ -2504,7 +2504,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '1',
+        'weight' => '5',
       ),
     ),
   );
@@ -2562,8 +2562,8 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
       'label' => 'Date valid',
       'required' => 0,
       'settings' => array(
-        'default_value' => 'now',
-        'default_value2' => 'same',
+        'default_value' => 'blank',
+        'default_value2' => 'blank',
         'default_value_code' => '',
         'default_value_code2' => '',
         'user_register_form' => FALSE,
@@ -2580,7 +2580,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '7',
+        'weight' => '6',
       ),
     ),
   );
@@ -2635,7 +2635,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => 0,
+        'weight' => '4',
       ),
     ),
   );
@@ -2697,7 +2697,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'size' => '60',
         ),
         'type' => 'text_textfield',
-        'weight' => '4',
+        'weight' => '2',
       ),
     ),
   );
@@ -2733,7 +2733,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 0,
+          'weight' => '0',
         ),
       ),
       'entity_type' => 'taxonomy_term',
@@ -2752,7 +2752,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '3',
+        'weight' => '1',
       ),
     ),
   );
@@ -2801,7 +2801,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => 3,
+          'weight' => '3',
         ),
       ),
       'entity_type' => 'taxonomy_term',
@@ -2816,7 +2816,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_buttons',
-        'weight' => '5',
+        'weight' => '3',
       ),
     ),
   );
@@ -2840,19 +2840,13 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
       'bundle' => 'user_position',
       'default_value' => NULL,
       'deleted' => '0',
-      'description' => '',
+      'description' => 'leave empty to be able to manually attach it to user',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_integer',
-          'weight' => 1,
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '1',
         ),
       ),
       'entity_type' => 'taxonomy_term',
@@ -2871,7 +2865,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '0',
+        'weight' => '5',
       ),
     ),
   );
@@ -2921,7 +2915,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
             'multiple_to' => '',
           ),
           'type' => 'date_default',
-          'weight' => 2,
+          'weight' => '2',
         ),
       ),
       'entity_type' => 'taxonomy_term',
@@ -2929,8 +2923,8 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
       'label' => 'Date valid',
       'required' => 0,
       'settings' => array(
-        'default_value' => 'now',
-        'default_value2' => 'same',
+        'default_value' => 'blank',
+        'default_value2' => 'blank',
         'default_value_code' => '',
         'default_value_code2' => '',
         'user_register_form' => FALSE,
@@ -2947,7 +2941,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
           'year_range' => '-3:+3',
         ),
         'type' => 'date_popup',
-        'weight' => '4',
+        'weight' => '2',
       ),
     ),
   );
@@ -3431,6 +3425,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
   t('Sysid');
   t('User positions');
   t('a list of all acadre id\'s, that are connected to that committee group');
+  t('leave empty to be able to manually attach it to user');
   t('represents the committees the user is a part of');
 
   return $fields;

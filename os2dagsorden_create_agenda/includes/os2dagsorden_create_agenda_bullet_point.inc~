@@ -11,6 +11,15 @@
  * @license  http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @link     http://bellcom.dk
  */
+ 
+/**
+ * Generates the form for bullet point creating/modifying
+ *
+ * @param $form       the form to be created
+ * @param $form_state the current state of the form
+ *
+ * @return $form the created form
+*/
 function os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_point_id) {  
   $form[] = array(
     '#markup' => '<h1 class="title">' . t('Bullet point') . '</h1>',
@@ -138,7 +147,7 @@ function os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_poi
     ),
     '#submit' => array('os2dagsorden_create_agenda_bullet_point_submit_add_edit_bpa'),
   );
-    $form['#attached']['js'] = array(
+  $form['#attached']['js'] = array(
     drupal_get_path('module', 'os2dagsorden_create_agenda') . '/js/form_js.js',
   );
   
@@ -149,10 +158,26 @@ function os2dagsorden_create_agenda_bullet_point($form, $form_state, $bullet_poi
   return $form;
 }
 
+/**
+ * Callback for deleting bullet point attachments
+ *
+ * @param $form       the form
+ * @param $form_state the current state of the form
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_bpa_delete_ajax($form, $form_state) {
   return $form['bpas'];
 }
 
+/**
+ * Saves the bullet point - either by creating new or modifying the existing
+ *
+ * @param $form       the form
+ * @param $form_state the current state of the form
+ *
+ * @return $node bullet point
+*/
 function os2dagsorden_create_agenda_save_bullet_point($form, &$form_state){
   $input = $form_state['input'];
   
@@ -182,6 +207,14 @@ function os2dagsorden_create_agenda_save_bullet_point($form, &$form_state){
   return $node;
 }
 
+/**
+ * Adds the bullet point to the meeting, if it has not been added before.
+ *
+ * @param $meeting_id      id of the meeting
+ * @param $bullet_point_id id of the bullet point
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_add_bullet_point_to_meeting($meeting_id, $bullet_point_id){
   $meeting = node_load($meeting_id);
   if (field_get_items('node', $meeting, 'field_ref_bullet_points')){
@@ -196,6 +229,14 @@ function os2dagsorden_create_agenda_add_bullet_point_to_meeting($meeting_id, $bu
   node_save($meeting);
 }
 
+/**
+ * Removes the bullet point attachment from the bullet point
+ *
+ * @param $bullet_point_id id of the bullet point
+ * @param $bpa_id          id of the bullet point attachment
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_remove_bpa_from_bullet_point($bullet_point_id, $bpa_id){
   $bullet_point = node_load($bullet_point_id);
   if (field_get_items('node', $bullet_point, 'field_ref_attachment')){
@@ -211,6 +252,14 @@ function os2dagsorden_create_agenda_remove_bpa_from_bullet_point($bullet_point_i
   node_save($bullet_point);
 }
 
+/**
+ * Helper functions, bullet point form submit. Calls saving and controls the form rebuild (page switching) - returning back to meeting view.
+ *
+ * @param $form       the form
+ * @param $form_state the current state of the form
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_bullet_point_submit($form, &$form_state) {
   $node = os2dagsorden_create_agenda_save_bullet_point($form, $form_state);
   
@@ -218,6 +267,15 @@ function os2dagsorden_create_agenda_bullet_point_submit($form, &$form_state) {
   $form_state['rebuild'] = TRUE;
 }
 
+/**
+ * Helper functions, bullet point attachment form submit. Calls saving and controls the form rebuild (page switching) - 
+ * redirecting to bullet point attachment creation/editing page
+ *
+ * @param $form       the form
+ * @param $form_state the current state of the form
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_bullet_point_submit_add_edit_bpa($form, &$form_state) {
   $node = os2dagsorden_create_agenda_save_bullet_point($form, $form_state);
   
@@ -229,6 +287,14 @@ function os2dagsorden_create_agenda_bullet_point_submit_add_edit_bpa($form, &$fo
   $form_state['rebuild'] = TRUE;
 }
 
+/**
+ * Helper functions to delete bullet point attachment.
+ *
+ * @param $form       the form
+ * @param $form_state the current state of the form
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_bullet_point_submit_delete_bpa($form, &$form_state) {
   $node = os2dagsorden_create_agenda_save_bullet_point($form, $form_state);
   
@@ -241,6 +307,14 @@ function os2dagsorden_create_agenda_bullet_point_submit_delete_bpa($form, &$form
   $form_state['rebuild'] = TRUE;
 }
 
+/**
+ * Helper functions redirects back to meeting view.
+ *
+ * @param $form       the form
+ * @param $form_state the current state of the form
+ *
+ * @return none
+*/
 function os2dagsorden_create_agenda_bullet_point_back($form, &$form_state) {
   $form_state['page_num'] = 1;
   $form_state['rebuild'] = TRUE;
