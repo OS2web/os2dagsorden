@@ -638,45 +638,6 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: delete terms in 3
-  $permissions['delete terms in 3'] = array(
-    'name' => 'delete terms in 3',
-    'roles' => array(
-      0 => 'os2dagsorden admin',
-    ),
-    'module' => 'taxonomy',
-  );
-
-  // Exported permission: delete terms in 5
-  $permissions['delete terms in 5'] = array(
-    'name' => 'delete terms in 5',
-    'roles' => array(
-      0 => 'os2dagsorden admin',
-    ),
-    'module' => 'taxonomy',
-  );
-
-  // Exported permission: delete terms in 6
-  $permissions['delete terms in 6'] = array(
-    'name' => 'delete terms in 6',
-    'roles' => array(),
-    'module' => 'taxonomy',
-  );
-
-  // Exported permission: delete terms in 7
-  $permissions['delete terms in 7'] = array(
-    'name' => 'delete terms in 7',
-    'roles' => array(),
-    'module' => 'taxonomy',
-  );
-
-  // Exported permission: delete terms in 8
-  $permissions['delete terms in 8'] = array(
-    'name' => 'delete terms in 8',
-    'roles' => array(),
-    'module' => 'taxonomy',
-  );
-
   // Exported permission: download original image
   $permissions['download original image'] = array(
     'name' => 'download original image',
@@ -760,45 +721,6 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
       0 => 'administrator',
     ),
     'module' => 'edit_own_user_account_permission',
-  );
-
-  // Exported permission: edit terms in 3
-  $permissions['edit terms in 3'] = array(
-    'name' => 'edit terms in 3',
-    'roles' => array(
-      0 => 'os2dagsorden admin',
-    ),
-    'module' => 'taxonomy',
-  );
-
-  // Exported permission: edit terms in 5
-  $permissions['edit terms in 5'] = array(
-    'name' => 'edit terms in 5',
-    'roles' => array(
-      0 => 'os2dagsorden admin',
-    ),
-    'module' => 'taxonomy',
-  );
-
-  // Exported permission: edit terms in 6
-  $permissions['edit terms in 6'] = array(
-    'name' => 'edit terms in 6',
-    'roles' => array(),
-    'module' => 'taxonomy',
-  );
-
-  // Exported permission: edit terms in 7
-  $permissions['edit terms in 7'] = array(
-    'name' => 'edit terms in 7',
-    'roles' => array(),
-    'module' => 'taxonomy',
-  );
-
-  // Exported permission: edit terms in 8
-  $permissions['edit terms in 8'] = array(
-    'name' => 'edit terms in 8',
-    'roles' => array(),
-    'module' => 'taxonomy',
   );
 
   // Exported permission: execute unlink files
