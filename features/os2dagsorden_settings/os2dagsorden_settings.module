@@ -37,7 +37,7 @@ function os2dagsorden_settings_menu() {
         'page callback' => 'drupal_get_form',
         'page arguments' => array('os2dagsorden_settings_settings_form'),
         'access arguments' => array('administer os2web'),
-        'type' => MENU_NORMAL_ITEM | MENU_DEFAULT_LOCAL_TASK,
+        'type' => MENU_NORMAL_ITEM,
         'file' => 'os2dagsorden_settings.admin.inc',
     );
     $items['admin/config/os2dagsorden/flush_calendar_preferences'] = array(
@@ -51,6 +51,11 @@ function os2dagsorden_settings_menu() {
     return $items;
 }
 
+/**
+ * Flushed the preferences of all the users regarding the calendar (pol/org)
+ *
+ * @return none
+ */
 function os2dagsorden_settings_flush_calendar_preferences(){
     $users = db_select('users', 'u')
 	  ->fields('u', array('uid'))
@@ -68,3 +73,4 @@ function os2dagsorden_settings_flush_calendar_preferences(){
     drupal_set_message('All users calendar preferences have been flushed');
     drupal_goto('admin/config');
 }
+

@@ -57,7 +57,56 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
       '#maxlength' => 256, 
       '#disabled' => variable_get('os2dagsorden_pws_use_local_copy'),
   );
-     
+  
+  //cron frequencies
+  $form['os2dagsorden_cron_job_freq'] = array(
+      '#type' => 'fieldset',
+      '#collapsible' => TRUE,
+      '#title' => t('Cron job frequencies settings'),
+  );
+  
+  $options = array(
+    '*/5 * * * *' => 'Every 5 min',
+    '*/15 * * * *' => 'Every 15 min',
+    '*/30 * * * *' => 'Every 30 min',
+    '0 */1 * * *' => 'Every 1 hour',
+    '0 */2 * * *' => 'Every 2 hours',
+    '0 */3 * * *' => 'Every 3 hours',
+    '0 */5 * * *' => 'Every 5 hours',
+    '0 */10 * * *' => 'Every 10 hours',
+  );
+  $conf = ultimate_cron_get_settings("os2dagsorden_importer_cron");
+  $form['os2dagsorden_cron_job_freq']['os2dagsorden_importer_cron'] = array(
+      '#type' => 'select',
+      '#options' => $options,
+      '#default_value' => isset($conf['rules'])? implode(';', $conf['rules']) : variable_get('ultimate_cron_rule', ULTIMATE_CRON_RULE),
+      '#title' => t('Frequency of SOFD import cron job'),
+  );
+  
+  $conf = ultimate_cron_get_settings("os2web_esdh_provider_cron");
+  $form['os2dagsorden_cron_job_freq']['os2web_esdh_provider_cron'] = array(
+      '#type' => 'select',
+      '#options' => $options,
+      '#default_value' => isset($conf['rules'])? implode(';', $conf['rules']) : variable_get('ultimate_cron_rule', ULTIMATE_CRON_RULE),
+      '#title' => t('Frequency of Acadre import cron job'),
+  );
+  
+  $conf = ultimate_cron_get_settings("os2dagsorden_pdf2htmlex_cron");
+  $form['os2dagsorden_cron_job_freq']['os2dagsorden_pdf2htmlex_cron'] = array(
+      '#type' => 'select',
+      '#options' => $options,
+      '#default_value' => isset($conf['rules'])? implode(';', $conf['rules']) : variable_get('ultimate_cron_rule', ULTIMATE_CRON_RULE),
+      '#title' => t('Frequency of PDF to HTML conversion cron job'), 
+  );
+  
+  $conf = ultimate_cron_get_settings("os2dagsorden_adlib_api_cron");
+  $form['os2dagsorden_cron_job_freq']['os2dagsorden_adlib_api_cron'] = array(
+      '#type' => 'select',
+      '#options' => $options,
+      '#default_value' => isset($conf['rules'])? implode(';', $conf['rules']) : variable_get('ultimate_cron_rule', ULTIMATE_CRON_RULE),
+      '#title' => t('Frequency of Adlib (* to PDF) conversion cron job'), 
+  );
+  
   $form['os2dagsorden_hidden_agenda_committee'] = array(
     '#type' => 'textfield',
     '#title' => 'List of committees which agenda is completely hidden to those without the rights',
@@ -66,28 +115,55 @@ function os2dagsorden_settings_settings_form($form, $form_state) {
     '#default_value' => variable_get('os2dagsorden_hidden_agenda_committee', OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE),
   );
   
-  //this set up is now done in os2web_esdh_provider module
-//   //Import committees
-//   $form['os2dagsorden_import_committees'] = array(
-//       '#type' => 'fieldset',
-//       '#collapsible' => TRUE,
-//       '#title' => t('List of committees to import:'),
-//       '#description' => t('List of committees, which should be imported from Acadre/SOFD systems.'),
-//   );
-//   $form['os2dagsorden_import_committees']['os2dagsorden_meetings_path'] = array(
-//     '#type' => 'textfield',
-//     '#title' => 'Sti til acadre publish folder.',
-//     '#description' => 'Dette er stien hvor Acadre publisere .XML filer til.',
-//     '#default_value' => variable_get('os2dagsorden_meetings_path', ACADRE_MM_IMPORT_DIR),
-//   );
-//   $form['os2dagsorden_import_committees']['os2dagsorden_import_committees_list'] = array(
-//       '#type' => 'textarea',
-//       '#default_value' => variable_get('os2dagsorden_import_committees_list'),
-//       '#title' => t('Committees to import list:'),
-//       '#description' => t('Format the entry as <b>acadre_nr</b> of committee then <b>coma (,)</b> and then the <b>name of the committee</b>, separate the entries with <b>semicolon (;)</b> <br/> 
-//       Example:<br/>acadre_nr1,committee1;<br/>acadre_nr2,committee2;<br/>...')
-//   );
-//   
+  $form['#submit'][] = 'os2dagsorden_settings_cron_job_submit';
   
   return system_settings_form($form);
+}
+
+/**
+ * Hook to system for submit. Stores the frequencies of the cronjob if they are different from the default provided by ultimate cron module
+ *
+ * @param $form       the settings form
+ * @param $form_state the state of the form
+ *
+ * @return none.
+ */
+function os2dagsorden_settings_cron_job_submit($form, &$form_state){
+  $input = $form_state['input'];
+  
+  //os2dagsorden_importer_cron
+  $conf = _ultimate_cron_default_settings();
+  if (!empty($input['os2dagsorden_importer_cron']) && $input['os2dagsorden_importer_cron'] !== variable_get('ultimate_cron_rule', ULTIMATE_CRON_RULE))
+    $conf['rules'][0] = $input['os2dagsorden_importer_cron'];
+  else
+    unset($conf['rules']);
+  $conf['service_group'] = "";
+  ultimate_cron_set_settings('os2dagsorden_importer_cron', $conf);
+  
+  //os2web_esdh_provider_cron
+  $conf = _ultimate_cron_default_settings();
+  if (!empty($input['os2web_esdh_provider_cron']) && $input['os2web_esdh_provider_cron'] !== variable_get('ultimate_cron_rule', ULTIMATE_CRON_RULE))
+    $conf['rules'][0] = $input['os2web_esdh_provider_cron'];
+  else
+    unset($conf['rules']);
+  $conf['service_group'] = "";
+  ultimate_cron_set_settings('os2web_esdh_provider_cron', $conf);
+  
+  //os2dagsorden_pdf2htmlex_cron
+  $conf = _ultimate_cron_default_settings();
+  if (!empty($input['os2dagsorden_pdf2htmlex_cron']) && $input['os2dagsorden_pdf2htmlex_cron'] !== variable_get('ultimate_cron_rule', ULTIMATE_CRON_RULE))
+    $conf['rules'][0] = $input['os2dagsorden_pdf2htmlex_cron'];
+  else
+    unset($conf['rules']);
+  $conf['service_group'] = "";
+  ultimate_cron_set_settings('os2dagsorden_pdf2htmlex_cron', $conf);
+  
+  //os2dagsorden_adlib_api_cron
+  $conf = _ultimate_cron_default_settings();
+  if (!empty($input['os2dagsorden_adlib_api_cron']) && $input['os2dagsorden_adlib_api_cron'] !== variable_get('ultimate_cron_rule', ULTIMATE_CRON_RULE))
+    $conf['rules'][0] = $input['os2dagsorden_adlib_api_cron'];
+  else
+    unset($conf['rules']);
+  $conf['service_group'] = "";
+  ultimate_cron_set_settings('os2dagsorden_adlib_api_cron', $conf);
 }
