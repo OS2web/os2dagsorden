@@ -24,8 +24,8 @@ function os2dagsorden_access_helper_menu() {
         'type' => MENU_CALLBACK,
         'page arguments' => array(1,3),
 	'page callback' => 'os2dagsorden_access_helper_print_speaker_paper',
-	'access arguments' => array(1),
-	'access callback' => 'os2dagsorden_access_helper_bullet_point_has_speaker_paper',
+	'access arguments' => array(3),
+	'access callback' => 'os2dagsorden_access_helper_check_user_can_see_speaker_paper',
 	'type' => MENU_CALLBACK,
     );
     
@@ -55,9 +55,9 @@ function os2dagsorden_access_helper_menu() {
  * @return html for nice printing of speaker paper
  */
 function os2dagsorden_access_helper_print_speaker_paper($bullet_point_id, $speaker_paper_id) {
-    $bullet_point = node_load($bullet_point_id);
-    $speaker_paper = node_load($speaker_paper_id);
-    if (strcmp($speaker_paper->type, 'speaker_paper') == 0) {	 
+    if (os2dagsorden_access_helper_bullet_point_has_speaker_paper($bullet_point_id)) {
+	$bullet_point = node_load($bullet_point_id);
+	$speaker_paper = node_load($speaker_paper_id);
         drupal_set_title(t('Talepapir') . ' - ' . $speaker_paper->title);
         $html .= '<h3>' . $bullet_point->title . ' - Talepapir - ' . $speaker_paper->title . '</h3>';
 
@@ -111,7 +111,7 @@ function os2dagsorden_access_helper_print_meeting_speaker_papers($meeting_id){
  */
 function os2dagsorden_access_helper_meeting_has_speaker_paper($meeting_id) {
     $meeting = node_load($meeting_id);
-    if (isset($meeting->field_ref_bullet_points['und'])) {	
+    if (isset($meeting->field_ref_bullet_points['und'])) {
         foreach ($meeting->field_ref_bullet_points['und'] as $bullet_point) {
             if (os2dagsorden_access_helper_bullet_point_has_speaker_paper($bullet_point['target_id']))
                 return TRUE;
@@ -251,6 +251,20 @@ function os2dagsorden_access_helper_bullet_point_has_speaker_paper($bullet_point
     $result = $query->execute();
 
     return isset($result['node']);
+}
+
+/**
+ * Checks is given speaker paper can be seen by user.
+ *
+ * @param int $sp_id the ID of speaker paper
+ *
+ * @return true of false
+ */
+function os2dagsorden_access_helper_check_user_can_see_speaker_paper($sp_id){
+    global $user;
+    $sp = node_load($sp_id);
+    
+    return ($user->uid == $sp->uid);
 }
 
 /**
@@ -737,10 +751,10 @@ function os2dagsorden_access_helper_set_meeting_status_and_save($node, $status) 
  *
  * @return boolean TRUE or FALSE
  */
-function os2dagsorden_access_helper_show_budget_menu(){
+function os2dagsorden_access_helper_show_byradet_menu(){
     $user = os2dagsorden_access_helper_get_user();
     
-    $term = _os2dagsorden_importer_get_committee_by_id(30);//Byradet committee only
+    $term = _os2dagsorden_importer_get_committee_by_id(4);//Byradet committee only
     
     //hiding menu    
     if (!empty($user->field_user_committee)) {  //is part of the committee
