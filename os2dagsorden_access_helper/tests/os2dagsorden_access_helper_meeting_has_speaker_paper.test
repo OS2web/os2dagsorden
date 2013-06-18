@@ -1,6 +1,6 @@
 <?php
 
-class Os2dagsordenAccessHelper_MeetingHasSpeakerPaper_WebTestCase extends Os2dagsordenAccessHepperTest {
+class Os2dagsordenAccessHelper_MeetingHasSpeakerPaper_WebTestCase extends Os2dagsordenAccessHelperTest {
   public static function getInfo() {
     return array(
       'name' => 'os2dagsorden_access_helper_meeting_has_speaker_paper',

@@ -1,7 +1,7 @@
 <?php
 
 
-class Os2dagsordenAccessHelper_FileDownload_WebTestCase extends Os2dagsordenAccessHepperTest {
+class Os2dagsordenAccessHelper_FileDownload_WebTestCase extends Os2dagsordenAccessHelperTest {
   public static function getInfo() {
     return array(
       'name' => 'os2dagsorden_access_helper_file_download',
