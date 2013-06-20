@@ -66,15 +66,11 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form){
     '#multiple' => FALSE,
     '#default_value' => 'pol',
   );
-  
   $form['hex_color'] = array(
-    '#type' => 'textfield', 
-    '#field_prefix' => '#',
-    '#title' => t('HEX color code:'), 
-    '#size' => 5, 
-    '#maxlength' => 6, 
-    '#required' => FALSE,
-    '#description' => 'Maximum six characters. <br/>Will be used for changing the color of the meeting title. E.g., FF0000 - for red',
+    '#type' => 'jquery_colorpicker',
+    '#title' => t('Meeting color:'),
+    '#default_value' => '000000',
+    '#description' => 'Choose a color for meeting, will be used to for marking the meeting in the calendar',
   );
   $form[] = array(
     '#markup' => '<div class="clearfix">',
@@ -214,7 +210,7 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   $loc_tid = $input['location'];
   $com_tid = $input['committee'];
   $participants = $input['participants'];
-  
+
   if (!$form_state['meeting_id']){
     //node creating
     $node = new stdClass();
@@ -233,9 +229,9 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   $node->field_date['und'][0]['value'] = $start_datetime->format('Y-m-d H:i:s');
   $node->field_committee['und'][0]['tid'] = $com_tid;
   
-  $node->field_meeting_category['und'][0]['value'] = $hex_color;
+  $node->field_meeting_category['und'][0]['value'] = $meeting_category;
   $node->field_hex['und'][0]['value'] = $hex_color;
-  
+
   if (!empty($end_date)){
     $end_datetime = date_create_from_format("d/m/Y H:i", $end_date . ' ' . $end_time);
     $node->field_date['und'][0]['value2'] = $end_datetime->format('Y-m-d H:i:s');

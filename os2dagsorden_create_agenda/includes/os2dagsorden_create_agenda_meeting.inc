@@ -257,7 +257,7 @@ function os2dagsorden_create_agenda_save_meeting($form, $form_state){
     }
   }
   
-  $node = os2dagsorden_access_helper_set_meeting_status_and_save($node, $status);
+  $node = os2dagsorden_access_helper_set_meeting_status_and_save($node, $input['status']);
   
   return $node;
 }

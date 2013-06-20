@@ -55,7 +55,9 @@ function os2dagsorden_create_agenda_meeting_simple($form, $form_state, $meeting_
 
 function os2dagsorden_create_agenda_save_meeting_simple($form, $form_state){
   $node = os2dagsorden_create_agenda_populate_meeting_general($form, $form_state);
-  $node = os2dagsorden_access_helper_set_meeting_status_and_save($node, $status);
+  
+  $input = $form_state['input'];
+  $node = os2dagsorden_access_helper_set_meeting_status_and_save($node, $input['status']);
   
   return $node;
 }
