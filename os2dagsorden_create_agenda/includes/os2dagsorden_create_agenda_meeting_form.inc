@@ -122,10 +122,18 @@ function os2dagsorden_create_agenda_meeting_form_add_general_fields($form){
     '#multiple' => FALSE,
   );
   
+  $user_select = array();
+  $users = entity_load('user');
+  foreach($users as $user) {
+    $user_select[$user->uid] = $user->field_user_full_name['und'][0]['value'] . " ($user->name)";
+  }
   $form['participants'] = array(
-    '#title' => t('Participants'),
-    '#type' => 'textarea',
-    '#rows' => 2,
+    '#type' => 'select',
+    '#title' => t('Participants:'), 
+    '#required' => FALSE,
+    '#options' => $user_select,
+    '#multiple' => TRUE,
+    '#attributes' => array('class' => array('improved-multi-select')),
   );
   
   //finishing form
@@ -180,7 +188,15 @@ function os2dagsorden_create_agenda_meeting_form_fill_general_fields($form, $nod
     
     if (field_get_items('node', $node, 'field_meeting_participants')){
       $participants_field = array_pop(field_get_items('node', $node, 'field_meeting_participants'));
-      $form['participants']['#default_value'] = $participants_field['safe_value'];
+      $participants = explode(',',$participants_field['safe_value']);
+      foreach ($participants as $el => $value){
+	$value = explode(' ', $value); //array
+	$value = end($value);//(name)
+	$username = substr($value, 1, strlen($value)-2);//name
+	$account = user_load_by_name($username);
+	$selection[] = $account->uid;
+      }
+      $form['participants']['#default_value'] = $selection;
     }
     
     return $form;
@@ -241,7 +257,16 @@ function os2dagsorden_create_agenda_populate_meeting_general($form, $form_state)
   
   $node->field_location['und'][0]['tid'] = $loc_tid;
   
-  $node->field_meeting_participants['und'][0]['value'] = $participants;
+  if ($participants){
+    $participant_str = '';
+    foreach ($participants as $participant => $value){
+      $user = user_load($value);
+      $participant_str .= $user->field_user_full_name['und'][0]['value'] . " ($user->name), ";
+    }
+    //removing last coma
+    $node->field_meeting_participants['und'][0]['value'] = substr($participant_str, 0, strlen($participant_str)-2);
+  } else 
+    $node->field_meeting_participants['und'][0]['value'] = '';
   
   return $node;
 }
