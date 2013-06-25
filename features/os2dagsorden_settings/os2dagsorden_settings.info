@@ -1,5 +1,5 @@
-name = "OS2Dagsorden settings"
-description = "Set of settings for OS2Dagsorden solution, includes language settings"
+name = "OS2dagsorden settings"
+description = "Set of settings for OS2dagsorden solution, includes language settings"
 core = "7.x"
 package = "OS2Dagsorden"
 php = "5.2.4"

@@ -4,8 +4,8 @@
 *
 * PHP version 5
 *
-* @category OS2Dagsorden
-* @package  OS2Dagsorden_Settings
+* @category OS2dagsorden
+* @package  OS2dagsorden_Settings
 * @file     Admin page file 
 * @author   Stanislav Kutasevits <stan@bellcom.dk>
 * @license  http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
@@ -16,7 +16,7 @@ define('ACADRE_MM_IMPORT_DIR', 'private://');
 define('OS2DAGSORDEN_HIDDEN_AGENGA_COMMITTEE', '28');
 
 /**
- * Implementation of settings form specifically for OS2Dagsorden system.
+ * Implementation of settings form specifically for OS2dagsorden system.
  *
  * @param $form       the settings form
  * @param $form_state the state of the form

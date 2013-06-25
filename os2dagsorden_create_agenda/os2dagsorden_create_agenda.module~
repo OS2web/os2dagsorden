@@ -101,7 +101,7 @@ function _os2dagsorden_create_agenda_simple_redirect($meeting_id = null){
   if (!$meeting_id)
     drupal_goto('agenda/meeting', array('query' => array('simple' => '1')));
   else 
-    drupal_goto('agenda/meeting/' . $meeting_id, array('simple' => '1'));
+    drupal_goto('agenda/meeting/' . $meeting_id, array('query' => array('simple' => '1')));
 }
 
 /**

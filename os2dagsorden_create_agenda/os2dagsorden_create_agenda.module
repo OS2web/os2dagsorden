@@ -58,7 +58,7 @@ function os2dagsorden_create_agenda_menu() {
   );
   
   $items['admin/config/os2dagsorden/create_agenda'] = array(
-    'title' => 'OS2Dagsorden Manually create full agenda',
+    'title' => 'OS2dagsorden Manually create full agenda',
     'description' => 'Module that supports manual agenda creation',
     'page callback' => '_os2dagsorden_create_agenda_redirect',
     'access arguments' => array('administer os2web'),
@@ -66,7 +66,7 @@ function os2dagsorden_create_agenda_menu() {
   );
   
   $items['admin/config/os2dagsorden/create_agenda_simple'] = array(
-    'title' => 'OS2Dagsorden Manually create simple agenda',
+    'title' => 'OS2dagsorden Manually create simple agenda',
     'description' => 'Module that supports manual agenda creation',
     'page callback' => '_os2dagsorden_create_agenda_simple_redirect',
     'access arguments' => array('administer os2web'),

@@ -4,9 +4,9 @@
 *
 * PHP version 5
 *
-* @category OS2Dagsorden
-* @package  OS2Dagsorden_Importer
-* @file     Code for the OS2Dagsorden settings feature.
+* @category OS2dagsorden
+* @package  OS2dagsorden_Importer
+* @file     Code for the OS2dagsorden settings feature.
 * @author   Stanislav Kutasevits <stan@bellcom.dk>
 * @license  http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
 * @link     http://bellcom.dk
@@ -21,7 +21,7 @@ include_once('os2dagsorden_settings.features.inc');
  */
 function os2dagsorden_settings_menu() {
     $items['admin/config/os2dagsorden'] = array(
-        'title' => 'OS2Dagsorden Setup',
+        'title' => 'OS2dagsorden Setup',
         'description' => 'Set up OS2 cms services',
         'position' => 'right',
         'weight' => -15,
@@ -32,8 +32,8 @@ function os2dagsorden_settings_menu() {
         'type' => MENU_NORMAL_ITEM,
     );
     $items['admin/config/os2dagsorden/settings'] = array(
-        'title' => 'OS2Dagsorden Settings',
-        'description' => 'General settings for the OS2Dagsorden project',
+        'title' => 'OS2dagsorden Settings',
+        'description' => 'General settings for the OS2dagsorden project',
         'page callback' => 'drupal_get_form',
         'page arguments' => array('os2dagsorden_settings_settings_form'),
         'access arguments' => array('administer os2web'),
