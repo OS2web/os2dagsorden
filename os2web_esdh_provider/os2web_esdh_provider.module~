@@ -135,7 +135,6 @@ function os2web_esdh_provider_cron() {
       foreach ($meetings as $meeting) {
         //$queue->createItem(array('meeting' => $meeting, 'force' => FALSE));
         //to remove
-        print_r($meeting);
         module_load_include('inc', 'os2web_esdh_provider', 'os2web_esdh_provider.mmapi');
 	_os2web_esdh_provider_import_meeting($meeting, FALSE);
       }
