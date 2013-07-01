@@ -95,8 +95,10 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       }
       
       //Adding participants
-      $part_names = array();
-      $node->field_meeting_participants[LANGUAGE_NONE][0]['value'] = implode(', ', $meeting['participants']);
+      if ($meeting['participants']){
+	$part_names = array();
+	$node->field_meeting_participants[LANGUAGE_NONE][0]['value'] = implode(', ', $meeting['participants']);
+      }
       
       // Import items.
       if (is_array($meeting['items'])) {
@@ -448,30 +450,42 @@ function _os2web_esdh_provider_add_enclosure_bullet($enclosure, $file) {
  *
  * @return committee term
  */
-function _os2web_esdh_provider_find_create_committee($committee_acadre_id, $committee_name = null, $committee_group_id = null){
+function _os2web_esdh_provider_find_create_committee($committee_acadre_id, $committee_name, $committee_group_id){
     $vid = db_select('taxonomy_vocabulary', 'tv')
         ->fields('tv', array('vid'))
         ->condition('machine_name', 'committee')
         ->execute()
         ->fetchField();
-
+    
     $query = new EntityFieldQuery();
-    $query->entityCondition('entity_type', 'taxonomy_term')
-        ->propertyCondition('vid', $vid)
-        ->fieldCondition('field_committee_acadre_id', 'value', $committee_acadre_id, '=');
-
-    $result = $query->execute();
+    if ($committee_acadre_id){
+      $query->entityCondition('entity_type', 'taxonomy_term')
+	  ->propertyCondition('vid', $vid)
+	  ->fieldCondition('field_committee_acadre_id', 'value', $committee_acadre_id, '=');
+	  
+      $result = $query->execute();
+    } else if ($committee_name){
+      $query->entityCondition('entity_type', 'taxonomy_term')
+	  ->propertyCondition('vid', $vid)
+	  ->propertyCondition('name', $committee_name);
+	  
+      $result = $query->execute();
+    }
+    
     if (isset($result['taxonomy_term'])) {
         $tids = array_keys($result['taxonomy_term']);
         $term = taxonomy_term_load($tids[0]);
 
 	return $term;
-    } else if ($committee_name && $committee_group_id){
+    } else {
 	$term = new stdClass();
 	$term->vid = $vid;
-	$term->name = $committee_name;
-	$term->field_committee_acadre_id['und'][0]['value'] = $committee_acadre_id;
-	$term->field_id['und'][0]['value'] = $committee_group_id;
+	if ($committee_name)
+	  $term->name = $committee_name;
+	if ($committee_acadre_id)
+	  $term->field_committee_acadre_id['und'][0]['value'] = $committee_acadre_id;
+	if ($committee_group_id)
+	  $term->field_id['und'][0]['value'] = $committee_group_id;
 	taxonomy_term_save($term);
 	
 	return $term;
