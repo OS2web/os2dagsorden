@@ -742,12 +742,25 @@ function os2dagsorden_content_types_field_default_fields() {
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_bpa_id',
-      'foreign keys' => array(),
-      'indexes' => array(),
-      'module' => 'number',
-      'settings' => array(),
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
+      ),
       'translatable' => '0',
-      'type' => 'number_integer',
+      'type' => 'text',
     ),
     'field_instance' => array(
       'bundle' => 'bullet_point_attachment',
@@ -757,15 +770,10 @@ function os2dagsorden_content_types_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_integer',
-          'weight' => 2,
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 6,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -776,21 +784,20 @@ function os2dagsorden_content_types_field_default_fields() {
       ),
       'entity_type' => 'node',
       'field_name' => 'field_bpa_id',
-      'label' => 'ID',
+      'label' => 'bpa_id',
       'required' => 0,
       'settings' => array(
-        'max' => '',
-        'min' => '',
-        'prefix' => '',
-        'suffix' => '',
+        'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
-        'active' => 0,
-        'module' => 'number',
-        'settings' => array(),
-        'type' => 'number',
-        'weight' => '0',
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '6',
       ),
     ),
   );
@@ -3425,6 +3432,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
   t('Sysid');
   t('User positions');
   t('a list of all acadre id\'s, that are connected to that committee group');
+  t('bpa_id');
   t('leave empty to be able to manually attach it to user');
   t('represents the committees the user is a part of');
 
