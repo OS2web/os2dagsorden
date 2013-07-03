@@ -23,6 +23,7 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
   $nids = array();
   if (is_array($meetings)) {
     foreach ($meetings as $meeting) {
+    
       //trying to get meeting from sysid
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'node')
@@ -80,8 +81,11 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       
       $node->title = $meeting['title'];
       $node->field_meeting_acadre_version[LANGUAGE_NONE][]['value'] = $meeting['acadre_version'];//adding the acarde version of the meeting
-      $node->field_meeting_sysid[LANGUAGE_NONE][0]['value'] = $meeting['meeting_id'];
-      
+      if (!empty($meeting['meeting_id']))
+	$node->field_meeting_sysid[LANGUAGE_NONE][0]['value'] = $meeting['meeting_id'];
+      else 
+	$node->field_meeting_sysid[LANGUAGE_NONE][0]['value'] = '0';
+	
       $node->field_date[LANGUAGE_NONE][0]['value'] = $meeting['meeting_date_start'];
       $node->field_date[LANGUAGE_NONE][0]['value2'] = $meeting['meeting_date_finish'];
       
