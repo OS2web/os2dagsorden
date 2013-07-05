@@ -1175,14 +1175,8 @@ function os2dagsorden_content_types_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'number',
-          'settings' => array(
-            'decimal_separator' => '.',
-            'prefix_suffix' => TRUE,
-            'scale' => 0,
-            'thousand_separator' => ' ',
-          ),
-          'type' => 'number_integer',
+          'settings' => array(),
+          'type' => 'hidden',
           'weight' => '23',
         ),
         'teaser' => array(
@@ -1249,9 +1243,8 @@ function os2dagsorden_content_types_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'text',
           'settings' => array(),
-          'type' => 'text_default',
+          'type' => 'hidden',
           'weight' => '20',
         ),
         'teaser' => array(
@@ -1452,10 +1445,9 @@ function os2dagsorden_content_types_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'file',
           'settings' => array(),
-          'type' => 'file_default',
-          'weight' => 25,
+          'type' => 'hidden',
+          'weight' => '25',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1524,10 +1516,9 @@ function os2dagsorden_content_types_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'file',
           'settings' => array(),
-          'type' => 'file_default',
-          'weight' => 27,
+          'type' => 'hidden',
+          'weight' => '27',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -1596,9 +1587,8 @@ function os2dagsorden_content_types_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'file',
           'settings' => array(),
-          'type' => 'file_default',
+          'type' => 'hidden',
           'weight' => '22',
         ),
         'teaser' => array(
@@ -1837,10 +1827,9 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
       'description' => '',
       'display' => array(
         'default' => array(
-          'label' => 'above',
-          'module' => 'computed_field',
+          'label' => 'hidden',
           'settings' => array(),
-          'type' => 'computed_field_unsanitized',
+          'type' => 'hidden',
           'weight' => '8',
         ),
         'ical' => array(
@@ -1972,7 +1961,7 @@ if (isset($entity->field_ref_bullet_points[\'und\'])) {
             'thousand_separator' => ' ',
           ),
           'type' => 'number_integer',
-          'weight' => 26,
+          'weight' => '26',
         ),
         'teaser' => array(
           'label' => 'above',
