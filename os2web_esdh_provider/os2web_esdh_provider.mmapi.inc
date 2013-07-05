@@ -240,9 +240,13 @@ function _os2web_esdh_provider_import_items($items) {
     
     //check the name
     if (!stripos($item['agenda_type'], 'tillæg') && stripos($item['agenda_type'], 'tillæg') !== 0)
-      $node->title = $item['title'] . ' (' . $item['caseno'] . ')';
+      $node->title = $item['title'];
     else
-     $node->title = 'Tillægsdagsorden: ' . $item['title'] . ' (' . $item['caseno'] . ')';
+     $node->title = 'Tillægsdagsorden: ' . $item['title'];
+     
+    if ($item['caseno']){
+      $node->title .= ' (' . $item['caseno'] . ')';
+    }
 
     $node->field_bul_point_number['und'][0]['value'] = $item['id'];
  
