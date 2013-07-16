@@ -114,20 +114,28 @@ function os2dagsorden_meeting_views_bullet_point_fields_attachments_and_content(
 	else
 	  $title = $attachment->title;
       }
+      if ($attachment->field_bpa_closed['und'][0]['value'] == 1)
+	  print '<div class="indicator-unlocked"></div>';
+	  
       $link = $base_url . '/meeting/' . $meeting_id . '/bullet-point/' . $bp_id . '/bullet-point-attachment/' . $attachment->nid;
-      print '<div id="' . $attachment->nid . '" class="indicator-has-no-notes"></div><a href="' . $link . '" target="_blank" class="first-child last-child">' . $title . '</a>';
+      
+      if (os2dagsorden_access_helper_check_user_can_see_bullet_point_attachment($meeting_id, $bp_id, $attachment->nid)){
+	print '<div id="' . $attachment->nid . '" class="indicator-has-no-notes"></div><a href="' . $link . '" target="_blank" class="first-child last-child">' . $title . '</a>';
 
-      //attachment text - if any
-      if (!empty($attachment->field_bpa_file_html['und'][0])){
-	print '<div class="attachment_text_container">';
+	//attachment text - if any
+	if (!empty($attachment->field_bpa_file_html['und'][0])){	  
+	  print '<div class="attachment_text_container">';
 
-	print '<div class="attachment_text_trimmed_container ajax-progress bpa-' . $meeting_id . '-' . $bp_id . '-' . $attachment->nid . '">';
-	
-	print 'Vent venligst...<div class="throbber"></div>';
-	print '</div>';
-	print('<a class="first-child last-child" target="_blank" href="' . $link . '">Læs mere...</a>');
+	  print '<div class="attachment_text_trimmed_container ajax-progress bpa-' . $meeting_id . '-' . $bp_id . '-' . $attachment->nid . '">';
 
-	print '</div>';
+	  print 'Vent venligst...<div class="throbber"></div>';
+	  print '</div>';
+	  print('<a class="first-child last-child" href="' . $link . '" target="_blank">Læs mere...</a>');
+
+	  print '</div>';
+	}
+      } else {
+	print '<a class="first-child last-child">' . $title . '</a>';
       }
       print '</li>';
     }

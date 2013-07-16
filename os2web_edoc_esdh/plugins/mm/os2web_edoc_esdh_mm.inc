@@ -134,7 +134,7 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
 	$date_obj = date_create($meeting_date);
 	date_timezone_set($date_obj, timezone_open('UTC'));
 	$meeting_date = date_format($date_obj, 'Y-m-d H:i');
-
+	
 	// Changing the meeting state to match ESDH Provider module
 	if($meeting_type == "Referat endeligt godkendt") {
 	  $meeting_type = "Referat";
@@ -142,7 +142,7 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
 	else {
 	  $meeting_type = "Dagsorden";
 	}
-
+	
 	// Saving the meeting data in ESDH Provider format. 
 	$meeting = array(
 	  'system_id' => $meeting_id,
@@ -150,11 +150,12 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
 	  'meeting_sub_id' => $meeting_id,
 	  'committee' => $committee,
 	  'committee_name' => $committee,
-	  'title' => $committee . " - " . $meeting_date . " - " . $meeting_type . " - " . $ref_state . " - " . $meeting_id,
+	  'title' => $committee,
 	  'uri' => strstr($file , 'eDocAgendaPublishing.xml', TRUE),
 	  'meeting_date' => $meeting_date,
 	  'meeting_date_start' => $meeting_date,
 	  'meeting_type' => $meeting_type,
+	  'type' => $meeting_type,
 	  'meeting_state' => $meeting_state,
 	  'meeting_pdf' => $meeting_pdf,
 	  'acadre_version' => $acadre_version,

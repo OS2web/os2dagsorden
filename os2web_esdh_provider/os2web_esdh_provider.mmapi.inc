@@ -360,7 +360,7 @@ function _os2web_esdh_provider_import_bullets($bullets) {
 
     $node->field_bpa_body[$node->language][0]['value'] = $bullet['body'];
     $node->field_bpa_body[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field  
-
+      
     node_submit($node);
     node_save($node);
 
@@ -441,6 +441,10 @@ function _os2web_esdh_provider_add_enclosure_bullet($enclosure, $file) {
     $node->title = 'Bilag: ' . $enclosure['title'];
 
     $node->field_bpa_file[$node->language][] = (array) $file;
+    if ($enclosure['access'] === 'False')
+      $node->field_bpa_closed[$node->language][0]['value'] = 1;
+    else
+      $node->field_bpa_closed[$node->language][0]['value'] = 0;
 
     node_submit($node);
     node_save($node);

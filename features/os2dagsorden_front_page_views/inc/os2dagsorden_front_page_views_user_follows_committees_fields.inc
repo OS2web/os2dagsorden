@@ -18,7 +18,7 @@ function os2dagsorden_front_page_views_user_follows_committees_fields_print_comm
   if (isset($full_user->field_follows_committee_plus['und'])){
     foreach ($full_user->field_follows_committee_plus['und'] as $com){
       $com_term = taxonomy_term_load($com['tid']);
-      if (isset($com_term->field_name_short))
+      if (isset($com_term->field_name_short['und']))
 	print($com_term->field_name_short['und'][0]['value']);
       else
 	print($com_term->name);
@@ -30,7 +30,7 @@ function os2dagsorden_front_page_views_user_follows_committees_fields_print_comm
   if (isset($full_user->field_follows_committee['und'])){
     foreach ($full_user->field_follows_committee['und'] as $com){
       $com_term = taxonomy_term_load($com['tid']);
-      if (isset($com_term->field_name_short))
+      if (isset($com_term->field_name_short['und']))
 	print($com_term->field_name_short['und'][0]['value']);
       else
 	print($com_term->name);

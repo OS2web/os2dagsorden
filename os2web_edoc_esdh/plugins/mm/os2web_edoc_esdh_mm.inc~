@@ -134,7 +134,7 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
 	$date_obj = date_create($meeting_date);
 	date_timezone_set($date_obj, timezone_open('UTC'));
 	$meeting_date = date_format($date_obj, 'Y-m-d H:i');
-
+	
 	// Changing the meeting state to match ESDH Provider module
 	if($meeting_type == "Referat endeligt godkendt") {
 	  $meeting_type = "Referat";
@@ -142,7 +142,7 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
 	else {
 	  $meeting_type = "Dagsorden";
 	}
-
+	
 	// Saving the meeting data in ESDH Provider format. 
 	$meeting = array(
 	  'system_id' => $meeting_id,
@@ -155,6 +155,7 @@ function os2web_edoc_esdh_mm_import_meeting($meeting) {
 	  'meeting_date' => $meeting_date,
 	  'meeting_date_start' => $meeting_date,
 	  'meeting_type' => $meeting_type,
+	  'type' => $meeting_type,
 	  'meeting_state' => $meeting_state,
 	  'meeting_pdf' => $meeting_pdf,
 	  'acadre_version' => $acadre_version,
@@ -244,7 +245,7 @@ function _os2web_edoc_esdh_mm_import_meeting_agenda_item($meeting, $xml) {
 
   $item = array(
     'id' => $xml_item['number'],
-    'sysid' => $xml_item['documentid'],//generated id - because there is not unique ID for the bullet point
+    'sysid' => crc32($meeting['committee'] . ' ' . $meeting['meeting_date'] . ' ' . $xml_item['documentid']),//generated id - because there is not unique ID for the bullet point
     'title' => 'Punkt ' . $xml_item['number'] . ' ' . $xml_item['name'],
     'access' => $xml_item['document_type'],
     'bullets' => array(),

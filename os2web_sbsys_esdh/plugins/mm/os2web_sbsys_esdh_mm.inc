@@ -284,7 +284,7 @@ function _os2web_sbsys_esdh_mm_import_meeting_agenda_item($meeting, $xml) {
               trim($meeting['uri'], "/"),
               $enclosure_item['filename_in'])),
             'title' => trim((string) $enclosure->Name),
-            'access' => TRUE,
+            'access' => ((string)$enclosure->IsProtected) === 'True'? 'False': 'True',//inverting the value
             'sysid' => (string) $enclosure['ID'],
           );
         }

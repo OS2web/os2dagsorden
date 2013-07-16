@@ -1,6 +1,6 @@
 <?php
 
-class Os2dagsordenAccessHepperTest extends TaxonomyWebTestCase {
+class Os2dagsordenAccessHelperTest extends TaxonomyWebTestCase {
   protected $meeting;
   protected $bp1;
   protected $bp2;
@@ -126,7 +126,7 @@ class Os2dagsordenAccessHepperTest extends TaxonomyWebTestCase {
     $this->drupalLogout();
     global $user;
     $user = null;
-    unset($_GLOBAL['full_user']);
+    unset($GLOBALS['full_user']);
   }
   
   /**

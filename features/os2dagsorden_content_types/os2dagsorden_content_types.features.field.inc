@@ -590,6 +590,74 @@ function os2dagsorden_content_types_field_default_fields() {
     ),
   );
 
+  // Exported field: 'node-bullet_point_attachment-field_bpa_closed'
+  $fields['node-bullet_point_attachment-field_bpa_closed'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_bpa_closed',
+      'foreign keys' => array(),
+      'indexes' => array(
+        'value' => array(
+          0 => 'value',
+        ),
+      ),
+      'module' => 'list',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => 'true',
+          1 => 'false',
+        ),
+        'allowed_values_function' => '',
+      ),
+      'translatable' => '0',
+      'type' => 'list_boolean',
+    ),
+    'field_instance' => array(
+      'bundle' => 'bullet_point_attachment',
+      'default_value' => array(
+        0 => array(
+          'value' => 0,
+        ),
+      ),
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'list',
+          'settings' => array(),
+          'type' => 'list_default',
+          'weight' => 7,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_bpa_closed',
+      'label' => 'Closed',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(
+          'display_label' => 1,
+        ),
+        'type' => 'options_onoff',
+        'weight' => '5',
+      ),
+    ),
+  );
+
   // Exported field: 'node-bullet_point_attachment-field_bpa_file'
   $fields['node-bullet_point_attachment-field_bpa_file'] = array(
     'field_config' => array(
@@ -858,7 +926,7 @@ function os2dagsorden_content_types_field_default_fields() {
         'module' => 'number',
         'settings' => array(),
         'type' => 'number',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
