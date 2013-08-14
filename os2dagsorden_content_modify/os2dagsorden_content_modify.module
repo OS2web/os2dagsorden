@@ -39,6 +39,17 @@ function os2dagsorden_content_modify_menu() {
     'access arguments' => array('administer os2web'),
     'type' => MENU_LOCAL_TASK,
   );
+  
+  $items['user/simple_edit'] = array(
+    'title' => 'Kontoindstillinger',
+    'page callback' => '_os2dagsorden_content_modify_user_edit_page',
+    'access arguments' => array('access content'),
+    'type' => MENU_NORMAL_ITEM,
+    'menu_name' => 'menu-sidepane-menu',
+    'options' => array(
+      'attributes' => array('id' => 'menu-simple-user-edit'),
+    ),
+  );
 
   return $items;
 }
@@ -86,15 +97,52 @@ function os2dagsorden_content_modify_user_operations() {
   return $operations;
 }
 
+/**
+ * Redirect for the user edit link from user operation menu.
+ * Redirects to simple edit link.
+ *
+ * @param $accounts array array of the user ids. 
+ *
+ * @return none
+ */
 function _os2dagsorden_content_modify_user_edit_redirect($accounts){
   $account = array_pop($accounts);
   drupal_goto('user/' . $account . '/simple_edit');
 }
 
-function _os2dagsorden_content_modify_user_edit_page($uid){
+/**
+ * Calls form for user simple edit. 
+ * If user has no administer os2web rights, he will be allowed only to edit his own profile.
+ *
+ * @param $uid int id of the user to modify.
+ *
+ * @return form
+ */
+function _os2dagsorden_content_modify_user_edit_page($uid = null){
+  $full_user = os2dagsorden_access_helper_get_user();
+  
+  if (empty($uid)){
+      $uid = $full_user->uid;
+  }
+  
+  if (!user_access('administer os2web', $full_user)){
+    if ($full_user->uid != $uid){
+      drupal_goto('user/simple_edit');
+    }
+  }
   return drupal_get_form('os2dagsorden_content_modify_user_edit_form', $uid);
 }
 
+/**
+ * Generates user edit form and (if uid is not null) loads and sets the parameters.
+ * Depending on the user rights form is either limited (with no right) of full (with administer os2web right).
+ *
+ * @param $form       mixed the form
+ * @param $form_state mixed the state of the form
+ * @param $uid        int   the id of the user to be modified
+ *
+ * @return form
+ */
 function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid){
   $form[] = array(
     '#markup' => '<div class="node">',
@@ -136,6 +184,7 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid){
     $user_pos_select[$user_pos_term->tid] = $user_pos_term->name . $priority;
   }
   $form['user_pos'] = array(
+      '#access' => user_access('administer os2web', $full_user),
       '#type' => 'select',
       '#title' => t('User positions:'),
       '#options' => $user_pos_select,
@@ -153,6 +202,7 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid){
     $com_select[$com_term->tid] = $com_term->name;
   }
   $form['member_of'] = array(
+      '#access' => user_access('administer os2web', $full_user),
       '#type' => 'select',
       '#title' => t('Member of:'),
       '#options' => $com_select,
@@ -173,6 +223,7 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid){
   );
   
   $form['follows_plus'] = array(
+      '#access' => user_access('administer os2web', $full_user),
       '#type' => 'select',
       '#title' => t('Follows+:'),
       '#options' => $com_select,
@@ -254,6 +305,14 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid){
   return $form;
 }
 
+/**
+ * Submit for user edit form. Updates user profile.
+ * 
+ * @param $form       mixed the form
+ * @param $form_state mixed state of the form
+ *
+ * @return none
+ */
 function os2dagsorden_content_modify_user_submit($form, $form_state){
   $input = $form_state['input'];
    
@@ -269,22 +328,6 @@ function os2dagsorden_content_modify_user_submit($form, $form_state){
     $user->field_user_meetings_category['und'][]['value'] = $cal_pref;
   }
   
-  //unsetting positions
-  $user->field_user_positions['und'] = array();
-  if ($user_pos){
-    foreach ($user_pos as $tid){
-      $user->field_user_positions['und'][]['tid'] = $tid;
-    }
-  }
-  
-  //unsetting committees
-  $user->field_user_committee['und'] = array();
-  if ($member_of){
-    foreach ($member_of as $tid){
-      $user->field_user_committee['und'][]['tid'] = $tid;
-    }
-  }
-  
   //unsetting follows committees
   $user->field_follows_committee['und'] = array();
   if ($follows){
@@ -293,11 +336,29 @@ function os2dagsorden_content_modify_user_submit($form, $form_state){
     }
   }
   
-  //unsetting follows plus committees
-  $user->field_follows_committee_plus['und'] = array();
-  if ($follows_plus){
-    foreach ($follows_plus as $tid){
-      $user->field_follows_committee_plus['und'][]['tid'] = $tid;
+  if (user_access('administer os2web')){//only for the full form submit
+    //unsetting positions
+    $user->field_user_positions['und'] = array();
+    if ($user_pos){
+      foreach ($user_pos as $tid){
+	$user->field_user_positions['und'][]['tid'] = $tid;
+      }
+    }
+    
+    //unsetting committees
+    $user->field_user_committee['und'] = array();
+    if ($member_of){
+      foreach ($member_of as $tid){
+	$user->field_user_committee['und'][]['tid'] = $tid;
+      }
+    }
+    
+    //unsetting follows plus committees
+    $user->field_follows_committee_plus['und'] = array();
+    if ($follows_plus){
+      foreach ($follows_plus as $tid){
+	$user->field_follows_committee_plus['und'][]['tid'] = $tid;
+      }
     }
   }
   
