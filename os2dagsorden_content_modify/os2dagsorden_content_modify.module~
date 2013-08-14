@@ -123,8 +123,6 @@ function _os2dagsorden_content_modify_user_edit_page($uid = null){
   
   if (empty($uid)){
       $uid = $full_user->uid;
-      print_r($uid);
-      //return;
   }
   
   if (!user_access('administer os2web', $full_user)){
@@ -159,6 +157,7 @@ function os2dagsorden_content_modify_user_edit_form($form, $form_state, $uid){
   );
   
   $form['calendar_pref'] = array(
+    '#access' => user_access('administer os2web', $full_user),
     '#type' => 'checkboxes',
     '#options' => array(
       'pol' => t('Political'), 
