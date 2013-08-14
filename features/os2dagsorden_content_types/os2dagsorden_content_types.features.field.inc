@@ -1376,7 +1376,11 @@ function os2dagsorden_content_types_field_default_fields() {
     ),
     'field_instance' => array(
       'bundle' => 'meeting',
-      'default_value' => NULL,
+      'default_value' => array(
+        0 => array(
+          'value' => 'pol',
+        ),
+      ),
       'deleted' => '0',
       'description' => '',
       'display' => array(
