@@ -836,6 +836,7 @@ function os2dagsorden_rules_and_permissions_user_default_permissions() {
     'name' => 'use text format filtered_html',
     'roles' => array(
       0 => 'administrator',
+      1 => 'os2dagsorden admin',
     ),
     'module' => 'filter',
   );
