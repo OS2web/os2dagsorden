@@ -100,14 +100,18 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       
       //Adding participants
       if ($meeting['participants']){
-	$part_names = array();
-	$node->field_meeting_participants[LANGUAGE_NONE][0]['value'] = implode(', ', $meeting['participants']);
+	$node->field_meeting_participants[LANGUAGE_NONE][0]['value'] = implode('<br/>', $meeting['participants']);
+      }
+ 
+      //Adding participants cancellations
+      if ($meeting['participants_cancellation']){
+	// TODO rewrite to change implode char with regard to the field format - eg here it is HTML
+	$node->field_participants_cancellation[LANGUAGE_NONE][0]['value'] = implode('<br/>', $meeting['participants_cancellation']);
       }
       
       // Import items.
       if (is_array($meeting['items'])) {
 	$item_nids = _os2web_esdh_provider_import_items($meeting['items']);
-	print_r($item_nids);
 	foreach ($item_nids as $nid) {
 	  $node->field_ref_bullet_points[LANGUAGE_NONE][]['target_id'] = $nid;
 	}
@@ -241,9 +245,13 @@ function _os2web_esdh_provider_import_items($items) {
     
     //check the name
     if (!stripos($item['agenda_type'], 'tillæg') && stripos($item['agenda_type'], 'tillæg') !== 0)
-      $node->title = $item['title'] . ' (' . $item['caseno'] . ')';
+      $node->title = $item['title'];
     else
-     $node->title = 'Tillægsdagsorden: ' . $item['title'] . ' (' . $item['caseno'] . ')';
+     $node->title = 'Tillægsdagsorden: ' . $item['title'];
+     
+    if ($item['caseno']){
+      $node->title .= ' (' . $item['caseno'] . ')';
+    }
 
     $node->field_bul_point_number['und'][0]['value'] = $item['id'];
  
@@ -357,7 +365,7 @@ function _os2web_esdh_provider_import_bullets($bullets) {
 
     $node->field_bpa_body[$node->language][0]['value'] = $bullet['body'];
     $node->field_bpa_body[$node->language][0]['format'] = 'filtered_html'; // If field has a format, you need to define it. Here we define a default filtered_html format for a body field  
-
+      
     node_submit($node);
     node_save($node);
 
@@ -438,6 +446,10 @@ function _os2web_esdh_provider_add_enclosure_bullet($enclosure, $file) {
     $node->title = 'Bilag: ' . $enclosure['title'];
 
     $node->field_bpa_file[$node->language][] = (array) $file;
+    if ($enclosure['access'] === 'False')
+      $node->field_bpa_closed[$node->language][0]['value'] = 1;
+    else
+      $node->field_bpa_closed[$node->language][0]['value'] = 0;
 
     node_submit($node);
     node_save($node);

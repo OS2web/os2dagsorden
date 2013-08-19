@@ -138,7 +138,17 @@ function os2web_sbsys_esdh_mm_import_meeting($meeting) {
 
       //Members
       foreach ($members as $member){
-	$participants[] = (string) $member->Name;
+	// Changed by skifter@bellcom.dk 01.08.2013 - to handle "no show" members and messages for "no shoW"
+	if (!empty($member->ParticipationNote)) {
+	  $member->ParticipationNote = ", " . $member->ParticipationNote;
+	}
+ 
+	if ($member->ParticipationStatusAsValue == '1' || $member->ParticipationStatusAsValue == '4') {
+	      $participants[] = (string) $member->Name . " - " . $member->ParticipationStatusAsText . $member->ParticipationNote;
+	}
+	else { 
+	  $participants_cancellation[] = (string) $member->Name . " - " . $member->ParticipationStatusAsText . $member->ParticipationNote;
+	}
       }
       
       $meeting = array(
@@ -155,6 +165,7 @@ function os2web_sbsys_esdh_mm_import_meeting($meeting) {
         'location' => $meeting_where,
         'acadre_version' => $acadre_version,
         'participants' => $participants,
+        'participants_cancellation' => $participants_cancellation,
       );
       
       
@@ -287,10 +298,7 @@ function _os2web_sbsys_esdh_mm_import_meeting_agenda_item($meeting, $xml) {
             'access' => ((string)$enclosure->IsProtected) === 'True'? 'False': 'True',//inverting the value
             'sysid' => (string) $enclosure['ID'],
           );
-          print_r($enclosure->IsProtected);
         }
-        print_r($item['enclosures']);
-        return;
       }
     }
   }

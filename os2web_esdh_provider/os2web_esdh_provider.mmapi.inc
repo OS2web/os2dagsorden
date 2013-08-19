@@ -100,8 +100,13 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       
       //Adding participants
       if ($meeting['participants']){
-	$part_names = array();
-	$node->field_meeting_participants[LANGUAGE_NONE][0]['value'] = implode(', ', $meeting['participants']);
+	$node->field_meeting_participants[LANGUAGE_NONE][0]['value'] = implode('<br/>', $meeting['participants']);
+      }
+ 
+      //Adding participants cancellations
+      if ($meeting['participants_cancellation']){
+	// TODO rewrite to change implode char with regard to the field format - eg here it is HTML
+	$node->field_participants_cancellation[LANGUAGE_NONE][0]['value'] = implode('<br/>', $meeting['participants_cancellation']);
       }
       
       // Import items.
