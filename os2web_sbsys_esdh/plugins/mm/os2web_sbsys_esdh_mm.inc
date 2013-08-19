@@ -270,39 +270,40 @@ function _os2web_sbsys_esdh_mm_import_meeting_agenda_item($meeting, $xml) {
   // Deny closed content.
   if ($item['access'] === 'True') {
     //rewriting the access field to match esdh provider module
-    $item['access'] = 'SKAL PUBLICERES';
+    $item['access'] = 'Lukket';
+  }
     
-    // Process attachments.
-     foreach ($xml_item_bullet->ItemField as $bullet_xml) {
-       
-	if (((string) $bullet_xml->HasContent) === 'True'){
-	  $item['bullets'][] = array(
-	    'title' => (string) $bullet_xml->Caption,
-	    'body' => (string) $bullet_xml->Content,
-	    'sysid' => (string) $bullet_xml['ID'],
-	  );
-	}
-     }
+  // Process attachments.
+    foreach ($xml_item_bullet->ItemField as $bullet_xml) {
+      
+      if (((string) $bullet_xml->HasContent) === 'True'){
+	$item['bullets'][] = array(
+	  'title' => (string) $bullet_xml->Caption,
+	  'body' => (string) $bullet_xml->Content,
+	  'sysid' => (string) $bullet_xml['ID'],
+	);
+      }
+    }
 
-    // Process enclsures.
-    foreach ($xml_item_document as $enclosures) {
-      foreach ($enclosures->Enclosure as $enclosure) {
-        $enclosure_item['filename_in'] = (string) "Enclosures/".$enclosure->InstantiationFileName;
-        $enclosure_item['access'] = (string) $enclosure->PublishingType;
-        #if (strlen($enclosure_item['filename_in']) > 0 && $enclosure_item['access'] === 'SKAL PUBLICERES') {
-        if (strlen($enclosure_item['filename_in']) > 0 ) {
-          $item['enclosures'][] = array(
-            'uri' => implode('/', array(
-              trim($meeting['uri'], "/"),
-              $enclosure_item['filename_in'])),
-            'title' => trim((string) $enclosure->Name),
-            'access' => ((string)$enclosure->IsProtected) === 'True'? 'False': 'True',//inverting the value
-            'sysid' => (string) $enclosure['ID'],
-          );
-        }
+  // Process enclsures.
+  foreach ($xml_item_document as $enclosures) {
+    foreach ($enclosures->Enclosure as $enclosure) {
+      $enclosure_item['filename_in'] = (string) "Enclosures/".$enclosure->InstantiationFileName;
+      $enclosure_item['access'] = (string) $enclosure->PublishingType;
+      #if (strlen($enclosure_item['filename_in']) > 0 && $enclosure_item['access'] === 'SKAL PUBLICERES') {
+      if (strlen($enclosure_item['filename_in']) > 0 ) {
+	$item['enclosures'][] = array(
+	  'uri' => implode('/', array(
+	    trim($meeting['uri'], "/"),
+	    $enclosure_item['filename_in'])),
+	  'title' => trim((string) $enclosure->Name),
+	  'access' => ((string)$enclosure->IsProtected) === 'True'? 'False': 'True',//inverting the value
+	  'sysid' => (string) $enclosure['ID'],
+	);
       }
     }
   }
+  
   $item += os2web_esdh_provider_default_item();
   return $item;
 }
