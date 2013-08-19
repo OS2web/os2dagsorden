@@ -268,7 +268,7 @@ function _os2web_sbsys_esdh_mm_import_meeting_agenda_item($meeting, $xml) {
     ),
   );
   // Deny closed content.
-  if ($item['access'] === 'True') {
+  if ($item['access'] !== 'True') {
     //rewriting the access field to match esdh provider module
     $item['access'] = 'Lukket';
   }
