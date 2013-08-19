@@ -102,7 +102,7 @@ function os2web_sbsys_esdh_mm_import_meeting($meeting) {
       $sys_id = $manifest->xpath("Agendas/Agenda/@ID");
       $meeting_name = $manifest->xpath("/Publication/Agendas/Agenda/Name");
       $acadre_version = $manifest->xpath("/Publication/GeneratorSettings/@ID");
-      $members = $manifest->xpath("Agendas/Agenda/Committee/Members/CommitteeMember/Member");
+      $members = $manifest->xpath("Agendas/Agenda/Meeting/Members/MeetingMember");
       $committee = (string) $committee[0][ID];
       $committee_group_id = (string) $committee_group_id[0][ID];
       $committee_name = (string) $committee_name[0];
