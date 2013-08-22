@@ -23,7 +23,6 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
   $nids = array();
   if (is_array($meetings)) {
     foreach ($meetings as $meeting) {
-    
       //trying to get meeting from sysid
       $query = new EntityFieldQuery();
       $query->entityCondition('entity_type', 'node')
@@ -100,13 +99,13 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       
       //Adding participants
       if ($meeting['participants']){
-	$node->field_meeting_participants[LANGUAGE_NONE][0]['value'] = implode(', ', $meeting['participants']);
+	$node->field_meeting_participants[LANGUAGE_NONE][0]['value'] = implode('<br/>', $meeting['participants']);
       }
  
       //Adding participants cancellations
       if ($meeting['participants_cancellation']){
 	// TODO rewrite to change implode char with regard to the field format - eg here it is HTML
-	$node->field_participants_cancellation[LANGUAGE_NONE][0]['value'] = implode(', ', $meeting['participants_cancellation']);
+	$node->field_participants_cancellation[LANGUAGE_NONE][0]['value'] = implode('<br/>', $meeting['participants_cancellation']);
       }
       
       // Import items.
@@ -118,51 +117,49 @@ function _os2web_esdh_provider_import_meeting($meeting_id, $force = FALSE, &$con
       }
 
       //adding description
-      if ($meeting['full_doc']){
-	$description = _os2web_esdh_provider_import_file($meeting['full_doc']);
-	$description->description = $meeting_id['id'];
-	$description = file_save($description);
+      $description = _os2web_esdh_provider_import_file($meeting['full_doc']);
+      $description->description = $meeting_id['id'];
+      $description = file_save($description);
       
-	if (strcmp($meeting['agenda_access'], 'Lukket') == 0){
-	  if (!stripos($meeting['agenda_type'], 'tillæg') && stripos($meeting['agenda_type'], 'tillæg') !== 0){//not additional agenda
-	    $file_field = $node->field_meeting_description_closed;
-	    if (os2web_esdh_provider_should_import_description($file_field, $meeting['acadre_version'])){
-	      $node->field_meeting_description_closed[$node->language][0] = (array) $description;
-	    }	  
-	  } else {//is additional agenda
-	    $imported = FALSE;
-	    if (isset($node->field_meeting_description_add_c)){
-	      foreach($node->field_meeting_description_add_c as $index => $description_field){    
-		if ($description_field['description'] === $meeting_id['id']){//same acadre id, replace the description
-		    $node->field_meeting_description_add_c[$node->language][$index] = (array) $description;
-		    $imported = TRUE;
-		    break;
-		}
+      if (strcmp($meeting['agenda_access'], 'Lukket') == 0){
+	if (!stripos($meeting['agenda_type'], 'tillæg') && stripos($meeting['agenda_type'], 'tillæg') !== 0){//not additional agenda
+	  $file_field = $node->field_meeting_description_closed;
+	  if (os2web_esdh_provider_should_import_description($file_field, $meeting['acadre_version'])){
+	    $node->field_meeting_description_closed[$node->language][0] = (array) $description;
+	  }	  
+	} else {//is additional agenda
+	  $imported = FALSE;
+	  if (isset($node->field_meeting_description_add_c)){
+	    foreach($node->field_meeting_description_add_c as $index => $description_field){    
+	      if ($description_field['description'] === $meeting_id['id']){//same acadre id, replace the description
+		  $node->field_meeting_description_add_c[$node->language][$index] = (array) $description;
+		  $imported = TRUE;
+		  break;
 	      }
 	    }
-	    if (!$imported)
-	      $node->field_meeting_description_add_c[$node->language][] = (array) $description;
 	  }
-	} else {
-	  if (!stripos($meeting['agenda_type'], 'tillæg') && stripos($meeting['agenda_type'], 'tillæg') !== 0){//not additional agenda
-	    $file_field = $node->field_meeting_description;
-	    if (os2web_esdh_provider_should_import_description($file_field, $meeting['acadre_version'])){
-	      $node->field_meeting_description[$node->language][0] = (array) $description;
-	    }
-	  } else {//is additional agenda
-	    $imported = FALSE;
-	    if (isset($node->field_meeting_description_add)){
-	      foreach($node->field_meeting_description_add as $index => $description_field){    
-		if ($description_field['description'] === $meeting_id['id']){//same acadre id, replace the description
-		    $node->field_meeting_description_add[$node->language][$index] = (array) $description;
-		    $imported = TRUE;
-		    break;
-		}
+	  if (!$imported)
+	    $node->field_meeting_description_add_c[$node->language][] = (array) $description;
+	}
+      } else {
+	if (!stripos($meeting['agenda_type'], 'tillæg') && stripos($meeting['agenda_type'], 'tillæg') !== 0){//not additional agenda
+	  $file_field = $node->field_meeting_description;
+	  if (os2web_esdh_provider_should_import_description($file_field, $meeting['acadre_version'])){
+	    $node->field_meeting_description[$node->language][0] = (array) $description;
+	  }
+	} else {//is additional agenda
+	  $imported = FALSE;
+	  if (isset($node->field_meeting_description_add)){
+	    foreach($node->field_meeting_description_add as $index => $description_field){    
+	      if ($description_field['description'] === $meeting_id['id']){//same acadre id, replace the description
+		  $node->field_meeting_description_add[$node->language][$index] = (array) $description;
+		  $imported = TRUE;
+		  break;
 	      }
 	    }
-	    if (!$imported)
-	      $node->field_meeting_description_add[$node->language][] = (array) $description;
 	  }
+	  if (!$imported)
+	    $node->field_meeting_description_add[$node->language][] = (array) $description;
 	}
       }
       
@@ -240,6 +237,8 @@ function _os2web_esdh_provider_import_items($items) {
         $node = new stdClass();
         $node->type = "bullet_point";
         $node->language = LANGUAGE_NONE;
+        $bullet_point_exists = FALSE;
+        
         node_object_prepare($node);
 
         $node->field_bullet_point_id[$node->language][0]['value'] = $item['sysid'];
