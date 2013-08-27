@@ -168,13 +168,21 @@ function os2web_sbsys_esdh_mm_import_meeting($meeting) {
         'participants_cancellation' => $participants_cancellation,
       );
       
-      
-
       $meeting_agendas = $manifest->xpath("/Publication/Agendas/Agenda/Items");
       $meeting_type = $manifest->xpath('/Publication/PublicationTypeAsValue');
       $meeting_pdf = $manifest->xpath('/Meeting/MeetingAgendaTypes/MeetingAgendaType/PDFDocument');
       $meeting['state'] = (string) $meeting_state[0];
-      $meeting['type'] = (((string) $meeting_type[0]) === '0') ? 'Dagsorden' : 'Referat';
+      switch (((string) $meeting_type[0])){
+	case '0':
+	  $meeting['type'] = 'Kladde';
+	  break;
+	case '1':
+	  $meeting['type'] = 'Dasgorden';
+	  break;
+	case '3':
+	  $meeting['type'] = 'Referat';
+	  break;
+      }
       $meeting['pdf'] = (string) $meeting_pdf[0];
       if (empty($meeting_agendas)) {
         watchdog('SBsys MM', 'Empty list of import items in %file.', array('%file' => $file), WATCHDOG_WARNING);
